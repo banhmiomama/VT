@@ -1,0 +1,32 @@
+﻿.dataTables_filter input {
+    height: 2.2em; /* 1em */
+}
+.profileheader {
+    height: 150px;/*height: 150px;*/
+}
+
+.ui.small.image, .ui.small.images .image, .ui.small.images img, .ui.small.images svg {
+    width: 100px;/*width: 50px;*/
+}
+/*.ui.items:not(.unstackable)>.item>.image, .ui.items:not(.unstackable)>.item>.image>img {
+    width: auto!important;
+    max-height: 100px!important;
+}*/
+.ui.selection.list .list > .item, .ui.selection.list > .item {
+    color: #2185d0;/*rgba(0,0,0,.4)*/
+    font-size: 13px; /* New */
+}
+.ui.grid > .column:not(.row), .ui.grid > .row > .column {
+    padding-left: 0.4rem;/*padding-left: 1rem;*/
+    padding-right: 0.4rem;/*adding-right: 1rem;*/
+}
+
+.radios-to-slider.medium .slider-label {
+    top: 40px;/*top: 50px;*/
+}
+.radios-to-slider {
+    margin-bottom: 25px; /*margin-bottom: 80px;*/
+}
+html, body {
+    /*background-color: #FCFBFB; /* background: #f1f4f5; */*/
+}
