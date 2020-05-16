@@ -1,4 +1,5 @@
-﻿
+﻿var lobibox_message
+
 function notiSuccess() {
     Lobibox.notify("success", {
         size: "normal",
@@ -7,7 +8,7 @@ function notiSuccess() {
         msg: "Thành Công ",
         //icon: null,
         //title: "aaaaaa",
-        soundPath: '/plugins/lobibox/sounds/',   // The folder path where sounds are located
+        soundPath: '/dist/plugins/lobibox/sounds/',   // The folder path where sounds are located
         soundExt: '.ogg',           // Default extension for all sounds
         sound: 'sound4',
         showClass: "fadeInDown",
@@ -26,12 +27,12 @@ function notiSuccessMess(mes) {
         msg: mes,
         //icon: null,
         //title: "aaaaaa",
-        soundPath: '/plugins/lobibox/sounds/',   // The folder path where sounds are located
+        soundPath: '/dist/plugins/lobibox/sounds/',   // The folder path where sounds are located
         soundExt: '.ogg',           // Default extension for all sounds
         sound: 'sound4',
         showClass: "fadeInDown",
         hideClass: "zoomOut",
-        delay: 1000,
+        delay: 4000,
         sound: true,
         img: null,
 
@@ -45,7 +46,7 @@ function notiError(errormess) {
         rounded: false,
         delayIndicator: true,
         msg: errormess,
-        soundPath: '/plugins/lobibox/sounds/',   // The folder path where sounds are located
+        soundPath: '/dist/plugins/lobibox/sounds/',   // The folder path where sounds are located
         soundExt: '.ogg',           // Default extension for all sounds
         sound: 'sound2',
         showClass: "fadeInDown",
@@ -64,7 +65,7 @@ function notiWarning(notimess) {
         msg: notimess,
         //icon: null,
         //title: "aaaaaa",
-        soundPath: '/plugins/lobibox/sounds/',   // The folder path where sounds are located
+        soundPath: '/dist/plugins/lobibox/sounds/',   // The folder path where sounds are located
         soundExt: '.ogg',           // Default extension for all sounds
         sound: 'sound3',
         showClass: "fadeInDown",
@@ -159,5 +160,43 @@ async function notiConfirmDeleteTicket() {
             }
         });
 }
+function notiAlarmSchedule(title, content) {
+    Lobibox.notify("success", {
+        size: "normal",
+        rounded: false,
+        delayIndicator: true,
+        msg: content,
+        //icon: null,
+        title: title,
+        soundPath: '/dist/plugins/lobibox/sounds/',   // The folder path where sounds are located
+        soundExt: '.ogg',           // Default extension for all sounds
+        sound: 'sound7',
+        showClass: "fadeInDown",
+        hideClass: "zoomOut",
+        delay: 5000,
+        img: "/img/Alarm.png",
+
+    });
+}
 
 
+/// Title, message
+function notification_title_message(title, message, timedelay) {
+    if (lobibox_message != undefined) lobibox_message.remove();
+     lobibox_message= Lobibox.notify("info", {
+        size: "normal",
+        rounded: false,
+        delayIndicator: true,
+        msg: message,
+        title: title,
+        soundPath: '/dist/plugins/lobibox/sounds/',   // The folder path where sounds are located
+        soundExt: '.ogg',           // Default extension for all sounds
+        sound: 'sound4',
+        showClass: "fadeInDown",
+        hideClass: "zoomOut",
+        delay: timedelay,
+        sound: true,
+        img: '/img/ButtonImg/newmessage.png',
+
+    });
+}

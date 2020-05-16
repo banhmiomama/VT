@@ -32,11 +32,7 @@ namespace VTTECH_2019_08_20.Models
         {
             try
             {
-                string connectionString = String.Format(@"Server={0}; " + "Initial Catalog={1}; User ID={2};Password={3};Trusted_Connection=false; "
-                       , "103.48.191.134"
-                       , "VTT_Cosmetic_Mini"
-                       , "vttechsolution"
-                       , "P@assword123@vttech");
+                string connectionString = String.Format(@"Data Source = DESKTOP-SO9JL7I\SQLEXPRESS;Initial Catalog = VT_CINEMA; Integrated Security = True");
                 _conn = new SqlConnection(connectionString);
                 if (_conn.State == ConnectionState.Closed) _conn.Open();
             }

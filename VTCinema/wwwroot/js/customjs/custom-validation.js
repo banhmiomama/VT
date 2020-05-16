@@ -2,27 +2,6 @@
 'use strict'
 $('.ui.form1').form({
     fields: {
-        number: {
-            identifier: 'number',
-            rules: [{
-                type: 'integer[1..100]',
-                prompt: 'Từ 1 Đến 100'
-            }]
-        },
-        price: {
-            identifier: 'price',
-            rules: [{
-                type: 'empty',
-                prompt: 'Không Được Rổng'
-            }, {
-                type: 'regExp[/^[0-9,]{0,12}$/]',
-                prompt: 'Sai Định Dạng'
-            }]
-        },
-
-
-
-
         name: {
             identifier: 'name',
             rules: [{
@@ -102,64 +81,18 @@ $('.ui.form2').form({
 // pageCustomerCareDetail
 $('.ui.form3').form({
     fields: {
-        number: {
-            identifier: 'number',
-            rules: [{
-                type: 'integer[1..100]',
-                prompt: 'Từ 1 Đến 100'
-            }]
-        },
-        moneyNotNull: {
-            identifier: 'moneyNotNull',
-            rules: [{
-                type: 'empty',
-                prompt: 'Không Được Rổng'
-            }, {
-                type: 'regExp[/^[0-9,]{0,12}$/]',
-                prompt: 'Sai Định Dạng'
-            }]
-        },
-        money: {
-            identifier: 'money',
-            rules: [{
-                type: 'regExp[/^[0-9,]{0,12}$/]',
-                prompt: 'Sai Định Dạng'
-            }]
-        },
-        phone: {
-            identifier: 'phone',
-            rules: [
-                {
-                    type: 'exactLength[10]',
-                    prompt: '10 Ký Tự Số'
-                },
-                {
-                    type: 'empty',
-                    prompt: 'Không Được Rổng'
-                },
-                {
-                    type: 'number',
-                    prompt: 'Phải Là Số'
-                }
-            ]
-        },
-        notnull: {
-            identifier: 'notnull',
-            rules: [
-                {
-                    type: 'empty',
-                    prompt: 'Không Được Rổng'
-                }
-            ]
-        },
-
-
-
         search: {
             identifier: 'appointment',
             rules: [{
                 type: 'empty',
                 prompt: 'Please enter appointment'
+            }]
+        },
+        reasonReturn: {
+            identifier: 'reasonReturn',
+            rules: [{
+                type: 'empty',
+                prompt: 'Please enter reasonReturn'
             }]
         },
         branch: {
@@ -258,8 +191,12 @@ $('.ui.form3').form({
             identifier: 'phonenumber',
             rules: [
                 {
-                    type: 'exactLength[10]',
-                    prompt: 'Please enter exactly 10 characters'
+                    type: 'minLength[8]',
+                    prompt: 'Please enter exactly 8 characters'
+                },
+                {
+                    type: 'maxLength[16]',
+                    prompt: 'Please enter exactly 12 characters'
                 },
                 {
                     type: 'number',
@@ -322,6 +259,32 @@ $('.ui.form3').form({
             rules: [
                 {
                     type: 'number',
+                    prompt: 'Please enter number'
+                }
+            ]
+        },
+        basicsalary: {
+            identifier: 'basicsalary',
+            rules: [
+                {
+                    type: 'number',
+                    prompt: 'Please enter number'
+                },
+                {
+                    type: 'empty',
+                    prompt: 'Please enter number'
+                }
+            ]
+        },
+        salaryagreed: {
+            identifier: 'salaryagreed',
+            rules: [
+                {
+                    type: 'number',
+                    prompt: 'Please enter number'
+                },
+                {
+                    type: 'empty',
                     prompt: 'Please enter number'
                 }
             ]
@@ -404,6 +367,13 @@ $('.ui.form3').form({
                 prompt: 'Please enter amount discount'
             }]
         },
+        moneyAmount: {
+            identifier: 'moneyAmount',
+            rules: [{
+                type: 'regExp[/^[0-9,]{0,12}$/]',
+                prompt: 'Please enter money Amount'
+            }]
+        },
         discountOther: {
             identifier: 'discountOther',
             rules: [{
@@ -437,6 +407,13 @@ $('.ui.form3').form({
         },
         productType: {
             identifier: 'productType',
+            rules: [{
+                type: 'empty',
+                prompt: 'Please enter product type'
+            }]
+        },
+        productUnit: {
+            identifier: 'productUnit',
             rules: [{
                 type: 'empty',
                 prompt: 'Please enter product type'
@@ -484,6 +461,21 @@ $('.ui.form3').form({
                 type: 'regExp[/^[0-9,]{0,12}$/]',
                 prompt: 'Please enter account amount'
             }]
+        },
+
+        clientCode: {
+            identifier: 'clientCode',
+            rules: [
+                {
+                    type: 'empty',
+                    prompt: 'Please enter value'
+                },
+               
+                {
+                    type: 'regExp[/^[a-zA-Z0-9-/]{3,10}$/]',
+                    prompt: 'Please enter CODE'
+                }
+            ]
         },
         //assitant1: {
         //    identifier: 'assitant1',
@@ -565,6 +557,13 @@ $('.ui.form3').form({
                 prompt: 'Please enter value'
             }, {
                 type: 'regExp[/^[a-zA-Z0-9-/]{0,50}$/]',
+                prompt: 'Please enter folder name'
+            }]
+        },
+        dateValid: {
+            identifier: 'dateValid',
+            rules: [{
+                type: 'regExp[/^[0-9-]{0,50}$/]',
                 prompt: 'Please enter folder name'
             }]
         },
@@ -755,6 +754,16 @@ $('.ui.form3').form({
                 prompt: 'Your username must be at least {ruleValue} characters'
             }]
         },
+        usernamemin5: {
+            identifier: 'usernamemin5',
+            rules: [{
+                type: 'empty',
+                prompt: 'Please enter a username'
+            }, {
+                type: 'minLength[5]',
+                prompt: 'Your username must be at least {ruleValue} characters'
+            }]
+        },
         passwordNew: {
             identifier: 'passwordNew',
             rules: [
@@ -800,6 +809,23 @@ $('.ui.form4').form({
                 type: 'empty',
                 prompt: 'Please enter your name'
             }]
+        },
+        phonenumber: {
+            identifier: 'phonenumber',
+            rules: [
+                {
+                    type: 'minLength[8]',
+                    prompt: 'Please enter exactly 8 characters'
+                },
+                {
+                    type: 'maxLength[16]',
+                    prompt: 'Please enter exactly 12 characters'
+                },
+                {
+                    type: 'number',
+                    prompt: 'Please enter number'
+                }
+            ]
         },
         skills: {
             identifier: 'skills',

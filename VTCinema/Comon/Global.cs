@@ -81,8 +81,8 @@ namespace VTTECH_2019_08_20.Comon
                         sys_userid = Convert.ToInt32(dt.Rows[0]["ID"].ToString());
                         sys_username = dt.Rows[0]["username"].ToString();
                         sys_RoleID = dt.Rows[0]["Group_ID"].ToString();
-                        sys_RoleServerID = dt.Rows[0]["InheritanceServer"].ToString();
-                        DetectUserInfo(sys_userid);
+                        //sys_RoleServerID = dt.Rows[0]["InheritanceServer"].ToString();
+                        //DetectUserInfo(sys_userid);
                         return sys_userid;
                     }
                     else

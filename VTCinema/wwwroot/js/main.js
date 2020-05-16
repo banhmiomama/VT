@@ -7,9 +7,11 @@ $(".openbtn").on("click", function() {
     if (!ManuelSideBarIsState) {
         resizeSidebar("1");
         ManuelSideBarIsState = true;
+        $("#MessengerArea_List").css("width", "299px");
     } else {
         resizeSidebar("0");
         ManuelSideBarIsState = false;
+        $("#MessengerArea_List").css("width", "300px");
     }
 });
 
@@ -48,34 +50,37 @@ if (isMobile.matches) {
     $(".computer.only").toggleClass("displaynone");
     $(".colhidden").toggleClass("displaynone");
 } else {
-    $("body").niceScroll({
-        cursorcolor: "#3d3b3b",
-        cursorwidth: 5,
-        cursorborderradius: 0,
-        cursorborder: 0,
-        scrollspeed: 50,
-        autohidemode: true,
-        zindex: 9999999
-    });
-    $(".sidebar").niceScroll({
-        cursorcolor: "#3d3b3b",
-        cursorwidth: 2,
-        cursorborderradius: 0,
-        cursorborder: 0,
-        scrollspeed: 50,
-        autohidemode: true,
-        zindex: 9999999
-    });
+    //$("body").niceScroll({
+    //    cursorcolor: "#3d3b3b",
+    //    cursorwidth: 7,
+    //    cursorborderradius: 4,
+    //    cursorborder: "none",
+    //    scrollspeed: 30,
+    //    mousescrollstep: 55,
+    //    autohidemode: true,
+    //    zindex: 9999999
+    //});
+    //$(".sidebar").niceScroll({
+    //    cursorcolor: "#3d3b3b",
+    //    cursorwidth: 2,
+    //    cursorborderradius: 0,
+    //    cursorborder: 0,
+    //    scrollspeed: 30,
+    //    mousescrollstep: 55,
+    //    autohidemode: true,
+    //    zindex: 9999999
+    //});
 
-    $(".displaynone .menu").niceScroll({
-        cursorcolor: "#3d3b3b",
-        cursorwidth: 5,
-        cursorborderradius: 0,
-        cursorborder: 0,
-        scrollspeed: 50,
-        autohidemode: true,
-        zindex: 9999999
-    });
+    //$(".displaynone .menu").niceScroll({
+    //    cursorcolor: "#3d3b3b",
+    //    cursorwidth: 5,
+    //    cursorborderradius: 0,
+    //    cursorborder: 0,
+    //    scrollspeed: 30,
+    //    mousescrollstep: 55,
+    //    autohidemode: true,
+    //    zindex: 9999999
+    //});
 }
 
 function resizeSidebar(op) {
@@ -133,6 +138,17 @@ function toggleFullScreen(elem) {
         } else if (elem.msRequestFullscreen) {
             elem.msRequestFullscreen();
         }
+        //refresh niceScroll
+        $("#contextWrap").niceScroll({
+            cursorcolor: "#3d3b3b",
+            cursorwidth: 7,
+            cursorborderradius: 4,
+            cursorborder: "none",
+            scrollspeed: 30,
+            mousescrollstep: 55,
+            autohidemode: true,
+            zindex: 9999999
+        });
     } else {
         if (document.cancelFullScreen) {
             document.cancelFullScreen();

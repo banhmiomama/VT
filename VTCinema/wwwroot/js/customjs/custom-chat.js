@@ -19,7 +19,7 @@
         },
         cacheDOM: function () {
             this.$chatHistory = $('.chat-history');
-            this.$button = $('button');
+            this.$button = $('#SendMessage');
             this.$textarea = $('#message-to-send');
             this.$chatHistoryList = this.$chatHistory.find('ul');
         },
@@ -29,25 +29,71 @@
         },
         render: function () {
             this.scrollToBottom();
-            if (this.messageToSend.trim() !== '') {
-                var template = Handlebars.compile($('#message-template').html());
-                var context = {
-                    messageOutput: this.messageToSend,
-                    time: this.getCurrentTime()
-                };
-                this.$chatHistoryList.append(template(context));
-                this.scrollToBottom();
-                this.$textarea.val('');
-                var templateResponse = Handlebars.compile($('#message-response-template').html());
-                var contextResponse = {
-                    response: this.getRandomItem(this.messageResponses),
-                    time: this.getCurrentTime()
-                };
-                setTimeout(function () {
-                    this.$chatHistoryList.append(templateResponse(contextResponse));
+            if (this.messageToSend.trim() !== '') { 
+                if (this.sendFacebook(this.messageToSend)) {
+                    var template = Handlebars.compile($('#template-send').html());
+                    var context = {
+                        messageOutput: this.messageToSend,
+                        time: this.getCurrentTime(),
+                        name: "Tôi"
+                    };
+                    this.$chatHistoryList.append(template(context));
                     this.scrollToBottom();
-                }.bind(this), 1500);
+                }
+                this.$textarea.val('');
+                //var templateResponse = Handlebars.compile($('#message-response-template').html());
+                //var contextResponse = {
+                //    response: this.getRandomItem(this.messageResponses),
+                //    time: this.getCurrentTime()
+                //};
+                //setTimeout(function () {
+                //    this.$chatHistoryList.append(templateResponse(contextResponse));
+                //    this.scrollToBottom();
+                //}.bind(this), 1500);
             }
+        },
+        sendFacebook: function (mes) {
+            MessageStatus(recipient, "typing_off");
+            let elm = document.getElementById("fileupload");
+            let file = elm.files[0];
+            let retu = false;
+            let temp = fanpages.filter(item => item.KeyPage == idPageSelected);
+            if (file) {
+                SendFile();
+            }
+            if (recipient != '') {
+                $.ajax({
+                    url: "https://graph.facebook.com/v4.0/me/messages",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                        "messaging_type": "RESPONSE",
+                        "recipient": JSON.stringify({
+                            "id": recipient
+                        }),
+                        "message": JSON.stringify({
+                            "text": mes
+                        }),
+                        "access_token": temp[0].accessToken
+
+                    }),
+                    contentType: 'application/json; charset=utf-8',
+                    async: false,
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        notiError(textStatus);
+                    },
+                    success: function (result) {
+                        //ReloadMess(result.message_id, 'send');
+                        UpdateListUI('listMember', 'itemsMenber', result.recipient_id, 'data-ret');
+                        UpdateListUI('listFanPage', 'itemFanPage', idPageSelected , 'data-id');
+                        retu = true;
+                    }
+                });
+            } else {
+                notiError('Người Nhận không xác định');
+            }
+            return retu;
         },
         addMessage: function () {
             this.messageToSend = this.$textarea.val();

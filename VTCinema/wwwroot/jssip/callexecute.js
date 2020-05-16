@@ -1,5 +1,7 @@
-﻿session_call = {};
+﻿
+session_call = {};
 sessionCalling = null;
+var phoneConnection = 1; // 0 : Tu Ngat May
 phone = null;
 var interval;
 var call_option = {
@@ -12,7 +14,7 @@ var call_option = {
     'sessionTimersExpires': 120
 };
 //login extend in server
-function Call_loginExtend(outbound, port, domain, extension, password,timeout) {
+function Call_loginExtend(outbound, port, domain, extension, password, timeout) {
     var socket = new JsSIP.WebSocketInterface('wss://' + outbound + ':' + port);
     var configuration = {
         sockets: [socket],
@@ -24,11 +26,15 @@ function Call_loginExtend(outbound, port, domain, extension, password,timeout) {
     phone = new JsSIP.UA(configuration);
     phone.on('connected', function (e) {
         // Your code here
-        console.log('connected');
+        let oProgress = document.getElementById("StatusOfLineCenter");
+        oProgress.innerHTML = "Connected " + extension;
+        oProgress.style.color = "#00b5ad";
     });
     phone.on('disconnected', function (e) {
         // Your code here
-        console.log('disconnected');
+        let oProgress = document.getElementById("StatusOfLineCenter");
+        oProgress.innerHTML = "Not connected";
+        oProgress.style.color = "#c68d8d";
     });
     phone.on('newSession', function (e) {
         // Your code here
@@ -49,7 +55,9 @@ function Call_loginExtend(outbound, port, domain, extension, password,timeout) {
     });
     phone.on('registrationFailed', function (e) {
         // Your code here
-        console.log('registrationFailed');
+        let oProgress = document.getElementById("StatusOfLineCenter");  
+        oProgress.innerHTML = "Failed to login";
+        oProgress.style.color = "#c68d8d";
     });
     phone.start();
 }
@@ -60,11 +68,9 @@ function Call_newRTCSession() {
             console.log('incoming');
             sessionCalling.on("accepted", function () {
                 console.log('accepted');
-
                 clearInterval(interval);
                 interval = null;
                 interval = setInterval(setTime, 1000);
-
                 var remoteAudio = window.document.createElement('audio');
                 window.document.body.appendChild(remoteAudio);
                 remoteAudio.src = window.URL.createObjectURL(
@@ -77,12 +83,17 @@ function Call_newRTCSession() {
                 // this handler will be called for incoming calls too
             });
             sessionCalling.on("ended", function () {
-                console.log('end_time');
-                console.log(sessionCalling.session)
-                FailIncommingCall();
+                let phonenumber = "";
+                if (typeof _phonenumber !== 'undefined' && typeof _isUnknow !== 'undefined') {
+                    if (_phonenumber != "" && _isUnknow == 1)
+                        phonenumber = _phonenumber;
+                }
+                console.log('ended In Client');
+
+                FailIncommingCall(phonenumber);
             });
             sessionCalling.on("failed", function () {
-                console.log('failed');
+                console.log('failed Incoming In');
                 FailIncommingCall();
             });
             //sessionCalling.on('addstream', function (e) {
@@ -103,29 +114,34 @@ function Call_newRTCSession() {
             var header = sessionCalling.request.getHeader('From');
             var headername = sessionCalling.remote_identity.display_name;
             InccomingCall(header, headername);
-           
+
 
             // Reject call (or hang up it)
             // session.terminate();
         }
         else {
+            // CAll OUT
             sessionCalling.on("confirmed", function () {
+
                 console.log('confirmed');
                 var localStream = sessionCalling.connection.getLocalStreams()[0];
                 dtmfSender = sessionCalling.connection.createDTMFSender(localStream.getAudioTracks()[0])
                 clearInterval(interval);
                 interval = null;
-                interval=setInterval(setTime, 1000);
+                interval = setInterval(setTime, 1000);
             });
             sessionCalling.on("ended", function () {
-                console.log('ended');
+                console.log('ended Out');
                 FailIncommingCall();
             });
             sessionCalling.on("failed", function () {
-                console.log('failed');
+                if (phoneConnection == 1) {
+                   // notiWarning("Failure Audio Headphone Or Not Register");
+                }
+                console.log('failed Incoming Out');
                 FailIncommingCall();
             });
-          
+
             sessionCalling.on('peerconnection', function (e) {
                 e.peerconnection.onaddstream = function (d) {
                     audio_callcenter.srcObject = d.stream;
@@ -137,18 +153,27 @@ function Call_newRTCSession() {
 }
 function eventCall(session) {
     session['session'].on('peerconnection', function (e) {
+
         e.peerconnection.onaddstream = function (d) {
             audio_callcenter.srcObject = d.stream;
         }
     })
 }
 function PhoneCallExe(phonenumber) {
-
-    phone.call(phonenumber, call_option);
+    if (phone != undefined && phone != null) {
+        try {
+            phone.call(phonenumber, call_option);
+        }
+        catch (err) {
+            //notiWarning("Device Not Found");
+        }
+    }
 }
 
-function Callinghangup () {
+function Callinghangup() {
+    phoneConnection = 0;
     sessionCalling.terminate();
+    phoneConnection = 1;
 }
 function CallingAccept() {
     sessionCalling.answer(call_option);

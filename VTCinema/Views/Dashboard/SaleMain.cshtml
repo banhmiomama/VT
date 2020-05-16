@@ -1,7 +1,73 @@
 ﻿
 @{
-    ViewData["Title"] = "SaleMain";
+    Layout = "~/Views/Shared/Master.cshtml";
 }
+<div class="pusher">
+        <div class="navslide navwrap">
+            <div class="row" style="background-color: white">
+                <div class="ui form segment form3">
+                    <h2 class="ui center aligned header" style="border-top: 1px; font-family: 'Times New Roman'">
+                        Danh Sách Nhân Viên Bị Xử Phạt
+                        <div class="sub header" style="font-family: 'Times New Roman'">Danh Sách các nhân viên bị xử phạt</div>
+                    </h2>
+                    <div class="four fields" style="margin: 0px;">
+                        <div class="field">
+                            <button style="display: inline;" class="ui blue button" data-value="fade up" onclick="event.preventDefault();return exportData_PunishEmployee();">Xuất File</button>
+                            <button class="ui blueli button" data-value="fade up" onclick="return AddNewPunishEmployee()">Thêm mới</button>
+                        </div>
+                        <div class="field">
+                            <div class="ui fluid search selection dropdown" id="Branch_ID" onchange="LoadData_PunishEmployee()">
+                                <input type="hidden" name="branch" />
+                                <input class="search" autocomplete="off" tabindex="0" />
+                                <div class="default text">Chi Nhánh</div>
+                                <div id="cbbBranch" class="menu" tabindex="-1">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui icon input" style="max-height: 40px;">
+                                <input id="filterEmployee" type="text" placeholder="Seaching..." onkeyup="event.preventDefault();return onkeyupTicketFitler();">
+                                <i class="circular search link icon"></i>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <input class="flatpickr" id="dateFilter" type="text" placeholder="Select Date.." onchange="LoadData_PunishEmployee()" />
+                        </div>
+                    </div>
+                    <div class="ui segment" style="border: none; overflow-x: auto; padding: unset;">
+                        <table id="dtContentPunishEmployee" class="ui sortable celled table">
+                            <thead class="hiddenCollapse">
+                                <tr role="row">
+                                    <th style="display: none">ID</th>
+                                    <th style="width: 70px;">#</th>
+                                    <th>Nhân Viên</th>
+                                    <th style="min-width: 60px">Mức Xử Phạt</th>
+                                    <th style="min-width: 150px" class="no-sort">Loại Xử Phạt</th>
+                                    <th style="max-width: 120px;">Số Tiền Xử Phạt</th>
+                                    <th style="max-width: 300px;">Ngày Xử Phạt</th>
+                                </tr>
+                            </thead>
+                            <tbody id="dtContentPunishEmployeeBody">
+                            </tbody>
+                        </table>
 
-<h2>SaleMain</h2>
+                    </div>
+                </div>
+            </div>
 
+        </div>
+    </div>
+
+
+<script>
+    $(document).ready(function () {
+        $("#dateFilter").flatpickr({
+            mode: "range",
+            dateFormat: 'd-m-Y',
+            enableTime: false,
+        });
+        var date = new Date();
+        var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+        var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+    });
+</script>

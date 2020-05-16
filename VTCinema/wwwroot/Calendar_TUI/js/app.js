@@ -32,7 +32,7 @@
             //   // return schedule.title + ' <i class="fa fa-refresh"></i>' + schedule.raw.memo;
             //},
             time: function (schedule) {
-                return '<span style="display: block;padding-left: 5px;font-size:12px;background-color:'
+                return '<span style="display: block;padding-left: 5px;font-size: 11px;font-weight: 400;background-color:'
                     + schedule.bgColor
                     + ';color:'
                     + schedule.color
@@ -194,9 +194,6 @@
         var action = getDataAction(target);
         var options = cal.getOptions();
         var viewName = '';
-
-        console.log(target);
-        console.log(action);
         switch (action) {
             case 'toggle-daily':
                 viewName = 'day';
@@ -366,8 +363,7 @@
         refreshScheduleVisibility();
     }
 
-    function onChangeCalendars(e) {
-        debugger
+    function onChangeCalendars(e) {      
         var calendarId = e.target.value;
         var checked = e.target.checked;
         var viewAll = document.querySelector('.lnb-calendars-item input');
@@ -439,14 +435,14 @@
         var viewName = cal.getViewName();
         var html = [];
         if (viewName === 'day') {
-            html.push(moment(cal.getDate().getTime()).format('YYYY.MM.DD'));
+            html.push(moment(cal.getDate().getTime()).format('DD-MM-YYYY'));
         } else if (viewName === 'month' &&
             (!options.month.visibleWeeksCount || options.month.visibleWeeksCount > 4)) {
-            html.push(moment(cal.getDate().getTime()).format('YYYY.MM'));
+            html.push(moment(cal.getDate().getTime()).format('MM-YYYY'));
         } else {
-            html.push(moment(cal.getDateRangeStart().getTime()).format('YYYY.MM.DD'));
-            html.push(' ~ ');
-            html.push(moment(cal.getDateRangeEnd().getTime()).format(' MM.DD'));
+            html.push(moment(cal.getDateRangeStart().getTime()).format('DD-MM-YYYY'));
+            html.push('  ~  ');
+            html.push(moment(cal.getDateRangeEnd().getTime()).format(' DD-MM'));
         }
         renderRange.innerHTML = html.join('');
     }
@@ -554,7 +550,7 @@
             '</label></div>'
         );
     });
-    calendarList.innerHTML = html.join('\n');
+    if (calendarList != undefined) calendarList.innerHTML = html.join('\n');
 })();
 
 function hexToRGBA(hex) {

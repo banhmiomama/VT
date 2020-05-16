@@ -158,7 +158,7 @@ function GetDataComboLaboCus(link, CustomerID, fn) {
 		},
 		success: function (data) {
 
-            fn(JSON.parse(data.d)["Table1"], JSON.parse(data.d)["Table2"], JSON.parse(data.d)["Table3"]);
+            fn(JSON.parse(data.d)["Table1"], JSON.parse(data.d)["Table2"], JSON.parse(data.d)["Table3"], JSON.parse(data.d)["Table4"]);
 		}
 	})
 	return x;
@@ -340,14 +340,14 @@ function GetDataSourceCustomerCareTreatment(link, CustomerID, fn) {
 
 
 //LoadData CustomerCare AfterTreatment
-function GetDataSourceCustomerCareAfterTreatment(link, Branch_ID, DateFrom, DateTo, fn) {
+function GetDataSourceCustomerCareAfterTreatment(link, DateFrom, DateTo, fn) {
     var x = "";
     $.ajax({
         url: link,
         dataType: "json",
         type: "POST",
         contentType: 'application/json; charset=utf-8',
-        data: JSON.stringify({ "Branch_ID": Branch_ID, "DateFrom": DateFrom, "DateTo": DateTo }),
+        data: JSON.stringify({"DateFrom": DateFrom, "DateTo": DateTo }),
         async: true,
         error: function (XMLHttpRequest, textStatus, errorThrown) {
 
@@ -547,14 +547,14 @@ function GetDataSourceCustomerCare(link, CustomerID, fn) {
     return x;
 }
 // Load list Appointment In Day,
-function GetDataSourceAppointmentList(link, Branch_ID, fn) {
+function GetDataSourceAppointmentList(link,  fn) {
     var x = "";
     $.ajax({
         url: link,
         dataType: "json",
         type: "POST",
         contentType: 'application/json; charset=utf-8',
-        data: JSON.stringify({ "branchID": Branch_ID }),
+        data: JSON.stringify({ }),
         async: false,
         error: function (XMLHttpRequest, textStatus, errorThrown) {
             alert("Request: " + XMLHttpRequest.toString() + "\n\nStatus: " + textStatus + "\n\nError: " + errorThrown);
@@ -568,14 +568,14 @@ function GetDataSourceAppointmentList(link, Branch_ID, fn) {
 
 
 // Load list Appointment By Dat,
-function GetDataSourceAppointmentListByDay(link, Branch_ID, dateFrom, dateTo, fn) {
+function GetDataSourceAppointmentListByDay(link,  dateFrom, dateTo, fn) {
     var x = "";
     $.ajax({
         url: link,
         dataType: "json",
         type: "POST",
         contentType: 'application/json; charset=utf-8',
-        data: JSON.stringify({ "branchID": Branch_ID, "dateFrom": dateFrom, "dateTo": dateTo }),
+        data: JSON.stringify({ "dateFrom": dateFrom, "dateTo": dateTo }),
         async: false,
         error: function (XMLHttpRequest, textStatus, errorThrown) {
 
@@ -693,25 +693,6 @@ function GetAppCancelSearchingByKeyword(link, keyword, fn) {
     return x;
 }
 
-//LoadComboShift
-function GetDataShift(link, fn) {
-	var x = "";
-	$.ajax({
-		url: link,
-		dataType: "json",
-		type: "POST",
-		contentType: 'application/json; charset=utf-8',
-		async: false,
-		error: function (XMLHttpRequest, textStatus, errorThrown) {
-
-			alert("Request: " + XMLHttpRequest.toString() + "\n\nStatus: " + textStatus + "\n\nError: " + errorThrown);
-		},
-		success: function (data) {
-            fn(JSON.parse(data.d)["Table1"], JSON.parse(data.d)["Table2"], JSON.parse(data.d)["Table3"]);
-		}
-	})
-	return x;
-}
 // Load list WareHouse,
 function GetDataSourceWareHouse(link, fn) {
     var x = "";
@@ -790,7 +771,7 @@ function GetDataSourceLaboSupplier(link, fn) {
 		},
 		success: function (data) {
 
-			fn(JSON.parse(data.d));
+            fn(JSON.parse(data.d).Table, JSON.parse(data.d).Table1);
 		}
 	})
 	return x;
@@ -1022,7 +1003,7 @@ function GetDataComboEmployee(link, fn) {
             alert("Request: " + XMLHttpRequest.toString() + "\n\nStatus: " + textStatus + "\n\nError: " + errorThrown);
         },
         success: function (data) {
-            fn(JSON.parse(data.d)["Table1"], JSON.parse(data.d)["Table2"]);
+            fn(JSON.parse(data.d)["Table1"], JSON.parse(data.d)["Table2"], JSON.parse(data.d)["Table3"], JSON.parse(data.d)["Table4"], JSON.parse(data.d)["Table5"]);
         }
     })
     return x;
@@ -1189,14 +1170,14 @@ function GetDataSourceInputList(link, branch_ID,dateFrom, dateTo, fn) {
     })
     return x;
 }
-function GetDataWareHouseLockList(link, branch_ID, dateFrom, dateTo, fn) {
+function GetDataWareHouseLockList(link, WareID, date, fn) {
     var x = "";
     $.ajax({
         url: link,
         dataType: "json",
         type: "POST",
         contentType: 'application/json; charset=utf-8',
-        data: JSON.stringify({ "branch_ID": branch_ID, "datefrom": dateFrom, "dateto": dateTo }),
+        data: JSON.stringify({ "WareID": WareID, "date": date }),
         async: true,
         error: function (XMLHttpRequest, textStatus, errorThrown) {
 
@@ -1402,14 +1383,14 @@ function GetDataTicketReasonDelete(link, fn) {
 
  
 //.... Martketing Load TIcket List
-function GetDataTicketList(link, UserID, dateFrom, dateTo, statusID, sourceID, statusDataID, fn) {
+function GetDataTicketList(link, UserID, date, statusID, sourceID, statusDataID, fn) {
     var x = "";
     $.ajax({
         url: link,
         dataType: "json",
         type: "POST",
         contentType: 'application/json; charset=utf-8',
-        data: JSON.stringify({ "UserID": UserID, "dateFrom": dateFrom, "dateTo": dateTo, "statusID": statusID, "sourceID": sourceID, "statusDataID": statusDataID }),
+        data: JSON.stringify({ "UserID": UserID, "date": date,  "statusID": statusID, "sourceID": sourceID, "statusDataID": statusDataID }),
         async: true,
         error: function (XMLHttpRequest, textStatus, errorThrown) {
 
@@ -1424,14 +1405,14 @@ function GetDataTicketList(link, UserID, dateFrom, dateTo, statusID, sourceID, s
 }
 
 //.... Martketing Load TIcket Import
-function GetDataTicketListImport(link, dateFrom,  fn) {
+function GetDataTicketListImport(link, date,  fn) {
     var x = "";
     $.ajax({
         url: link,
         dataType: "json",
         type: "POST",
         contentType: 'application/json; charset=utf-8',
-        data: JSON.stringify({ "dateFrom": dateFrom }),
+        data: JSON.stringify({ "date": date }),
         async: true,
         error: function (XMLHttpRequest, textStatus, errorThrown) {
 
@@ -1930,7 +1911,7 @@ function GetDataLaboList(link, branchid, dateFilter, fn) {
         dataType: "json",
         type: "POST",
         contentType: 'application/json; charset=utf-8',
-        data: JSON.stringify({ "branchid": branchid, "dateFilter": dateFilter }),
+        data: JSON.stringify({ "branchid": branchid, "date": dateFilter }),
         async: true,
         error: function (XMLHttpRequest, textStatus, errorThrown) {
 
@@ -1963,15 +1944,15 @@ function GetDataDeleteMergeCusList(link, branchid, dateFilter, fn) {
 }
 
 // Load Appointment Cancel
-function GetAppointmentCancelList(link, branchid, dateFilter, fn) {
+function GetAppointmentCancelList(link, branchid, dateFrom, dateTo, fn) {
     var x = "";
     $.ajax({
         url: link,
         dataType: "json",
         type: "POST",
         contentType: 'application/json; charset=utf-8',
-        data: JSON.stringify({ "branchid": branchid, "dateFilter": dateFilter }),
-        async: true,
+        data: JSON.stringify({ "branchid": branchid, "dateFrom": dateFrom, "dateTo": dateTo }),
+        async: false,
         error: function (XMLHttpRequest, textStatus, errorThrown) {
 
             alert("Request: " + XMLHttpRequest.toString() + "\n\nStatus: " + textStatus + "\n\nError: " + errorThrown);
@@ -2062,14 +2043,14 @@ function GetDataTypeAccount(link, fn) {
     return x;
 }
 // Load list Customer
-function GetListCustomer(link, dateFrom, dateTo,branchID, fn) {
+function GetListCustomer(link, date, branchID, groupID, offset, fn) {
     var x = "";
     $.ajax({
         url: link,
         dataType: "json",
         type: "POST",
         contentType: 'application/json; charset=utf-8',
-        data: JSON.stringify({ "dateFrom": dateFrom, "dateTo": dateTo, "branchID": branchID }),
+        data: JSON.stringify({ "date": date, "branchID": branchID, 'groupID': groupID, "offset": offset}),
         async: true,
         error: function (XMLHttpRequest, textStatus, errorThrown) {
 
