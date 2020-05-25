@@ -1,6 +1,7 @@
 ﻿
 @{
     Layout = "~/Views/Shared/Master.cshtml";
+    ViewBag.Title = "Dashboard";
 }
 <div class="pusher">
         <div class="navslide navwrap">
@@ -13,7 +14,7 @@
                     <div class="four fields" style="margin: 0px;">
                         <div class="field">
                             <button style="display: inline;" class="ui blue button" data-value="fade up" onclick="event.preventDefault();return exportData_PunishEmployee();">Xuất File</button>
-                            <button class="ui blueli button" data-value="fade up" onclick="return AddNewPunishEmployee()">Thêm mới</button>
+                            <button class="ui blueli button" data-value="fade up" onclick="return onclickCreateCustomer()">Thêm mới</button>
                         </div>
                         <div class="field">
                             <div class="ui fluid search selection dropdown" id="Branch_ID" onchange="LoadData_PunishEmployee()">
@@ -70,4 +71,9 @@
         var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
         var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
     });
+    function onclickCreateCustomer() {
+        $("#divDetailPopupContent").load("/CustomerDetail/" + 0);
+        $('#divDetailPopup').modal('show');
+        return false;
+    }
 </script>

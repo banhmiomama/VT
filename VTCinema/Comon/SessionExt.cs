@@ -2,7 +2,7 @@
 using System;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
-namespace VTTECH_2019_08_20.Comon
+namespace VTCinema.Comon
 {
     public static class SessionExtensions
     {

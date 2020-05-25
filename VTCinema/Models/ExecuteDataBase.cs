@@ -5,7 +5,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 
-namespace VTTECH_2019_08_20.Models
+namespace VTCinema.Models
 {
     class ExecuteDataBase : IDisposable
     {
@@ -41,10 +41,6 @@ namespace VTTECH_2019_08_20.Models
                 // Connect Local
             }
         }
-
-
-
-
         public string ExecuteDatabaseLog(string s)
         {
             if (_conn.State == ConnectionState.Closed) _conn.Open();

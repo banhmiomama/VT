@@ -1,0 +1,90 @@
+﻿
+@{
+    Layout = null;
+}
+
+<div id="headerPopup_CustomerCare" class="header">
+    Xử Phạt Nhân Viên
+</div>
+<div class="row">
+    <div class="sixteen wide tablet eight wide computer column">
+        <div class="ui segments">
+            <form class="ui form segment form3" id="form3">
+                <div class="ui accordion field">
+                    <div class="content field active">
+                        <div class="two fields">
+                            <div class="field">
+                                <label>Tên Nhân Viên</label>
+                                <div class="ui fluid search selection dropdown" id="Employee_ID">
+                                    <input type="hidden" name="branch" />
+                                    <i class="dropdown icon"></i>
+                                    <input class="search" autocomplete="off" tabindex="0" />
+                                    <div class="default text">Nhân Viên</div>
+                                    <div id="cbbEmployee" class="menu" tabindex="-1">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label>Ngày Phạt</label>
+                                <input class="flatpickr" id="Date_from" type="text" placeholder="Select Date.." />
+                            </div>
+                        </div>
+                        <div class="two fields">
+                            <div class="field">
+                                <label>Loại Phạt</label>
+                                <div class="ui fluid search selection dropdown" id="PunishType" onchange="OnChangePunishTypeDetail()">
+                                    <input type="hidden" name="statusType" />
+                                    <i class="dropdown icon"></i>
+                                    <input class="search" autocomplete="off" tabindex="0" />
+                                    <div class="default text">Loại Phạt</div>
+                                    <div id="ccbPunishType" class="menu" tabindex="-1">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label>Loại Phạt Chi Tiết</label>
+                                <div class="ui fluid search selection dropdown" id="PunishTypeDetail">
+                                    <input type="hidden" name="statusType" />
+                                    <i class="dropdown icon"></i>
+                                    <input class="search" autocomplete="off" tabindex="0" />
+                                    <div class="default text">Loại Phạt Chi Tiết</div>
+                                    <div id="cbbPunishTypeDetail" class="menu" tabindex="-1">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="two fields">
+                            <div class="field">
+                                <label>Mức Phạt</label>
+                                <div class="ui fluid search selection dropdown" id="typeIsPunishMoney" onchange="OnchangeIsPunishMoney()">
+                                    <input type="hidden" name="branch" />
+                                    <input class="search" autocomplete="off" tabindex="0" />
+                                    <i class="dropdown icon"></i>
+                                    <div class="default text">Mức Độ</div>
+                                    <div id="cbbcustomerCareType" class="menu" tabindex="-1">
+                                        <div class="item" data-value="2">Không Phạt Tiền</div>
+                                        <div class="item" data-value="1">Phạt Tiền</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label>Số Tiền Phạt</label>
+                                <input id="txtPunishAmount" name="Price" type="text" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div class="actions">
+    <div style="float: right">
+        <button class="ui teal button" form="form3" type="submit" onclick="return ExcuteData()">Save</button>
+    </div>
+    <div style="float: right">
+        <button class="ui grey button" form="form3" onclick="event.preventDefault();CloseModal()">Cancel</button>
+    </div>
+</div>

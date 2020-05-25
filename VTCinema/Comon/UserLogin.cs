@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace VTTECH_2019_08_20.Comon
+namespace VTCinema.Comon
 {
     //public class GlobalUser
     //{

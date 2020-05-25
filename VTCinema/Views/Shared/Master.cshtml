@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head runat="server">
-    <title>VTTECH</title>
+    <title>@ViewBag.Title</title>
     <meta charset="utf-8" />
     <link rel="icon" href="/img/favicon.ico">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -514,7 +514,103 @@
             return date;
         }
             // #endregion
+        // #region  Declare popup 
+        $('#divDetailPopup').modal({
+            autofocus: false,
+            //useFlex: 'auto',
+            allowMultiple: true,
+            closable: false,
+            transition: 'horizontal flip',
+            duration: 0,
+            observeChanges: true,
+            //centered:true,
+            onShow: function () {
 
+            },
+            onVisible: function () {
+                $('#divDetailPopup').modal('refresh');
+            }
+        });
+        $('#divDetailPopupSign').modal({
+            autofocus: false,
+            //useFlex: 'auto',
+            allowMultiple: true,
+            closable: false,
+            transition: 'horizontal flip',
+            duration: 0,
+            observeChanges: true,
+            //centered:true,
+            onShow: function () {
+                ResultSignation = "";
+            },
+            onVisible: function () {
+                $('#divDetailPopup').modal('refresh');
+
+            },
+            onHide: function () {
+                Signature_Stop_Timeout();
+            },
+        });
+        $('#divDetailPopupDetectInComing').modal({
+            autofocus: false,
+            //useFlex: 'auto',
+            // allowMultiple: true,
+            closable: false,
+            transition: 'horizontal flip',
+            duration: 0,
+
+            //centered:true,
+            onShow: function () {
+            },
+            onVisible: function () {
+                $('#divDetailPopupDetectInComing').modal('refresh');
+            }
+        });
+        $('#divDetailPopupLV2').modal({
+            autofocus: false,
+            //useFlex: 'auto',
+            allowMultiple: true,
+            closable: false,
+            transition: 'horizontal flip',
+            duration: 0,
+            observeChanges: true,
+            //centered:true,
+            onShow: function () {
+            },
+            onVisible: function () {
+                $('#divDetailPopupLV2').modal('refresh');
+            }
+        });
+        $('#divDetailPopupCall').modal({
+            autofocus: false,
+            //useFlex: 'auto',
+            //observeChanges: false,
+            closable: false,
+            transition: 'horizontal flip',
+            duration: 0,
+
+            //centered:true,
+            onShow: function () {
+            },
+            onVisible: function () {
+                $('#divDetailPopupCall').modal('refresh');
+            }
+        });
+        $('#divFistSlideGuide').modal({
+            autofocus: false,
+            //useFlex: 'auto',
+            //observeChanges: false,
+            closable: false,
+            transition: 'horizontal flip',
+            duration: 0,
+
+            //centered:true,
+            onShow: function () {
+            },
+            onVisible: function () {
+            }
+        });
+        //#endregion
     </script>
 
     <script src="/semantic.min.js"></script>

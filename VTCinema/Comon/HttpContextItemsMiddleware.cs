@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace VTTECH_2019_08_20.Comon
+namespace VTCinema.Comon
 {
     public class HttpContextItemsMiddleware
     {

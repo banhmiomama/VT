@@ -13,7 +13,7 @@ using System.Web;
 using static System.Net.Mime.MediaTypeNames;
 using Image = System.Drawing.Image;
 
-namespace VTTECH_2019_08_20.Comon
+namespace VTCinema.Comon
 {
     public static class Comon
     {
@@ -568,8 +568,6 @@ namespace VTTECH_2019_08_20.Comon
                 return null;
             }
         }
-
-
         public static bool CheckPreventCusByBranch(int cusBranchID)
         {
 
@@ -619,7 +617,6 @@ namespace VTTECH_2019_08_20.Comon
 
 
         }
-
         public static bool CheckLimitSMS()
         {
             try

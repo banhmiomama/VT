@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using VTTECH_2019_08_20.Comon;
+using VTCinema.Comon;
 
 namespace VTCinema.Controllers.Login
 {
@@ -32,7 +32,7 @@ namespace VTCinema.Controllers.Login
                         HttpContext.Session.SetInt32(Global.UserID, resulf);
                     }
                     //return RedirectToAction("Index", "ServiceDetail", new { Type = 27 });
-                    return RedirectToAction("Index", "SaleMain");
+                    return RedirectToAction("Index", "Actor");
                 }
                 else
                 {

@@ -6,7 +6,7 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 
-namespace VTTECH_2019_08_20.Comon
+namespace VTCinema.Comon
 {
 
     public static class StringCipher
