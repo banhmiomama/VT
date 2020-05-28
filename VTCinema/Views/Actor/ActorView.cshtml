@@ -34,7 +34,7 @@
                                 <th style="min-width: 150px" class="no-sort">Chiều Cao</th>
                                 <th style="max-width: 120px;">Giới Thiệu</th>
                                 <th style="max-width: 300px;">Quốc Tịch</th>
-                                <th>Chỉnh sửa</th>
+                                <th>Xoá</th>
                             </tr>
                         </thead>
                         <tbody id="dtContentPunishEmployeeBody">
@@ -64,7 +64,9 @@
                         + '<td >' + item.Height + '</td>'
                         + '<td >' + item.Description + '</td>'
                         + '<td >' + item.Nationality + '</td>'
-
+                        + '<td class="selectedtd"><button class="buttonGrid _tab_control_" data-tab="delete_service_type" value="'
+                        + item.ID
+                        + '"><img class="buttonDeleteClass imgGrid" src="/img/ButtonImg/delete_ver2.png"></button></td>'
                     stringContent = stringContent + '<tr class="seachRow" role="row">' + tr + '</tr>';
                 }
             }
@@ -128,7 +130,7 @@
         }
     }
     $(document).ready(function () {
-        $('#dtContentPunishEmployee').tablesort();
+        //$('#dtContentPunishEmployee').tablesort();
         $("#dateFilter").flatpickr({
             mode: "range",
             dateFormat: 'd-m-Y',
@@ -145,15 +147,16 @@
         //$("#dateFilter").val(formatDateClient(firstDay) + ' to ' + formatDateClient(lastDay));
         LoadActor();
         //flagLoad = 1;
-        //LoadData_PunishEmployee();
-        //$('#dtContentPunishEmployee tbody').on('click', '.buttonEditClass', function () {
-        //    let ID = Number($(this).closest('tr')[0].childNodes[0].innerHTML);
-        //    EditPunish(ID);
-        //});
+        //LoadData_PunishEmployee();       
         $('#dtContentPunishEmployee tbody').on('click', '.buttonEditClass', function () {
             let ID = Number($(this).closest('tr')[0].childNodes[0].innerHTML);
             EditActor(ID);
         });     
+        $('#dtContentPunishEmployee tbody').on('click', '.buttonDeleteClass', function () {
+            let ID = Number($(this).closest('tr')[0].childNodes[0].innerHTML);
+            debugger
+            DeleteMaterialType(ID);
+        });
     });
 
     function AddNewActor() {
@@ -168,8 +171,33 @@
         $('#divDetailPopup').modal('show');
         return false;
     }
-    function exportData_PunishEmployee() {
-        exportToExcel("dtContentPunishEmployee", 'Doanh-Sach-Nhan-Vien-Bi-Xu-Phat');
+    function DeleteMaterialType(id) {
+        const promise = notiConfirm();
+        promise.then(function () { ExecuteDeleteServiceType(id); }, function () { });
+    }
+    function ExecuteDeleteServiceType(ID) {
+        debugger
+        $.ajax({
+            url: "Actor/DeleteActor/"+ID,
+            dataType: "json",
+            type: "GET",
+            data: JSON.stringify({
+                'ID': ID
+            }),       
+            contentType: 'application/json; charset=utf-8',
+            async: true,
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                notiError(textStatus);
+            },
+            success: function (result) {
+                if (result == "1") {
+                    notiSuccess();
+                    LoadActor();
+                } else {
+                    notiError();
+                }
+            }
+        });
     }
 </script>
 

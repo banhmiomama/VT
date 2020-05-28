@@ -112,49 +112,6 @@
     {
         @Html.AntiForgeryToken()
     }
-
-
-    @*<div id="main">
-
-            <div class="container">
-                <nav>
-                    <div class="nav-fostrap" style="height: unset;">
-                        <ul style="padding-top: 7px;font-size: 15px; background-image: url('/Image/banner.png');">
-                            <li><a style="color: white;" href="/SaleMain"><img style="" src="~/Image/logo.png" /></a></li>
-                            <li><a style="color: white;" href="/SaleMain">Trang Chủ</a></li>
-                            <li><a style="color: white;" href="/Consult/ServiceTypeList">Dịch Vụ</a></li>
-                            <li><a style="color: white;" href="/CustomerList">Khách Hàng</a></li>
-                            <li><a style="color: white;" href="/EmployeeList">Nhân Viên</a></li>
-                            <li><a style="color: white;" href="">Báo Cáo</a></li>
-                        </ul>
-                    </div>
-                    <div class="nav-bg-fostrap" style="position: fixed;height: 66px;background-image: url('/Image/banner.png');">
-                        <div class="navbar-fostrap" style=" background-image: url('/Image/nav-icon.png');height: 65px;width:65px;">  </div>
-                        <a href="/SaleMain"><img class="imgogo" src="~/Image/logo.png" /></a>
-                    </div>
-                </nav>
-                <div class="ui form" style="position: absolute;top: 15px;right: 32px;display: inline-flex;">
-                    <input style="min-width: 230px;" id="searchCustomer" name="searchCustomer" type="text" placeholder="Tìm Kiếm Khách Hàng" />
-                    <span style="min-width: 75px;max-width: 200px;text-align: center;padding: 8px 1px 6px 5px;white-space: nowrap;overflow: hidden;font-size:15px;color:#ffffff" id="userName" name="userName" type="text">Admin</span>
-                </div>
-
-
-                <div class='content body' style="position: absolute;top: 65px;width:100%;background-color:white;">
-                    @RenderBody()
-                </div>
-            </div>
-        </div>
-
-
-
-        <div class="ui small modal modalfour" id="divDetailPopup" style=" max-width:500px;">
-            <div id="divDetailPopupHeader">
-                <button style="position: absolute;right: 2px; background: white;border: none;z-index:1" onclick="event.preventDefault(); return CloseModal();"><img width="25px" height="25px" src="~/img/ButtonImg/delete.png"></button>
-            </div>
-            <div id="divDetailPopupContent" style="margin-bottom: -14px;">
-
-            </div>
-        </div>*@
     <div id="contextWrap" style="height: 100%;">
         <div class="ui left sidebar vertical left menu overlay borderless visible sidemenu inverted  grey" style="-webkit-transition-duration: 0.1s; transition-duration: 0.1s;" data-color="grey">
             <a class="item logo" style="height: 60px;" target="_blank" href="http://vttechsolution.com.vn">
@@ -166,6 +123,19 @@
                 </div>
             </div>
             <div id="menuDesktopCategory" class="ui accordion inverted">
+                <div>
+                    <div class="title item">
+                        <img src="/img/ButtonImg/service.png">
+                        <i class="dropdown icon"></i>
+                        DV & ĐD
+                    </div>
+                    <div class="content">
+                        <a data-tab="undefined" data-index="4" data-search="dich vu" class="item menudesktop_render _tab_control_ transition hidden" style="font-size: 11px !important; background: transparent;" href="/Actor">Diễn Viên</a>
+                        <a data-tab="undefined" data-index="4" data-search="san pham" class="item menudesktop_render _tab_control_ transition hidden" style="font-size: 11px !important; background: transparent;" href="/">Sản Phẩm</a>
+                        <a data-tab="undefined" data-index="4" data-search="san pham-nvl" class="item menudesktop_render _tab_control_ transition hidden" style="font-size: 11px !important; background: transparent;" href="/Views/WareHouse/Material/pageMaterialList.aspx?ver=1.1.1.1">Sản Phẩm-NVL</a>
+                        <a data-tab="undefined" data-index="4" data-search="combo dich vu" class="item menudesktop_render _tab_control_ transition hidden" style="font-size: 11px !important; background: transparent;" href="/Views/Service/pageServiceCombo.aspx?ver=1.1.1.1">Combo Dịch Vụ</a>
+                    </div>
+                </div>
             </div>
 
             <div id="menuMobileCategory">

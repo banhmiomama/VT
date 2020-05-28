@@ -41,13 +41,13 @@
                             <div class="field">
                                 <label>Quốc Tịch</label>
                                 @*<div class="ui fluid search selection dropdown" id="PunishType">
-                                    <input type="hidden" name="statusType" />
-                                    <i class="dropdown icon"></i>
-                                    <input class="search" autocomplete="off" tabindex="0" />
-                                    <div class="default text">Loại Phạt</div>
-                                    <div id="ccbPunishType" class="menu" tabindex="-1">
-                                    </div>
-                                </div>*@
+                                        <input type="hidden" name="statusType" />
+                                        <i class="dropdown icon"></i>
+                                        <input class="search" autocomplete="off" tabindex="0" />
+                                        <div class="default text">Loại Phạt</div>
+                                        <div id="ccbPunishType" class="menu" tabindex="-1">
+                                        </div>
+                                    </div>*@
                                 <div class="ui fluid search selection dropdown" id="Nationality">
                                     <input type="hidden" name="country">
                                     <i class="dropdown icon"></i>
@@ -299,12 +299,12 @@
                                 </div>
                             </div>
                         </div>
-                           
+
                         <div class="field">
                             <label>Ghi Chú</label>
                             <textarea id="txtDes" rows="5" />
                         </div>
-                      
+
                     </div>
                 </div>
             </form>
@@ -336,7 +336,6 @@
         ActorDetailID = @ViewBag.ActorID;
         LoadDataUpdateActor();
     });
-
     function LoadDataUpdateActor() {
         $.ajax({
             type: 'GET',
@@ -357,7 +356,7 @@
         });
     }
     function ExcuteData() {
-         var data = new Object();       
+        var data = new Object();
         data.Name = $('#txtNameActor').val() ? $('#txtNameActor').val() : "";
         data.Birthday = $('#Birthday').val() ? $('#Birthday').val() : "";
         data.Height = $('#txtHeight').val() ? Number($('#txtHeight').val()) : 0;
