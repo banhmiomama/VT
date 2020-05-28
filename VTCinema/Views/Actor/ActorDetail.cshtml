@@ -327,6 +327,7 @@
 
 <script>
     let ActorDetailID;
+
     $(document).ready(function () {
         $("#Birthday").flatpickr({
             dateFormat: 'Y-m-d',
@@ -336,6 +337,7 @@
         ActorDetailID = @ViewBag.ActorID;
         LoadDataUpdateActor();
     });
+
     function LoadDataUpdateActor() {
         $.ajax({
             type: 'GET',
@@ -355,6 +357,7 @@
             }
         });
     }
+
     function ExcuteData() {
         var data = new Object();
         data.Name = $('#txtNameActor').val() ? $('#txtNameActor').val() : "";
