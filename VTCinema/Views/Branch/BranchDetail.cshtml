@@ -1,0 +1,68 @@
+﻿
+@{
+    Layout = null;
+}
+
+<div id="headerPopup_CustomerCare" class="header">
+    Chi Nhánh
+</div>
+<div class="row">
+    <div class="sixteen wide tablet eight wide computer column">
+        <div class="ui segments">
+            <form class="ui form segment form3" id="form3">
+                <div class="ui accordion field">
+                    <div class="content field active">
+                        <div class="three fields">
+                            <div class="field">
+                                <label>Mã Chi Nhánh</label>
+                                <input id="txtBranchCode" name="BranchCode" type="text" />
+                            </div>
+                            <div class="field">
+                                <label>Tên Chi Nhánh</label>
+                                <input id="txtName" type="text" name="Name" />
+                            </div>
+                            <div class="field">
+                                <label>Tên Ngắn Chi Nhánh</label>
+                                <input id="txtShortName" type="text" name="ShortName" />
+                            </div>
+                        </div>
+
+                        <div class="two fields">
+                            <div class="field">
+                                <label>Vĩ Độ</label>
+                                <input id="txtLongtitude" name="Longtitude" type="text" />
+                            </div>
+                            <div class="field">
+                                <label>Kinh Độ</label>
+                                <input id="txtLatitude" name="Latitude" type="text" />
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label>Địa Chỉ</label>
+                            <input id="txtAddress" type="text" name="Address" />
+                        </div>
+                        <div class="field">
+                            <label>Ghi Chú</label>
+                            <textarea id="txtNote" name="Note" rows="5" />
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div class="actions">
+    <div style="float: right">
+        <button class="ui teal button" form="form3" type="submit" onclick="return ExcuteData()">Save</button>
+    </div>
+    <div style="float: right">
+        <button class="ui grey button" form="form3" onclick="event.preventDefault();CloseModal()">Cancel</button>
+    </div>
+</div>
+
+
+<script>
+
+</script>
