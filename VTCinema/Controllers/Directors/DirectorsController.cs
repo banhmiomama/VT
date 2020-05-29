@@ -7,10 +7,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
-namespace VTCinema.Controllers.Actor
+namespace VTCinema.Controllers.Directors
 {
-    [Route("Actor")]
-    public class ActorController : Controller
+    [Route("Directors")]
+    public class DirectorsController : Controller
     {
         public IActionResult Index()
         {
@@ -24,7 +24,7 @@ namespace VTCinema.Controllers.Actor
             try
             {
                 DataTable dt = new DataTable();
-               
+
                 using (Models.ExecuteDataBase confunc = new Models.ExecuteDataBase())
                 {
                     dt = confunc.ExecuteDataTable("[YYY_sp_Action_LoadList]", CommandType.StoredProcedure);
@@ -44,19 +44,18 @@ namespace VTCinema.Controllers.Actor
                 return "[]";
             }
         }
-
         [Route("DeleteActor/{ID}")]
         [HttpGet]
         public string DeleteActor(int ID)
         {
             try
             {
-               DataTable dt = new DataTable();
+                DataTable dt = new DataTable();
                 using (Models.ExecuteDataBase confunc = new Models.ExecuteDataBase())
                 {
                     dt = confunc.ExecuteDataTable("[YYY_sp_Actor_Delete]", CommandType.StoredProcedure,
                       "@CurrentID", SqlDbType.Int, ID,
-                      "@Modified_By",SqlDbType.Int, HttpContext.Session.GetInt32(Comon.Global.UserID));
+                      "@Modified_By", SqlDbType.Int, HttpContext.Session.GetInt32(Comon.Global.UserID));
                 }
                 return "1";
             }
