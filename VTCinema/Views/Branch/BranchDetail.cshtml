@@ -64,5 +64,68 @@
 
 
 <script>
+    let BranchDetailID;
+    $(document).ready(function () {
+        BranchDetailID = @ViewBag.BranchID;
+        LoadDataUpdateBranch();
+    });
 
+    function LoadDataUpdateBranch() {
+        $.ajax({
+            type: 'GET',
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            url: "/BranchDetail/GetBranchDetail/" + BranchDetailID,
+            async: true,
+            success: function (data) {
+                if (data.length != 0) {
+                    $('#txtBranchCode').val((data[0].BranchCode));
+                    $('#txtName').val((data[0].Name));
+                    $('#txtShortName').val((data[0].ShortName));
+                    $('#txtLongtitude').val((data[0].Longtitude));
+                    $('#txtLatitude').val((data[0].Latitude));
+                    $('#txtAddress').val((data[0].Address));
+                    $('#txtNote').val((data[0].Note));
+                }
+            }
+        });
+    }
+    function ExcuteData() {              
+        var data = new Object();        
+         data.BranchCode = $('#txtBranchCode').val() ? $('#txtBranchCode').val() : "";
+         data.Name = $('#txtName').val() ? $('#txtName').val() : "";
+         data.ShortName = $('#txtShortName').val() ? $('#txtShortName').val() : "";
+         data.Longtitude = $('#txtLongtitude').val() ? Number($('#txtLongtitude').val()) : 0;
+         data.Latitude = $('#txtLatitude').val() ? Number($('#txtLatitude').val()) : 0;
+         data.Address = $('#txtAddress').val() ? $('#txtAddress').val() : "";
+         data.Note = $('#txtNote').val() ? $('#txtNote').val() : "";
+        $('#form20').form('validate form');
+        if ($('#form20').form('is valid')) {
+            
+             $.ajax({
+                 url: "/BranchDetail/Execute",
+                 dataType: "json",
+                 type: "POST",
+                 data: {
+                     __RequestVerificationToken: token
+                     , BranchID: @ViewBag.BranchID
+                     , data: JSON.stringify(data)
+                 },
+                 async: true,
+                 error: function (XMLHttpRequest, textStatus, errorThrown) {                     
+                        notiError("Lỗi Hệ Thống");
+                 },
+                 success: function (result) {
+                     if (result == "0") {
+                         notiSuccess();
+                         LoadBranch();
+                     } else {
+                         notiError("Diễn Viên Đã Tồn Tại Vui Lòng Kiểm Tra Lại");
+                        }
+                 }
+             })
+             $('#divDetailPopup').modal('hide');
+        }
+         return false;
+    }
 </script>
