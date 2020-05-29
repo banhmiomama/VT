@@ -6,32 +6,31 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using VTCinema.Comon;
 using VTCinema.Models;
 
-namespace VTCinema.Controllers.Actor
+namespace VTCinema.Controllers.Directors
 {
-    [Route("ActorDetail")]
-    public class ActorDetailController : Controller
+    [Route("DirectorDetail")]
+    public class DirectorDetailController : Controller
     {
-        [Route("{ActorID}")]
+        [Route("{DirectorID}")]
         [HttpGet]
-        public IActionResult Index(int ActorID)
+        public IActionResult Index(int DirectorID)
         {
-            ViewBag.ActorID = ActorID;
-            return View("~/Views/Actor/ActorDetail.cshtml");
+            ViewBag.DirectorID = DirectorID;
+            return View("~/Views/Directors/DirectorDetail.cshtml");
         }
-        [Route("GetActorDetail/{ActorID}")]
+        [Route("GetDirectorDetail/{DirectorID}")]
         [HttpGet]
-        public string GetActorDetail(int ActorID)
+        public string GetDirectorDetail(int DirectorID)
         {
             try
             {
                 DataTable dt = new DataTable();
                 using (Models.ExecuteDataBase confunc = new Models.ExecuteDataBase())
                 {
-                    dt = confunc.ExecuteDataTable("[YYY_sp_Actor_LoadDetail]", CommandType.StoredProcedure,
-                      "@CurrentID", SqlDbType.Int, ActorID);
+                    dt = confunc.ExecuteDataTable("[YYY_sp_Directors_LoadDetail]", CommandType.StoredProcedure,
+                      "@CurrentID", SqlDbType.Int, DirectorID);
                 }
                 if (dt != null)
                 {
@@ -41,7 +40,7 @@ namespace VTCinema.Controllers.Actor
                 {
                     return "";
                 }
-            }           
+            }
             catch (Exception ex)
             {
                 return "[]";
@@ -51,25 +50,25 @@ namespace VTCinema.Controllers.Actor
         [Route("Execute")]
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public string Execute(string data, int ActorID)
+        public string Execute(string data, int DirectorID)
         {
             try
             {
                 DataTable dt = new DataTable();
-                DataActorChoose dataDetail = JsonConvert.DeserializeObject<DataActorChoose>(data);
-                
-                if (ActorID == 0)
+                DataDirectorChoose dataDetail = JsonConvert.DeserializeObject<DataDirectorChoose>(data);
+
+                if (DirectorID == 0)
                 {
                     using (Models.ExecuteDataBase connFunc = new Models.ExecuteDataBase())
                     {
-                        dt = connFunc.ExecuteDataTable("YYY_sp_Actor_Insert", CommandType.StoredProcedure,
+                        dt = connFunc.ExecuteDataTable("YYY_sp_Directors_Insert", CommandType.StoredProcedure,
                             "@Name", SqlDbType.NVarChar, dataDetail.Name,
-                            "@Avatar",SqlDbType.VarChar, dataDetail.Avatar,
+                            "@Avatar", SqlDbType.VarChar, dataDetail.Avatar,
                             "@Description", SqlDbType.NVarChar, dataDetail.Description,
                             "@Birthday", SqlDbType.DateTime, dataDetail.Birthday,
                             "@Height", SqlDbType.Float, dataDetail.Height,
                             "@Nationality", SqlDbType.VarChar, dataDetail.Nationality,
-                            "@CurrentID",SqlDbType.Int, HttpContext.Session.GetInt32(Comon.Global.UserID)
+                            "@CurrentID", SqlDbType.Int, HttpContext.Session.GetInt32(Comon.Global.UserID)
                         );
                     }
                 }
@@ -77,17 +76,17 @@ namespace VTCinema.Controllers.Actor
                 {
                     using (Models.ExecuteDataBase connFunc = new Models.ExecuteDataBase())
                     {
-                        dt = connFunc.ExecuteDataTable("[YYY_sp_Actor_Update]", CommandType.StoredProcedure,
+                        dt = connFunc.ExecuteDataTable("[YYY_sp_Directors_Update]", CommandType.StoredProcedure,
                             "@Name", SqlDbType.NVarChar, dataDetail.Name,
                             "@Avatar", SqlDbType.VarChar, dataDetail.Avatar,
                             "@Description", SqlDbType.NVarChar, dataDetail.Description,
                             "@Birthday", SqlDbType.DateTime, dataDetail.Birthday,
                             "@Height", SqlDbType.Float, dataDetail.Height,
                             "@Nationality", SqlDbType.VarChar, dataDetail.Nationality,
-                            "@CurrentID", SqlDbType.Int, ActorID ,
-                            "@Modified_By", SqlDbType.Int,HttpContext.Session.GetInt32(Comon.Global.UserID)
+                            "@CurrentID", SqlDbType.Int, DirectorID,
+                            "@Modified_By", SqlDbType.Int, HttpContext.Session.GetInt32(Comon.Global.UserID)
                        );
-                    } 
+                    }
                 }
                 return dt.Rows[0][0].ToString();
             }
@@ -96,5 +95,5 @@ namespace VTCinema.Controllers.Actor
                 return "0";
             }
         }
-    }   
+    }
 }

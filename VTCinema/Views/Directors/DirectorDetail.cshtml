@@ -4,16 +4,16 @@
 }
 
 <div id="headerPopup_CustomerCare" class="header">
-    Diễn Viên
+    Đạo Diễn
 </div>
 
 <div class="image content">
     <div class="ui massive image">
-        <img id="avatarEmployeeUpload" class="ui mini circular image" src="#" alt="label-image" style="width: 100%; height: auto;" />
+        <img id="avatarDirectorUpload" class="ui mini circular image" src="#" alt="label-image" style="width: 100%; height: auto;" />
         <div>&nbsp</div>
         <div class="btn btn-success upload-btn-wrapper" style="width: 100%; margin-top: 6px;">
             <button class="btn" style="width: 100%">3Mp</button>
-            <input id="fileuploadAvatarEmployee" type="file" @*name="files[]"*@ @*onchange="document.getElementById('avatarEmployeeUpload').src = window.URL.createObjectURL(this.files[0])"*@  onchange="readURL(this);"/>
+            <input id="fileuploadAvatarEmployee" type="file" @*name="files[]"*@ @*onchange="document.getElementById('avatarDirectorUpload').src = window.URL.createObjectURL(this.files[0])"*@ onchange="readURL(this);" />
         </div>
     </div>
     <div class="description">
@@ -22,8 +22,8 @@
                 <div class="content field active">
                     <div class="two fields">
                         <div class="field">
-                            <label>Tên Diễn Viên</label>
-                            <input id="txtNameActor" name="name" type="text" />
+                            <label>Tên Đạo Diễn</label>
+                            <input id="txtNameDirector" name="name" type="text" />
                         </div>
                         <div class="field">
                             <label>Ngày Sinh</label>
@@ -316,7 +316,7 @@
 <script src="/js/main.js"></script>
 
 <script>
-    let ActorDetailID;
+    let DirectorDetailID;
     let AvatarString = '';
     let DataAvatar;
     $(document).ready(function () {
@@ -324,30 +324,30 @@
             dateFormat: 'Y-m-d',
             enableTime: false,
         });
-        ActorDetailID = @ViewBag.ActorID;
-        LoadDataUpdateActor();
+        DirectorDetailID = @ViewBag.DirectorID;
+        LoadDataUpdateDirector();
     });
 
-    function LoadDataUpdateActor() {
+    function LoadDataUpdateDirector() {
         $.ajax({
             type: 'GET',
             dataType: "json",
             contentType: 'application/json; charset=utf-8',
-            url: "/ActorDetail/GetActorDetail/" + ActorDetailID,
+            url: "/DirectorDetail/GetDirectorDetail/" + DirectorDetailID,
             async: true,
             success: function (data) {
                 if (data.length != 0) {
                     $("#Nationality ").dropdown("refresh");
                     $("#Nationality ").dropdown("set selected", data[0].Nationality);
-                    $('#txtNameActor').val((data[0].Name));
+                    $('#txtNameDirector').val((data[0].Name));
                     $('#Birthday').val((data[0].Birthday));
                     $('#txtDes').val((data[0].Description));
                     $('#txtHeight').val((data[0].Height));
                     if (data[0].Avatar == '' || data[0].Avatar == undefined) {
-                        $('#avatarEmployeeUpload').attr('src', '');
+                        $('#avatarDirectorUpload').attr('src', '');
                     }
                     else {
-                        $('#avatarEmployeeUpload').attr('src',data[0].Avatar);
+                        $('#avatarDirectorUpload').attr('src',data[0].Avatar);
                         avatarString = data[0].Avatar;
                     }
                 }
@@ -358,8 +358,8 @@
     function ExcuteData() {
 
         var data = new Object();
-        data.Name = $('#txtNameActor').val() ? $('#txtNameActor').val() : "";
-        data.Avatar = $('#avatarEmployeeUpload').attr('src') ? $('#avatarEmployeeUpload').attr('src') : "" ;
+        data.Name = $('#txtNameDirector').val() ? $('#txtNameDirector').val() : "";
+        data.Avatar = $('#avatarDirectorUpload').attr('src') ? $('#avatarDirectorUpload').attr('src') : "" ;
         data.Birthday = $('#Birthday').val() ? $('#Birthday').val() : "";
         data.Height = $('#txtHeight').val() ? Number($('#txtHeight').val()) : 0;
         data.Nationality = $('#Nationality').dropdown('get value') ? $('#Nationality').dropdown('get value') : "";
@@ -367,12 +367,12 @@
          $('#form3').form('validate form');
          if ($('#form3').form('is valid')) {
              $.ajax({
-                 url: "/ActorDetail/Execute",
+                 url: "/DirectorDetail/Execute",
                  dataType: "json",
                  type: "POST",
                  data: {
                      __RequestVerificationToken: token
-                     , ActorID: @ViewBag.ActorID
+                     , DirectorID: @ViewBag.DirectorID
                      , data: JSON.stringify(data)
                  },
                  async: true,
@@ -382,7 +382,7 @@
                  success: function (result) {
                      if (result == "0") {
                          notiSuccess();
-                         LoadActor();
+                         LoadDirector();
                      } else {
                          notiError("Diễn Viên Đã Tồn Tại Vui Lòng Kiểm Tra Lại");
                         }
@@ -398,12 +398,12 @@
         if (input.files && input.files[0] && (ext == "gif" || ext == "png" || ext == "jpeg" || ext == "jpg")) {
             var reader = new FileReader();
             reader.onload = function (e) {
-                $('#avatarEmployeeUpload').attr('src', e.target.result);
+                $('#avatarDirectorUpload').attr('src', e.target.result);
             }
 
             reader.readAsDataURL(input.files[0]);
         } else {
-            $('#avatarEmployeeUpload').attr('src', '/img/404.png');
+            $('#avatarDirectorUpload').attr('src', '/img/404.png');
         }
     }
 </script>

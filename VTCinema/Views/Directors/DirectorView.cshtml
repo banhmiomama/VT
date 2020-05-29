@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewData["Title"] = "ActorView";
+    ViewData["Title"] = "DirectorView";
     Layout = "~/Views/Shared/Master.cshtml";
 }
 <div class="pusher">
@@ -8,29 +8,29 @@
         <div class="row" style="background-color: white">
             <div class="ui form segment form3">
                 <h2 class="ui center aligned header" style="border-top: 1px; font-family: 'Times New Roman'">
-                    Danh Sách Diễn Viên
-                    <div class="sub header" style="font-family: 'Times New Roman'">Danh Sách các diễn viên</div>
+                    Danh Sách Đạo Diễn
+                    <div class="sub header" style="font-family: 'Times New Roman'">Danh Sách các đạo diễn</div>
                 </h2>
                 <div class="three fields" style="margin: 0px;">
                     <div class="field">
-                        <button class="ui blueli button" data-value="fade up" onclick="return AddNewActor()">Thêm mới</button>
-                    </div>                 
+                        <button class="ui blueli button" data-value="fade up" onclick="return AddNewDirector()">Thêm mới</button>
+                    </div>
                     <div class="field">
                     </div>
                     <div class="field">
                         <div class="ui icon input" style="max-height: 40px;">
-                            <input id="filterActor" type="text" placeholder="Seaching..." onkeyup="event.preventDefault();return onkeyupActorFitler();">
+                            <input id="filterDirector" type="text" placeholder="Seaching..." onkeyup="event.preventDefault();return onkeyupDirectorFitler();">
                             <i class="circular search link icon"></i>
                         </div>
-                    </div>                    
+                    </div>
                 </div>
                 <div class="ui segment" style="border: none; overflow-x: auto; padding: unset;">
-                    <table id="dtContentActor" class="ui sortable celled table">
+                    <table id="dtContentDirector" class="ui sortable celled table">
                         <thead class="hiddenCollapse">
                             <tr role="row">
                                 <th style="display: none">ID</th>
                                 <th style="width: 70px;">#</th>
-                                <th>Diễn Viên</th>
+                                <th>Đạo Diễn</th>
                                 <th style="min-width: 60px">Ngày Sinh</th>
                                 <th style="min-width: 150px" class="no-sort">Chiều Cao</th>
                                 <th style="max-width: 120px;">Giới Thiệu</th>
@@ -38,7 +38,7 @@
                                 <th>Xoá</th>
                             </tr>
                         </thead>
-                        <tbody id="dtContentActorBody">
+                        <tbody id="dtContentDirectorBody">
                         </tbody>
                     </table>
 
@@ -49,8 +49,8 @@
     </div>
 </div>
 <script type="text/javascript">
-    let DataActor;
-    function Render_Actor(data, id) {
+    let DataDirector;
+    function Render_Director(data, id) {
         var myNode = document.getElementById(id);
         if (myNode != null) {
             myNode.innerHTML = '';
@@ -75,9 +75,9 @@
             document.getElementById(id).innerHTML = stringContent;
         }
     }
-    function LoadActor() {
+    function LoadDirector() {
         $.ajax({
-            url: "Actor/LoadActor",
+            url: "Director/LoadDirector",
             dataType: "json",
             type: "POST",
             data: JSON.stringify({
@@ -88,14 +88,14 @@
                 notiError();
             },
             success: function (result) {
-                DataActor = result;
-                Render_Actor(result, "dtContentActorBody");
+                DataDirector = result;
+                Render_Director(result, "dtContentDirectorBody");
             }
         });
     }
     $(document).ready(function () {
-        //$('#dtContentActor').tablesort();
-        $("#dateFilter").flatpickr({    
+        //$('#dtContentDirector').tablesort();
+        $("#dateFilter").flatpickr({
             mode: "range",
             dateFormat: 'd-m-Y',
             enableTime: false,
@@ -109,44 +109,44 @@
         var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
         var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
         //$("#dateFilter").val(formatDateClient(firstDay) + ' to ' + formatDateClient(lastDay));
-        LoadActor();     
-        $('#dtContentActor tbody').on('click', '.buttonEditClass', function () {
+        LoadDirector();
+        $('#dtContentDirector tbody').on('click', '.buttonEditClass', function () {
             let ID = Number($(this).closest('tr')[0].childNodes[0].innerHTML);
-            EditActor(ID);
-        });     
-        $('#dtContentActor tbody').on('click', '.buttonDeleteClass', function () {
-            let ID = Number($(this).closest('tr')[0].childNodes[0].innerHTML);           
-            DeleteActor(ID);
+            EditDirector(ID);
+        });
+        $('#dtContentDirector tbody').on('click', '.buttonDeleteClass', function () {
+            let ID = Number($(this).closest('tr')[0].childNodes[0].innerHTML);
+            DeleteDirector(ID);
         });
     });
 
-    function AddNewActor() {
-        document.getElementById("divDetailPopup").innerHTML = '';       
-        $("#divDetailPopup").load("ActorDetail/" + 0);
+    function AddNewDirector() {
+        document.getElementById("divDetailPopup").innerHTML = '';
+        $("#divDetailPopup").load("DirectorDetail/" + 0);
         $('#divDetailPopup').modal('show');
         return false;
     }
 
-    function EditActor(CurrentID) {
-        document.getElementById("divDetailPopup").innerHTML = '';       
-        $("#divDetailPopup").load("ActorDetail/" + CurrentID);
+    function EditDirector(CurrentID) {
+        document.getElementById("divDetailPopup").innerHTML = '';
+        $("#divDetailPopup").load("DirectorDetail/" + CurrentID);
         $('#divDetailPopup').modal('show');
         return false;
     }
 
-    function DeleteActor(id) {
+    function DeleteDirector(id) {
         const promise = notiConfirm();
-        promise.then(function () { ExecuteDeleteActor(id); }, function () { });
+        promise.then(function () { ExecuteDeleteDirector(id); }, function () { });
     }
 
-    function ExecuteDeleteActor(ID) {      
+    function ExecuteDeleteDirector(ID) {
         $.ajax({
-            url: "Actor/DeleteActor/"+ID,
+            url: "Director/DeleteDirector/"+ID,
             dataType: "json",
             type: "GET",
             data: JSON.stringify({
                 'ID': ID
-            }),       
+            }),
             contentType: 'application/json; charset=utf-8',
             async: true,
             error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -155,7 +155,7 @@
             success: function (result) {
                 if (result == "1") {
                     notiSuccess();
-                    LoadActor();
+                    LoadDirector();
                 } else {
                     notiError();
                 }
@@ -167,17 +167,17 @@
         return new Promise((resolve, reject) => {
             setTimeout(
                 () => {
-                    let search = xoa_dau($('#filterActor').val().toLowerCase()).trim();
+                    let search = xoa_dau($('#filterDirector').val().toLowerCase()).trim();
 
-                    let data = DataActor.filter(function (item) {
+                    let data = DataDirector.filter(function (item) {
                         if (xoa_dau(item["Name"]).toLowerCase().includes(search)
                             || xoa_dau(item["NameNoSign"]).toLowerCase().includes(search))
                             return true;
                         return false;
                     });
                     if (data != undefined && data != null) {
-                        document.getElementById("dtContentActorBody").innerHTML = "";
-                        Render_Actor(data, "dtContentActorBody");
+                        document.getElementById("dtContentDirectorBody").innerHTML = "";
+                        Render_Director(data, "dtContentDirectorBody");
                         ColorSearchFilterText(search, "seachRow");
                     }
                     resolve()
@@ -187,7 +187,7 @@
         })
     }
 
-    async function onkeyupActorFitler() {
+    async function onkeyupDirectorFitler() {
         await onkeyupTicketFitlerAsync();
         return false;
     }

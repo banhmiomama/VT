@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace VTCinema.Models
 {
-    public class DataActorChoose
+    public class DataDirectorChoose
     {
-        public int? ActorID { get; set; }
+        public int? Director { get; set; }
         public string Name { get; set; }
         public string Avatar { get; set; }
         public DateTime Birthday { get; set; }
