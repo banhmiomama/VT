@@ -15,7 +15,7 @@
                 <div class="four fields" style="margin: 0px;">
                     <div class="field">
                         <button style="display: inline;" class="ui blue button" data-value="fade up" onclick="event.preventDefault();return exportData_PunishEmployee();">Xuất File</button>
-                        <button class="ui blueli button" data-value="fade up" onclick="return AddNewPunishEmployee()">Thêm mới</button>
+                        <button class="ui blueli button" data-value="fade up" onclick="return AddNewBranch()">Thêm mới</button>
                     </div>
                     <div class="field">
                         <div class="ui fluid search selection dropdown" id="Branch_ID" onchange="LoadData_PunishEmployee()">
@@ -79,7 +79,7 @@
                         + '<td >' + item.ShortName + '</td>'
                         + '<td >' + item.Address + '</td>'
                         + '<td >' + item.Latitude + '</td>'
-                        + '<td >' + item.Longitude + '</td>'
+                        + '<td >' + item.Longtitude + '</td>'
                         + '<td >' + item.Note + '</td>'
 
                     stringContent = stringContent + '<tr class="seachRow" role="row">' + tr + '</tr>';
@@ -133,13 +133,14 @@
         //});
         $('#dtContentPunishEmployee tbody').on('click', '.buttonEditClass', function () {
             let ID = Number($(this).closest('tr')[0].childNodes[0].innerHTML);
+            
             EditTab(ID);
         });
     });
 
-    function AddNewPunishEmployee() {
+    function AddNewBranch() {
         document.getElementById("divDetailPopup").innerHTML = '';
-        $("#divDetailPopup").load("/Views/HR/Employee/Punish/pagePunishEmployeeDetail.aspx" + "?ver=" + versionofWebApplication);
+        $("#divDetailPopup").load("BranchDetail/"+0);
         $('#divDetailPopup').modal('show');
         return false;
     }

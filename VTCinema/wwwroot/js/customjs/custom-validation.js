@@ -79,6 +79,9 @@ $('.ui.form2').form({
 // pageProductTypeDetail,pageProductDetail
 // pageSupplierDetail,pageInputDetail, pageOutputDetail
 // pageCustomerCareDetail
+$('ui.form20').form({
+});
+
 $('.ui.form3').form({
     fields: {
         search: {
@@ -801,6 +804,8 @@ $('.ui.form3').form({
     }
 });
 
+
+
 $('.ui.form4').form({
     fields: {
         name: {
@@ -1234,6 +1239,10 @@ $('.ui.form12').form({
         ]
     }
 });
+
+
+
+
 
 
 
