@@ -9,6 +9,7 @@ namespace VTCinema.Models
     {
         public int? ActorID { get; set; }
         public string Name { get; set; }
+        public string Avatar { get; set; }
         public DateTime? Birthday { get; set; }
         public float Height { get; set; }
         public string Nationality { get; set; }
