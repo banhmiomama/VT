@@ -7,7 +7,7 @@
     <link rel="icon" href="/img/favicon.ico">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
-    <script src="/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="/js/jquery-3.3.1.min.js"></script>
     <script src="/js/jquery-2.1.4.min.js" type="text/javascript"></script>
     <link href="/semantic.min.css" rel="stylesheet" />
     <script src="/semantic.min.js"></script>
@@ -34,15 +34,13 @@
     <link href="/MultiColumnCombo/jquery.inputpicker.css" rel="stylesheet" />
     <script src="/MultiColumnCombo/jquery.inputpicker.js"></script>
     <script src="/NumberThousand/number-divider.js"></script>
-    <link rel="stylesheet" href="/UploadJS/css/jquery.fileupload.css" />
-    <link rel="stylesheet" href="/UploadJS/css/jquery.fileupload-ui.css" />
+    @*<link rel="stylesheet" href="/UploadJS/css/jquery.fileupload.css" />
+    <link rel="stylesheet" href="/UploadJS/css/jquery.fileupload-ui.css" />*@
     <script src="/ExportExcel/jquery.table2excel.js"></script>
     <script src="/Guide/enjoyhint.min.js"></script>
     <link href="/Guide/enjoyhint.css" rel="stylesheet" />
     <script type="text/javascript" src="/jssip/jssip-3.0.7.min.js"></script>
     <script src="/jssip/callexecute.js?ver=<%= DateTime.Now.Ticks %>"></script>
-    <link href="/Phone/css/intlTelInput.css" rel="stylesheet" />
-    <script src="/Phone/js/intlTelInput.min.js"></script>
     <script src="/js/comon.js?ver=<%= DateTime.Now.Ticks %>"></script>
     <script src="/js/datetime.js?ver=<%= DateTime.Now.Ticks %>"></script>
     <link href='https://fonts.googleapis.com/css?family=Noto Sans' rel='stylesheet'>
@@ -64,15 +62,6 @@
     <script src="/js/comon/userguide.js?ver=<%=DateTime.Now.Ticks%>"></script>
     <script src="/js/comon/print.js?ver=<%=DateTime.Now.Ticks%>"></script>
     <script src="/js/comon/permission_tabcontrol.js?ver=<%=DateTime.Now.Ticks%>"></script>
-    @*<script src="/Scripts/jquery.signalR-2.4.1.min.js"></script>
-    <script src="/signalr/hubs"></script>*@
-    @*<script src="/HubProgress/iwc-all.js"></script>*@
-    @*<script src="/HubProgress/signalr-patch.js"></script>
-    <script src="/HubProgress/iwc-signalr.js"></script>*@
-    @*<script src="/HubProgress/Hub.js?ver=<%= DateTime.Now.Ticks %>"></script>*@
-    
-    @*<script src="/Hubs/ExecuteHub.js?ver=<%= DateTime.Now.Ticks %>"></script>
-    <script src="/HubsApp/ExecuteHub.js?ver=<%= DateTime.Now.Ticks %>"></script>*@
     <script src="/ExportExcel/ExportELSX/xlsx.core.min.js"></script>
     <script src="/ExportExcel/ExportELSX/FileSaver.js"></script>
     <script src="/js/comon/CheckConnection.js?ver=<%= DateTime.Now.Ticks %>"></script>
@@ -117,11 +106,9 @@
             <a class="item logo" style="height: 60px;" target="_blank" href="http://vttechsolution.com.vn">
                 <img src="/img/logo.png" alt="stagblogo" /><img src="/img/thumblogo.png" style="padding-top: 10px;" alt="stagblogo" class="displaynone" />
             </a>
-            <div class="item" style="height: 40px;">
-                <div class="ui transparent icon input">
-                    <input id="fitlerMenu" class="colhidden" type="text" placeholder="Tìm kiếm...">
-                </div>
-            </div>
+            @*<div class="item" style="height: 40px;">
+                
+            </div>*@
             <div id="menuDesktopCategory" class="ui accordion inverted">
                 <div>
                     <div class="title item">
@@ -131,9 +118,16 @@
                     </div>
                     <div class="content">
                         <a data-tab="undefined" data-index="4" data-search="dich vu" class="item menudesktop_render _tab_control_ transition hidden" style="font-size: 11px !important; background: transparent;" href="/Actor">Diễn Viên</a>
-                        <a data-tab="undefined" data-index="4" data-search="san pham" class="item menudesktop_render _tab_control_ transition hidden" style="font-size: 11px !important; background: transparent;" href="/">Sản Phẩm</a>
-                        <a data-tab="undefined" data-index="4" data-search="san pham-nvl" class="item menudesktop_render _tab_control_ transition hidden" style="font-size: 11px !important; background: transparent;" href="/Views/WareHouse/Material/pageMaterialList.aspx?ver=1.1.1.1">Sản Phẩm-NVL</a>
-                        <a data-tab="undefined" data-index="4" data-search="combo dich vu" class="item menudesktop_render _tab_control_ transition hidden" style="font-size: 11px !important; background: transparent;" href="/Views/Service/pageServiceCombo.aspx?ver=1.1.1.1">Combo Dịch Vụ</a>
+                        <a data-tab="undefined" data-index="4" data-search="san pham" class="item menudesktop_render _tab_control_ transition hidden" style="font-size: 11px !important; background: transparent;" href="/">Đạo Diễn</a>
+                    </div>
+
+                    <div class="title item">
+                        <img src="/img/ButtonImg/service.png">
+                        <i class="dropdown icon"></i>
+                        Sản Phẩm
+                    </div>
+                    <div class="content">
+                        <a data-tab="undefined" data-index="4" data-search="dich vu" class="item menudesktop_render _tab_control_ transition hidden" style="font-size: 11px !important; background: transparent;" href="/Product">Sản Phẩm</a>
                     </div>
                 </div>
             </div>
@@ -141,27 +135,6 @@
             <div id="menuMobileCategory">
             </div>
             <div class="ui divider"></div>
-            <a class="item">
-                <div class="ui inverted progress tiny blue active" data-percent="45">
-                    <div class="bar" style="transition-duration: 200ms; width: 45%;">
-                    </div>
-                    <div class="label colhidden" style="margin-top: 10px"><span class="colhidden" id="versionWebApplication"></span></div>
-                </div>
-            </a>
-            <a class="item">
-                <div class="ui inverted progress tiny teal active" data-percent="45">
-                    <div class="bar" style="transition-duration: 200ms; width: 45%;">
-                    </div>
-                    <div class="label colhidden" style="margin-top: 10px"><span class="colhidden" id="nameClient"></span></div>
-                </div>
-            </a>
-            <a class="item">
-                <div class="ui inverted progress tiny teal active" data-percent="45">
-                    <div class="bar" style="transition-duration: 200ms; width: 45%;">
-                    </div>
-
-                </div>
-            </a>            
         </div>
         <div class="pusher" id="MasterContainer">
 
@@ -177,32 +150,14 @@
 
                     <div class="right menu" style="z-index: 20; background: white;">
                         @*<a onclick="event.preventDefault();return FistSlideGuide();" style="height: 30px; margin: auto; font-size: 12px; padding-top: 7px!important; background-color: #0288d1; color: white; display: none" id="btnFistSlideGuide" class="ui label colhidden">Slide</a>
-                        <div>&nbsp</div>
-                        <a onclick="event.preventDefault();return RunGuideEndUser('');" style="height: 30px; margin: auto; font-size: 12px; padding-top: 7px!important; background-color: #0288d1; color: white; display: none" id="btnGuideEndUser" class="ui label colhidden">Hướng Dẫn</a>*@
+                            <div>&nbsp</div>
+                            <a onclick="event.preventDefault();return RunGuideEndUser('');" style="height: 30px; margin: auto; font-size: 12px; padding-top: 7px!important; background-color: #0288d1; color: white; display: none" id="btnGuideEndUser" class="ui label colhidden">Hướng Dẫn</a>*@
                         <div>&nbsp</div>
                         <div class="InfoDropdown" style="position: relative; display: flex; border-radius: 3px; margin-bottom: -3px;">
                             <a style="display: none; margin: auto; cursor: pointer; background-color: transparent; width: 35px;" id="ButtonSetting" class="ui label info_btn colhidden">
                                 <div onselectstart="return false;" class="icon-i">i</div>
                             </a>
-
-                            <div>&nbsp</div>
-
-                            <div class="InfoDropdown_Item" style="display: flex;">
-                                <div style="text-align: center;">
-                                    <a style="display: block; height: 24px; margin: auto; font-size: 11px; padding-top: 7px!important; background-color: #ffffff; color: #0288d1; text-align: center" id="branchNameCurrent" class="ui label"><i class="setting icon"></i></a>
-                                    <button style="height: 23px; margin: auto; font-size: 10px; padding-top: 7px!important; background-color: #2e3d49; color: #ffffff; text-align: center" class="ui label " id="btnChangeBranch" onclick="event.preventDefault(); return ChangeBranchMulti();">Đổi chi nhánh</button>
-                                </div>
-                                <div>&nbsp</div>
-                                <a onclick="event.preventDefault();return DocumentGuideUser();" style="height: 30px; margin: auto; font-size: 12px; padding-top: 7px!important; background-color: white; color: #005450;" id="btnDocumentGuide" class="ui label ">Hướng dẫn</a>
-                                <div>&nbsp</div>
-                                <a style="height: 30px; margin: auto; font-size: 12px; padding-top: 7px!important; background-color: white; color: #0288d1; max-width: 150px;" id="roleGroupuserNameCurrent" class="ui label"></a>
-                                <div>&nbsp</div>
-                            </div>
-
                         </div>
-
-
-
                         <div class="ui dropdown item">
                             <span id="icon-noti-app1" class="icon-noti"></span>
                             <img id="avatarofUserCircle" class="ui mini circular image" src="#" alt="label-image" style="width: 37px; height: 37px" />
@@ -210,7 +165,7 @@
                                 <a class="item" id="updatePersonalInfo" href="#">Thông Tin Cá Nhân</a>
                                 <a class="item" id="changepasswordid" href="#">Đổi Password</a>
                                 <div class="ui divider"></div>
-                                <a class="item" href="/Views/Login/Logout.aspx">Đăng Xuất</a>
+                                <a class="item" href="#">Đăng Xuất</a>
                             </div>
                         </div>
 
@@ -327,13 +282,11 @@
                 $('.nav-fostrap').toggleClass('visible');
                 $('body').toggleClass('cover-bg');
             });
-            let circleAvatar = ("<%=_circleAvatar %>");
+
             $('#avatarofUserCircle').attr('src', 'http://connect.awing.vn/static/Files/lgn/4869811863153391143/logo.jpg?1012904');
 
 
         });
-
-
 
         // #region LoadCombo
         function LoadCombo(data, id) {
@@ -403,9 +356,7 @@
             return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
         }
         //#endregion
-
-
-
+        
 
         //#endregion
 
@@ -483,8 +434,8 @@
             }
             return date;
         }
-            // #endregion
-        // #region  Declare popup 
+        // #endregion
+        // #region  Declare popup
         $('#divDetailPopup').modal({
             autofocus: false,
             //useFlex: 'auto',
@@ -580,7 +531,7 @@
             onVisible: function () {
             }
         });
-        //#endregion
+            //#endregion
     </script>
 
     <script src="/semantic.min.js"></script>

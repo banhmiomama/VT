@@ -1,0 +1,234 @@
+﻿
+@{
+    Layout = null;
+}
+<div id="headerPopup_CustomerCare" class="header">
+    Diễn Viên
+</div>
+
+<div class="image content">
+    <div class="ui massive image">
+        <img id="avatarProductTypeUpload" class="ui mini circular image" src="#" alt="label-image" style="width: 100%; height: auto;" />
+        <div>&nbsp</div>
+        <div class="btn btn-success upload-btn-wrapper" style="width: 100%; margin-top: 6px;">
+            <button class="btn" style="width: 100%">3Mp</button>
+            <input id="fileuploadAvatarEmployee" type="file" @*name="files[]"*@ @*onchange="document.getElementById('avatarProductTypeUpload').src = window.URL.createObjectURL(this.files[0])"*@ onchange="readURL(this);" />
+        </div>
+    </div>
+    <div class="description">
+        <form class="ui form segment form3" id="form3">
+            <div class="ui accordion field">
+                <div class="content field active">
+                    <div class="field">
+                        <label>Tên Loại Sản Phẩm</label>
+                        <input id="txtNameProductType" name="name" type="text" />
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="actions">
+    <div style="float: right">
+        <button class="ui teal button" form="form3" type="submit" onclick="return ExcuteData()">Save</button>
+    </div>
+    <div style="float: right">
+        <button class="ui grey button" form="form3" onclick="event.preventDefault(); CloseModal();">Cancel</button>
+    </div>
+</div>
+
+<script src="/js/customjs/custom-validation.js"></script>
+<script src="/js/main.js"></script>
+
+<script>
+    let ProductTypeDetailID;
+    let AvatarString = '';
+    let DataAvatar;
+    $(document).ready(function () {
+        $("#Birthday").flatpickr({
+            dateFormat: 'd-m-Y',
+            enableTime: false,
+        });
+        ProductTypeDetailID = @ViewBag.ProductTypeID;
+        LoadDataUpdateProductType();
+    });
+
+    function LoadDataUpdateProductType() {
+        $.ajax({
+            type: 'GET',
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            url: "/ProductTypeDetail/GetProductTypeDetail/" + ProductTypeDetailID,
+            async: true,
+            success: function (data) {
+                if (data.length != 0) {
+                    $('#txtNameProductType').val((data[0].Name));
+                    if (data[0].Image == '' || data[0].Image == undefined) {
+                        $('#avatarProductTypeUpload').attr('src', '');
+                    }
+                    else {
+                        $('#avatarProductTypeUpload').attr('src', data[0].Image);
+                        avatarString = data[0].Image;
+                    }
+                }
+            }
+        });
+    }
+
+    function ExcuteData() {
+
+        var data = new Object();
+        data.NameType = $('#txtNameProductType').val() ? $('#txtNameProductType').val() : "";
+        data.Image = $('#avatarProductTypeUpload').attr('src') ? $('#avatarProductTypeUpload').attr('src') : "" ;
+      
+         $('#form3').form('validate form');
+         if ($('#form3').form('is valid')) {
+             $.ajax({
+                 url: "/ProductTypeDetail/Execute",
+                 dataType: "json",
+                 type: "POST",
+                 data: {
+                     __RequestVerificationToken: token
+                     , ProductTypeID: @ViewBag.ProductTypeID
+                     , data: JSON.stringify(data)
+                 },
+                 async: true,
+                 error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        notiError("Lỗi Hệ Thống");
+                 },
+                 success: function (result) {
+                     if (result == "0") {
+                         notiSuccess();
+                         LoadProduct();
+                     } else {
+                         notiError("Diễn Viên Đã Tồn Tại Vui Lòng Kiểm Tra Lại");
+                        }
+                 }
+             })
+             $('#divDetailPopup').modal('hide');
+            }
+         return false;
+    }
+
+    function readURL(input) {
+        var ext = input.files[0]['name'].substring(input.files[0]['name'].lastIndexOf('.') + 1).toLowerCase();
+        if (input.files && input.files[0] && (ext == "gif" || ext == "png" || ext == "jpeg" || ext == "jpg")) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#avatarProductTypeUpload').attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        } else {
+            $('#avatarProductTypeUpload').attr('src', '/img/404.png');
+        }
+    }
+</script>
+<style>
+    .upload-btn-wrapper {
+        position: relative;
+        overflow: hidden;
+        display: inline-block;
+    }
+
+    .btn {
+        color: #0288d1;
+        background-color: white;
+        border-radius: 21px;
+        font-size: 12px;
+        /* font-weight: bold; */
+        border-style: solid;
+        border-width: 1px;
+    }
+
+    .iti {
+        width: 100%;
+    }
+
+    .upload-btn-wrapper input[type=file] {
+        font-size: 100px;
+        position: absolute;
+        left: 0;
+        top: 0;
+        opacity: 0;
+    }
+
+    .percentIcon {
+        color: #e03997;
+        padding-left: 10px;
+    }
+
+    .vtth_unit {
+        padding: 0px 5px 0px 5px;
+        color: red;
+    }
+
+    .vtth_row {
+        padding: 3px 10px 3px 10px;
+        background: #f3f3f5;
+        color: #0288d1;
+        border-radius: 20px;
+        margin-right: 5px;
+    }
+
+    .vtth_num {
+        font-size: 16px;
+    }
+
+    .state1 {
+        background: #037e20;
+        padding: 3px;
+        color: white;
+        border-radius: 20px;
+        font-size: 12px;
+        display: block;
+        text-align: center;
+    }
+
+    .state0 {
+        background: #e0e0e0;
+        padding: 3px;
+        color: #0288d1;
+        border-radius: 20px;
+        font-size: 12px;
+        display: block;
+        text-align: center;
+    }
+
+    .numservice {
+        font-size: 12px !important;
+        background: #0190ddf7 !important;
+        color: #fcfcfc !important;
+        min-width: 32px;
+        margin: 0px 6px !important;
+        padding: 4px 10px !important;
+    }
+
+    .numservicetotal {
+        background: #6435c9 !important;
+        font-size: 14px !important;
+    }
+
+    .percentIcon {
+        color: #e03997;
+        padding-left: 10px;
+    }
+
+    .vtth_unit {
+        padding: 0px 5px 0px 5px;
+        color: #21ba45;
+    }
+
+    .vtth_row {
+        padding: 3px 10px 3px 10px;
+        background: #f3f3f5;
+        color: #056fa8;
+        border-radius: 20px;
+        margin-right: 5px;
+    }
+
+    .vtth_num {
+        color: rgba(0,0,0,.95);
+    }
+</style>

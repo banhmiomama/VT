@@ -1,0 +1,328 @@
+﻿
+@{
+    ViewData["Title"] = "Sản Phẩm";
+    Layout = "~/Views/Shared/Master.cshtml";
+}
+
+<div class="pusher">
+    <div class="navslide navwrap">
+        <div class="row" style="background-color: white;" id="ProducttList">
+            <div class="ui form segment form3">
+                <h2 class="ui center aligned header" style="padding-top: 10px; font-family: 'Times New Roman'; background-color: white">
+                    Danh Sách Sản Phẩm
+                </h2>
+                <div class="sixteen wide tablet sixteen wide computer column">
+                    <div class="ui grid" style="margin-left: 5px; margin-right: 5px">
+                        <div class="stretched row">
+                            <div class="sixteen wide tablet four wide computer column">
+                                <div class="field" style="max-height: 64px;">
+                                    <div id="btnAddProductType">
+                                        <button class="ui blue button modalfour _tab_control_" data-tab="add_Product_type" data-value="fade up" onclick="return AddNewProductType()">Loại Sản Phẩm Mới</button>
+                                    </div>
+                                    <div class="ui labeled input fluid">
+                                        <input style="background: white; color: #0288d1; font-size: 13px;" id="totalProductType" type="text" readonly>
+                                    </div>
+                                </div>
+                                <table id="dtContentProductType" class="ui sortable celled table">
+                                    <thead class="hiddenCollapse">
+                                        <tr role="row">
+                                            <th style="display: none">ID</th>
+                                            <th>Tên Loại</th>
+                                            <th class="no-sort" style="width: 50px;">Xóa</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="dtContentProductTypeBody">
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="sixteen wide tablet twelve wide computer column">
+                                <div class="field" style="margin-bottom: -19px; max-height: max-content;">
+                                    <div id="btnAddProduct" style="display: inline;">
+                                        <button class="ui blue button modalfour _tab_control_" data-tab="add_Product" data-value="fade up" onclick="event.preventDefault();return AddNewProduct()">Sản Phẩm Mới</button>
+                                    </div>
+                                    <div class="two fields">
+                                        <div class="field">
+                                            <div class="ui labeled input fluid">
+                                                <input style="background: white; color: #0288d1; font-size: 13px;" id="totalProduct" type="text" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="field">
+                                            <div class="ui icon input" style="max-height: 40px;">
+                                                <input style="font-size: 13px; height: 31px;" id="filterProduct" type="text" placeholder="Seaching..." onkeyup="event.preventDefault();return onkeyupProduct();">
+                                                <i class="circular search link icon"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="loaderList" style="border: none; display: none; height: -webkit-fill-available;">
+                                    <div class="ui active inverted dimmer">
+                                        <div class="ui large text loader">Loading</div>
+                                    </div>
+                                </div>
+                                <div id="dtContentArrea" class="ui segment" style="border: none; overflow-x: auto; box-shadow: none; padding: unset;">
+                                    <table id="dtContentProduct" class="ui sortable celled table">
+                                        <thead class="hiddenCollapse">
+                                            <tr role="row">
+                                                <th style="display: none">ID</th>
+                                                <th style="width: 50px;">#</th>
+                                                <th >Tên Sản Phẩm</th>
+                                                <th style="min-width: 70px;">Giá Tiền</th>
+                                                <th class="no-sort" style="max-width: 100px;">Người Tạo</th>
+                                                <th class="no-sort" style="width: 30px;">Ẩn</th>
+                                                <th class="no-sort" style="width: 30px;">Xóa</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="dtContentProductBody">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" id="ProductDetail_Div" style="display: none; background-color: white; padding: 20px">
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    let DataProduct;
+    function Render_Product(data, id) {
+        var myNode = document.getElementById(id);
+        if (myNode != null) {
+            myNode.innerHTML = '';
+            let stringContent = '';
+            if (data && data.length > 0) {
+                for (var i = 0; i < data.length; i++) {
+                    let item = data[i];
+                    let tr =
+                        '<td style="display:none !important">' + item.ID + '</td>'
+                        + '<td data-sortValue="' + Number(i) + '">' + (i + 1) + '</td>'
+                        + '<td ><a style="text-decoration: underline;" class="buttonEditClass" href="#">' + item.Name + '</a></td>'
+                        + '<td data-sortValue="' + item.Price + '">' + item.Price + '</td>'
+                        + '<td>' + item.Created_By + '</td>'
+                        + '<td class="selectedtd"><button class="buttonGrid _tab_control_" data-tab="delete_service_type" value="'
+                        + item.ID
+                        + '"><img class="buttonDeleteClass imgGrid" src="/img/ButtonImg/delete_ver2.png"></button></td>'
+                       
+                    stringContent = stringContent + '<tr class="seachRow" role="row">' + tr + '</tr>';
+                }
+            }
+            document.getElementById(id).innerHTML = stringContent;
+        }
+    } 
+    function Render_ProductType(data, id) {
+        var myNode = document.getElementById(id);
+        if (myNode != null) {
+            myNode.innerHTML = '';
+            let stringContent = '';
+            if (data && data.length > 0) {
+                for (var i = 0; i < data.length; i++) {
+                    let item = data[i];
+                    let tr =
+                        '<td style="display:none !important">' + item.ID + '</td>'                      
+                        + '<td class="selectedtd" ><a style="text-decoration: underline;" class="buttonEditClass" href="#">' + item.Name + '</a></td>'
+                        + ((item.ButtonDelete == 0)
+                            ? '<td class="selectedtd"><button class="buttonGrid _tab_control_" data-tab="delete_service_type" value="'
+                            + item.ID
+                            + '"><img class="buttonDeleteClass imgGrid" src="/img/ButtonImg/delete_ver2.png"></button></td>' : '<td></td>')
+                    stringContent = stringContent + '<tr class="rowProductType" data-id=' + item.ID + ' role="row">' + tr + '</tr>';
+                }
+            }
+            document.getElementById(id).innerHTML = stringContent;
+        }
+        EventRowProductType();
+    }
+    function LoadProduct() {
+        $.ajax({
+            url: "Product/LoadProduct",
+            dataType: "json",
+            type: "POST",
+            data: JSON.stringify({
+            }),
+            contentType: 'application/json; charset=utf-8',
+            async: true,
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                notiError();
+            },
+            success: function (result) {                            
+                Render_ProductType(result.Table, "dtContentProductTypeBody");
+                let TotalProductType = result.Table1;
+                document.getElementById("totalProductType").value = 'Tổng loại sản phẩm: ' + TotalProductType[0].TotalProductType; 
+                DataProduct = result.Table2;
+                Render_Product(result.Table2, "dtContentProductBody");
+                let TotalProduct = result.Table3;
+                document.getElementById("totalProduct").value = 'Tổng sản phẩm: ' + TotalProduct[0].TotalProduct;
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        //$('#dtContentProduct').tablesort();
+        $("#dateFilter").flatpickr({
+            mode: "range",
+            dateFormat: 'd-m-Y',
+            enableTime: false,
+            onClose: function (selectedDates, dateStr, instance) {
+                if (selectedDates.length == 1) {
+                    instance.setDate([selectedDates[0], selectedDates[0]], true);
+                }
+            }
+        });
+        var date = new Date();
+        var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+        var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0); 
+        //$("#dateFilter").val(formatDateClient(firstDay) + ' to ' + formatDateClient(lastDay));
+
+        LoadProduct();
+        $('#dtContentProduct tbody').on('click', '.buttonEditClass', function () {
+            let ID = Number($(this).closest('tr')[0].childNodes[0].innerHTML);
+            EditProduct(ID);
+        });
+        $('#dtContentProduct tbody').on('click', '.buttonDeleteClass', function () {
+            let ID = Number($(this).closest('tr')[0].childNodes[0].innerHTML);
+            DeleteProduct(ID);
+        });
+        $('#dtContentProductType tbody').on('click', '.buttonEditClass', function () {
+            let ID = Number($(this).closest('tr')[0].childNodes[0].innerHTML);
+            if (ID != 0) EditProductType(ID);
+            else return;
+            
+        });
+        $('#dtContentProductType tbody').on('click', '.buttonDeleteClass', function () {
+            let ID = Number($(this).closest('tr')[0].childNodes[0].innerHTML);
+            DeleteProductType(ID);
+        });
+    });
+    function EventRowProductType() {
+        $('.rowProductType').on('click', function () {
+            let CurrentTypeID = Number($(this).attr('data-id'));            
+            let Data = "";
+            if (CurrentTypeID != 0) {
+                Data = DataProduct.filter(
+                    word => word["TypeID"] == CurrentTypeID                
+                )
+            }
+            else {
+                Data = DataProduct;
+            }
+            if (Data != undefined && Data != null) {
+                document.getElementById("totalProduct").value = 'Tổng sản phẩm: ' + Data.length;
+            }
+            document.getElementById("dtContentProductBody").innerHTML = '';
+            Render_Product(Data, "dtContentProductBody");
+        })
+    }   
+    function AddNewProduct() {
+        document.getElementById("divDetailPopup").innerHTML = '';
+        $("#divDetailPopup").load("ProductDetail/" + 0);
+        $('#divDetailPopup').modal('show');
+        return false;
+    }
+
+    function EditProduct(CurrentID) {
+        document.getElementById("divDetailPopup").innerHTML = '';
+        $("#divDetailPopup").load("ProductDetail/" + CurrentID);
+        $('#divDetailPopup').modal('show');
+        return false;
+    }
+
+    function AddNewProductType() {
+        document.getElementById("divDetailPopup").innerHTML = '';
+        $("#divDetailPopup").load("ProductTypeDetail/" + 0);
+        $('#divDetailPopup').modal('show');
+        return false;
+    }
+
+    function EditProductType(CurrentID) {
+        document.getElementById("divDetailPopup").innerHTML = '';
+        $("#divDetailPopup").load("ProductTypeDetail/" + CurrentID);
+        $('#divDetailPopup').modal('show');
+        return false;
+    }
+
+    function DeleteProduct(id) {
+        const promise = notiConfirm();
+        promise.then(function () { ExecuteDeleteProduct(id); }, function () { });
+    }
+    function DeleteProductType(id) {
+        const promise = notiConfirm();
+        promise.then(function () { ExecuteDeleteProductType(id); }, function () { });
+    }
+
+    function ExecuteDeleteProduct(ID) {
+        $.ajax({
+            url: "Product/DeleteProduct/" + ID,
+            dataType: "json",
+            type: "GET",
+            data: JSON.stringify({
+                'ID': ID
+            }),
+            contentType: 'application/json; charset=utf-8',
+            async: true,
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                notiError(textStatus);
+            },
+            success: function (result) {
+                if (result == "1") {
+                    notiSuccess();
+                    LoadProduct();
+                } else {
+                    notiError();
+                }
+            }
+        });
+    }
+    function ExecuteDeleteProductType(ID) {
+        $.ajax({
+            url: "Product/DeleteProductType/" + ID,
+            dataType: "json",
+            type: "GET",
+            data: JSON.stringify({
+                'ID': ID
+            }),
+            contentType: 'application/json; charset=utf-8',
+            async: true,
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                notiError(textStatus);
+            },
+            success: function (result) {
+                if (result == "1") {
+                    notiSuccess();
+                    LoadProduct();
+                } else {
+                    notiError();
+                }
+            }
+        });
+    }
+    function onkeyupTicketFitlerAsync(extension) {
+        return new Promise((resolve, reject) => {
+            setTimeout(
+                () => {
+                    let search = xoa_dau($('#filterProduct').val().toLowerCase()).trim();
+
+                    let data = DataProduct.filter(function (item) {
+                        if (xoa_dau(item["Name"]).toLowerCase().includes(search)
+                            || xoa_dau(item["NameNoSign"]).toLowerCase().includes(search))
+                            return true;
+                        return false;
+                    });
+                    if (data != undefined && data != null) {
+                        document.getElementById("dtContentProductBody").innerHTML = "";
+                        Render_Product(data, "dtContentProductBody");
+                        ColorSearchFilterText(search, "seachRow");
+                    }
+                    resolve()
+                },
+                Math.floor(Math.random() * 300) + 1
+            )
+        })
+    }
+
+    async function onkeyupProductFitler() {
+        await onkeyupTicketFitlerAsync();
+        return false;
+    }
+</script>

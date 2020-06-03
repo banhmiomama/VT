@@ -9,11 +9,11 @@
 
 <div class="image content">
     <div class="ui massive image">
-        <img id="avatarEmployeeUpload" class="ui mini circular image" src="#" alt="label-image" style="width: 100%; height: auto;" />
+        <img id="avatarActorUpload" class="ui mini circular image" src="#" alt="label-image" style="width: 100%; height: auto;" />
         <div>&nbsp</div>
         <div class="btn btn-success upload-btn-wrapper" style="width: 100%; margin-top: 6px;">
             <button class="btn" style="width: 100%">3Mp</button>
-            <input id="fileuploadAvatarEmployee" type="file" @*name="files[]"*@ @*onchange="document.getElementById('avatarEmployeeUpload').src = window.URL.createObjectURL(this.files[0])"*@  onchange="readURL(this);"/>
+            <input id="fileuploadAvatarEmployee" type="file" @*name="files[]"*@ @*onchange="document.getElementById('avatarActorUpload').src = window.URL.createObjectURL(this.files[0])"*@  onchange="readURL(this);"/>
         </div>
     </div>
     <div class="description">
@@ -300,9 +300,6 @@
     </div>
 </div>
 
-
-
-
 <div class="actions">
     <div style="float: right">
         <button class="ui teal button" form="form3" type="submit" onclick="return ExcuteData()">Save</button>
@@ -321,7 +318,7 @@
     let DataAvatar;
     $(document).ready(function () {
         $("#Birthday").flatpickr({
-            dateFormat: 'Y-m-d',
+            dateFormat: 'd-m-Y',
             enableTime: false,
         });
         ActorDetailID = @ViewBag.ActorID;
@@ -344,10 +341,10 @@
                     $('#txtDes').val((data[0].Description));
                     $('#txtHeight').val((data[0].Height));
                     if (data[0].Avatar == '' || data[0].Avatar == undefined) {
-                        $('#avatarEmployeeUpload').attr('src', '');
+                        $('#avatarActorUpload').attr('src', '');
                     }
                     else {
-                        $('#avatarEmployeeUpload').attr('src',data[0].Avatar);
+                        $('#avatarActorUpload').attr('src',data[0].Avatar);
                         avatarString = data[0].Avatar;
                     }
                 }
@@ -359,7 +356,7 @@
 
         var data = new Object();
         data.Name = $('#txtNameActor').val() ? $('#txtNameActor').val() : "";
-        data.Avatar = $('#avatarEmployeeUpload').attr('src') ? $('#avatarEmployeeUpload').attr('src') : "" ;
+        data.Avatar = $('#avatarActorUpload').attr('src') ? $('#avatarActorUpload').attr('src') : "" ;
         data.Birthday = $('#Birthday').val() ? $('#Birthday').val() : "";
         data.Height = $('#txtHeight').val() ? Number($('#txtHeight').val()) : 0;
         data.Nationality = $('#Nationality').dropdown('get value') ? $('#Nationality').dropdown('get value') : "";
@@ -398,12 +395,12 @@
         if (input.files && input.files[0] && (ext == "gif" || ext == "png" || ext == "jpeg" || ext == "jpg")) {
             var reader = new FileReader();
             reader.onload = function (e) {
-                $('#avatarEmployeeUpload').attr('src', e.target.result);
+                $('#avatarActorUpload').attr('src', e.target.result);
             }
 
             reader.readAsDataURL(input.files[0]);
         } else {
-            $('#avatarEmployeeUpload').attr('src', '/img/404.png');
+            $('#avatarActorUpload').attr('src', '/img/404.png');
         }
     }
 </script>
@@ -435,8 +432,6 @@
         top: 0;
         opacity: 0;
     }
-</style>
-<style>
     .percentIcon {
         color: #e03997;
         padding-left: 10px;
@@ -478,8 +473,6 @@
         display: block;
         text-align: center;
     }
-</style>
-<style>
     .numservice {
         font-size: 12px !important;
         background: #0190ddf7 !important;
