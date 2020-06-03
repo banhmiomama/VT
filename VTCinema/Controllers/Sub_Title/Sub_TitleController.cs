@@ -7,27 +7,27 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
-namespace VTCinema.Controllers.Branch
+namespace VTCinema.Controllers.Sub_Title
 {
-    [Route("Branch")]
-    public class BranchController : Controller
+    [Route("Sub_Title")]
+    public class Sub_TitleController : Controller
     {
         public IActionResult Index()
         {
-            return View("~/Views/Branch/BranchView.cshtml");
+            return View("~/Views/Sub_Title/Sub_TitleView.cshtml");
         }
 
-        [Route("LoadBranch")]
+        [Route("LoadSub_Title")]
         [HttpPost]
-        public string LoadBranch()
+        public string LoadSub_Title()
         {
             try
             {
                 DataTable dt = new DataTable();
-               
+
                 using (Models.ExecuteDataBase confunc = new Models.ExecuteDataBase())
                 {
-                    dt = confunc.ExecuteDataTable("[YYY_sp_Branch_LoadList]", CommandType.StoredProcedure);
+                    dt = confunc.ExecuteDataTable("[YYY_sp_Sub_Title_LoadList]", CommandType.StoredProcedure);
 
                 }
                 if (dt != null)
@@ -45,16 +45,16 @@ namespace VTCinema.Controllers.Branch
             }
         }
 
-        [Route("DeleteBranch/{ID}")]
+        [Route("DeleteSub_Title/{ID}")]
         [HttpGet]
-        public string DeleteBranch(int ID)
+        public string DeleteSub_Title(int ID)
         {
             try
             {
                 DataTable dt = new DataTable();
                 using (Models.ExecuteDataBase confunc = new Models.ExecuteDataBase())
                 {
-                    dt = confunc.ExecuteDataTable("[YYY_sp_Branch_Delete]", CommandType.StoredProcedure,
+                    dt = confunc.ExecuteDataTable("[YYY_sp_Sub_Title_Delete]", CommandType.StoredProcedure,
                       "@CurrentID", SqlDbType.Int, ID,
                       "@Modified_By", SqlDbType.Int, HttpContext.Session.GetInt32(Comon.Global.UserID));
                 }
@@ -64,7 +64,7 @@ namespace VTCinema.Controllers.Branch
             {
                 return "0";
             }
-            LoadBranch();
+            LoadSub_Title();
         }
     }
 }

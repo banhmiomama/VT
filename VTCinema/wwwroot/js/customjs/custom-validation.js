@@ -79,7 +79,11 @@ $('.ui.form2').form({
 // pageProductTypeDetail,pageProductDetail
 // pageSupplierDetail,pageInputDetail, pageOutputDetail
 // pageCustomerCareDetail
-$('ui.form20').form({
+$('.ui.form20').form({
+});
+
+$('.ui.form22').form({
+
 });
 
 $('.ui.form3').form({

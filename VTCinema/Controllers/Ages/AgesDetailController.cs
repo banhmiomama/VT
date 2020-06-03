@@ -9,29 +9,29 @@ using Newtonsoft.Json;
 using VTCinema.Comon;
 using VTCinema.Models;
 
-namespace VTCinema.Controllers.Actor
+namespace VTCinema.Controllers.Ages
 {
-    [Route("ActorDetail")]
+    [Route("AgesDetail")]
     public class AgesDetailController : Controller
     {
-        [Route("{ActorID}")]
+        [Route("{AgesID}")]
         [HttpGet]
-        public IActionResult Index(int ActorID)
+        public IActionResult Index(int AgesID)
         {
-            ViewBag.ActorID = ActorID;
-            return View("~/Views/Actor/ActorDetail.cshtml");
+            ViewBag.AgesID = AgesID;
+            return View("~/Views/Ages/AgesDetail.cshtml");
         }
-        [Route("GetActorDetail/{ActorID}")]
+        [Route("GetAgesDetail/{AgesID}")]
         [HttpGet]
-        public string GetActorDetail(int ActorID)
+        public string GetAgesDetail(int AgesID)
         {
             try
             {
                 DataTable dt = new DataTable();
                 using (Models.ExecuteDataBase confunc = new Models.ExecuteDataBase())
                 {
-                    dt = confunc.ExecuteDataTable("[YYY_sp_Actor_LoadDetail]", CommandType.StoredProcedure,
-                      "@CurrentID", SqlDbType.Int, ActorID);
+                    dt = confunc.ExecuteDataTable("[YYY_sp_Ages_Type_Detail]", CommandType.StoredProcedure,
+                      "@CurrentID", SqlDbType.Int, AgesID);
                 }
                 if (dt != null)
                 {
@@ -51,24 +51,20 @@ namespace VTCinema.Controllers.Actor
         [Route("Execute")]
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public string Execute(string data, int ActorID)
+        public string Execute(string data, int AgesID)
         {
             try
             {
                 DataTable dt = new DataTable();
-                DataActorChoose dataDetail = JsonConvert.DeserializeObject<DataActorChoose>(data);
+                DataAgesChoose dataDetail = JsonConvert.DeserializeObject<DataAgesChoose>(data);
                 
-                if (ActorID == 0)
+                if (AgesID == 0)
                 {
                     using (Models.ExecuteDataBase connFunc = new Models.ExecuteDataBase())
                     {
-                        dt = connFunc.ExecuteDataTable("YYY_sp_Actor_Insert", CommandType.StoredProcedure,
+                        dt = connFunc.ExecuteDataTable("YYY_sp_Ages_Type_Insert", CommandType.StoredProcedure,
                             "@Name", SqlDbType.NVarChar, dataDetail.Name,
-                            "@Avatar",SqlDbType.VarChar, dataDetail.Avatar,
-                            "@Description", SqlDbType.NVarChar, dataDetail.Description,
-                            "@Birthday", SqlDbType.DateTime, dataDetail.Birthday,
-                            "@Height", SqlDbType.Float, dataDetail.Height,
-                            "@Nationality", SqlDbType.VarChar, dataDetail.Nationality,
+                            "@Ages", SqlDbType.Int, dataDetail.Ages,
                             "@CurrentID",SqlDbType.Int, HttpContext.Session.GetInt32(Comon.Global.UserID)
                         );
                     }
@@ -77,14 +73,10 @@ namespace VTCinema.Controllers.Actor
                 {
                     using (Models.ExecuteDataBase connFunc = new Models.ExecuteDataBase())
                     {
-                        dt = connFunc.ExecuteDataTable("[YYY_sp_Actor_Update]", CommandType.StoredProcedure,
+                        dt = connFunc.ExecuteDataTable("[YYY_sp_Ages_Type_Update]", CommandType.StoredProcedure,
                             "@Name", SqlDbType.NVarChar, dataDetail.Name,
-                            "@Avatar", SqlDbType.VarChar, dataDetail.Avatar,
-                            "@Description", SqlDbType.NVarChar, dataDetail.Description,
-                            "@Birthday", SqlDbType.DateTime, dataDetail.Birthday,
-                            "@Height", SqlDbType.Float, dataDetail.Height,
-                            "@Nationality", SqlDbType.VarChar, dataDetail.Nationality,
-                            "@CurrentID", SqlDbType.Int, ActorID ,
+                            "@Ages", SqlDbType.Int, dataDetail.Ages,
+                            "@CurrentID", SqlDbType.Int, AgesID ,
                             "@Modified_By", SqlDbType.Int,HttpContext.Session.GetInt32(Comon.Global.UserID)
                        );
                     } 

@@ -1,0 +1,188 @@
+﻿
+@{
+    ViewData["Title"] = "Ages";
+    Layout = "~/Views/Shared/Master.cshtml";
+}
+<div class="pusher">
+    <div class="navslide navwrap">
+        <div class="row" style="background-color: white">
+            <div class="ui form segment form3">
+                <h2 class="ui center aligned header" style="border-top: 1px; font-family: 'Times New Roman'">
+                    Danh Sách Lứa Tuổi
+                    <div class="sub header" style="font-family: 'Times New Roman'">Danh Sách Lứa Tuổi</div>
+                </h2>
+                <div class="three fields" style="margin: 0px;">
+                    <div class="field">
+                        <button class="ui blueli button" data-value="fade up" onclick="return AddNewAges()">Thêm mới</button>
+                    </div>                 
+                    <div class="field">
+                    </div>
+                    <div class="field">
+                        <div class="ui icon input" style="max-height: 40px;">
+                            <input id="filterAges" type="text" placeholder="Seaching..." onkeyup="event.preventDefault();return onkeyupTicketFitler();">
+                            <i class="circular search link icon"></i>
+                        </div>
+                    </div>                    
+                </div>
+                <div class="ui segment" style="border: none; overflow-x: auto; padding: unset;">
+                    <table id="dtContentAges" class="ui sortable celled table">
+                        <thead class="hiddenCollapse">
+                            <tr role="row">
+                                <th style="display: none">ID</th>
+                                <th style="width: 70px;">#</th>
+                                <th>Lứa Tuổi</th>
+                                <th style="min-width: 60px">Tuổi</th>
+                                <th>Xoá</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dtContentAgesBody">
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script type="text/javascript">
+    let DataAges;
+    function Render_Ages(data, id) {
+        var myNode = document.getElementById(id);
+        if (myNode != null) {
+            myNode.innerHTML = '';
+            let stringContent = '';
+            if (data && data.length > 0) {
+                for (var i = 0; i < data.length; i++) {
+                    let item = data[i];
+                    let tr =
+                        '<td style="display:none !important">' + item.ID + '</td>'
+                        + '<td data-sortValue="' + Number(i) + '">' + (i + 1) + '</td>'
+                        + '<td ><a style="text-decoration: underline;" class="buttonEditClass" href="#">' + item.Name + '</a></td>'
+                        + '<td >' + item.Ages + '</td>'
+                        + '<td class="selectedtd"><button class="buttonGrid _tab_control_" data-tab="delete_service_type" value="'
+                        + item.ID
+                        + '"><img class="buttonDeleteClass imgGrid" src="/img/ButtonImg/delete_ver2.png"></button></td>'
+                    stringContent = stringContent + '<tr class="seachRow" role="row">' + tr + '</tr>';
+                }
+            }
+            document.getElementById(id).innerHTML = stringContent;
+        }
+    }
+    function LoadAges() {
+        $.ajax({
+            url: "Ages/LoadAges",
+            dataType: "json",
+            type: "POST",
+            data: JSON.stringify({
+            }),
+            contentType: 'application/json; charset=utf-8',
+            async: true,
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                notiError();
+            },
+            success: function (result) {
+                DataAges = result;
+                Render_Ages(result, "dtContentAgesBody");
+            }
+        });
+    }
+    $(document).ready(function () {
+        //$('#dtContentAges').tablesort();
+        $("#dateFilter").flatpickr({    
+            mode: "range",
+            dateFormat: 'd-m-Y',
+            enableTime: false,
+            onClose: function (selectedDates, dateStr, instance) {
+                if (selectedDates.length == 1) {
+                    instance.setDate([selectedDates[0], selectedDates[0]], true);
+                }
+            }
+        });
+        var date = new Date();
+        var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+        var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+        //$("#dateFilter").val(formatDateClient(firstDay) + ' to ' + formatDateClient(lastDay));
+        LoadAges();     
+        $('#dtContentAges tbody').on('click', '.buttonEditClass', function () {
+            let ID = Number($(this).closest('tr')[0].childNodes[0].innerHTML);
+            EditAges(ID);
+        });     
+        $('#dtContentAges tbody').on('click', '.buttonDeleteClass', function () {
+            let ID = Number($(this).closest('tr')[0].childNodes[0].innerHTML);           
+            DeleteAges(ID);
+        });
+    });
+
+    function AddNewAges() {
+        document.getElementById("divDetailPopup").innerHTML = '';       
+        $("#divDetailPopup").load("AgesDetail/" + 0);
+        $('#divDetailPopup').modal('show');
+        return false;
+    }
+
+    function EditAges(CurrentID) {
+        document.getElementById("divDetailPopup").innerHTML = '';       
+        $("#divDetailPopup").load("AgesDetail/" + CurrentID);
+        $('#divDetailPopup').modal('show');
+        return false;
+    }
+
+    function DeleteAges(id) {
+        const promise = notiConfirm();
+        promise.then(function () { ExecuteDeleteAges(id); }, function () { });
+    }
+
+    function ExecuteDeleteAges(ID) {      
+        $.ajax({
+            url: "Ages/DeleteAges/"+ID,
+            dataType: "json",
+            type: "GET",
+            data: JSON.stringify({
+                'ID': ID
+            }),       
+            contentType: 'application/json; charset=utf-8',
+            async: true,
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                notiError(textStatus);
+            },
+            success: function (result) {
+                if (result == "1") {
+                    notiSuccess();
+                    LoadAges();
+                } else {
+                    notiError();
+                }
+            }
+        });
+    }
+
+    function onkeyupTicketFitlerAsync(extension) {
+        return new Promise((resolve, reject) => {
+            setTimeout(
+                () => {
+                    let search = xoa_dau($('#filterAges').val().toLowerCase()).trim();
+
+                    let data = DataAges.filter(function (item) {
+                        if (xoa_dau(item["Name"]).toLowerCase().includes(search))
+                            return true;
+                        return false;
+                    });
+                    if (data != undefined && data != null) {
+                        document.getElementById("dtContentAgesBody").innerHTML = "";
+                        Render_Ages(data, "dtContentAgesBody");
+                        ColorSearchFilterText(search, "seachRow");
+                    }
+                    resolve()
+                },
+                Math.floor(Math.random() * 300) + 1
+            )
+        })
+    }
+
+    async function onkeyupTicketFitler() {
+        await onkeyupTicketFitlerAsync();
+        return false;
+    }
+</script>
+
