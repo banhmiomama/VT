@@ -1,0 +1,99 @@
+﻿
+@{
+    Layout = null;
+}
+
+    <div id="headerPopup_CustomerCare" class="header">
+        Phiên Dịch
+    </div>
+<div class="row">
+    <div class="sixteen wide tablet eight wide computer column">
+        <div class="ui segments">
+            <form class="ui form segment form3" id="form3">
+                <div class="ui accordion field">
+                    <div class="content field active">
+                        <div class="three fields">
+                            <div class="field">
+                                <label>Tiêu Đề Phiên Dịch</label>
+                                <input id="txtSub_Title" name="Sub_Title" type="text" />
+                            </div>
+                            <div class="field">
+                                <label>Ghi Chú</label>
+                                <input id="txtNote" type="text" name="Note" />
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div class="actions">
+    <div style="float: right">
+        <button class="ui teal button" form="form3" type="submit" onclick="return ExcuteData()">Save</button>
+    </div>
+    <div style="float: right">
+        <button class="ui grey button" form="form3" onclick="event.preventDefault();CloseModal()">Cancel</button>
+    </div>
+</div>
+
+
+<script>
+    let Sub_TitleDetailID;
+    $(document).ready(function () {
+        Sub_TitleDetailID = @ViewBag.Sub_TitleID;
+        LoadDataUpdateSub_Title();
+    });
+
+    function LoadDataUpdateSub_Title() {
+        $.ajax({
+            type: 'GET',
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            url: "/Sub_TitleDetail/GetSub_TitleDetail/" + Sub_TitleDetailID,
+            async: true,
+            success: function (data) {
+                if (data.length != 0) {
+                    $('#txtSub_Title').val((data[0].Sub_Title));
+                    $('#txtNote').val((data[0].Note));
+                }
+            }
+        });
+    }
+    function ExcuteData() {
+        var data = new Object();        
+        data.Sub_Title = $('#txtSub_Title').val() ? $('#txtSub_Title').val() : "";
+        data.Note = $('#txtNote').val() ? $('#txtNote').val() : "";
+        $('#form22').form('validate form');
+        if ($('#form22').form('is valid')) {
+            
+             $.ajax({
+                 url: "/Sub_TitleDetail/Execute",
+                 dataType: "json",
+                 type: "POST",
+                 data: {
+                     __RequestVerificationToken: token
+                     , Sub_TitleID: @ViewBag.Sub_TitleID
+                     , data: JSON.stringify(data)
+                 },
+                 async: true,
+                 error: function (XMLHttpRequest, textStatus, errorThrown) {                     
+                        notiError("Lỗi Hệ Thống");
+                 },
+                 success: function (result) {
+                     if (result == "0") {
+                         notiSuccess();
+                         LoadSub_Title();
+                     } else {
+                         notiError("Loại Phiên Dịch Đã Tồn Tại Vui Lòng Kiểm Tra Lại");
+                        }
+                 }
+             })
+             $('#divDetailPopup').modal('hide');
+        }
+         return false;
+    }
+</script>

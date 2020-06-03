@@ -90,6 +90,12 @@ namespace VTCinema.Models
                 transaction.Dispose();
             }
         }
+
+        internal DataTable ExecuteDataTable(string v1, CommandType storedProcedure, string v2, SqlDbType int1, int sub_TitleID, string v3, SqlDbType nVarChar1, object sub_Title, string v4, SqlDbType nVarChar2, object note, string v5, SqlDbType int2, int? v6)
+        {
+            throw new NotImplementedException();
+        }
+
         public DataTable LoadDataSource_Table(string s)
         {
             try

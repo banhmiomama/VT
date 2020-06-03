@@ -1,0 +1,96 @@
+﻿
+@{ Layout = null; }
+
+<div id="headerPopup_CustomerCare" class="header">
+    Lứa Tuổi
+</div>
+<div class="row">
+    <div class="sixteen wide tablet eight wide computer column">
+        <div class="ui segments">
+            <form class="ui form segment form3" id="form3">
+                <div class="ui accordion field">
+                    <div class="content field active">
+                        <div class="three fields">
+                            <div class="field">
+                                <label>Tuổi</label>
+                                <input id="txtAges" type="text" name="Ages" />
+                            </div>
+                            <div class="field">
+                                <label>Lứa Tuổi</label>
+                                <input id="txtName" name="Name" type="text" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="actions">
+    <div style="float: right">
+        <button class="ui teal button" form="form3" type="submit" onclick="return ExcuteData()">Save</button>
+        
+    </div>
+    <div style="float: right">
+        <button class="ui grey button" form="form3" onclick="event.preventDefault();CloseModal()">Cancel</button>
+    </div>
+</div>
+<script>
+    debugger
+    let AgesDetailID;
+    $(document).ready(function () {
+        AgesDetailID = @ViewBag.AgesID;
+        LoadDataUpdateAges();
+    });
+    debugger
+
+    function LoadDataUpdateAges() {
+        $.ajax({
+            type: 'GET',
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            url: "/AgesDetail/GetAgesDetail/" + AgesDetailID,
+            async: true,
+            success: function (data) {
+                if (data.length != 0) {
+                    $('#txtAges').val((data[0].Ages));
+                    $('#txtName').val((data[0].Name));
+                }
+            }
+        });
+    }
+    function ExcuteData() {
+        var data = new Object();
+        data.Ages = $('#txtAges').val() ? $('#txtAges').val() : "";
+        data.Name = $('#txtName').val() ? $('#txtName').val() : "";
+        debugger
+        $('#form20').form('validate form');
+        if ($('#form20').form('is valid')) {
+
+             $.ajax({
+                 url: "/AgesDetail/Execute",
+                 dataType: "json",
+                 type: "POST",
+                 data: {
+                     __RequestVerificationToken: token
+                     , AgesID: @ViewBag.AgesID
+                     , data: JSON.stringify(data)
+                 },
+                 async: true,
+                 error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        notiError("Lỗi Hệ Thống");
+                 },
+                 success: function (result) {
+                     if (result == "0") {
+                         notiSuccess();
+                         LoadAges();
+                     } else {
+                         notiError("Lứa Tuổi Đã Tồn Tại Vui Lòng Kiểm Tra Lại");
+                        }
+                 }
+             })
+             $('#divDetailPopup').modal('hide');
+        }
+         return false;
+    }
+</script>

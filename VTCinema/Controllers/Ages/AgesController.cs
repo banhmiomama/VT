@@ -7,19 +7,19 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
-namespace VTCinema.Controllers.Actor
+namespace VTCinema.Controllers.Ages
 {
-    [Route("Actor")]
+    [Route("Ages")]
     public class AgesController : Controller
     {
         public IActionResult Index()
         {
-            return View("~/Views/Actor/ActorView.cshtml");
+            return View("~/Views/Ages/AgesView.cshtml");
         }
 
-        [Route("LoadActor")]
+        [Route("LoadAges")]
         [HttpPost]
-        public string LoadActor()
+        public string LoadAges()
         {
             try
             {
@@ -27,7 +27,7 @@ namespace VTCinema.Controllers.Actor
                
                 using (Models.ExecuteDataBase confunc = new Models.ExecuteDataBase())
                 {
-                    dt = confunc.ExecuteDataTable("[YYY_sp_Actor_LoadList]", CommandType.StoredProcedure);
+                    dt = confunc.ExecuteDataTable("[YYY_sp_Ages_Type_LoadList]", CommandType.StoredProcedure);
 
                 }
                 if (dt != null)
@@ -45,16 +45,16 @@ namespace VTCinema.Controllers.Actor
             }
         }
 
-        [Route("DeleteActor/{ID}")]
+        [Route("DeleteAges/{ID}")]
         [HttpGet]
-        public string DeleteActor(int ID)
+        public string DeleteAges(int ID)
         {
             try
             {
                DataTable dt = new DataTable();
                 using (Models.ExecuteDataBase confunc = new Models.ExecuteDataBase())
                 {
-                    dt = confunc.ExecuteDataTable("[YYY_sp_Actor_Delete]", CommandType.StoredProcedure,
+                    dt = confunc.ExecuteDataTable("[YYY_sp_Ages_Type_Delete]", CommandType.StoredProcedure,
                       "@CurrentID", SqlDbType.Int, ID,
                       "@Modified_By",SqlDbType.Int, HttpContext.Session.GetInt32(Comon.Global.UserID));
                 }

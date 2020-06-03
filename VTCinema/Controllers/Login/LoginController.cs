@@ -32,7 +32,7 @@ namespace VTCinema.Controllers.Login
                         HttpContext.Session.SetInt32(Global.UserID, resulf);
                     }
                     //return RedirectToAction("Index", "ServiceDetail", new { Type = 27 });
-                    return RedirectToAction("Index", "Actor");
+                    return RedirectToAction("Index", "Sub_title");
                 }
                 else
                 {

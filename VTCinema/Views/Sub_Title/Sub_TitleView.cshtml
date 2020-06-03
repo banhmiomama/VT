@@ -1,0 +1,202 @@
+﻿
+@{
+    ViewData["Title"] = "";
+    Layout = "~/Views/Shared/Master.cshtml";
+}
+
+<div class="pusher">
+    <div class="navslide navwrap">
+        <div class="row" style="background-color: white">
+            <div class="ui form segment form3">
+                <h2 class="ui center aligned header" style="border-top: 1px; font-family: 'Times New Roman'">
+                    Danh Sách Phiên Dịch
+                    <div class="sub header" style="font-family:'Times New Roman'">Danh Sách Phiên Dịch</div>
+                </h2>
+                <div class="four fields" style="margin: 0px;">
+                    <div class="field">
+                        <button class="ui blueli button" data-value="fade up" onclick="return AddNewSub_Title()">Thêm mới</button>
+                    </div>
+                    <div class="field">
+                    </div>
+                    <div class="field">
+                    </div>
+                    <div class="field">
+                        <div class="ui icon input" style="max-height: 40px;">
+                            <input id="filterSub_Title" type="text" placeholder="Seaching..." onkeyup="event.preventDefault();return onkeyupTicketFitler();">
+                            <i class="circular search link icon"></i>
+                        </div>
+                    </div>
+                </div>
+                    <div class="ui segment" style="border: none; overflow-x: auto; padding: unset;">
+                        <table id="dtContentSub_Title" class="ui sortable celled table">
+                            <thead class="hiddenCollapse">
+                                <tr role="row">
+                                    <th style="display: none">ID</th>
+                                    <th style="width: 70px;">#</th>
+                                    <th style="max-width:100px">Tiêu Đề Dịch</th>
+                                    <th>Ghi Chú</th>
+                                    <th>Xóa</th>
+                                </tr>
+                            </thead>
+                            <tbody id="dtContentSub_TitleBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+        </div>
+
+    </div>
+</div>
+<script type="text/javascript">
+    let DataSub_Title;
+
+    function Render_Sub_Title(data, id) {
+        var myNode = document.getElementById(id);
+        if (myNode != null) {
+            myNode.innerHTML = '';
+            let stringContent = '';
+            if (data && data.length > 0) {
+                for (var i = 0; i < data.length; i++) {
+                    let item = data[i];
+                    let tr =
+                        '<td style="display:none !important">' + item.ID + '</td>'
+                        + '<td data-sortValue="' + Number(i) + '">' + (i + 1) + '</td>'
+                        + '<td ><a style="text-decoration: underline;" class="buttonEditClass" href="#">' + item.Sub_Title + '</a></td>'
+
+                        + '<td >' + item.Note + '</td>'
+                        +( (item.ButtonDelete == 0 )? ('<td class="selectedtd"><button class="buttonGrid _tab_control_" data-tab="delete_service_type" value="'
+                        + item.ID
+                        + '"><img class="buttonDeleteClass imgGrid" src="/img/ButtonImg/delete_ver2.png"></button></td>'):('<td></td>'))
+                    stringContent = stringContent + '<tr class="seachRow" role="row">' + tr + '</tr>';
+                }
+            }
+            document.getElementById(id).innerHTML = stringContent;
+        }
+        //EventMainGrid();
+        //Checking_TabControl_Permission();
+    }
+
+    function LoadSub_Title() {
+        $.ajax({
+            url: "Sub_Title/LoadSub_Title",
+            dataType: "json",
+            type: "POST",
+            data: JSON.stringify({
+            }),
+            contentType: 'application/json; charset=utf-8',
+            async: true,
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                notiError();
+            },
+            success: function (result) {
+                DataSub_Title = result;
+                Render_Sub_Title(result, "dtContentSub_TitleBody");
+            }
+        });
+    }
+    $(document).ready(function () {
+        $('#dtContentSub_Title').tablesort();
+        $("#dateFilter").flatpickr({
+            mode: "range",
+            dateFormat: 'd-m-Y',
+            enableTime: false,
+            onClose: function (selectedDates, dateStr, instance) {
+                if (selectedDates.length == 1) {
+                    instance.setDate([selectedDates[0], selectedDates[0]], true);
+                }
+            }
+        });
+        var date = new Date();
+        var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+        var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+        //$("#dateFilter").val(formatDateClient(firstDay) + ' to ' + formatDateClient(lastDay));
+        LoadSub_Title();
+        //flagLoad = 1;
+        //LoadData_PunishEmployee();
+        //$('#dtContentSub_Title tbody').on('click', '.buttonEditClass', function () {
+        //    let ID = Number($(this).closest('tr')[0].childNodes[0].innerHTML);
+        //    EditPunish(ID);
+        //});
+        $('#dtContentSub_Title tbody').on('click', '.buttonEditClass', function () {
+            let ID = Number($(this).closest('tr')[0].childNodes[0].innerHTML);
+            
+            EditTab(ID);
+        });
+        $('#dtContentSub_Title tbody').on('click', '.buttonDeleteClass', function () {
+            let ID = Number($(this).closest('tr')[0].childNodes[0].innerHTML);
+            DeleteSub_Title(ID);
+        });
+    });
+
+    function AddNewSub_Title() {
+        document.getElementById("divDetailPopup").innerHTML = '';
+        $("#divDetailPopup").load("Sub_TitleDetail/"+0);
+        $('#divDetailPopup').modal('show');
+        return false;
+    }
+    function EditTab(CurrentID) {
+        document.getElementById("divDetailPopup").innerHTML = '';
+        $("#divDetailPopup").load("Sub_TitleDetail/" + CurrentID);
+        $('#divDetailPopup').modal('show');
+        return false;
+    }
+    function exportData_PunishEmployee() {
+        exportToExcel("dtContentSub_Title", 'Danh Sách Lứa Tuổi Xem Phim');
+    }
+
+    function DeleteSub_Title(id) {
+        const promise = notiConfirm();
+        promise.then(function () { ExecuteDeleteSub_Title(id); }, function () { });
+    }
+
+    function ExecuteDeleteSub_Title(ID) {
+        $.ajax({
+            url: "Sub_Title/DeleteSub_Title/" + ID,
+            dataType: "json",
+            type: "GET",
+            data: JSON.stringify({
+                'ID': ID
+            }),
+            contentType: 'application/json; charset=utf-8',
+            async: true,
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                notiError(textStatus);
+            },
+            success: function (result) {
+                if (result == "1") {
+                    notiSuccess();
+                    LoadSub_Title();
+                } else {
+                    notiError();
+                }
+            }
+        });
+    }
+
+    function onkeyupTicketFitlerAsync(extension) {
+        return new Promise((resolve, reject) => {
+            setTimeout(
+                () => {
+                    let search = xoa_dau($('#filterSub_Title').val().toLowerCase()).trim();
+
+                    let data = DataSub_Title.filter(function (item) {
+                        if (xoa_dau(item["Sub_Title"]).toLowerCase().includes(search) )
+                            return true;
+                        return false;
+                    });
+                    if (data != undefined && data != null) {
+                        document.getElementById("dtContentSub_TitleBody").innerHTML = "";
+                        Render_Sub_Title(data, "dtContentSub_TitleBody");
+                        ColorSearchFilterText(search, "seachRow");
+                    }
+                    resolve()
+                },
+                Math.floor(Math.random() * 300) + 1
+            )
+        })
+    }
+
+    async function onkeyupTicketFitler() {
+        await onkeyupTicketFitlerAsync();
+        return false;
+    }
+</script>
