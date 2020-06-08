@@ -1,15 +1,13 @@
 ﻿
-@{
-    Layout = null;
-}
+@{ Layout = null; }
 
-    <div id="headerPopup_CustomerCare" class="header">
-        Phiên Dịch
-    </div>
+<div id="headerPopup_CustomerCare" class="header">
+    Phiên Dịch
+</div>
 <div class="row">
     <div class="sixteen wide tablet eight wide computer column">
         <div class="ui segments">
-            <form class="ui form segment form3" id="form3">
+            <form class="ui form segment form22" id="form22">
                 <div class="ui accordion field">
                     <div class="content field active">
                         <div class="three fields">
@@ -33,12 +31,14 @@
 
 <div class="actions">
     <div style="float: right">
-        <button class="ui teal button" form="form3" type="submit" onclick="return ExcuteData()">Save</button>
+        <button class="ui teal button" form="form22" type="submit" onclick="return ExcuteData()">Save</button>
     </div>
     <div style="float: right">
-        <button class="ui grey button" form="form3" onclick="event.preventDefault();CloseModal()">Cancel</button>
+        <button class="ui grey button" form="form22" onclick="event.preventDefault();CloseModal()">Cancel</button>
     </div>
 </div>
+<script src="/js/customjs/custom-validation.js"></script>
+<script src="/js/main.js"></script>
 
 
 <script>
@@ -64,12 +64,12 @@
         });
     }
     function ExcuteData() {
-        var data = new Object();        
+        var data = new Object();
         data.Sub_Title = $('#txtSub_Title').val() ? $('#txtSub_Title').val() : "";
         data.Note = $('#txtNote').val() ? $('#txtNote').val() : "";
         $('#form22').form('validate form');
         if ($('#form22').form('is valid')) {
-            
+
              $.ajax({
                  url: "/Sub_TitleDetail/Execute",
                  dataType: "json",
@@ -80,7 +80,7 @@
                      , data: JSON.stringify(data)
                  },
                  async: true,
-                 error: function (XMLHttpRequest, textStatus, errorThrown) {                     
+                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                         notiError("Lỗi Hệ Thống");
                  },
                  success: function (result) {

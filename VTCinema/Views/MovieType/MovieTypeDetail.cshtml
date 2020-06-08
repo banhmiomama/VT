@@ -1,23 +1,23 @@
 ﻿
 @{ Layout = null; }
 
-<div id="headerPopup_CustomerCare" class="header">
-    Lứa Tuổi
-</div>
+    <div id="headerPopup_CustomerCare" class="header">
+        Thể Loại
+    </div>
 <div class="row">
     <div class="sixteen wide tablet eight wide computer column">
         <div class="ui segments">
-            <form class="ui form segment form20" id="form20">
+            <form class="ui form segment form3" id="form3">
                 <div class="ui accordion field">
                     <div class="content field active">
                         <div class="two fields">
                             <div class="field">
-                                <label>Tuổi</label>
-                                <input id="txtAges" type="text" name="Ages" />
+                                <label>Tên Thể Loại</label>
+                                <input id="txtName" type="text" name="MovieType" />
                             </div>
                             <div class="field">
-                                <label>Lứa Tuổi</label>
-                                <input id="txtName" name="Name" type="text" />
+                                <label>Ghi Chú</label>
+                                <input id="txtNote" name="Name" type="text" />
                             </div>
                         </div>
                     </div>
@@ -28,54 +28,52 @@
 </div>
 <div class="actions">
     <div style="float: right">
-        <button class="ui teal button" form="form20" type="submit" onclick="return ExcuteData()">Save</button>
+        <button class="ui teal button" form="form3" type="submit" onclick="return ExcuteData()">Save</button>
 
     </div>
     <div style="float: right">
-        <button class="ui grey button" form="form20" onclick="event.preventDefault();CloseModal()">Cancel</button>
+        <button class="ui grey button" form="form3" onclick="event.preventDefault();CloseModal()">Cancel</button>
     </div>
 </div>
 <script src="/js/customjs/custom-validation.js"></script>
 <script src="/js/main.js"></script>
 <script>
     debugger
-    let AgesDetailID;
+    let MovieTypeDetailID;
     $(document).ready(function () {
-        AgesDetailID = @ViewBag.AgesID;
-        LoadDataUpdateAges();
+        MovieTypeDetailID = @ViewBag.MovieTypeID;
+        LoadDataUpdateMovieType();
     });
     debugger
 
-    function LoadDataUpdateAges() {
+    function LoadDataUpdateMovieType() {
         $.ajax({
             type: 'GET',
             dataType: "json",
             contentType: 'application/json; charset=utf-8',
-            url: "/AgesDetail/GetAgesDetail/" + AgesDetailID,
+            url: "/MovieTypeDetail/GetMovieTypeDetail/" + MovieTypeDetailID,
             async: true,
             success: function (data) {
                 if (data.length != 0) {
-                    $('#txtAges').val((data[0].Ages));
-                    $('#txtName').val((data[0].Name));
+                    $('#txtName').val((data[0].Nametype));
+                    $('#txtNote').val((data[0].Note));
                 }
             }
         });
     }
     function ExcuteData() {
         var data = new Object();
-        data.Ages = $('#txtAges').val() ? $('#txtAges').val() : "";
         data.Name = $('#txtName').val() ? $('#txtName').val() : "";
-        debugger
-        $('#form20').form('validate form');
-        if ($('#form20').form('is valid')) {
-
+        data.Note = $('#txtNote').val() ? $('#txtNote').val() : "";
+        $('#form3').form('validate form');
+        if ($('#form3').form('is valid')) {
              $.ajax({
-                 url: "/AgesDetail/Execute",
+                 url: "/MovieTypeDetail/Execute",
                  dataType: "json",
                  type: "POST",
                  data: {
                      __RequestVerificationToken: token
-                     , AgesID: @ViewBag.AgesID
+                     , MovieTypeID: @ViewBag.MovieTypeID
                      , data: JSON.stringify(data)
                  },
                  async: true,
@@ -85,7 +83,7 @@
                  success: function (result) {
                      if (result == "0") {
                          notiSuccess();
-                         LoadAges();
+                         LoadMovieType();
                      } else {
                          notiError("Lứa Tuổi Đã Tồn Tại Vui Lòng Kiểm Tra Lại");
                         }

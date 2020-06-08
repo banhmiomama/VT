@@ -80,10 +80,46 @@ $('.ui.form2').form({
 // pageSupplierDetail,pageInputDetail, pageOutputDetail
 // pageCustomerCareDetail
 $('.ui.form20').form({
+    inline: true,
+    on: 'blur',
+    fields: {
+        Ages: {
+            identifier: 'Ages',
+            rules: [{
+                type: 'empty',
+                color: 'red',
+                prompt: 'Vu iLòng Nhập Tuổi '
+            }]
+        },
+        Name: {
+            identifier: 'Name',
+            rules: [{
+                type: 'empty',
+                color: 'red',
+                prompt: 'Vui Lòng Nhập Lứa Tuổi'
+                } ]
+        }
+    }
 });
 
-$('.ui.form22').form({
 
+$('.ui.form22').form({
+    Sub_Title: {
+        identifier: 'Sub_Title',
+        rules: [{
+            type: 'empty',
+            color: 'red',
+            prompt: 'Please enter a Sub Title'
+        }]
+    }     , 
+    Note: {
+        identifier: 'Note',
+        rules: [{
+            type: 'empty',
+            color: 'red',
+            prompt: 'Please enter a Note'
+        }]
+    }
 });
 
 $('.ui.form3').form({
