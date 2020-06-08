@@ -1,26 +1,31 @@
 ﻿
-@{ Layout = null; }
+@{
+    Layout = null;
+}
 
 <div id="headerPopup_CustomerCare" class="header">
-    Phiên Dịch
+    Loại Vé Xem Phim
 </div>
 <div class="row">
     <div class="sixteen wide tablet eight wide computer column">
         <div class="ui segments">
-            <form class="ui form segment form22" id="form22">
+            <form class="ui form segment form3" id="form3">
                 <div class="ui accordion field">
                     <div class="content field active">
                         <div class="two fields">
                             <div class="field">
-                                <label>Tiêu Đề Phiên Dịch</label>
-                                <input id="txtSub_Title" name="Sub_Title" type="text" />
+                                <label>Tên Loại Vé</label>
+                                <input id="txtName" name="Name" type="text" />
                             </div>
                             <div class="field">
-                                <label>Ghi Chú</label>
-                                <input id="txtNote" type="text" name="Note" />
+                                <label>Đơn Giá</label>
+                                <input id="txtPrice" type="text" name="Name" />
                             </div>
                         </div>
-
+                        <div class="field">
+                            <label>Ghi Chú</label>
+                            <textarea id="txtNote" name="Note" rows="5" />
+                        </div>
                     </div>
                 </div>
             </form>
@@ -31,33 +36,34 @@
 
 <div class="actions">
     <div style="float: right">
-        <button class="ui teal button" form="form22" type="submit" onclick="return ExcuteData()">Save</button>
+        <button class="ui teal button" form="form3" type="submit" onclick="return ExcuteData()">Save</button>
     </div>
     <div style="float: right">
-        <button class="ui grey button" form="form22" onclick="event.preventDefault();CloseModal()">Cancel</button>
+        <button class="ui grey button" form="form3" onclick="event.preventDefault();CloseModal()">Cancel</button>
     </div>
 </div>
-<script src="/js/customjs/custom-validation.js"></script>
-<script src="/js/main.js"></script>
 
 
 <script>
-    let Sub_TitleDetailID;
+    let MovieTicketTypeDetailID;
+
     $(document).ready(function () {
-        Sub_TitleDetailID = @ViewBag.Sub_TitleID;
-        LoadDataUpdateSub_Title();
+        MovieTicketTypeDetailID = @ViewBag.MovieTicketTypeID;
+        LoadDataUpdateMovieTicketType();
+        $('#txtPrice').divide();
     });
 
-    function LoadDataUpdateSub_Title() {
+    function LoadDataUpdateMovieTicketType() {
         $.ajax({
             type: 'GET',
             dataType: "json",
             contentType: 'application/json; charset=utf-8',
-            url: "/Sub_TitleDetail/GetSub_TitleDetail/" + Sub_TitleDetailID,
+            url: "/MovieTicketTypeDetail/GetMovieTicketTypeDetail/" + MovieTicketTypeDetailID,
             async: true,
             success: function (data) {
                 if (data.length != 0) {
-                    $('#txtSub_Title').val((data[0].Sub_Title));
+                    $('#txtName').val((data[0].Name));
+                    $('#txtPrice').val((data[0].Price));
                     $('#txtNote').val((data[0].Note));
                 }
             }
@@ -65,18 +71,19 @@
     }
     function ExcuteData() {
         var data = new Object();
-        data.Sub_Title = $('#txtSub_Title').val() ? $('#txtSub_Title').val() : "";
-        data.Note = $('#txtNote').val() ? $('#txtNote').val() : "";
-        $('#form22').form('validate form');
-        if ($('#form22').form('is valid')) {
+         data.Name = $('#txtName').val() ? $('#txtName').val() : "";
+        data.Price = $('#txtPrice').val() ? Number($('#txtPrice').val()) : 0;
+         data.Note = $('#txtNote').val() ? $('#txtNote').val() : "";
+        $('#form20').form('validate form');
+        if ($('#form20').form('is valid')) {
 
              $.ajax({
-                 url: "/Sub_TitleDetail/Execute",
+                 url: "/MovieTicketTypeDetail/Execute",
                  dataType: "json",
                  type: "POST",
                  data: {
                      __RequestVerificationToken: token
-                     , Sub_TitleID: @ViewBag.Sub_TitleID
+                     , MovieTicketTypeID: @ViewBag.MovieTicketTypeID
                      , data: JSON.stringify(data)
                  },
                  async: true,
@@ -86,9 +93,9 @@
                  success: function (result) {
                      if (result == "0") {
                          notiSuccess();
-                         LoadSub_Title();
+                         LoadMovieTicketType();
                      } else {
-                         notiError("Loại Phiên Dịch Đã Tồn Tại Vui Lòng Kiểm Tra Lại");
+                         notiError("Loại Vé Đã Tồn Tại Vui Lòng Kiểm Tra Lại");
                         }
                  }
              })

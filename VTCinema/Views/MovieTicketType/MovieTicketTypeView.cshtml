@@ -1,0 +1,196 @@
+﻿
+@{
+    ViewData["Title"] = "Loại Vé Xem Phim ";
+    Layout = "~/Views/Shared/Master.cshtml";
+}
+
+
+<div class="pusher">
+    <div class="navslide navwrap">
+        <div class="row" style="background-color: white">
+            <div class="ui form segment form3">
+                <h2 class="ui center aligned header" style="border-top: 1px; font-family: 'Times New Roman'">
+                    Danh Sách Loại Vé
+                    <div class="sub header" style="font-family: 'Times New Roman'">Danh Sách các loại vé</div>
+                </h2>
+                <div class="three fields" style="margin: 0px;">
+                    <div class="field">
+                        <button class="ui blueli button" data-value="fade up" onclick="return AddNewMovieTicketType()">Thêm mới</button>
+                    </div>
+                    <div class="field">
+                    </div>
+                    <div class="field">
+                        <div class="ui icon input" style="max-height: 40px;">
+                            <input id="filterMovieTicketType" type="text" placeholder="Seaching..." onkeyup="event.preventDefault();return onkeyupMovieTicketTypeFitler();">
+                            <i class="circular search link icon"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui segment" style="border: none; overflow-x: auto; padding: unset;">
+                    <table id="dtContentMovieTicketType" class="ui sortable celled table">
+                        <thead class="hiddenCollapse">
+                            <tr role="row">
+                                <th style="display: none">ID</th>
+                                <th style="width: 70px;">#</th>
+                                <th >Loại Vé</th>
+                                <th style="min-width: 60px">Đơn Giá</th>
+                                <th style="min-width: 150px" class="no-sort">Ghi Chú</th>
+                                <th>Xoá</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dtContentMovieTicketTypeBody">
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script type="text/javascript">
+    let DataMovieTicketType;
+    function Render_MovieTicketType(data, id) {
+        var myNode = document.getElementById(id);
+        if (myNode != null) {
+            myNode.innerHTML = '';
+            let stringContent = '';
+            if (data && data.length > 0) {
+                for (var i = 0; i < data.length; i++) {
+                    let item = data[i];
+                    let tr =
+                        '<td style="display:none !important">' + item.ID + '</td>'
+                        + '<td data-sortValue="' + Number(i) + '">' + (i + 1) + '</td>'
+                        + '<td style="text-align:center;"><a style="text-decoration: underline;" class="buttonEditClass" href="#">' + item.Name + '</a></td>'
+                        + '<td >' + FormatNumbertoComma(item.Price) + '</td>'
+                        + '<td >' + item.Note + '</td>'
+                        + ((item.ButtonDelete == "0")?('<td class="selectedtd"><button class="buttonGrid _tab_control_" data-tab="delete_service_type" value="'
+                        + item.ID
+                        + '"><img class="buttonDeleteClass imgGrid" src="/img/ButtonImg/delete_ver2.png"></button></td>'):('<td></td>'))
+                    stringContent = stringContent + '<tr class="seachRow" role="row">' + tr + '</tr>';
+                }
+            }
+            document.getElementById(id).innerHTML = stringContent;
+        }
+    }
+    function LoadMovieTicketType() {
+        $.ajax({
+            url: "MovieTicketType/LoadMovieTicketType",
+            dataType: "json",
+            type: "POST",
+            data: JSON.stringify({
+            }),
+            contentType: 'application/json; charset=utf-8',
+            async: true,
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                notiError();
+            },
+            success: function (result) {
+                DataMovieTicketType = result;
+                Render_MovieTicketType(result, "dtContentMovieTicketTypeBody");
+            }
+        });
+    }
+    $(document).ready(function () {
+        //$('#dtContentMovieTicketType').tablesort();
+        $("#dateFilter").flatpickr({
+            mode: "range",
+            dateFormat: 'd-m-Y',
+            enableTime: false,
+            onClose: function (selectedDates, dateStr, instance) {
+                if (selectedDates.length == 1) {
+                    instance.setDate([selectedDates[0], selectedDates[0]], true);
+                }
+            }
+        });
+        var date = new Date();
+        var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+        var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+        //$("#dateFilter").val(formatDateClient(firstDay) + ' to ' + formatDateClient(lastDay));
+        LoadMovieTicketType();
+        $('#dtContentMovieTicketType tbody').on('click', '.buttonEditClass', function () {
+            let ID = Number($(this).closest('tr')[0].childNodes[0].innerHTML);
+            EditMovieTicketType(ID);
+        });
+        $('#dtContentMovieTicketType tbody').on('click', '.buttonDeleteClass', function () {
+            let ID = Number($(this).closest('tr')[0].childNodes[0].innerHTML);
+            DeleteMovieTicketType(ID);
+        });
+    });
+
+    function AddNewMovieTicketType() {
+        document.getElementById("divDetailPopup").innerHTML = '';
+        $("#divDetailPopup").load("MovieTicketTypeDetail/" + 0);
+        $('#divDetailPopup').modal('show');
+        return false;
+    }
+
+    function EditMovieTicketType(CurrentID) {
+        document.getElementById("divDetailPopup").innerHTML = '';
+        $("#divDetailPopup").load("MovieTicketTypeDetail/" + CurrentID);
+        $('#divDetailPopup').modal('show');
+        return false;
+    }
+
+    function DeleteMovieTicketType(id) {
+        const promise = notiConfirm();
+        promise.then(function () { ExecuteDeleteMovieTicketType(id); }, function () { });
+    }
+
+    function ExecuteDeleteMovieTicketType(ID) {
+        $.ajax({
+            url: "MovieTicketType/DeleteMovieTicketType/"+ID,
+            dataType: "json",
+            type: "GET",
+            data: JSON.stringify({
+                'ID': ID
+            }),
+            contentType: 'application/json; charset=utf-8',
+            async: true,
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                notiError(textStatus);
+            },
+            success: function (result) {
+                if (result == "1") {
+                    notiSuccess();
+                    LoadMovieTicketType();
+                } else {
+                    notiError();
+                }
+            }
+        });
+    }
+
+    function onkeyupTicketFitlerAsync(extension) {
+        return new Promise((resolve, reject) => {
+            setTimeout(
+                () => {
+                    let search = xoa_dau($('#filterMovieTicketType').val().toLowerCase()).trim();
+
+                    let data = DataMovieTicketType.filter(function (item) {
+                        if (xoa_dau(item["Name"]).toLowerCase().includes(search)
+                            || xoa_dau(item["NameNoSign"]).toLowerCase().includes(search))
+                            return true;
+                        return false;
+                    });
+                    if (data != undefined && data != null) {
+                        document.getElementById("dtContentMovieTicketTypeBody").innerHTML = "";
+                        Render_MovieTicketType(data, "dtContentMovieTicketTypeBody");
+                        ColorSearchFilterText(search, "seachRow");
+                    }
+                    resolve()
+                },
+                Math.floor(Math.random() * 300) + 1
+            )
+        })
+    }
+
+    async function onkeyupMovieTicketTypeFitler() {
+        await onkeyupTicketFitlerAsync();
+        return false;
+    }
+</script>
+
+
+
