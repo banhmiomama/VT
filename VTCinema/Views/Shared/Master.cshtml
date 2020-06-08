@@ -126,6 +126,26 @@
                     <div class="content">
                         <a data-tab="undefined" data-index="4" data-search="dich vu" class="item menudesktop_render _tab_control_ transition hidden" style="font-size: 11px !important; background: transparent;" href="/Product">Sản Phẩm</a>
                     </div>
+                    <div class="title item">
+                        <img src="/img/ButtonImg/service.png">
+                        <i class="dropdown icon"></i>
+                        Khách Hàng
+                    </div>
+                    <div class="content">
+                        <a data-tab="undefined" data-index="4" data-search="dich vu" class="item menudesktop_render _tab_control_ transition hidden" style="font-size: 11px !important; background: transparent;" href="/Customer">Khách Hàng</a>
+                    </div>
+                    <div class="title item">
+                        <img src="/img/ButtonImg/service.png">
+                        <i class="dropdown icon"></i>
+                        Cấu Hình
+                    </div>
+                    <div class="content">
+                        <a data-tab="undefined" data-index="4" data-search="dich vu" class="item menudesktop_render _tab_control_ transition hidden" style="font-size: 11px !important; background: transparent;" href="/Branch">Chi Nhánh</a>
+                        <a data-tab="undefined" data-index="4" data-search="dich vu" class="item menudesktop_render _tab_control_ transition hidden" style="font-size: 11px !important; background: transparent;" href="/Ages">Lứa Tuổi</a>
+                        <a data-tab="undefined" data-index="4" data-search="dich vu" class="item menudesktop_render _tab_control_ transition hidden" style="font-size: 11px !important; background: transparent;" href="/MovieType">Thể Loại</a>        
+                        <a data-tab="undefined" data-index="4" data-search="dich vu" class="item menudesktop_render _tab_control_ transition hidden" style="font-size: 11px !important; background: transparent;" href="/MovieTicketType">Loại Vé</a>
+                        <a data-tab="undefined" data-index="4" data-search="dich vu" class="item menudesktop_render _tab_control_ transition hidden" style="font-size: 11px !important; background: transparent;" href="/Sub_Title">Loại Phiên Dịch</a>
+                    </div>
                 </div>
             </div>
 
@@ -353,7 +373,7 @@
             return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
         }
         //#endregion
-        
+
 
         //#endregion
 
@@ -528,7 +548,22 @@
             onVisible: function () {
             }
         });
-            //#endregion
+
+        function FormatNumbertoComma(number) {
+            number = '' + number;
+            if (number.length > 3) {
+                var mod = number.length % 3;
+                var output = (mod > 0 ? (number.substring(0, mod)) : '');
+                for (i = 0; i < Math.floor(number.length / 3); i++) {
+                    if ((mod == 0) && (i == 0))
+                        output += number.substring(mod + 3 * i, mod + 3 * i + 3);
+                    else
+                        output += ',' + number.substring(mod + 3 * i, mod + 3 * i + 3);
+                }
+                return (output);
+            }
+            else return number;
+        }
     </script>
 
     <script src="/semantic.min.js"></script>
