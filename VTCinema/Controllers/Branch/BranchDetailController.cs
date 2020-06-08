@@ -86,6 +86,7 @@ namespace VTCinema.Controllers.Branch
                            "@ShortName", SqlDbType.NVarChar, dataDetail.ShortName,
                            "@Address", SqlDbType.NVarChar, dataDetail.Address,
                            "@Latitude", SqlDbType.Float, dataDetail.Latitude,
+                           "@Note", SqlDbType.NVarChar, dataDetail.Note,
                            "@Longtitude", SqlDbType.Float, dataDetail.Longtitude,
                            "@Modified_By", SqlDbType.Int , HttpContext.Session.GetInt32(Comon.Global.UserID)
                       );

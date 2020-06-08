@@ -1,87 +1,55 @@
 ﻿
+
 @{
-    ViewData["Title"] = "Branch";
+    ViewData["Title"] = "Thể Loại";
     Layout = "~/Views/Shared/Master.cshtml";
 }
-<style>
-    /* Always set the map height explicitly to define the size of the div
-       * element that contains the map. */
-    #map {
-        margin-left: 15%;
-        width: 82%;
-        height: 53%;
-    }
-    /* Optional: Makes the sample page fill the window. */
-    html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-    }
-</style>
-
 <div class="pusher">
     <div class="navslide navwrap">
         <div class="row" style="background-color: white">
             <div class="ui form segment form3">
                 <h2 class="ui center aligned header" style="border-top: 1px; font-family: 'Times New Roman'">
-                    Danh Sách Chi Nhánh
-                    <div class="sub header" style="font-family:'Times New Roman'">Danh Sách Các Chi Nhánh</div>
+                    Danh Sách Thể Loại
+                    <div class="sub header" style="font-family: 'Times New Roman'">Danh Sách các thể loại</div>
                 </h2>
-                <div class="four fields" style="margin: 0px;">
+                <div class="three fields" style="margin: 0px;">
                     <div class="field">
-                        <button class="ui blueli button" data-value="fade up" onclick="return AddNewBranch()">Thêm mới</button>
-                    </div>
-                    <div class="field">
+                        <button class="ui blueli button" data-value="fade up" onclick="return AddNewMovieType()">Thêm mới</button>
                     </div>
                     <div class="field">
                     </div>
                     <div class="field">
                         <div class="ui icon input" style="max-height: 40px;">
-                            <input id="filterBranch" type="text" placeholder="Seaching..." onkeyup="event.preventDefault();return onkeyupTicketFitler();">
+                            <input id="filterMovieType" type="text" placeholder="Seaching..." onkeyup="event.preventDefault();return onkeyupMovieTypeFitler();">
                             <i class="circular search link icon"></i>
                         </div>
                     </div>
                 </div>
                 <div class="ui segment" style="border: none; overflow-x: auto; padding: unset;">
-                    <table id="dtContentPunishEmployee" class="ui sortable celled table">
+                    <table id="dtContentMovieType" class="ui sortable celled table">
                         <thead class="hiddenCollapse">
                             <tr role="row">
                                 <th style="display: none">ID</th>
                                 <th style="width: 70px;">#</th>
-                                <th style="max-width:100px">Mã Chi Nhánh</th>
-                                <th>Tên</th>
-                                <th style="min-width: 40px;">Tên Viết Tắt</th>
-                                <th style="max-width: 120px;">Địa Chỉ</th>
-                                <th style="max-width: 120px;">Kinh Độ</th>
-                                <th style="max-width: 120px;">Vĩ Độ</th>
-                                <th style="max-width: 120px;"> Ghi Chú</th>
-                                <th>Xóa</th>
+                                <th style="max-width: 300px;">Thể Loại</th>
+                                <th style="min-width: 150px" class="no-sort">Ghi chú</th>
+                                <th>Xoá</th>
                             </tr>
                         </thead>
-                        <tbody id="dtContentPunishEmployeeBody"></tbody>
+                        <tbody id="dtContentMovieTypeBody">
+                        </tbody>
                     </table>
+
                 </div>
             </div>
         </div>
+
     </div>
-    <div id="map"></div>
 </div>
-<script>
-    var map;
-    function initMap() {
-        map = new google.maps.Map(document.getElementById('map'), {
-            center: { lat: 10.8007178, lng: 106.6880956 },
-            zoom: 8
-        });
-    }
-</script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBsJT9UWw7frs5z80Knu_gXwF-pCp_tefM&callback=initMap"
- async defer></script>
 
 <script type="text/javascript">
-    let DataBranch;
-
-    function Render_Branch(data, id) {
+    let DataMovieType;
+    function Render_MovieType(data, id) {
         var myNode = document.getElementById(id);
         if (myNode != null) {
             myNode.innerHTML = '';
@@ -92,30 +60,20 @@
                     let tr =
                         '<td style="display:none !important">' + item.ID + '</td>'
                         + '<td data-sortValue="' + Number(i) + '">' + (i + 1) + '</td>'
-                        + '<td >' + item.BranchCode + '</td>'
                         + '<td ><a style="text-decoration: underline;" class="buttonEditClass" href="#">' + item.Name + '</a></td>'
-                        + '<td >' + item.ShortName + '</td>'
-                        + '<td >' + item.Address + '</td>'
-                        + '<td >' + item.Latitude + '</td>'
-                        + '<td >' + item.Longtitude + '</td>'
                         + '<td >' + item.Note + '</td>'
-                        + ((item.ButtonDelete == 0) ? ('<td class="selectedtd"><button class="buttonGrid _tab_control_" data-tab="delete_service_type" value="'
-                            + item.ID
-                            + '"><img class="buttonDeleteClass imgGrid" src="/img/ButtonImg/delete_ver2.png"></button></td>') : ('<td></td>'))
-
-
+                        + '<td class="selectedtd"><button class="buttonGrid _tab_control_" data-tab="delete_service_type" value="'
+                        + item.ID
+                        + '"><img class="buttonDeleteClass imgGrid" src="/img/ButtonImg/delete_ver2.png"></button></td>'
                     stringContent = stringContent + '<tr class="seachRow" role="row">' + tr + '</tr>';
                 }
             }
             document.getElementById(id).innerHTML = stringContent;
         }
-        //EventMainGrid();
-        //Checking_TabControl_Permission();
     }
-
-    function LoadBranch() {
+    function LoadMovieType() {
         $.ajax({
-            url: "branch/LoadBranch",
+            url: "MovieType/LoadMovieType",
             dataType: "json",
             type: "POST",
             data: JSON.stringify({
@@ -126,13 +84,13 @@
                 notiError();
             },
             success: function (result) {
-                DataBranch = result;
-                Render_Branch(result, "dtContentPunishEmployeeBody");
+                DataMovieType = result;
+                Render_MovieType(result, "dtContentMovieTypeBody");
             }
         });
     }
     $(document).ready(function () {
-        $('#dtContentPunishEmployee').tablesort();
+        //$('#dtContentMovieType').tablesort();
         $("#dateFilter").flatpickr({
             mode: "range",
             dateFormat: 'd-m-Y',
@@ -147,48 +105,39 @@
         var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
         var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
         //$("#dateFilter").val(formatDateClient(firstDay) + ' to ' + formatDateClient(lastDay));
-        LoadBranch();
-        //flagLoad = 1;
-        //LoadData_PunishEmployee();
-        //$('#dtContentPunishEmployee tbody').on('click', '.buttonEditClass', function () {
-        //    let ID = Number($(this).closest('tr')[0].childNodes[0].innerHTML);
-        //    EditPunish(ID);
-        //});
-        $('#dtContentPunishEmployee tbody').on('click', '.buttonEditClass', function () {
+        LoadMovieType();
+        $('#dtContentMovieType tbody').on('click', '.buttonEditClass', function () {
             let ID = Number($(this).closest('tr')[0].childNodes[0].innerHTML);
-
-            EditTab(ID);
+            EditMovieType(ID);
         });
-        $('#dtContentPunishEmployee tbody').on('click', '.buttonDeleteClass', function () {
+        $('#dtContentMovieType tbody').on('click', '.buttonDeleteClass', function () {
             let ID = Number($(this).closest('tr')[0].childNodes[0].innerHTML);
-            DeleteBranch(ID);
+            DeleteMovieType(ID);
         });
     });
 
-    function AddNewBranch() {
+    function AddNewMovieType() {
         document.getElementById("divDetailPopup").innerHTML = '';
-        $("#divDetailPopup").load("BranchDetail/" + 0);
+        $("#divDetailPopup").load("MovieTypeDetail/" + 0);
         $('#divDetailPopup').modal('show');
         return false;
-    }
-    function EditTab(CurrentID) {
-        document.getElementById("divDetailPopup").innerHTML = '';
-        $("#divDetailPopup").load("BranchDetail/" + CurrentID);
-        $('#divDetailPopup').modal('show');
-        return false;
-    }
-    function exportData_PunishEmployee() {
-        exportToExcel("dtContentPunishEmployee", 'Doanh-Sach-Nhan-Vien-Bi-Xu-Phat');
     }
 
-    function DeleteBranch(id) {
+    function EditMovieType(CurrentID) {
+        document.getElementById("divDetailPopup").innerHTML = '';
+        $("#divDetailPopup").load("MovieTypeDetail/" + CurrentID);
+        $('#divDetailPopup').modal('show');
+        return false;
+    }
+
+    function DeleteMovieType(id) {
         const promise = notiConfirm();
-        promise.then(function () { ExecuteDeleteBranch(id); }, function () { });
+        promise.then(function () { ExecuteDeleteMovieType(id); }, function () { });
     }
 
-    function ExecuteDeleteBranch(ID) {
+    function ExecuteDeleteMovieType(ID) {
         $.ajax({
-            url: "Branch/DeleteBranch/" + ID,
+            url: "MovieType/DeleteMovieType/"+ID,
             dataType: "json",
             type: "GET",
             data: JSON.stringify({
@@ -202,7 +151,7 @@
             success: function (result) {
                 if (result == "1") {
                     notiSuccess();
-                    LoadBranch();
+                    LoadMovieType();
                 } else {
                     notiError();
                 }
@@ -214,17 +163,16 @@
         return new Promise((resolve, reject) => {
             setTimeout(
                 () => {
-                    let search = xoa_dau($('#filterBranch').val().toLowerCase()).trim();
+                    let search = xoa_dau($('#filterMovieType').val().toLowerCase()).trim();
 
-                    let data = DataBranch.filter(function (item) {
-                        if (xoa_dau(item["BranchCode"]).toLowerCase().includes(search) ||
-                            xoa_dau(item["Name"]).toLowerCase().includes(search))
+                    let data = DataMovieType.filter(function (item) {
+                        if (xoa_dau(item["Name"]).toLowerCase().includes(search))
                             return true;
                         return false;
                     });
                     if (data != undefined && data != null) {
-                        document.getElementById("dtContentPunishEmployeeBody").innerHTML = "";
-                        Render_Branch(data, "dtContentPunishEmployeeBody");
+                        document.getElementById("dtContentMovieTypeBody").innerHTML = "";
+                        Render_MovieType(data, "dtContentMovieTypeBody");
                         ColorSearchFilterText(search, "seachRow");
                     }
                     resolve()
@@ -234,7 +182,7 @@
         })
     }
 
-    async function onkeyupTicketFitler() {
+    async function onkeyupMovieTypeFitler() {
         await onkeyupTicketFitlerAsync();
         return false;
     }
