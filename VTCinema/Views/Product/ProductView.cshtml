@@ -67,8 +67,7 @@
                                                 <th style="width: 50px;">#</th>
                                                 <th >Tên Sản Phẩm</th>
                                                 <th style="min-width: 70px;">Giá Tiền</th>
-                                                <th class="no-sort" style="max-width: 100px;">Người Tạo</th>
-                                                <th class="no-sort" style="width: 30px;">Ẩn</th>
+                                                <th class="no-sort" style="max-width: 100px;">Người Tạo</th>              
                                                 <th class="no-sort" style="width: 30px;">Xóa</th>
                                             </tr>
                                         </thead>
@@ -86,8 +85,14 @@
         </div>
     </div>
 </div>
+<style>
+    .rowProductType:hover, .seachRow:hover {
+        background: #bee3ff !important;
+    }
+</style>
 <script type="text/javascript">
     let DataProduct;
+    let RowProductID;
     function Render_Product(data, id) {
         var myNode = document.getElementById(id);
         if (myNode != null) {
@@ -134,6 +139,7 @@
         }
         EventRowProductType();
     }
+
     function LoadProduct() {
         $.ajax({
             url: "Product/LoadProduct",
@@ -160,21 +166,6 @@
 
     $(document).ready(function () {
         //$('#dtContentProduct').tablesort();
-        $("#dateFilter").flatpickr({
-            mode: "range",
-            dateFormat: 'd-m-Y',
-            enableTime: false,
-            onClose: function (selectedDates, dateStr, instance) {
-                if (selectedDates.length == 1) {
-                    instance.setDate([selectedDates[0], selectedDates[0]], true);
-                }
-            }
-        });
-        var date = new Date();
-        var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
-        var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0); 
-        //$("#dateFilter").val(formatDateClient(firstDay) + ' to ' + formatDateClient(lastDay));
-
         LoadProduct();
         $('#dtContentProduct tbody').on('click', '.buttonEditClass', function () {
             let ID = Number($(this).closest('tr')[0].childNodes[0].innerHTML);
@@ -197,7 +188,8 @@
     });
     function EventRowProductType() {
         $('.rowProductType').on('click', function () {
-            let CurrentTypeID = Number($(this).attr('data-id'));            
+            let CurrentTypeID = Number($(this).attr('data-id'));
+            RowProductID = CurrentTypeID;
             let Data = "";
             if (CurrentTypeID != 0) {
                 Data = DataProduct.filter(
@@ -212,8 +204,22 @@
             }
             document.getElementById("dtContentProductBody").innerHTML = '';
             Render_Product(Data, "dtContentProductBody");
+            EventSetColorRow();
         })
     }   
+
+    function EventSetColorRow() {       
+        let ID = document.getElementsByClassName('rowProductType');
+        for (var i = 0; i < ID.length ; i++) {
+            if (RowProductID == Number(ID[i].attributes["data-id"].value)) {
+                ID[i].style.background = "#bee3ff";
+            }
+            else {
+                ID[i].style.background = "white";
+            }
+        }
+    }
+
     function AddNewProduct() {
         document.getElementById("divDetailPopup").innerHTML = '';
         $("#divDetailPopup").load("ProductDetail/" + 0);
