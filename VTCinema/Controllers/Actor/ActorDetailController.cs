@@ -25,6 +25,37 @@ namespace VTCinema.Controllers.Actor
         [HttpGet]
         public string GetActorDetail(int ActorID)
         {
+            DataTable Combo = LoadComboNational();
+            DataTable Detail = LoadDetail(ActorID);
+            DataSet ds = new DataSet();
+            ds.Tables.AddRange(new DataTable[] { Combo, Detail });
+            return JsonConvert.SerializeObject(ds);
+        }
+        DataTable LoadComboNational()
+        {
+            try
+            {
+                DataTable dt = new DataTable();
+                using (Models.ExecuteDataBase confunc = new Models.ExecuteDataBase())
+                {
+                    dt = confunc.ExecuteDataTable("[YYY_sp_National_LoadCombo]", CommandType.StoredProcedure);
+                }
+                if (dt != null)
+                {
+                    return dt;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+        DataTable LoadDetail(int ActorID)
+        {
             try
             {
                 DataTable dt = new DataTable();
@@ -35,16 +66,16 @@ namespace VTCinema.Controllers.Actor
                 }
                 if (dt != null)
                 {
-                    return JsonConvert.SerializeObject(dt);
+                    return dt;
                 }
                 else
                 {
-                    return "";
+                    return null;
                 }
-            }           
+            }
             catch (Exception ex)
             {
-                return "[]";
+                return null;
             }
         }
 

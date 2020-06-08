@@ -7,19 +7,19 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
-namespace VTCinema.Controllers.Directors
+namespace VTCinema.Controllers.Customer
 {
-    [Route("Directors")]
-    public class DirectorsController : Controller
+    [Route("Customer")]
+    public class CustomerController : Controller
     {
         public IActionResult Index()
         {
-            return View("~/Views/Actor/ActorView.cshtml");
+            return View("~/Views/Customer/CustomerView.cshtml");
         }
 
-        [Route("LoadActor")]
+        [Route("LoadCustomer")]
         [HttpPost]
-        public string LoadActor()
+        public string LoadCustomer()
         {
             try
             {
@@ -27,7 +27,7 @@ namespace VTCinema.Controllers.Directors
 
                 using (Models.ExecuteDataBase confunc = new Models.ExecuteDataBase())
                 {
-                    dt = confunc.ExecuteDataTable("[YYY_sp_Action_LoadList]", CommandType.StoredProcedure);
+                    dt = confunc.ExecuteDataTable("[YYY_sp_Customer_LoadList]", CommandType.StoredProcedure);
 
                 }
                 if (dt != null)
@@ -44,16 +44,17 @@ namespace VTCinema.Controllers.Directors
                 return "[]";
             }
         }
-        [Route("DeleteActor/{ID}")]
+
+        [Route("DeleteCustomer/{ID}")]
         [HttpGet]
-        public string DeleteActor(int ID)
+        public string DeleteCustomer(int ID)
         {
             try
             {
                 DataTable dt = new DataTable();
                 using (Models.ExecuteDataBase confunc = new Models.ExecuteDataBase())
                 {
-                    dt = confunc.ExecuteDataTable("[YYY_sp_Actor_Delete]", CommandType.StoredProcedure,
+                    dt = confunc.ExecuteDataTable("[YYY_sp_Customer_Delete]", CommandType.StoredProcedure,
                       "@CurrentID", SqlDbType.Int, ID,
                       "@Modified_By", SqlDbType.Int, HttpContext.Session.GetInt32(Comon.Global.UserID));
                 }

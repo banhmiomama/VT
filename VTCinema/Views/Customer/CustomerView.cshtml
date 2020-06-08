@@ -1,0 +1,202 @@
+﻿
+@{
+    ViewData["Title"] = "Khách hàng";
+    Layout = "~/Views/Shared/Master.cshtml";
+}
+
+<div class="pusher">
+    <div class="navslide navwrap">
+        <div class="row" style="background-color: white">
+            <div class="ui form segment form3">
+                <h2 class="ui center aligned header" style="border-top: 1px; font-family: 'Times New Roman'">
+                    Danh Sách Khách Hàng
+                    <div class="sub header" style="font-family: 'Times New Roman'">Danh Sách các khách hàng</div>
+                </h2>
+                <div class="three fields" style="margin: 0px;">
+                    <div class="field">
+                        <button class="ui blueli button" data-value="fade up" onclick="return AddNewCustomer()">Thêm mới</button>
+                    </div>
+                    <div class="field">
+                    </div>
+                    <div class="field">
+                        <div class="ui icon input" style="max-height: 40px;">
+                            <input id="filterCustomer" type="text" placeholder="Seaching..." onkeyup="event.preventDefault();return onkeyupCustomerFitler();">
+                            <i class="circular search link icon"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui segment" style="border: none; overflow-x: auto; padding: unset;">
+                    <table id="dtContentCustomer" class="ui sortable celled table">
+                        <thead class="hiddenCollapse">
+                            <tr role="row">
+                                <th style="display: none">ID</th>
+                                <th style="width: 70px;">#</th>
+                                <th>Họ & Tên Lót</th>
+                                <th>Tên Khách Hàng</th>
+                                <th>Phone</th>
+                                <th>Email</th>
+                                <th style="min-width: 60px">Ngày Sinh</th>
+                                <th style="min-width: 60px">Ngày Tạo</th>                               
+                                <th>Xoá</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dtContentCustomerBody">
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script type="text/javascript">
+    let DataCustomer;
+    function Render_Customer(data, id) {
+        var myNode = document.getElementById(id);
+        if (myNode != null) {
+            myNode.innerHTML = '';
+            let stringContent = '';
+            if (data && data.length > 0) {
+                for (var i = 0; i < data.length; i++) {
+                    let item = data[i];
+                    let tr =
+                        '<td style="display:none !important">' + item.ID + '</td>'
+                        + '<td data-sortValue="' + Number(i) + '">' + (i + 1) + '</td>'
+                        + '<td style="text-align:center">' + item.LastName + '</td>'
+                        + '<td style="text-align:center"><a style="text-decoration: underline;" class="buttonEditClass" href="#">' + item.Name + '</a></td>'
+                        + '<td >' + item.Phone + '</td>'
+                        + '<td >' + item.Email + '</td>'
+                        + '<td >' + item.Birthday + '</td>'
+                        + '<td >' + item.Created + '</td>'
+                        + '<td class="selectedtd"><button class="buttonGrid _tab_control_" data-tab="delete_service_type" value="'
+                        + item.ID
+                        + '"><img class="buttonDeleteClass imgGrid" src="/img/ButtonImg/delete_ver2.png"></button></td>'
+                    stringContent = stringContent + '<tr class="seachRow" role="row">' + tr + '</tr>';
+                }
+            }
+            document.getElementById(id).innerHTML = stringContent;
+        }
+    }
+    function LoadCustomer() {
+        $.ajax({
+            url: "Customer/LoadCustomer",
+            dataType: "json",
+            type: "POST",
+            data: JSON.stringify({
+            }),
+            contentType: 'application/json; charset=utf-8',
+            async: true,
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                notiError();
+            },
+            success: function (result) {
+                DataCustomer = result;
+                Render_Customer(result, "dtContentCustomerBody");
+            }
+        });
+    }
+    $(document).ready(function () {
+        //$('#dtContentCustomer').tablesort();
+        $("#dateFilter").flatpickr({
+            mode: "range",
+            dateFormat: 'd-m-Y',
+            enableTime: false,
+            onClose: function (selectedDates, dateStr, instance) {
+                if (selectedDates.length == 1) {
+                    instance.setDate([selectedDates[0], selectedDates[0]], true);
+                }
+            }
+        });
+        var date = new Date();
+        var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+        var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+        //$("#dateFilter").val(formatDateClient(firstDay) + ' to ' + formatDateClient(lastDay));
+        LoadCustomer();
+        $('#dtContentCustomer tbody').on('click', '.buttonEditClass', function () {
+            let ID = Number($(this).closest('tr')[0].childNodes[0].innerHTML);
+            EditCustomer(ID);
+        });
+        $('#dtContentCustomer tbody').on('click', '.buttonDeleteClass', function () {
+            let ID = Number($(this).closest('tr')[0].childNodes[0].innerHTML);
+            DeleteCustomer(ID);
+        });
+    });
+
+    function AddNewCustomer() {
+        document.getElementById("divDetailPopup").innerHTML = '';
+        $("#divDetailPopup").load("CustomerDetail/" + 0);
+        $('#divDetailPopup').modal('show');
+        return false;
+    }
+
+    function EditCustomer(CurrentID) {
+        document.getElementById("divDetailPopup").innerHTML = '';
+        $("#divDetailPopup").load("CustomerDetail/" + CurrentID);
+        $('#divDetailPopup').modal('show');
+        return false;
+    }
+
+    function DeleteCustomer(id) {
+        const promise = notiConfirm();
+        promise.then(function () { ExecuteDeleteCustomer(id); }, function () { });
+    }
+
+    function ExecuteDeleteCustomer(ID) {
+        $.ajax({
+            url: "Customer/DeleteCustomer/"+ID,
+            dataType: "json",
+            type: "GET",
+            data: JSON.stringify({
+                'ID': ID
+            }),
+            contentType: 'application/json; charset=utf-8',
+            async: true,
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                notiError(textStatus);
+            },
+            success: function (result) {
+                if (result == "1") {
+                    notiSuccess();
+                    LoadCustomer();
+                } else {
+                    notiError();
+                }
+            }
+        });
+    }
+
+    function onkeyupTicketFitlerAsync(extension) {
+        return new Promise((resolve, reject) => {
+            setTimeout(
+                () => {
+                    let search = xoa_dau($('#filterCustomer').val().toLowerCase()).trim();
+
+                    let data = DataCustomer.filter(function (item) {
+                        if (xoa_dau(item["Name"]).toLowerCase().includes(search)
+                            || xoa_dau(item["NameNoSign"]).toLowerCase().includes(search)
+                            || xoa_dau(item["LastName"]).toLowerCase().includes(search)
+                            || xoa_dau(item["LastNameNoSign"]).toLowerCase().includes(search)
+                            || xoa_dau(item["Email"]).toLowerCase().includes(search)
+                            || xoa_dau(item["Phone"]).toLowerCase().includes(search))
+                            return true;
+                        return false;
+                    });
+                    if (data != undefined && data != null) {
+                        document.getElementById("dtContentCustomerBody").innerHTML = "";
+                        Render_Customer(data, "dtContentCustomerBody");
+                        ColorSearchFilterText(search, "seachRow");
+                    }
+                    resolve()
+                },
+                Math.floor(Math.random() * 300) + 1
+            )
+        })
+    }
+
+    async function onkeyupCustomerFitler() {
+        await onkeyupTicketFitlerAsync();
+        return false;
+    }
+</script>

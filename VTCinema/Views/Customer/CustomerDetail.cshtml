@@ -4,26 +4,30 @@
 }
 
 <div id="headerPopup_CustomerCare" class="header">
-    Đạo Diễn
+    Khách Hàng
 </div>
 
 <div class="image content">
     <div class="ui massive image">
-        <img id="avatarDirectorUpload" class="ui mini circular image" src="/img/404.png" alt="label-image" style="width: 100%; height: auto;" />
+        <img id="avatarCustomerUpload" class="ui mini circular image" src="/img/404.png" alt="label-image" style="width: 100%; height: auto;" />
         <div>&nbsp</div>
         <div class="btn btn-success upload-btn-wrapper" style="width: 100%; margin-top: 6px;">
-            <button class="btn" style="width: 100%">3Mp</button>
-            <input id="fileuploadAvatarEmployee" type="file" onchange="readURL(this);" />
+            <button class="btn" style="width: 100%">Chọn Hình</button>
+            <input id="fileuploadAvatarEmployee" type="file" @*name="files[]"*@ @*onchange="document.getElementById('avatarCustomerUpload').src = window.URL.createObjectURL(this.files[0])"*@ onchange="readURL(this);" />
         </div>
     </div>
     <div class="description">
         <form class="ui form segment form3" id="form3">
             <div class="ui accordion field">
                 <div class="content field active">
-                    <div class="two fields">
+                    <div class="three fields">
                         <div class="field">
-                            <label>Tên Đạo Diễn</label>
-                            <input id="txtNameDirector" name="name" type="text" />
+                            <label>Họ & Tên Lót</label>
+                            <input id="txtLastNameCustomer" name="lastname" type="text" />
+                        </div>
+                        <div class="field">
+                            <label>Tên Khách Hàng</label>
+                            <input id="txtNameCustomer" name="name" type="text" />
                         </div>
                         <div class="field">
                             <label>Ngày Sinh</label>
@@ -32,34 +36,33 @@
                     </div>
                     <div class="two fields">
                         <div class="field">
-                            <label>Chiều Cao</label>
-                            <input id="txtHeight" name="Price" type="text" />
+                            <label>Email</label>
+                            <input id="txtEmail" name="email" type="text" />
                         </div>
                         <div class="field">
-                            <label>Quốc Tịch</label>
-                            <div class="ui fluid search selection dropdown" id="Nationality">
-                                <input type="hidden" name="country">
-                                <i class="dropdown icon"></i>
-                                <div class="default text">Chọn Quốc Tịch</div>
-                                <div class="menu" id="cbbNationality">                                   
-                                </div>
-                            </div>
+                            <label>Số Điện Thoại</label>
+                            <input id="txtPhone" name="phonenumber" type="text" />
                         </div>
                     </div>
-
+                    <div class="two fields" id="HiddenPass">
+                        <div class="field">
+                            <label>Mật Khẩu</label>
+                            <input id="txtPassword" name="password" type="text" />
+                        </div>
+                        <div class="field">
+                            <label>Nhập Lại Mật Khẩu</label>
+                            <input id="txtPasswordAgain" name="passwordAgain" type="text" />
+                        </div>
+                    </div>
                     <div class="field">
                         <label>Ghi Chú</label>
-                        <textarea id="txtDes" rows="5" />
+                        <textarea id="txtNote" rows="5" />
                     </div>
-
                 </div>
             </div>
         </form>
     </div>
 </div>
-
-
-
 
 <div class="actions">
     <div style="float: right">
@@ -74,82 +77,71 @@
 <script src="/js/main.js"></script>
 
 <script>
-    let DirectorDetailID;
+    let CustomerDetailID;
     let AvatarString = '';
     let DataAvatar;
     $(document).ready(function () {
         $("#Birthday").flatpickr({
-            dateFormat: 'Y-m-d',
+            dateFormat: 'd-m-Y',
             enableTime: false,
         });
-        DirectorDetailID = @ViewBag.DirectorID;
-        LoadDataUpdateDirector();
+        CustomerDetailID = @ViewBag.CustomerID;
+        LoadDataUpdateCustomer();
     });
 
-    function LoadDataUpdateDirector() {
+    function LoadDataUpdateCustomer() {
         $.ajax({
             type: 'GET',
             dataType: "json",
             contentType: 'application/json; charset=utf-8',
-            url: "/DirectorDetail/GetDirectorDetail/" + DirectorDetailID,
+            url: "/CustomerDetail/GetCustomerDetail/" + CustomerDetailID,
             async: true,
-            success: function (result) {
-                let Combo = result.Table1;
-                LoadComboNational(Combo, "cbbNationality");
-                let data = result.Table2;
+            success: function (data) {
                 if (data.length != 0) {
-                    $("#Nationality ").dropdown("refresh");
-                    $("#Nationality ").dropdown("set selected", data[0].Nationality);
-                    $('#txtNameDirector').val((data[0].Name));
+                    $('#txtNameCustomer').val((data[0].Name));
+                    $('#txtLastNameCustomer').val((data[0].LastName));
                     $('#Birthday').val((data[0].Birthday));
-                    $('#txtDes').val((data[0].Description));
-                    $('#txtHeight').val((data[0].Height));
+                    $('#txtPhone').val((data[0].Phone));
+                    $('#txtEmail').val((data[0].Email));
+                    $('#txtPassword').val((data[0].Password));
+                    $('#txtPasswordAgain').val((data[0].Password));
+                    $('#txtNote').val((data[0].Note));
                     if (data[0].Avatar == '' || data[0].Avatar == undefined) {
-                        $('#avatarDirectorUpload').attr('src', '');
+                        $('#avatarCustomerUpload').attr('src', '');
                     }
                     else {
-                        $('#avatarDirectorUpload').attr('src',data[0].Avatar);
+                        $('#avatarCustomerUpload').attr('src', data[0].Avatar);
                         avatarString = data[0].Avatar;
                     }
+                    $('#HiddenPass').css('display', 'none');
+                }
+                else {
+                    $('#HiddenPass').css('display', 'flex');
                 }
             }
         });
-    }
-    function LoadComboNational(data, id) {
-        var myNode = document.getElementById(id);
-        if (myNode != null) {
-            myNode.innerHTML = '';
-            let stringContent = '';
-            if (data && data.length > 0) {
-                for (var i = 0; i < data.length; i++) {
-                    let item = data[i];
-                    let tr =
-                        '<div class="item" data-value="' + item.Value + '" > <i class="' + item.Value + ' flag"></i>' + item.Name + '</div>'
-                    stringContent = stringContent + tr;
-                }
-            }
-            document.getElementById(id).innerHTML = stringContent;
-        }
     }
 
     function ExcuteData() {
 
         var data = new Object();
-        data.Name = $('#txtNameDirector').val() ? $('#txtNameDirector').val() : "";
-        data.Avatar = $('#avatarDirectorUpload').attr('src') ? $('#avatarDirectorUpload').attr('src') : "" ;
+        data.Name = $('#txtNameCustomer').val() ? $('#txtNameCustomer').val() : "";
+        data.LastName = $('#txtLastNameCustomer').val() ? $('#txtLastNameCustomer').val() : "";
+        data.Avatar = $('#avatarCustomerUpload').attr('src') ? $('#avatarCustomerUpload').attr('src') : "" ;
         data.Birthday = $('#Birthday').val() ? $('#Birthday').val() : "";
-        data.Height = $('#txtHeight').val() ? Number($('#txtHeight').val()) : 0;
-        data.Nationality = $('#Nationality').dropdown('get value') ? $('#Nationality').dropdown('get value') : "";
-        data.Description = $('#txtDes').val() ? $('#txtDes').val() : "";
+        data.Password = $('#txtPassword').val() ? $('#txtPassword').val() : "";
+        data.Phone = $('#txtPhone').val() ? $('#txtPhone').val() : "";
+        data.Email = $('#txtEmail').val() ? $('#txtEmail').val() : "";
+        data.Note = $('#txtNote').val() ? $('#txtNote').val() : "";
          $('#form3').form('validate form');
          if ($('#form3').form('is valid')) {
              $.ajax({
-                 url: "/DirectorDetail/Execute",
+                 url: "/CustomerDetail/Execute",
                  dataType: "json",
                  type: "POST",
                  data: {
                      __RequestVerificationToken: token
-                     , DirectorID: @ViewBag.DirectorID
+                     , CustomerID: @ViewBag.CustomerID
                      , data: JSON.stringify(data)
                  },
                  async: true,
@@ -159,7 +151,7 @@
                  success: function (result) {
                      if (result == "0") {
                          notiSuccess();
-                         LoadDirector();
+                         LoadCustomer();
                      } else {
                          notiError("Diễn Viên Đã Tồn Tại Vui Lòng Kiểm Tra Lại");
                         }
@@ -175,12 +167,12 @@
         if (input.files && input.files[0] && (ext == "gif" || ext == "png" || ext == "jpeg" || ext == "jpg")) {
             var reader = new FileReader();
             reader.onload = function (e) {
-                $('#avatarDirectorUpload').attr('src', e.target.result);
+                $('#avatarCustomerUpload').attr('src', e.target.result);
             }
 
             reader.readAsDataURL(input.files[0]);
         } else {
-            $('#avatarDirectorUpload').attr('src', '/img/404.png');
+            $('#avatarCustomerUpload').attr('src', '/img/404.png');
         }
     }
 </script>
@@ -212,8 +204,7 @@
         top: 0;
         opacity: 0;
     }
-</style>
-<style>
+
     .percentIcon {
         color: #e03997;
         padding-left: 10px;
@@ -255,8 +246,7 @@
         display: block;
         text-align: center;
     }
-</style>
-<style>
+
     .numservice {
         font-size: 12px !important;
         background: #0190ddf7 !important;

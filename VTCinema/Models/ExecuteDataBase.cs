@@ -9,7 +9,6 @@ namespace VTCinema.Models
 {
     class ExecuteDataBase : IDisposable
     {
-
         private SqlConnection _conn;
 
         public SqlConnection Conn
@@ -19,7 +18,17 @@ namespace VTCinema.Models
         }
         public void Dispose()
         {
+            //Dispose(true);GC.SuppressFinalize(this);
         }
+        //private bool _disposed = false;
+        //protected virtual void Dispose(bool disposing)
+        //{
+        //    if (!_disposed)//    {
+        //        if (disposing)//        {
+
+        //        }
+        //        _conn.Close();
+        //    }                                                                                                                                         //}
         ~ExecuteDataBase()
         {
             //Dispose(false);
@@ -28,10 +37,15 @@ namespace VTCinema.Models
         {
             CreateConnect();
         }
+        public ExecuteDataBase(string[] loc)
+        {
+            CreateConnect(loc);
+        }
         private void CreateConnect()
         {
             try
             {
+
                 string connectionString = String.Format(@"Data Source=DESKTOP-SO9JL7I\SQLEXPRESS;Initial Catalog=VT_Cinema;Integrated Security=True;");
                 _conn = new SqlConnection(connectionString);
                 if (_conn.State == ConnectionState.Closed) _conn.Open();
@@ -41,6 +55,25 @@ namespace VTCinema.Models
                 // Connect Local
             }
         }
+
+        private void CreateConnect(string[] loc)
+        {
+            try
+            {
+                string connectionString = String.Format(@"Server={0}; " + "Initial Catalog={1}; User ID={2};Password={3};Trusted_Connection=false; ", loc[0]
+                    , loc[1]
+                    , loc[2]
+                    , loc[3]);
+                _conn = new SqlConnection(connectionString);
+                if (_conn.State == ConnectionState.Closed) _conn.Open();
+            }
+            catch (Exception ex)
+            {
+                // Connect Local
+            }
+        }
+
+
         public string ExecuteDatabaseLog(string s)
         {
             if (_conn.State == ConnectionState.Closed) _conn.Open();
@@ -90,12 +123,6 @@ namespace VTCinema.Models
                 transaction.Dispose();
             }
         }
-
-        internal DataTable ExecuteDataTable(string v1, CommandType storedProcedure, string v2, SqlDbType int1, int sub_TitleID, string v3, SqlDbType nVarChar1, object sub_Title, string v4, SqlDbType nVarChar2, object note, string v5, SqlDbType int2, int? v6)
-        {
-            throw new NotImplementedException();
-        }
-
         public DataTable LoadDataSource_Table(string s)
         {
             try
@@ -113,12 +140,6 @@ namespace VTCinema.Models
                 return null;
             }
         }
-
-        internal DataTable ExecuteDataTable(string v1, CommandType storedProcedure, string v2, SqlDbType int1, object serviceCat_ID, string v3, SqlDbType nVarChar1, object name, string v4, SqlDbType int2, object amount, string v5, SqlDbType nVarChar2, object note)
-        {
-            throw new NotImplementedException();
-        }
-
         public DataSet LoadDataSource_DataSet(string s)
         {
             try
@@ -327,7 +348,7 @@ namespace VTCinema.Models
             return ds;
         }
 
-        public DataTable LoadEmployee(int GroupID, int Branch_ID)
+        public DataTable LoadEmployee(int GroupID, int Branch_ID, int isAllBranch)
         {
             try
             {
@@ -337,7 +358,9 @@ namespace VTCinema.Models
                 {
                     table = confunc.ExecuteDataTable("YYY_sp_LoadCombo_Employee", CommandType.StoredProcedure,
                       "@GroupID", SqlDbType.Int, GroupID,
-                      "@Branch_ID", SqlDbType.Int, Branch_ID);
+                      "@Branch_ID", SqlDbType.Int, Branch_ID,
+                      "@isAllBranch", SqlDbType.Int, isAllBranch
+                      );
                 }
                 if (_conn.State == ConnectionState.Open) _conn.Close();
                 return table;
@@ -347,7 +370,27 @@ namespace VTCinema.Models
                 return null;
             }
         }
-
-
+        public DataTable LoadEmployeeFull(int Branch_ID, int isAllBranch)
+        {
+            try
+            {
+                if (_conn.State == ConnectionState.Closed) _conn.Open();
+                DataTable table = new DataTable("myTable");
+                using (Models.ExecuteDataBase confunc = new Models.ExecuteDataBase())
+                {
+                    table = confunc.ExecuteDataTable("YYY_sp_LoadCombo_EmployeeFull", CommandType.StoredProcedure,
+                      "@Branch_ID", SqlDbType.Int, Branch_ID,
+                      "@isAllBranch", SqlDbType.Int, isAllBranch
+                      );
+                }
+                if (_conn.State == ConnectionState.Open) _conn.Close();
+                return table;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+        
     }
 }

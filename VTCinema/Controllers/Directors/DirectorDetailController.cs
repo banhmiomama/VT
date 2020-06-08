@@ -24,6 +24,37 @@ namespace VTCinema.Controllers.Directors
         [HttpGet]
         public string GetDirectorDetail(int DirectorID)
         {
+            DataTable Combo = LoadComboNational();
+            DataTable DataDetail = LoadDetail(DirectorID);
+            DataSet ds = new DataSet();
+            ds.Tables.AddRange(new DataTable[] { Combo, DataDetail });
+            return JsonConvert.SerializeObject(ds);
+        }
+        DataTable LoadComboNational()
+        {
+            try
+            {
+                DataTable dt = new DataTable();
+                using (Models.ExecuteDataBase confunc = new Models.ExecuteDataBase())
+                {
+                    dt = confunc.ExecuteDataTable("[YYY_sp_National_LoadCombo]", CommandType.StoredProcedure);
+                }
+                if (dt != null)
+                {
+                    return dt;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+        DataTable LoadDetail(int DirectorID)
+        {
             try
             {
                 DataTable dt = new DataTable();
@@ -34,16 +65,16 @@ namespace VTCinema.Controllers.Directors
                 }
                 if (dt != null)
                 {
-                    return JsonConvert.SerializeObject(dt);
+                    return dt;
                 }
                 else
                 {
-                    return "";
+                    return null;
                 }
             }
             catch (Exception ex)
             {
-                return "[]";
+                return null;
             }
         }
 
