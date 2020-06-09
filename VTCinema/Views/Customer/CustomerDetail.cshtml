@@ -23,7 +23,7 @@
                     <div class="three fields">
                         <div class="field">
                             <label>Họ & Tên Lót</label>
-                            <input id="txtLastNameCustomer" name="lastname" type="text" />
+                            <input id="txtLastNameCustomer" name="firstname" type="text" />
                         </div>
                         <div class="field">
                             <label>Tên Khách Hàng</label>
@@ -47,11 +47,11 @@
                     <div class="two fields" id="HiddenPass">
                         <div class="field">
                             <label>Mật Khẩu</label>
-                            <input id="txtPassword" name="password" type="text" />
+                            <input id="txtPassword" name="password" type="password" />
                         </div>
                         <div class="field">
                             <label>Nhập Lại Mật Khẩu</label>
-                            <input id="txtPasswordAgain" name="passwordAgain" type="text" />
+                            <input id="txtPasswordAgain" name="passwordAgain" type="password" />
                         </div>
                     </div>
                     <div class="field">
@@ -133,6 +133,7 @@
         data.Phone = $('#txtPhone').val() ? $('#txtPhone').val() : "";
         data.Email = $('#txtEmail').val() ? $('#txtEmail').val() : "";
         data.Note = $('#txtNote').val() ? $('#txtNote').val() : "";
+
          $('#form3').form('validate form');
          if ($('#form3').form('is valid')) {
              $.ajax({
