@@ -7,13 +7,13 @@
 <div class="row">
     <div class="sixteen wide tablet eight wide computer column">
         <div class="ui segments">
-            <form class="ui form segment form20" id="form20">
+            <form class="ui form segment form3" id="form3">
                 <div class="ui accordion field">
                     <div class="content field active">
                         <div class="two fields">
                             <div class="field">
                                 <label>Lứa Tuổi</label>
-                                <input id="txtName" name="Name" type="text" />
+                                <input id="txtName" name="NameAges" type="text" />
                             </div>
                             <div class="field">
                                 <label>Tuổi</label>
@@ -28,11 +28,11 @@
 </div>
 <div class="actions">
     <div style="float: right">
-        <button class="ui teal button" form="form20" type="submit" onclick="return ExcuteData()">Save</button>
+        <button class="ui teal button" form="form3" type="submit" onclick="return ExcuteData()">Save</button>
 
     </div>
     <div style="float: right">
-        <button class="ui grey button" form="form20" onclick="event.preventDefault();CloseModal()">Cancel</button>
+        <button class="ui grey button" form="form3" onclick="event.preventDefault();CloseModal()">Cancel</button>
     </div>
 </div>
 <script src="/js/customjs/custom-validation.js"></script>
@@ -66,8 +66,8 @@
         data.Ages = $('#txtAges').val() ? $('#txtAges').val() : "";
         data.Name = $('#txtName').val() ? $('#txtName').val() : "";
         debugger
-        $('#form20').form('validate form');
-        if ($('#form20').form('is valid')) {
+        $('#form3').form('validate form');
+        if ($('#form3').form('is valid')) {
 
              $.ajax({
                  url: "/AgesDetail/Execute",

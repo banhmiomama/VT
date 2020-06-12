@@ -72,49 +72,6 @@ $('.ui.form2').form({
     }
 });
 
-$('.ui.form20').form({
-    inline: true,
-    on: 'blur',
-    fields: {
-        Ages: {
-            identifier: 'Ages',
-            rules: [{
-                type: 'empty',
-                color: 'red',
-                prompt: 'Vu iLòng Nhập Tuổi '
-            }]
-        },
-        Name: {
-            identifier: 'Name',
-            rules: [{
-                type: 'empty',
-                color: 'red',
-                prompt: 'Vui Lòng Nhập Lứa Tuổi'
-                } ]
-        }
-    }
-});
-
-
-$('.ui.form22').form({
-    Sub_Title: {
-        identifier: 'Sub_Title',
-        rules: [{
-            type: 'empty',
-            color: 'red',
-            prompt: 'Please enter a Sub Title'
-        }]
-    }     , 
-    Note: {
-        identifier: 'Note',
-        rules: [{
-            type: 'empty',
-            color: 'red',
-            prompt: 'Please enter a Note'
-        }]
-    }
-});
-
 $('.ui.form3').form({
     inline: true,
     on: 'blur',
@@ -125,23 +82,51 @@ $('.ui.form3').form({
             identifier: 'firstname',
             rules: [{
                 type: 'empty',
-                prompt: 'Please enter value'
+                prompt: 'Vui lòng nhập họ '
             },
             {
-                type: 'regex[^[a-zA-Z -]+$]',
-                prompt: 'Tên chỉ có thể bao gồm các chữ cái, dấu cách và dấu gạch ngang'
+                type: "regExp[/^[aAàÀảẢãÃáÁạẠăĂằẰẳẲẵẴắẮặẶâÂầẦẩẨẫẪấẤậẬbBcCdDđĐeEèÈẻẺẽẼéÉẹẸêÊềỀểỂễỄếẾệỆfFgGhHiIìÌỉỈĩĨíÍịỊjJkKlLmMnNoOòÒỏỎõÕóÓọỌôÔồỒổỔỗỖốỐộỘơƠờỜởỞỡỠớỚợỢpPqQrRsStTuUùÙủỦũŨúÚụỤưƯừỪửỬữỮứỨựỰvVwWxXyYỳỲỷỶỹỸýÝỵỴzZ]/]",
+                prompt: 'Tên không được nhập số'
             }]       
         },
-        productPrice: {
-            identifier: 'productPrice',
+        name: {
+            identifier: 'name',
             rules: [{
                 type: 'empty',
-                prompt: 'Please enter value'
-            }, {
-                type: 'regExp[/^[0-9,]{0,12}$/]',
-                prompt: 'Please enter price'
+                prompt: 'Vui lòng nhập tên'
+            },
+            {
+                type: "regExp[/^[aAàÀảẢãÃáÁạẠăĂằẰẳẲẵẴắẮặẶâÂầẦẩẨẫẪấẤậẬbBcCdDđĐeEèÈẻẺẽẼéÉẹẸêÊềỀểỂễỄếẾệỆfFgGhHiIìÌỉỈĩĨíÍịỊjJkKlLmMnNoOòÒỏỎõÕóÓọỌôÔồỒổỔỗỖốỐộỘơƠờỜởỞỡỠớỚợỢpPqQrRsStTuUùÙủỦũŨúÚụỤưƯừỪửỬữỮứỨựỰvVwWxXyYỳỲỷỶỹỸýÝỵỴzZ]/]",
+                prompt: 'Tên không được nhập số'
             }]
         },
+        email: {
+            identifier: 'email',
+            rules: [{
+                type: 'empty',
+                prompt: 'Vui lòng nhập email'
+            }, {
+                    type: "regExp[/^([a-zA-Z0-9_\.\-])+\@(gmail.com|yahoo.com)+$/]",
+                    prompt: 'Vui lòng nhập email đúng định dạng'
+            }
+            ]
+        },
+        phonenumber: {
+            identifier: 'phonenumber',
+            rules: [{
+                type: 'empty',
+                prompt: 'Vui lòng nhập số điện thoại'
+            },{
+                    type: "regExp[/^[0-9]/]",
+                    prompt: 'Vui lòng nhập đúng số điện thoại'
+            },{
+                    type: "maxLength[10]",
+                    prompt: 'Vui lòng nhập đúng số điện thoại'
+            },{
+                    type: "minLength[10]",
+                    prompt: 'Vui lòng nhập đúng số điện thoại'
+            }]
+        },      
         date: {
             identifier: 'date',
             rules: [{
@@ -192,6 +177,147 @@ $('.ui.form3').form({
 
             ]
         },
+        //actor
+        Height: {
+            identifier: 'Height',
+            rules: [{
+                type: 'empty',
+                prompt: 'Vui lòng nhập chiều cao'
+            },{
+                type: "regExp[/^[0-9]/]",
+                prompt: 'Vui lòng nhập chiều cao'
+            }]
+        },      
+        country: {
+            identifier: 'country',
+            rules: [{
+                type: 'empty',
+                prompt: 'Vui lòng chọn quốc tịch'
+            }]
+        },  
+
+        // ages
+        
+        NameAges: {
+            identifier: 'NameAges',
+            rules: [{
+                type: 'empty',
+                prompt: 'Vui lòng nhập lứa tuổi'
+            }]
+        },  
+        Ages: {
+            identifier: 'Ages',
+            rules: [{
+                type: 'empty',
+                prompt: 'Vui lòng nhập tuổi giới hạn'
+            }, {
+                type: "regExp[/^[0-9]/]",
+                 prompt: 'Vui lòng nhập số cho tuổi'
+            }]
+        },      
+        //branch
+        BranchCode: {
+            identifier: 'BranchCode',
+            rules: [{
+                type: 'empty',
+                prompt: 'Vui lòng nhập mã chi nhánh'
+            }]
+        },  
+        Namebranch: {
+            identifier: 'Namebranch',
+            rules: [{
+                type: 'empty',
+                prompt: 'Vui lòng nhập tên chi nhánh'
+            }]
+        },  
+        ShortName: {
+            identifier: 'ShortName',
+            rules: [{
+                type: 'empty',
+                prompt: 'Vui lòng nhập tên viết tắt chi nhánh'
+            }]
+        },  
+        Longtitude: {
+            identifier: 'Longtitude',
+            rules: [{
+                type: 'empty',
+                prompt: 'Vui lòng nhập tung độ'
+            }, {
+                type: "regExp[/^[0-9]/]",
+                prompt: 'Vui lòng nhập số cho tung độ'
+            }]
+        },     
+        Latitude: {
+            identifier: 'Latitude',
+            rules: [{
+                type: 'empty',
+                prompt: 'Vui lòng nhập vĩ độ'
+            }, {
+                type: "regExp[/^[0-9]/]",
+                    prompt: 'Vui lòng nhập số cho vĩ độ'
+            }]
+        },     
+        Address: {
+            identifier: 'Address',
+            rules: [{
+                type: 'empty',
+                prompt: 'Vui lòng nhập địa chỉ chi nhánh'
+            }]
+        },  
+        // movie ticket type    
+        Nameticket: {
+            identifier: 'Nameticket',
+            rules: [{
+                type: 'empty',
+                prompt: 'Vui lòng nhập tên loại vé'
+            }]
+        },  
+        Prices: {
+            identifier: 'Prices',
+            rules: [{
+                type: 'empty',
+                prompt: 'Vui lòng nhập giá'
+            }, {
+                type: "regExp[/^[0-9]/]",
+                prompt: 'Vui lòng nhập số cho giá'
+            }]
+        },    
+        //MovieType
+        
+        MovieType: {
+            identifier: 'MovieType',
+            rules: [{
+                type: 'empty',
+                prompt: 'Vui lòng nhập thể loại phim'
+            }]   
+        },  
+        // product
+        
+        Producttype: {
+            identifier: 'Producttype',
+            rules: [{
+                type: 'empty',
+                prompt: 'Vui lòng chọn loại sản phẩm'
+            }]
+        },  
+        productPrice: {
+            identifier: 'productPrice',
+            rules: [{
+                type: 'empty',
+                prompt: 'Vui lòng nhập giá'
+            }, {
+                type: "regExp[/^[0-9]/]",
+                prompt: 'Vui lòng nhập số cho giá'
+            }]
+        },    
+        Sub_Title: {
+            identifier: 'Sub_Title',
+            rules: [{
+                type: 'empty',
+                prompt: 'Vui lòng nhập loại phiên dịch'
+            }]
+        },  
+        
     }
 });
 
