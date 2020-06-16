@@ -6,12 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace VTCinema.Controllers.Dashboard
 {
-    [Route("SaleMain")]
+    [Route("Admin/SaleMain")]
     public class SaleMainController : Controller
     {
         public IActionResult Index()
         {
-            return View("~/Views/Dashboard/SaleMain.cshtml");
+            return View("~/Views/Admin/Dashboard/SaleMain.cshtml");
         }
     }
 }

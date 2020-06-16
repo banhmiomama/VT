@@ -11,7 +11,7 @@ using VTCinema.Models;
 
 namespace VTCinema.Controllers.Ages
 {
-    [Route("AgesDetail")]
+    [Route("Admin/AgesDetail")]
     public class AgesDetailController : Controller
     {
         [Route("{AgesID}")]
@@ -19,7 +19,7 @@ namespace VTCinema.Controllers.Ages
         public IActionResult Index(int AgesID)
         {
             ViewBag.AgesID = AgesID;
-            return View("~/Views/Ages/AgesDetail.cshtml");
+            return View("~/Views/Admin/Ages/AgesDetail.cshtml");
         }
         [Route("GetAgesDetail/{AgesID}")]
         [HttpGet]

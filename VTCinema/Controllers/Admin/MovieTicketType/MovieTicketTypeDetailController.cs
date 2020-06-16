@@ -10,7 +10,7 @@ using VTCinema.Models;
 
 namespace VTCinema.Controllers.MovieTicketType
 {
-    [Route("MovieTicketTypeDetail")]
+    [Route("Admin/MovieTicketTypeDetail")]
     public class MovieTicketTypeDetailController : Controller
     {
         [Route("{MovieTicketTypeID}")]
@@ -18,7 +18,7 @@ namespace VTCinema.Controllers.MovieTicketType
         public IActionResult Index(int MovieTicketTypeID)
         {
             ViewBag.MovieTicketTypeID = MovieTicketTypeID;
-            return View("~/Views/MovieTicketType/MovieTicketTypeDetail.cshtml");
+            return View("~/Views/Admin/MovieTicketType/MovieTicketTypeDetail.cshtml");
         }
         [Route("GetMovieTicketTypeDetail/{MovieTicketTypeID}")]
         [HttpGet]

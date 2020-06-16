@@ -9,13 +9,13 @@ using Newtonsoft.Json;
 
 namespace VTCinema.Controllers.Directors
 {
-    [Route("Director")]
+    [Route("Admin/Director")]
     public class DirectorController : Controller
     {
        
         public IActionResult Index()
         {
-            return View("~/Views/Directors/DirectorView.cshtml");
+            return View("~/Views/Admin/Directors/DirectorView.cshtml");
         }
         [Route("LoadDirector")]
         [HttpPost]

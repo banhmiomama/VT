@@ -10,7 +10,7 @@ using VTCinema.Models;
 
 namespace VTCinema.Controllers.Sub_Title
 {
-    [Route("Sub_TitleDetail")]
+    [Route("Admin/Sub_TitleDetail")]
     public class Sub_TitleDetailController : Controller
     {
         [Route("{Sub_TitleID}")]
@@ -18,7 +18,7 @@ namespace VTCinema.Controllers.Sub_Title
         public IActionResult Index(int Sub_TitleID)
         {
             ViewBag.Sub_TitleID = Sub_TitleID;
-            return View("~/Views/Sub_Title/Sub_TitleDetail.cshtml");
+            return View("~/Views/Admin/Sub_Title/Sub_TitleDetail.cshtml");
         }
         [Route("GetSub_TitleDetail/{Sub_TitleID}")]
         [HttpGet]

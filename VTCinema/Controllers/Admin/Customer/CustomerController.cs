@@ -9,12 +9,12 @@ using Newtonsoft.Json;
 
 namespace VTCinema.Controllers.Customer
 {
-    [Route("Customer")]
+    [Route("Admin/Customer")]
     public class CustomerController : Controller
     {
         public IActionResult Index()
         {
-            return View("~/Views/Customer/CustomerView.cshtml");
+            return View("~/Views/Admin/Customer/CustomerView.cshtml");
         }
 
         [Route("LoadCustomer")]

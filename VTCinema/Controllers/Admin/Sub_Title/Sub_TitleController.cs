@@ -9,12 +9,12 @@ using Newtonsoft.Json;
 
 namespace VTCinema.Controllers.Sub_Title
 {
-    [Route("Sub_Title")]
+    [Route("Admin/Sub_Title")]
     public class Sub_TitleController : Controller
     {
         public IActionResult Index()
         {
-            return View("~/Views/Sub_Title/Sub_TitleView.cshtml");
+            return View("~/Views/Admin/Sub_Title/Sub_TitleView.cshtml");
         }
 
         [Route("LoadSub_Title")]

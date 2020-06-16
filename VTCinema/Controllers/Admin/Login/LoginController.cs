@@ -8,13 +8,13 @@ using VTCinema.Comon;
 
 namespace VTCinema.Controllers.Login
 {
-    [Route("Login")]
+    [Route("Admin/Login")]
     public class LoginController : Controller
     {
         public IActionResult Index()
         {
             ViewBag.Status = "";
-            return View("~/Views/Login/Login.cshtml");
+            return View("~/Views/Admin/Login/Login.cshtml");
         }
         [Route("Authorize")]
         [HttpGet]
@@ -38,7 +38,7 @@ namespace VTCinema.Controllers.Login
                 {
                     string Status = "Wrong username password";
                     ViewBag.Status = Status;
-                    return View("~/Views/Login/Login.cshtml");
+                    return View("~/Views/Admin/Login/Login.cshtml");
                 }
             }
             else

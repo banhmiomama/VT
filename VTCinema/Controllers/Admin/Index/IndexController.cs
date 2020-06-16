@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace VTCinema.Controllers.Index
 {
-    [Route("Index")]
+    [Route("Admin/Index")]
     public class IndexController : Controller
     {
         [Route("/")]
@@ -14,14 +14,14 @@ namespace VTCinema.Controllers.Index
         [Route("Index")]
         public IActionResult Index()
         {
-            return View("~/Views/Index/Index.cshtml");
+            return View("~/Views/Admin/Index/Index.cshtml");
         }
         [Route("Authorize")]
         //[ValidateAntiForgeryToken]
         [HttpPost]
         public IActionResult Authorize(string KEYCODE)
         {
-            return Json(new { data = "/Login" });
+            return Json(new { data = "/Admin/Login" });
         }
 
     }

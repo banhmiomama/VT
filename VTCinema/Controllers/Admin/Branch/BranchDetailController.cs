@@ -10,7 +10,7 @@ using VTCinema.Models;
 
 namespace VTCinema.Controllers.Branch
 {
-    [Route("BranchDetail")]
+    [Route("Admin/BranchDetail")]
     public class BranchDetailController : Controller
     {
         [Route("{BranchID}")]
@@ -18,7 +18,7 @@ namespace VTCinema.Controllers.Branch
         public IActionResult Index(int BranchID)
         {
             ViewBag.BranchID = BranchID;
-            return View("~/Views/Branch/BranchDetail.cshtml");
+            return View("~/Views/Admin/Branch/BranchDetail.cshtml");
         }
         [Route("GetBranchDetail/{BranchID}")]
         [HttpGet]

@@ -10,7 +10,7 @@ using VTCinema.Models;
 
 namespace VTCinema.Controllers.ChairTypeDetail
 {
-    [Route("ChairTypeDetail")]
+    [Route("Admin/ChairTypeDetail")]
     public class ChairTypeDetailDetailController : Controller
     {
         [Route("{ChairTypeID}")]
@@ -18,7 +18,7 @@ namespace VTCinema.Controllers.ChairTypeDetail
         public IActionResult Index(int ChairTypeID)
         {
             ViewBag.ChairTypeID = ChairTypeID;
-            return View("~/Views/ChairType/ChairTypeDetail.cshtml");
+            return View("~/Views/Admin/ChairType/ChairTypeDetail.cshtml");
         }
         [Route("GetChairTypeDetail/{ChairTypeID}")]
         [HttpGet]
