@@ -19,7 +19,7 @@
                             </div>
                             <div class="field">
                                 <label>Tên Chi Nhánh</label>
-                                <input id="txtName" type="text" name="Name" />
+                                <input id="txtName" type="text" name="Namebranch" />
                             </div>
                             <div class="field">
                                 <label>Tên Ngắn Chi Nhánh</label>
@@ -61,7 +61,8 @@
         <button class="ui grey button" form="form3" onclick="event.preventDefault();CloseModal()">Cancel</button>
     </div>
 </div>
-
+<script src="/js/customjs/custom-validation.js"></script>
+<script src="/js/main.js"></script>
 
 <script>
     let BranchDetailID;
@@ -90,8 +91,8 @@
             }
         });
     }
-    function ExcuteData() {              
-        var data = new Object();        
+    function ExcuteData() {
+        var data = new Object();
          data.BranchCode = $('#txtBranchCode').val() ? $('#txtBranchCode').val() : "";
          data.Name = $('#txtName').val() ? $('#txtName').val() : "";
          data.ShortName = $('#txtShortName').val() ? $('#txtShortName').val() : "";
@@ -99,9 +100,9 @@
          data.Latitude = $('#txtLatitude').val() ? Number($('#txtLatitude').val()) : 0;
          data.Address = $('#txtAddress').val() ? $('#txtAddress').val() : "";
          data.Note = $('#txtNote').val() ? $('#txtNote').val() : "";
-        $('#form20').form('validate form');
-        if ($('#form20').form('is valid')) {
-            
+        $('#form3').form('validate form');
+        if ($('#form3').form('is valid')) {
+
              $.ajax({
                  url: "/BranchDetail/Execute",
                  dataType: "json",
@@ -112,7 +113,7 @@
                      , data: JSON.stringify(data)
                  },
                  async: true,
-                 error: function (XMLHttpRequest, textStatus, errorThrown) {                     
+                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                         notiError("Lỗi Hệ Thống");
                  },
                  success: function (result) {

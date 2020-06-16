@@ -15,11 +15,11 @@
                         <div class="two fields">
                             <div class="field">
                                 <label>Tên Loại Vé</label>
-                                <input id="txtName" name="Name" type="text" />
+                                <input id="txtName" name="Nameticket" type="text" />
                             </div>
                             <div class="field">
                                 <label>Đơn Giá</label>
-                                <input id="txtPrice" type="text" name="Name" />
+                                <input id="txtPrice" type="text" name="Prices" />
                             </div>
                         </div>
                         <div class="field">
@@ -42,7 +42,8 @@
         <button class="ui grey button" form="form3" onclick="event.preventDefault();CloseModal()">Cancel</button>
     </div>
 </div>
-
+<script src="/js/customjs/custom-validation.js"></script>
+<script src="/js/main.js"></script>
 
 <script>
     let MovieTicketTypeDetailID;
@@ -74,8 +75,8 @@
          data.Name = $('#txtName').val() ? $('#txtName').val() : "";
         data.Price = $('#txtPrice').val() ? Number($('#txtPrice').val()) : 0;
          data.Note = $('#txtNote').val() ? $('#txtNote').val() : "";
-        $('#form20').form('validate form');
-        if ($('#form20').form('is valid')) {
+        $('#form3').form('validate form');
+        if ($('#form3').form('is valid')) {
 
              $.ajax({
                  url: "/MovieTicketTypeDetail/Execute",
