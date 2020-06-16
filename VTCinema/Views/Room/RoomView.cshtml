@@ -1,0 +1,193 @@
+﻿
+@{
+    ViewData["Title"] = "Phòng";
+    Layout = "~/Views/Shared/Master.cshtml";
+}
+
+<div class="pusher">
+    <div class="navslide navwrap">
+        <div class="row" style="background-color: white">
+            <div class="ui form segment form3">
+                <h2 class="ui center aligned header" style="border-top: 1px; font-family: 'Times New Roman'">
+                    Danh Sách Diễn Viên
+                    <div class="sub header" style="font-family: 'Times New Roman'">Danh Sách các diễn viên</div>
+                </h2>
+                <div class="three fields" style="margin: 0px;">
+                    <div class="field">
+                        <button class="ui blueli button" data-value="fade up" onclick="return AddNewRoom()">Thêm mới</button>
+                    </div>
+                    <div class="field">
+                    </div>
+                    <div class="field">
+                        <div class="ui icon input" style="max-height: 40px;">
+                            <input id="filterRoom" type="text" placeholder="Seaching..." onkeyup="event.preventDefault();return onkeyupRoomFitler();">
+                            <i class="circular search link icon"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui segment" style="border: none; overflow-x: auto; padding: unset;">
+                    <table id="dtContentRoom" class="ui sortable celled table">
+                        <thead class="hiddenCollapse">
+                            <tr role="row">
+                                <th style="display: none">ID</th>
+                                <th style="width: 70px;">#</th>
+                                <th>Tên Phòng</th>
+                                <th style="min-width: 60px">Chi nhánh</th>
+                                <th style="max-width: 300px;">Ngày Tạo</th>
+                                <th>Xoá</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dtContentRoomBody">
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script type="text/javascript">
+    let DataRoom;
+    function Render_Room(data, id) {
+        var myNode = document.getElementById(id);
+        if (myNode != null) {
+            myNode.innerHTML = '';
+            let stringContent = '';
+            if (data && data.length > 0) {
+                for (var i = 0; i < data.length; i++) {
+                    let item = data[i];
+                    let tr =
+                        '<td style="display:none !important">' + item.ID + '</td>'
+                        + '<td data-sortValue="' + Number(i) + '">' + (i + 1) + '</td>'
+                        + '<td ><a style="text-decoration: underline;" class="buttonEditClass" href="#">' + item.Name + '</a></td>'
+                        + '<td >' + item.Branch + '</td>'
+                        + '<td >' + item.Created + '</td>'
+                        + ((item.ButtonDelete == "0") ? ('<td class="selectedtd"><button class="buttonGrid _tab_control_" data-tab="delete_service_type" value="'
+                            + item.ID
+                            + '"><img class="buttonDeleteClass imgGrid" src="/img/ButtonImg/delete_ver2.png"></button></td>'):'<td></td>')
+                    stringContent = stringContent + '<tr class="seachRow" role="row">' + tr + '</tr>';
+                }
+            }
+            document.getElementById(id).innerHTML = stringContent;
+        }
+    }
+    function LoadRoom() {
+        $.ajax({
+            url: "Room/LoadRoom",
+            dataType: "json",
+            type: "POST",
+            data: JSON.stringify({
+            }),
+            contentType: 'application/json; charset=utf-8',
+            async: true,
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                notiError();
+            },
+            success: function (result) {
+                DataRoom = result;
+                Render_Room(result, "dtContentRoomBody");
+            }
+        });
+    }
+    $(document).ready(function () {
+        //$('#dtContentRoom').tablesort();
+        $("#dateFilter").flatpickr({
+            mode: "range",
+            dateFormat: 'd-m-Y',
+            enableTime: false,
+            onClose: function (selectedDates, dateStr, instance) {
+                if (selectedDates.length == 1) {
+                    instance.setDate([selectedDates[0], selectedDates[0]], true);
+                }
+            }
+        });
+        var date = new Date();
+        var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+        var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+        //$("#dateFilter").val(formatDateClient(firstDay) + ' to ' + formatDateClient(lastDay));
+        LoadRoom();
+        $('#dtContentRoom tbody').on('click', '.buttonEditClass', function () {
+            let ID = Number($(this).closest('tr')[0].childNodes[0].innerHTML);
+            EditRoom(ID);
+        });
+        $('#dtContentRoom tbody').on('click', '.buttonDeleteClass', function () {
+            let ID = Number($(this).closest('tr')[0].childNodes[0].innerHTML);
+            DeleteRoom(ID);
+        });
+    });
+
+    function AddNewRoom() {
+        document.getElementById("divDetailPopup").innerHTML = '';
+        $("#divDetailPopup").load("RoomDetail/" + 0);
+        $('#divDetailPopup').modal('show');
+        return false;
+    }
+
+    function EditRoom(CurrentID) {
+        document.getElementById("divDetailPopup").innerHTML = '';
+        $("#divDetailPopup").load("RoomDetail/" + CurrentID);
+        $('#divDetailPopup').modal('show');
+        return false;
+    }
+
+    function DeleteRoom(id) {
+        const promise = notiConfirm();
+        promise.then(function () { ExecuteDeleteRoom(id); }, function () { });
+    }
+
+    function ExecuteDeleteRoom(ID) {
+        $.ajax({
+            url: "Room/DeleteRoom/"+ID,
+            dataType: "json",
+            type: "GET",
+            data: JSON.stringify({
+                'ID': ID
+            }),
+            contentType: 'application/json; charset=utf-8',
+            async: true,
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                notiError(textStatus);
+            },
+            success: function (result) {
+                if (result == "1") {
+                    notiSuccess();
+                    LoadRoom();
+                } else {
+                    notiError();
+                }
+            }
+        });
+    }
+
+    function onkeyupTicketFitlerAsync(extension) {
+        return new Promise((resolve, reject) => {
+            setTimeout(
+                () => {
+                    let search = xoa_dau($('#filterRoom').val().toLowerCase()).trim();
+
+                    let data = DataRoom.filter(function (item) {
+                        if (xoa_dau(item["Name"]).toLowerCase().includes(search)
+                            || xoa_dau(item["NameNoSign"]).toLowerCase().includes(search))
+                            return true;
+                        return false;
+                    });
+                    if (data != undefined && data != null) {
+                        document.getElementById("dtContentRoomBody").innerHTML = "";
+                        Render_Room(data, "dtContentRoomBody");
+                        ColorSearchFilterText(search, "seachRow");
+                    }
+                    resolve()
+                },
+                Math.floor(Math.random() * 300) + 1
+            )
+        })
+    }
+
+    async function onkeyupRoomFitler() {
+        await onkeyupTicketFitlerAsync();
+        return false;
+    }
+</script>
+

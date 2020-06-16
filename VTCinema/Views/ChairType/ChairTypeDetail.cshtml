@@ -1,0 +1,164 @@
+﻿
+@{
+    Layout = null;
+}
+
+
+<div id="headerPopup_CustomerCare" class="header">
+    Loại Ghế Xem Phim
+</div>
+<div class="row">
+    <div class="sixteen wide tablet eight wide computer column">
+        <div class="ui segments">
+            <form class="ui form segment form20" id="form20">
+                <div class="ui accordion field">
+                    <div class="content field active">
+                        <div class="two fields">
+                            <div class="field">
+                                <label>Tên Loại Ghế</label>
+                                <input id="txtNameChair" name="NameChair" type="text" />
+                            </div>
+                            <div class="field">
+                                <label>Đơn Giá</label>
+                                <input id="txtPrice" type="text" name="Price" />
+                            </div>
+                        </div>
+                        <div class="two fields">
+                            <div class="field">
+                                <label>Số Lượng Chỗ Ngồi</label>
+                                <input id="txtTotal" name="Total" type="text" />
+                            </div>
+                            <div class="field">
+                                <label>Mã Màu</label>
+                                <input id="ColorCode" type="text" name="ColorCode" />
+                            </div>
+                        </div>
+                        
+                        <div class="two fields">
+                            <div class="field">
+                                <label>Hiển Thị</label>
+                                <div class="ui fluid search selection dropdown" id="VisibilityChair">
+                                    <input type="hidden" name="country">
+                                    <i class="dropdown icon"></i>
+                                    <div class="default text">Chọn Hiển Thị</div>
+                                    <div class="menu" id="cbbNationality">
+                                        <div class="item" data-value="visible">Hiện</div>
+                                        <div class="item" data-value="hidden">Ẩn</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label>Tình Trạng Ghế</label>
+                                <div class="ui fluid search selection dropdown" id="DisabledChair">
+                                    <input type="hidden" name="country">
+                                    <i class="dropdown icon"></i>
+                                    <div class="default text">Chọn Tình Trạng</div>
+                                    <div class="menu" id="cbbNationality">
+                                        <div class="item" data-value="">Bình Thường</div>
+                                        <div class="item" data-value="disabled">Hỏng</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div class="actions">
+    <div style="float: right">
+        <button class="ui teal button" form="form3" type="submit" onclick="return ExcuteData()">Save</button>
+    </div>
+    <div style="float: right">
+        <button class="ui grey button" form="form3" onclick="event.preventDefault();CloseModal()">Cancel</button>
+    </div>
+</div>
+<script src="~/ColorPicker/spectrum.js"></script>
+<link href="~/ColorPicker/spectrum.css" rel="stylesheet" />
+<script src="/js/customjs/custom-validation.js"></script>
+<script src="/js/main.js"></script>
+<script>
+    let ChairTypeDetailID;
+
+    $(document).ready(function () {
+        ChairTypeDetailID = @ViewBag.ChairTypeID;
+        $("#ColorCode").spectrum({
+            showPaletteOnly: true,
+            togglePaletteOnly: true,
+            showInput: true,
+            color: '#ffffff',
+            palette: [
+                ["#f00", "#f90", "#ff0", "#0f0", "#0ff", "#00f", "#90f", "#f0f"],
+                ["#f4cccc", "#fce5cd", "#fff2cc", "#d9ead3", "#d0e0e3", "#cfe2f3", "#d9d2e9", "#ead1dc"],
+                ["#ea9999", "#f9cb9c", "#ffe599", "#b6d7a8", "#a2c4c9", "#9fc5e8", "#b4a7d6", "#d5a6bd"],
+                ["#e06666", "#f6b26b", "#ffd966", "#93c47d", "#76a5af", "#6fa8dc", "#8e7cc3", "#c27ba0"],
+                ["#c00", "#e69138", "#f1c232", "#6aa84f", "#45818e", "#3d85c6", "#674ea7", "#a64d79"],
+                ["#900", "#b45f06", "#bf9000", "#38761d", "#134f5c", "#0b5394", "#351c75", "#741b47"],
+                ["#600", "#783f04", "#7f6000", "#274e13", "#0c343d", "#073763", "#20124d", "#4c1130"]
+            ]
+        });
+        LoadDataUpdateChairType();
+        $('#txtPrice').divide();
+    });
+
+    function LoadDataUpdateChairType() {
+        $.ajax({
+            type: 'GET',
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            url: "/ChairTypeDetail/GetChairTypeDetail/" + ChairTypeDetailID,
+            async: true,
+            success: function (data) {
+                if (data.length != 0) {
+                    $('#txtNameChair').val((data[0].NameChair));
+                    $('#txtPrice').val((data[0].Price));
+                    $('#txtTotal').val((data[0].Total));
+                    $("#VisibilityChair").dropdown("refresh");
+                    $("#VisibilityChair").dropdown("set selected", data[0].Visibility);
+                    $("#DisabledChair").dropdown("refresh");
+                    $("#DisabledChair").dropdown("set selected", data[0].DisabledChair);
+                    $("#ColorCode").spectrum("set", data[0].ColorCode);
+                }
+            }
+        });
+    }
+    function ExcuteData() {
+        var data = new Object();
+        data.NameChair = $('#txtNameChair').val() ? $('#txtNameChair').val() : "";
+        data.Price = $('#txtPrice').val() ? Number($('#txtPrice').val()) : 0;
+        data.Total = $('#txtTotal').val() ? Number($('#txtTotal').val()) : 0;
+        data.VisibilityChair = $('#VisibilityChair').dropdown('get value') ? $('#VisibilityChair').dropdown('get value') : "";
+        data.DisabledChair = $('#DisabledChair').dropdown('get value') ? $('#DisabledChair').dropdown('get value') : "";
+        data.ColorCode = $("#ColorCode").spectrum('get').toHexString();
+        //$('#form20').form('validate form');
+        //if ($('#form20').form('is valid')) {
+             $.ajax({
+                 url: "/ChairTypeDetail/Execute",
+                 dataType: "json",
+                 type: "POST",
+                 data: {
+                     __RequestVerificationToken: token
+                     , ChairTypeID: @ViewBag.ChairTypeID
+                     , data: JSON.stringify(data)
+                 },
+                 async: true,
+                 error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        notiError("Lỗi Hệ Thống");
+                 },
+                 success: function (result) {
+                     if (result == "0") {
+                         notiSuccess();
+                         LoadChairType();
+                     } else {
+                         notiError("Loại Vé Đã Tồn Tại Vui Lòng Kiểm Tra Lại");
+                        }
+                 }
+             })
+             $('#divDetailPopup').modal('hide');
+        //}
+         return false;
+    }
+</script>

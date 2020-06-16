@@ -190,7 +190,20 @@ html.ios body {
     height: auto;
 }
 .title.item {
-    padding: .92857143em 1.14285714em !important;
+    padding: 16px 24px !important;
+    margin-bottom:5px;
+}
+
+.ui.inverted.grey.menu .active.item {
+    background-color: #444bf8 !important;
+    border-radius: 0.5em !important;
+}
+    .ui.inverted.grey.menu .title.item:hover {
+        background-color: #444bf8 !important;
+        border-radius: 0.5em !important;
+    }
+#menuDesktopCategory .content {
+    border-radius: 0 0 0.5em 0.5em;
 }
 .dropdown .menu .header {
     padding-top: 3.9px !important;
@@ -207,7 +220,7 @@ html.ios body {
     overflow: visible !important;
 }
 .navslide {
-    margin-left: 190px;
+    margin-left: 240px;
     -webkit-transition-duration: 0.1s;
     transition-duration: 0.1s;
 }
@@ -997,7 +1010,7 @@ a.item.transition {
 }
 .ui.left.sidebar,
 .ui.right.sidebar {
-    width: 190px;
+    width: 240px;
 }
 
 

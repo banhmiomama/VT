@@ -1,0 +1,215 @@
+﻿
+@{
+    ViewData["Title"] = "Phim";
+    Layout = "~/Views/Shared/Master.cshtml";
+}
+
+<div class="pusher">
+    <div class="navslide navwrap">
+        <div class="row" style="background-color: white">
+            <div class="ui form segment form3">
+                <h2 class="ui center aligned header" style="border-top: 1px; font-family: 'Times New Roman'">
+                    Danh Sách Phim
+                </h2>
+                <div class="three fields" style="margin: 0px;">
+                    <div class="field">
+                        <button class="ui blueli button" data-value="fade up" onclick="return AddNewMovie()">Thêm mới</button>
+                    </div>
+                    <div class="field">
+                    </div>
+                    <div class="field">
+                        <div class="ui icon input" style="max-height: 40px;">
+                            <input id="filterMovie" type="text" placeholder="Seaching..." onkeyup="event.preventDefault();return onkeyupMovieFitler();">
+                            <i class="circular search link icon"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui segment" style="border: none; overflow-x: auto; padding: unset;">
+                    <table id="dtContentMovie" class="ui sortable celled table">
+                        <thead class="hiddenCollapse">
+                            <tr role="row">
+                                <th style="display: none">ID</th>
+                                <th style="width: 70px;">#</th>
+                                <th>Mã Phim</th>
+                                <th>Tên Phim - VN</th>
+                                <th>Tên Phim - EN</th>
+                                <th>Quốc Gia</th>
+                                <th style="max-width: 60px">Năm Sản Xuất</th>
+                                <th style="max-width: 60px">Lứa Tuổi</th>
+                                <th style="min-width: 60px">Thời Gian Khởi Chiếu</th>
+                                <th style="min-width: 60px">Loại Sub</th>
+                                <th style="min-width: 60px">Thể Loại</th>
+                                <th style="min-width: 60px">Loại Khởi Chiếu</th>
+                                <th style="min-width: 60px">Đạo Diễn</th>
+                                <th style="min-width: 60px">Diễn Viên</th>
+                                <th style="min-width: 60px">Thời Lượng Phim</th>
+                                <th style="min-width: 60px">Ngày Tạo</th>
+                                <th style="min-width: 60px">Ghi Chú</th>
+                                <th>Xoá</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dtContentMovieBody">
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script type="text/javascript">
+    let DataMovie;
+    function Render_Movie(data, id) {
+        var myNode = document.getElementById(id);
+        if (myNode != null) {
+            myNode.innerHTML = '';
+            let stringContent = '';
+            if (data && data.length > 0) {
+                for (var i = 0; i < data.length; i++) {
+                    let item = data[i];
+                    let tr =
+                        '<td style="display:none !important">' + item.ID + '</td>'
+                        + '<td data-sortValue="' + Number(i) + '">' + (i + 1) + '</td>'
+                        + '<td ><a style="text-decoration: underline;" class="buttonEditClass" href="#">' + item.MovieCode + '</a></td>'
+                        + '<td >' + item.Name_VN + '</td>'
+                        + '<td >' + item.Name_EN + '</td>'
+                        + '<td >' + item.Nationality + '</td>'
+                        + '<td >' + item.Year_Movie + '</td>'
+                        + '<td >' + item.Ages + '</td>'
+                        + '<td >' + item.Opening_Time + '</td>'
+                        + '<td >' + item.SubTitle + '</td>'
+                        + '<td >' + item.MovieType+ '</td>'
+                        + '<td >' + item.MovieTicketType + '</td>'
+                        + '<td >' + item.Director + '</td>'
+                        + '<td >' + item.Actor + '</td>'
+                        + '<td >' + item.Movie_Time_Duration + '</td>'
+                        + '<td >' + item.Created + '</td>'
+                        + '<td >' + item.Note + '</td>'
+                        + '<td class="selectedtd"><button class="buttonGrid _tab_control_" data-tab="delete_service_type" value="'
+                        + item.ID
+                        + '"><img class="buttonDeleteClass imgGrid" src="/img/ButtonImg/delete_ver2.png"></button></td>'
+                    stringContent = stringContent + '<tr class="seachRow" role="row">' + tr + '</tr>';
+                }
+            }
+            document.getElementById(id).innerHTML = stringContent;
+        }
+    }
+    function LoadMovie() {
+        $.ajax({
+            url: "Movie/LoadMovie",
+            dataType: "json",
+            type: "POST",
+            data: JSON.stringify({
+            }),
+            contentType: 'application/json; charset=utf-8',
+            async: true,
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                notiError();
+            },
+            success: function (result) {
+                DataMovie = result;
+                Render_Movie(result, "dtContentMovieBody");
+            }
+        });
+    }
+    $(document).ready(function () {
+        //$('#dtContentMovie').tablesort();
+        $("#dateFilter").flatpickr({
+            mode: "range",
+            dateFormat: 'd-m-Y',
+            enableTime: false,
+            onClose: function (selectedDates, dateStr, instance) {
+                if (selectedDates.length == 1) {
+                    instance.setDate([selectedDates[0], selectedDates[0]], true);
+                }
+            }
+        });
+        var date = new Date();
+        var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+        var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+        //$("#dateFilter").val(formatDateClient(firstDay) + ' to ' + formatDateClient(lastDay));
+        LoadMovie();
+        $('#dtContentMovie tbody').on('click', '.buttonEditClass', function () {
+            let ID = Number($(this).closest('tr')[0].childNodes[0].innerHTML);
+            EditMovie(ID);
+        });
+        $('#dtContentMovie tbody').on('click', '.buttonDeleteClass', function () {
+            let ID = Number($(this).closest('tr')[0].childNodes[0].innerHTML);
+            DeleteMovie(ID);
+        });
+    });
+
+    function AddNewMovie() {
+        document.getElementById("divDetailPopup").innerHTML = '';
+        $("#divDetailPopup").load("MovieDetail/" + 0);
+        $('#divDetailPopup').modal('show');
+        return false;
+    }
+
+    function EditMovie(CurrentID) {
+        document.getElementById("divDetailPopup").innerHTML = '';
+        $("#divDetailPopup").load("MovieDetail/" + CurrentID);
+        $('#divDetailPopup').modal('show');
+        return false;
+    }
+
+    function DeleteMovie(id) {
+        const promise = notiConfirm();
+        promise.then(function () { ExecuteDeleteMovie(id); }, function () { });
+    }
+
+    function ExecuteDeleteMovie(ID) {
+        $.ajax({
+            url: "Movie/DeleteMovie/"+ID,
+            dataType: "json",
+            type: "GET",
+            data: JSON.stringify({
+                'ID': ID
+            }),
+            contentType: 'application/json; charset=utf-8',
+            async: true,
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                notiError(textStatus);
+            },
+            success: function (result) {
+                if (result == "1") {
+                    notiSuccess();
+                    LoadMovie();
+                } else {
+                    notiError();
+                }
+            }
+        });
+    }
+
+    function onkeyupTicketFitlerAsync(extension) {
+        return new Promise((resolve, reject) => {
+            setTimeout(
+                () => {
+                    let search = xoa_dau($('#filterMovie').val().toLowerCase()).trim();
+
+                    let data = DataMovie.filter(function (item) {
+                        if (xoa_dau(item["Name"]).toLowerCase().includes(search)
+                            || xoa_dau(item["NameNoSign"]).toLowerCase().includes(search))
+                            return true;
+                        return false;
+                    });
+                    if (data != undefined && data != null) {
+                        document.getElementById("dtContentMovieBody").innerHTML = "";
+                        Render_Movie(data, "dtContentMovieBody");
+                        ColorSearchFilterText(search, "seachRow");
+                    }
+                    resolve()
+                },
+                Math.floor(Math.random() * 300) + 1
+            )
+        })
+    }
+
+    async function onkeyupMovieFitler() {
+        await onkeyupTicketFitlerAsync();
+        return false;
+    }
+</script>
