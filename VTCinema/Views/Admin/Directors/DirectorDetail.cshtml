@@ -12,8 +12,8 @@
         <img id="avatarDirectorUpload" class="ui mini circular image" src="/img/404.png" alt="label-image" style="width: 100%; height: auto;" />
         <div>&nbsp</div>
         <div class="btn btn-success upload-btn-wrapper" style="width: 100%; margin-top: 6px;">
-            <button class="btn" style="width: 100%">3Mp</button>
-            <input id="fileuploadAvatarEmployee" type="file" onchange="readURL(this);" />
+            <button class="btn" style="width: 100%">Chọn Ảnh</button>
+            <input id="fileuploadAvatarDirector" type="file" onchange="readURL(this);" />
         </div>
     </div>
     <div class="description">
@@ -136,7 +136,7 @@
 
         var data = new Object();
         data.Name = $('#txtNameDirector').val() ? $('#txtNameDirector').val() : "";
-        data.Avatar = $('#avatarDirectorUpload').attr('src') ? $('#avatarDirectorUpload').attr('src') : "" ;
+        data.Avatar = GetFileName();
         data.Birthday = $('#Birthday').val() ? $('#Birthday').val() : "";
         data.Height = $('#txtHeight').val() ? Number($('#txtHeight').val()) : 0;
         data.Nationality = $('#Nationality').dropdown('get value') ? $('#Nationality').dropdown('get value') : "";
@@ -158,6 +158,7 @@
                  },
                  success: function (result) {
                      if (result == "0") {
+                         UploadImage();
                          notiSuccess();
                          LoadDirector();
                      } else {
@@ -169,7 +170,20 @@
             }
          return false;
     }
-
+    function UploadImage() {
+        var Video = $("#fileuploadAvatarDirector")[0].files[0];
+        var formData = new FormData();
+        formData.append("files", Video);
+        $.ajax({
+            url: "/UploadFile/UploadImageDirector",
+            dataType: "json",
+            type: "POST",
+            contentType: false,
+            processData: false,
+            data: formData,
+            async: true
+        });
+    }
     function readURL(input) {
         var ext = input.files[0]['name'].substring(input.files[0]['name'].lastIndexOf('.') + 1).toLowerCase();
         if (input.files && input.files[0] && (ext == "gif" || ext == "png" || ext == "jpeg" || ext == "jpg")) {
@@ -183,6 +197,19 @@
             $('#avatarDirectorUpload').attr('src', '/img/404.png');
         }
     }
+    //Get file URL Image
+    function GetFileName() {
+        var fullPath = document.getElementById('fileuploadAvatarDirector').value;
+        if (fullPath) {
+            var startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
+            var filename = fullPath.substring(startIndex);
+            if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
+                filename = '../img/Director/' + filename.substring(1);
+            }
+            return filename;
+        }
+    }
+
 </script>
 <style>
     .upload-btn-wrapper {

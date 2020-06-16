@@ -12,23 +12,23 @@
         <div>&nbsp</div>
         <div class="btn btn-success upload-btn-wrapper" style="width: 100%; margin-top: 6px;">
             <button class="btn" style="width: 100%">Chọn Hình</button>
-            <input id="fileuploadMovie" type="file" onchange="readURL(this);" />
+            <input id="fileuploadImageMovie" type="file" onchange="readURL(this);" />
         </div>
 
         <input type="file" id="Video"/>
     </div>
     <div class="description">
-        <form class="ui form segment form20" id="form20">
+        <form class="ui form segment form3" id="form3">
             <div class="ui accordion field">
                 <div class="content field active">
                     <div class="two fields">
                         <div class="field">
                             <label>Tên Phim - VN</label>
-                            <input id="txtNameVN"  type="text" />
+                            <input id="txtNameVN" name="NameMovieVN"  type="text" />
                         </div>
                         <div class="field">
                             <label>Tên Phim - EN</label>
-                            <input id="txtNameEN"  type="text" />
+                            <input id="txtNameEN" name="NameMovieEN"  type="text" />
                         </div>
                     </div>
                     <div class="two fields">
@@ -63,7 +63,7 @@
                             <input class="flatpickr" id="Opening_Time" name="date" type="text" placeholder="Ngày Khởi Chiếu.." />
                         </div>
                         <div class="field">
-                            <label>Thời Lượng Phim</label>
+                            <label>Thời Lượng Phim(Phút)</label>
                             <input id="txtMovieTimeDuration"  type="number" />
                         </div>
                     </div>
@@ -178,10 +178,11 @@
 
                     $("#Nationality").dropdown("refresh");
                     $("#Nationality").dropdown("set selected", data[0].Nationality);
+
                     $('#txtYearMovie').val((data[0].Year_Movie));
                     $("#AgeType ").dropdown("refresh");
-
                     $("#AgeType ").dropdown("set selected", data[0].Ages_ID);
+
                     $('#Opening_Time').val((data[0].Opening_Time));
                     $('#txtMovieTimeDuration').val((data[0].Movie_Time_Duration));
 
@@ -225,15 +226,25 @@
 
     function ExcuteData() {
         var data = new Object();
-        data.txtNameVN = $('#txtNameMovie').val() ? $('#txtNameMovie').val() : "";
-        //data.Avatar = $('#avatarMovieUpload').attr('src') ? $('#avatarMovieUpload').attr('src') : "" ;
-        //data.Birthday = $('#Birthday').val() ? $('#Birthday').val() : "";
-        //data.Height = $('#txtHeight').val() ? Number($('#txtHeight').val()) : 0;
-        //data.Nationality = $('#Nationality').dropdown('get value') ? $('#Nationality').dropdown('get value') : "";
+        data.NameVN = $('#txtNameVN').val() ? $('#txtNameVN').val() : "";
+        data.NameEN = $('#txtNameEN').val() ? $('#txtNameEN').val() : "";
+        data.Avatar = $('#avatarMovieUpload').attr('src') ? $('#avatarMovieUpload').attr('src') : "";
+        data.Image = GetFileURL();
+        data.NationalityID = $('#Nationality').dropdown('get value') ? Number($('#Nationality').dropdown('get value')) : 0;
+        data.YearMovie = $('#txtYearMovie').val() ? $('#txtYearMovie').val() : "";
+        data.AgeID = $('#AgeType').dropdown('get value') ? Number($('#AgeType').dropdown('get value')) : 0;
+        data.OpeningTime = $('#Opening_Time').val() ? Number($('#Opening_Time').val()) : 0;
+        data.MovieTimeDuration = $('#txtMovieTimeDuration').val() ? Number($('#txtMovieTimeDuration').val()) : 0;
+        data.SubTitleID = $('#SubTitle').dropdown('get value') ? Number($('#SubTitle').dropdown('get value')) : 0;
+        data.MovieTypeID = $('#MovieType').dropdown('get value') ? Number($('#MovieType').dropdown('get value')) : 0;
+        data.MovieTicketTypeID = $('#MovieTicketType').dropdown('get value') ? Number($('#MovieTicketType').dropdown('get value')) : 0;
+        data.DirectorID = $('#Director').dropdown('get value') ? Number($('#Director').dropdown('get value')) : 0;
+        data.Note = $('#txtNote').val() ? $('#txtNote').val() : "";
+
         //data.Description = $('#txtNote').val() ? $('#txtNote').val() : "";
            
-        $('#form20').form('validate form');
-        if ($('#form20').form('is valid')) {
+        $('#form3').form('validate form');
+        if ($('#form3').form('is valid')) {
              $.ajax({
                  url: "/Admin/MovieDetail/Execute",
                  dataType: "json",
@@ -248,8 +259,10 @@
                         notiError("Lỗi Hệ Thống");
                  },
                  success: function (result) {                     
-                     UploadVideo();
+                     
                      if (result == "0") {
+                         UploadVideoMovie();
+                         UploadImageMovie();
                          notiSuccess();
                          LoadMovie();
                      } else {
@@ -262,7 +275,7 @@
          return false;
     }
 
-    function UploadVideo() {
+    function UploadVideoMovie() {
         var Video = $("#Video")[0].files[0];
         var formData = new FormData();
         formData.append("files", Video);     
@@ -274,15 +287,22 @@
             processData: false,
             data: formData,
             async: true,
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-                notiError("Lỗi Upload Video");
-            },
-            success: function (result) {
-                notiSuccess();
-            }
         });            
     }
-
+    function UploadImageMovie() {
+        var Video = $("#fileuploadImageMovie")[0].files[0];
+        var formData = new FormData();
+        formData.append("files", Video);
+        $.ajax({
+            url: "/Admin/UploadFile/UploadImageMovie",
+            dataType: "json",
+            type: "POST",
+            contentType: false,
+            processData: false,
+            data: formData,
+            async: true,
+        });
+    }
     function readURL(input) {
         var ext = input.files[0]['name'].substring(input.files[0]['name'].lastIndexOf('.') + 1).toLowerCase();
         if (input.files && input.files[0] && (ext == "gif" || ext == "png" || ext == "jpeg" || ext == "jpg")) {
@@ -295,6 +315,17 @@
             reader.readAsDataURL(input.files[0]);
         } else {
             $('#avatarMovieUpload').attr('src', '/img/404.png');
+        }
+    }
+    function GetFileURL() {
+        var fullPath = document.getElementById('fileuploadImageMovie').value;
+        if (fullPath) {
+            var startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
+            var filename = fullPath.substring(startIndex);
+            if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
+                filename = '../img/Director/' + filename.substring(1);
+            }
+            return filename;
         }
     }
 </script>

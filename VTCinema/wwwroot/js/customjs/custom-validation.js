@@ -314,7 +314,21 @@ $('.ui.form3').form({
                 prompt: 'Vui lòng nhập loại phiên dịch'
             }]
         },  
-        
+        //Moive
+        NameMovieVN: {
+            identifier: 'NameMovieVN',
+            rules: [{
+                type: 'empty',
+                prompt: 'Vui lòng nhập tên phim'
+            }]
+        },
+        NameMovieEN: {
+            identifier: 'NameMovieEN',
+            rules: [{
+                type: 'empty',
+                prompt: 'Vui lòng nhập tên phim'
+            }]
+        },
     }
 });
 
