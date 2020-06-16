@@ -142,7 +142,7 @@
 
     function LoadProduct() {
         $.ajax({
-            url: "Product/LoadProduct",
+            url: "Admin/Product/LoadProduct",
             dataType: "json",
             type: "POST",
             data: JSON.stringify({
@@ -259,7 +259,7 @@
 
     function ExecuteDeleteProduct(ID) {
         $.ajax({
-            url: "Product/DeleteProduct/" + ID,
+            url: "Admin/Product/DeleteProduct/" + ID,
             dataType: "json",
             type: "GET",
             data: JSON.stringify({
@@ -282,7 +282,7 @@
     }
     function ExecuteDeleteProductType(ID) {
         $.ajax({
-            url: "Product/DeleteProductType/" + ID,
+            url: "Admin/Product/DeleteProductType/" + ID,
             dataType: "json",
             type: "GET",
             data: JSON.stringify({

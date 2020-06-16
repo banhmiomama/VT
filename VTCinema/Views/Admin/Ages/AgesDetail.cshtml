@@ -51,7 +51,7 @@
             type: 'GET',
             dataType: "json",
             contentType: 'application/json; charset=utf-8',
-            url: "/AgesDetail/GetAgesDetail/" + AgesDetailID,
+            url: "/Admin/AgesDetail/GetAgesDetail/" + AgesDetailID,
             async: true,
             success: function (data) {
                 if (data.length != 0) {
@@ -70,7 +70,7 @@
         if ($('#form3').form('is valid')) {
 
              $.ajax({
-                 url: "/AgesDetail/Execute",
+                 url: "/Admin/AgesDetail/Execute",
                  dataType: "json",
                  type: "POST",
                  data: {

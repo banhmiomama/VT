@@ -7,7 +7,7 @@
 <div class="row">
     <div class="sixteen wide tablet eight wide computer column">
         <div class="ui segments">
-            <form class="ui form segment form22" id="form22">
+            <form class="ui form segment form3" id="form3">
                 <div class="ui accordion field">
                     <div class="content field active">
                         <div class="two fields">
@@ -31,10 +31,10 @@
 
 <div class="actions">
     <div style="float: right">
-        <button class="ui teal button" form="form22" type="submit" onclick="return ExcuteData()">Save</button>
+        <button class="ui teal button" form="form3" type="submit" onclick="return ExcuteData()">Save</button>
     </div>
     <div style="float: right">
-        <button class="ui grey button" form="form22" onclick="event.preventDefault();CloseModal()">Cancel</button>
+        <button class="ui grey button" form="form3" onclick="event.preventDefault();CloseModal()">Cancel</button>
     </div>
 </div>
 <script src="/js/customjs/custom-validation.js"></script>
@@ -53,7 +53,7 @@
             type: 'GET',
             dataType: "json",
             contentType: 'application/json; charset=utf-8',
-            url: "/Sub_TitleDetail/GetSub_TitleDetail/" + Sub_TitleDetailID,
+            url: "/Admin/Sub_TitleDetail/GetSub_TitleDetail/" + Sub_TitleDetailID,
             async: true,
             success: function (data) {
                 if (data.length != 0) {
@@ -67,11 +67,11 @@
         var data = new Object();
         data.Sub_Title = $('#txtSub_Title').val() ? $('#txtSub_Title').val() : "";
         data.Note = $('#txtNote').val() ? $('#txtNote').val() : "";
-        $('#form22').form('validate form');
-        if ($('#form22').form('is valid')) {
+        $('#form3').form('validate form');
+        if ($('#form3').form('is valid')) {
 
              $.ajax({
-                 url: "/Sub_TitleDetail/Execute",
+                 url: "/Admin/Sub_TitleDetail/Execute",
                  dataType: "json",
                  type: "POST",
                  data: {

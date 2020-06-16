@@ -86,7 +86,7 @@
             type: 'GET',
             dataType: "json",
             contentType: 'application/json; charset=utf-8',
-            url: "/ProductDetail/GetProductDetail/" + ProductDetailID,
+            url: "/Admin/ProductDetail/GetProductDetail/" + ProductDetailID,
             async: true,
             success: function (data) {
                 let DataCombo = data.Table1;
@@ -120,7 +120,7 @@
          $('#form3').form('validate form');
          if ($('#form3').form('is valid')) {
              $.ajax({
-                 url: "/ProductDetail/Execute",
+                 url: "/Admin/ProductDetail/Execute",
                  dataType: "json",
                  type: "POST",
                  data: {

@@ -161,7 +161,7 @@
             type: 'GET',
             dataType: "json",
             contentType: 'application/json; charset=utf-8',
-            url: "/MovieDetail/GetMovieDetail/" + MovieDetailID,
+            url: "/Admin/MovieDetail/GetMovieDetail/" + MovieDetailID,
             async: true,
             success: function (result) {
                 LoadComboNational(result.National, "cbbNationality");
@@ -235,7 +235,7 @@
         $('#form20').form('validate form');
         if ($('#form20').form('is valid')) {
              $.ajax({
-                 url: "/MovieDetail/Execute",
+                 url: "/Admin/MovieDetail/Execute",
                  dataType: "json",
                  type: "POST",
                  data: {
@@ -267,7 +267,7 @@
         var formData = new FormData();
         formData.append("files", Video);     
         $.ajax({
-            url: "/UploadFile/Upload",
+            url: "/Admin/UploadFile/Upload",
             dataType: "json",
             type: "POST",
             contentType: false,

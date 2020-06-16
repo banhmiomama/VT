@@ -71,7 +71,7 @@
     }
     function LoadAges() {
         $.ajax({
-            url: "Ages/LoadAges",
+            url: "/Admin/Ages/LoadAges",
             dataType: "json",
             type: "POST",
             data: JSON.stringify({
@@ -135,7 +135,7 @@
 
     function ExecuteDeleteAges(ID) {      
         $.ajax({
-            url: "Ages/DeleteAges/"+ID,
+            url: "/Admin/Ages/DeleteAges/"+ID,
             dataType: "json",
             type: "GET",
             data: JSON.stringify({

@@ -76,7 +76,7 @@
     }
     function LoadChairType() {
         $.ajax({
-            url: "ChairType/LoadChairType",
+            url: "Admin/ChairType/LoadChairType",
             dataType: "json",
             type: "POST",
             data: JSON.stringify({
@@ -140,7 +140,7 @@
 
     function ExecuteDeleteChairType(ID) {
         $.ajax({
-            url: "ChairType/DeleteChairType/"+ID,
+            url: "Admin/ChairType/DeleteChairType/"+ID,
             dataType: "json",
             type: "GET",
             data: JSON.stringify({

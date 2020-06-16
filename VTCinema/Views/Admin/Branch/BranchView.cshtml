@@ -115,7 +115,7 @@
 
     function LoadBranch() {
         $.ajax({
-            url: "branch/LoadBranch",
+            url: "Admin/branch/LoadBranch",
             dataType: "json",
             type: "POST",
             data: JSON.stringify({
@@ -188,7 +188,7 @@
 
     function ExecuteDeleteBranch(ID) {
         $.ajax({
-            url: "Branch/DeleteBranch/" + ID,
+            url: "Admin/Branch/DeleteBranch/" + ID,
             dataType: "json",
             type: "GET",
             data: JSON.stringify({

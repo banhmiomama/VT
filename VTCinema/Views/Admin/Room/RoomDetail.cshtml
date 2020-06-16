@@ -9,7 +9,7 @@
 <div class="row">
     <div class="sixteen wide tablet eight wide computer column">
         <div class="ui segments">
-            <form class="ui form segment form20" id="form20">
+            <form class="ui form segment form3" id="form3">
                 <div class="ui accordion field">
                     <div class="content field active">
                         <div class="two fields">
@@ -56,11 +56,11 @@
 
     <div class="actions">
         <div style="float: right">
-            <button class="ui teal button" form="form20" type="submit" onclick="return ExcuteData()">Save</button>
+            <button class="ui teal button" form="form3" type="submit" onclick="return ExcuteData()">Save</button>
 
         </div>
         <div style="float: right">
-            <button class="ui grey button" form="form20" onclick="event.preventDefault();CloseModal()">Cancel</button>
+            <button class="ui grey button" form="form3" onclick="event.preventDefault();CloseModal()">Cancel</button>
         </div>
     </div>
     <script src="/js/customjs/custom-validation.js"></script>
@@ -80,7 +80,7 @@
             type: 'GET',
             dataType: "json",
             contentType: 'application/json; charset=utf-8',
-            url: "/RoomDetail/GetRoomDetail/" + RoomDetailID,
+            url: "/Admin/RoomDetail/GetRoomDetail/" + RoomDetailID,
             async: true,
             success: function (result) {
                 DataBranch = result.Branch;
@@ -100,7 +100,7 @@
             type: 'GET',
             dataType: "json",
             contentType: 'application/json; charset=utf-8',
-            url: "/RoomDetail/GetRoomChairDetail/" + RoomID,
+            url: "/Admin/RoomDetail/GetRoomChairDetail/" + RoomID,
             async: true,
             success: function (result) {
                 let NameRow = result.Table;
@@ -141,11 +141,11 @@
         data.Room = $('#txtNameRoom').val() ? $('#txtNameRoom').val() : "";
         data.BranchID = $("#Branch").dropdown('get value') ? Number($("#Branch").dropdown('get value')) : 0;
         
-        $('#form20').form('validate form');
-        if ($('#form20').form('is valid')) {
+        $('#form3').form('validate form');
+        if ($('#form3').form('is valid')) {
 
              $.ajax({
-                 url: "/RoomDetail/Execute",
+                 url: "/Admin/RoomDetail/Execute",
                  dataType: "json",
                  type: "POST",
                  data: {

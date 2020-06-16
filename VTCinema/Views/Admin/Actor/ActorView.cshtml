@@ -78,7 +78,7 @@
     }
     function LoadActor() {
         $.ajax({
-            url: "Actor/LoadActor",
+            url: "/Admin/Actor/LoadActor",
             dataType: "json",
             type: "POST",
             data: JSON.stringify({
@@ -142,7 +142,7 @@
 
     function ExecuteDeleteActor(ID) {      
         $.ajax({
-            url: "Actor/DeleteActor/"+ID,
+            url: "/Admin/Actor/DeleteActor/"+ID,
             dataType: "json",
             type: "GET",
             data: JSON.stringify({

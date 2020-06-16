@@ -73,7 +73,7 @@
     }
     function LoadMovieType() {
         $.ajax({
-            url: "MovieType/LoadMovieType",
+            url: "Admin/MovieType/LoadMovieType",
             dataType: "json",
             type: "POST",
             data: JSON.stringify({
@@ -137,7 +137,7 @@
 
     function ExecuteDeleteMovieType(ID) {
         $.ajax({
-            url: "MovieType/DeleteMovieType/"+ID,
+            url: "Admin/MovieType/DeleteMovieType/"+ID,
             dataType: "json",
             type: "GET",
             data: JSON.stringify({

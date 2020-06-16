@@ -75,7 +75,7 @@
     }
     function LoadRoom() {
         $.ajax({
-            url: "Room/LoadRoom",
+            url: "Admin/Room/LoadRoom",
             dataType: "json",
             type: "POST",
             data: JSON.stringify({
@@ -139,7 +139,7 @@
 
     function ExecuteDeleteRoom(ID) {
         $.ajax({
-            url: "Room/DeleteRoom/"+ID,
+            url: "Admin/Room/DeleteRoom/"+ID,
             dataType: "json",
             type: "GET",
             data: JSON.stringify({

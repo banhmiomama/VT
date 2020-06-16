@@ -59,7 +59,7 @@
             type: 'GET',
             dataType: "json",
             contentType: 'application/json; charset=utf-8',
-            url: "/MovieTicketTypeDetail/GetMovieTicketTypeDetail/" + MovieTicketTypeDetailID,
+            url: "/Admin/MovieTicketTypeDetail/GetMovieTicketTypeDetail/" + MovieTicketTypeDetailID,
             async: true,
             success: function (data) {
                 if (data.length != 0) {
@@ -79,7 +79,7 @@
         if ($('#form3').form('is valid')) {
 
              $.ajax({
-                 url: "/MovieTicketTypeDetail/Execute",
+                 url: "/Admin/MovieTicketTypeDetail/Execute",
                  dataType: "json",
                  type: "POST",
                  data: {

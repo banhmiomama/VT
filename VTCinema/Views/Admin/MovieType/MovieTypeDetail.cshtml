@@ -51,7 +51,7 @@
             type: 'GET',
             dataType: "json",
             contentType: 'application/json; charset=utf-8',
-            url: "/MovieTypeDetail/GetMovieTypeDetail/" + MovieTypeDetailID,
+            url: "/Admin/MovieTypeDetail/GetMovieTypeDetail/" + MovieTypeDetailID,
             async: true,
             success: function (data) {
                 if (data.length != 0) {
@@ -68,7 +68,7 @@
         $('#form3').form('validate form');
         if ($('#form3').form('is valid')) {
              $.ajax({
-                 url: "/MovieTypeDetail/Execute",
+                 url: "/Admin/MovieTypeDetail/Execute",
                  dataType: "json",
                  type: "POST",
                  data: {

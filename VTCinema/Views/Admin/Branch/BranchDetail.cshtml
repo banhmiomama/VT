@@ -76,7 +76,7 @@
             type: 'GET',
             dataType: "json",
             contentType: 'application/json; charset=utf-8',
-            url: "/BranchDetail/GetBranchDetail/" + BranchDetailID,
+            url: "/Admin/BranchDetail/GetBranchDetail/" + BranchDetailID,
             async: true,
             success: function (data) {
                 if (data.length != 0) {
@@ -104,7 +104,7 @@
         if ($('#form3').form('is valid')) {
 
              $.ajax({
-                 url: "/BranchDetail/Execute",
+                 url: "/Admin/BranchDetail/Execute",
                  dataType: "json",
                  type: "POST",
                  data: {

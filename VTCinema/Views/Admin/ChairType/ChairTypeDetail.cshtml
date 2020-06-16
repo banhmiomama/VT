@@ -109,7 +109,7 @@
             type: 'GET',
             dataType: "json",
             contentType: 'application/json; charset=utf-8',
-            url: "/ChairTypeDetail/GetChairTypeDetail/" + ChairTypeDetailID,
+            url: "/Admin/ChairTypeDetail/GetChairTypeDetail/" + ChairTypeDetailID,
             async: true,
             success: function (data) {
                 if (data.length != 0) {
@@ -136,7 +136,7 @@
         //$('#form20').form('validate form');
         //if ($('#form20').form('is valid')) {
              $.ajax({
-                 url: "/ChairTypeDetail/Execute",
+                 url: "/Admin/ChairTypeDetail/Execute",
                  dataType: "json",
                  type: "POST",
                  data: {

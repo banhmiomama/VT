@@ -77,7 +77,7 @@
     }
     function LoadDirector() {
         $.ajax({
-            url: "Director/LoadDirector",
+            url: "Admin/Director/LoadDirector",
             dataType: "json",
             type: "POST",
             data: JSON.stringify({
@@ -141,7 +141,7 @@
 
     function ExecuteDeleteDirector(ID) {
         $.ajax({
-            url: "Director/DeleteDirector/"+ID,
+            url: "Admin/Director/DeleteDirector/"+ID,
             dataType: "json",
             type: "GET",
             data: JSON.stringify({

@@ -59,7 +59,7 @@
             type: 'GET',
             dataType: "json",
             contentType: 'application/json; charset=utf-8',
-            url: "/ProductTypeDetail/GetProductTypeDetail/" + ProductTypeDetailID,
+            url: "/Admin/ProductTypeDetail/GetProductTypeDetail/" + ProductTypeDetailID,
             async: true,
             success: function (data) {
                 if (data.length != 0) {
@@ -85,7 +85,7 @@
          $('#form3').form('validate form');
          if ($('#form3').form('is valid')) {
              $.ajax({
-                 url: "/ProductTypeDetail/Execute",
+                 url: "/Admin/ProductTypeDetail/Execute",
                  dataType: "json",
                  type: "POST",
                  data: {
