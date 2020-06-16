@@ -76,7 +76,7 @@
     }
     function LoadMovieTicketType() {
         $.ajax({
-            url: "Admin/MovieTicketType/LoadMovieTicketType",
+            url: "MovieTicketType/LoadMovieTicketType",
             dataType: "json",
             type: "POST",
             data: JSON.stringify({
@@ -140,7 +140,7 @@
 
     function ExecuteDeleteMovieTicketType(ID) {
         $.ajax({
-            url: "Admin/MovieTicketType/DeleteMovieTicketType/"+ID,
+            url: "MovieTicketType/DeleteMovieTicketType/"+ID,
             dataType: "json",
             type: "GET",
             data: JSON.stringify({

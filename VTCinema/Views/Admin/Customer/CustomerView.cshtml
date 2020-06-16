@@ -81,7 +81,7 @@
     }
     function LoadCustomer() {
         $.ajax({
-            url: "Admin/Customer/LoadCustomer",
+            url: "Customer/LoadCustomer",
             dataType: "json",
             type: "POST",
             data: JSON.stringify({
@@ -145,7 +145,7 @@
 
     function ExecuteDeleteCustomer(ID) {
         $.ajax({
-            url: "Admin/Customer/DeleteCustomer/"+ID,
+            url: "Customer/DeleteCustomer/"+ID,
             dataType: "json",
             type: "GET",
             data: JSON.stringify({
