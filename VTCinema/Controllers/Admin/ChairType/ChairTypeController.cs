@@ -9,12 +9,12 @@ using Newtonsoft.Json;
 
 namespace VTCinema.Controllers.ChairType
 {
-    [Route("ChairType")]
+    [Route("Admin/ChairType")]
     public class ChairTypeController : Controller
     {
         public IActionResult Index()
         {
-            return View("~/Views/ChairType/ChairTypeView.cshtml");
+            return View("~/Views/Admin/ChairType/ChairTypeView.cshtml");
         }
         [Route("LoadChairType")]
         [HttpPost]

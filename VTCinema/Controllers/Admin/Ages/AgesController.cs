@@ -9,12 +9,12 @@ using Newtonsoft.Json;
 
 namespace VTCinema.Controllers.Ages
 {
-    [Route("Ages")]
+    [Route("Admin/Ages")]
     public class AgesController : Controller
     {
         public IActionResult Index()
         {
-            return View("~/Views/Ages/AgesView.cshtml");
+            return View("~/Views/Admin/Ages/AgesView.cshtml");
         }
 
         [Route("LoadAges")]

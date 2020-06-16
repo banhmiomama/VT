@@ -10,7 +10,7 @@ using VTCinema.Models;
 
 namespace VTCinema.Controllers.Product
 {
-    [Route("ProductDetail")]
+    [Route("Admin/ProductDetail")]
     public class ProductDetailController : Controller
     {
         [Route("{ProductID}")]
@@ -18,7 +18,7 @@ namespace VTCinema.Controllers.Product
         public IActionResult Index(int ProductID)
         {
             ViewBag.ProductID = ProductID;
-            return View("~/Views/Product/ProductDetail.cshtml");
+            return View("~/Views/Admin/Product/ProductDetail.cshtml");
         }
 
         DataTable LoadComboProductType()

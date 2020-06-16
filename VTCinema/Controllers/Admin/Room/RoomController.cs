@@ -9,12 +9,12 @@ using Newtonsoft.Json;
 
 namespace VTCinema.Controllers.Room
 {
-    [Route("Room")]
+    [Route("Admin/Room")]
     public class RoomController : Controller
     {
         public IActionResult Index()
         {
-            return View("~/Views/Room/RoomView.cshtml");
+            return View("~/Views/Admin/Room/RoomView.cshtml");
         }
 
         [Route("LoadRoom")]

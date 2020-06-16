@@ -10,7 +10,7 @@ using VTCinema.Models;
 
 namespace VTCinema.Controllers.Directors
 {
-    [Route("DirectorDetail")]
+    [Route("Admin/DirectorDetail")]
     public class DirectorDetailController : Controller
     {
         [Route("{DirectorID}")]
@@ -18,7 +18,7 @@ namespace VTCinema.Controllers.Directors
         public IActionResult Index(int DirectorID)
         {
             ViewBag.DirectorID = DirectorID;
-            return View("~/Views/Directors/DirectorDetail.cshtml");
+            return View("~/Views/Admin/Directors/DirectorDetail.cshtml");
         }
         [Route("GetDirectorDetail/{DirectorID}")]
         [HttpGet]

@@ -10,7 +10,7 @@ using VTCinema.Models;
 
 namespace VTCinema.Controllers.Product
 {
-    [Route("ProductTypeDetail")]
+    [Route("Admin/ProductTypeDetail")]
     public class ProductTypeDetailController : Controller
     {
         [Route("{ProductTypeID}")]
@@ -18,7 +18,7 @@ namespace VTCinema.Controllers.Product
         public IActionResult Index(int ProductTypeID)
         {
             ViewBag.ProductTypeID = ProductTypeID;
-            return View("~/Views/Product/ProductTypeDetail.cshtml");
+            return View("~/Views/Admin/Product/ProductTypeDetail.cshtml");
         }
         [Route("GetProductTypeDetail/{ProductTypeID}")]
         [HttpGet]

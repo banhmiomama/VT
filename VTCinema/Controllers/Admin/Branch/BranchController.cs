@@ -9,12 +9,12 @@ using Newtonsoft.Json;
 
 namespace VTCinema.Controllers.Branch
 {
-    [Route("Branch")]
+    [Route("Admin/Branch")]
     public class BranchController : Controller
     {
         public IActionResult Index()
         {
-            return View("~/Views/Branch/BranchView.cshtml");
+            return View("~/Views/Admin/Branch/BranchView.cshtml");
         }
 
         [Route("LoadBranch")]
