@@ -14,7 +14,7 @@ namespace VTCinema.Controllers.Actor
     {
         public IActionResult Index()
         {
-            return View("~/Views/Actor/ActorView.cshtml");
+            return View("~/Views/Admin/Actor/ActorView.cshtml");
         }
 
         [Route("LoadActor")]
