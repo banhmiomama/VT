@@ -149,10 +149,7 @@ $('.ui.form3').form({
                     type: 'maxLength[50]',
                     prompt: 'Mật khẩu từ 6-50 kí tự'
                 },
-                {
-                    type: "regExp[\s]",
-                    prompt:'Mật khẩu không nhập khoảng trắng'
-                }
+              
             ]
         },       
         passwordAgain: {
