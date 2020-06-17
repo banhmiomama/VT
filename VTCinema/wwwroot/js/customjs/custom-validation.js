@@ -329,6 +329,79 @@ $('.ui.form3').form({
                 prompt: 'Vui lòng nhập tên phim'
             }]
         },
+        YearMovie: {
+            identifier: 'YearMovie',
+            rules: [{
+                type: 'empty',
+                prompt: 'Vui lòng nhập năm sản xuất'
+            }]
+        },
+        Nationality: {
+            identifier: 'Nationality',
+            rules: [{
+                type: 'empty',
+                prompt: 'Vui lòng chọn quốc gia'
+            }]
+        },
+        AgeType: {
+            identifier: 'AgeType',
+            rules: [{
+                type: 'empty',
+                prompt: 'Vui lòng chọn lứa tuổi'
+            }]
+        },
+        OpeningTime: {
+            identifier: 'OpeningTime',
+            rules: [{
+                type: 'empty',
+                prompt: 'Vui lòng chọn thời gian khởi chiếu'
+            }]
+        },
+        MovieTimeDuration: {
+            identifier: 'MovieTimeDuration',
+            rules: [{
+                type: 'empty',
+                prompt: 'Vui lòng nhập thời lượng phim'
+            }, {
+                type: "regExp[/^[0-9]/]",
+               prompt: 'Vui lòng nhập số cho thời lượng phim'
+            }]
+        },
+        SubTitle: {
+            identifier: 'SubTitle',
+            rules: [{
+                type: 'empty',
+                prompt: 'Vui lòng chọn loại phiên dịch'
+            }]
+        },
+        MovieType: {
+            identifier: 'MovieType',
+            rules: [{
+                type: 'empty',
+                prompt: 'Vui lòng chọn ít nhất 1 thể loại phim'
+            }]
+        },
+        MovieTicketType: {
+            identifier: 'MovieTicketType',
+            rules: [{
+                type: 'empty',
+                prompt: 'Vui lòng chọn loại trình chiếu'
+            }]
+        },
+        Director: {
+            identifier: 'Director',
+            rules: [{
+                type: 'empty',
+                prompt: 'Vui lòng chọn đạo diễn'
+            }]
+        },
+        Actor: {
+            identifier: 'Actor',
+            rules: [{
+                type: 'empty',
+                prompt: 'Vui lòng chọn ít nhất 1 diễn viên'
+            }]
+        },
     }
 });
 
