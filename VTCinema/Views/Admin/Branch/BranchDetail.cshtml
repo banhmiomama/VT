@@ -3,6 +3,14 @@
     Layout = null;
 }
 
+<script src="~/js/tinymce.min.js"></script>
+
+<script>
+    tinymce.init({
+        selector: '#txtNote'
+    });
+</script>
+
 <div id="headerPopup_CustomerCare" class="header">
     Chi Nhánh
 </div>
@@ -43,7 +51,7 @@
                         </div>
                         <div class="field">
                             <label>Ghi Chú</label>
-                            <textarea id="txtNote" name="Note" rows="5" />
+                            <textarea id="txtNote" name="mytextarea" rows="5" placeholder="Nhập ghi chú..."  />
                         </div>
                     </div>
                 </div>
@@ -99,7 +107,7 @@
          data.Longtitude = $('#txtLongtitude').val() ? Number($('#txtLongtitude').val()) : 0;
          data.Latitude = $('#txtLatitude').val() ? Number($('#txtLatitude').val()) : 0;
          data.Address = $('#txtAddress').val() ? $('#txtAddress').val() : "";
-         data.Note = $('#txtNote').val() ? $('#txtNote').val() : "";
+        data.Note = tinymce.activeEditor.getContent();
         $('#form3').form('validate form');
         if ($('#form3').form('is valid')) {
 

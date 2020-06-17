@@ -3,6 +3,13 @@
     Layout = null;
 }
 
+<script src="~/js/tinymce.min.js"></script>
+
+<script>
+    tinymce.init({
+        selector: '#txtNote'
+    });
+</script>
 <div id="headerPopup_CustomerCare" class="header">
     Khách Hàng
 </div>
@@ -56,7 +63,7 @@
                     </div>
                     <div class="field">
                         <label>Ghi Chú</label>
-                        <textarea id="txtNote" rows="5" />
+                        <textarea id="txtNote" rows="5" name="mytextarea"  placeholder="Nhập ghi chú..."/>
                     </div>
                 </div>
             </div>
@@ -132,7 +139,7 @@
         data.Password = $('#txtPassword').val() ? $('#txtPassword').val() : "";
         data.Phone = $('#txtPhone').val() ? $('#txtPhone').val() : "";
         data.Email = $('#txtEmail').val() ? $('#txtEmail').val() : "";
-        data.Note = $('#txtNote').val() ? $('#txtNote').val() : "";
+        data.Note = tinymce.activeEditor.getContent();
 
          $('#form3').form('validate form');
          if ($('#form3').form('is valid')) {

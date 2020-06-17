@@ -1,9 +1,18 @@
 ﻿
 @{ Layout = null; }
 
-    <div id="headerPopup_CustomerCare" class="header">
-        Thể Loại
-    </div>
+
+<script src="~/js/tinymce.min.js"></script>
+
+<script>
+    tinymce.init({
+        selector: '#txtNote'
+    });
+</script>
+
+<div id="headerPopup_CustomerCare" class="header">
+    Thể Loại
+</div>
 <div class="row">
     <div class="sixteen wide tablet eight wide computer column">
         <div class="ui segments">
@@ -17,7 +26,7 @@
                             </div>
                             <div class="field">
                                 <label>Ghi Chú</label>
-                                <input id="txtNote" name="Name" type="text" />
+                                <textarea id="txtNote" name="mytextarea" rows="5" placeholder="Nhập ghi chú..." />
                             </div>
                         </div>
                     </div>
@@ -64,7 +73,7 @@
     function ExcuteData() {
         var data = new Object();
         data.Name = $('#txtName').val() ? $('#txtName').val() : "";
-        data.Note = $('#txtNote').val() ? $('#txtNote').val() : "";
+        data.Note = tinymce.activeEditor.getContent();
         $('#form3').form('validate form');
         if ($('#form3').form('is valid')) {
              $.ajax({

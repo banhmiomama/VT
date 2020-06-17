@@ -1,6 +1,14 @@
 ﻿
 @{ Layout = null; }
 
+
+<script src="~/js/tinymce.min.js"></script>
+
+<script>
+    tinymce.init({
+        selector: '#txtNote'
+    });
+</script>
 <div id="headerPopup_CustomerCare" class="header">
     Phiên Dịch
 </div>
@@ -10,17 +18,14 @@
             <form class="ui form segment form3" id="form3">
                 <div class="ui accordion field">
                     <div class="content field active">
-                        <div class="two fields">
                             <div class="field">
-                                <label>Tiêu Đề Phiên Dịch</label>
+                                <label style="font-weight:bold">Tiêu Đề Phiên Dịch</label>
                                 <input id="txtSub_Title" name="Sub_Title" type="text" />
                             </div>
                             <div class="field">
-                                <label>Ghi Chú</label>
-                                <input id="txtNote" type="text" name="Note" />
+                                <label style="font-weight:bold">Ghi Chú</label>
+                                <textarea id="txtNote" name="mytextarea" rows="5" placeholder="Nhập ghi chú..." />
                             </div>
-                        </div>
-
                     </div>
                 </div>
             </form>
@@ -66,7 +71,7 @@
     function ExcuteData() {
         var data = new Object();
         data.Sub_Title = $('#txtSub_Title').val() ? $('#txtSub_Title').val() : "";
-        data.Note = $('#txtNote').val() ? $('#txtNote').val() : "";
+        data.Note = tinymce.activeEditor.getContent();
         $('#form3').form('validate form');
         if ($('#form3').form('is valid')) {
 
