@@ -13,7 +13,7 @@
         <div>&nbsp</div>
         <div class="btn btn-success upload-btn-wrapper" style="width: 100%; margin-top: 6px;">
             <button class="btn" style="width: 100%">Chọn Hình</button>
-            <input id="fileuploadAvatarEmployee" type="file" @*name="files[]"*@ @*onchange="document.getElementById('avatarCustomerUpload').src = window.URL.createObjectURL(this.files[0])"*@ onchange="readURL(this);" />
+            <input id="fileuploadAvatarCustomer" type="file" @*name="files[]"*@ @*onchange="document.getElementById('avatarCustomerUpload').src = window.URL.createObjectURL(this.files[0])"*@ onchange="readURL(this);" />
         </div>
     </div>
     <div class="description">
@@ -94,7 +94,7 @@
             type: 'GET',
             dataType: "json",
             contentType: 'application/json; charset=utf-8',
-            url: "Admin/CustomerDetail/GetCustomerDetail/" + CustomerDetailID,
+            url: "/Admin/CustomerDetail/GetCustomerDetail/" + CustomerDetailID,
             async: true,
             success: function (data) {
                 if (data.length != 0) {
@@ -127,7 +127,7 @@
         var data = new Object();
         data.Name = $('#txtNameCustomer').val() ? $('#txtNameCustomer').val() : "";
         data.LastName = $('#txtLastNameCustomer').val() ? $('#txtLastNameCustomer').val() : "";
-        data.Avatar = $('#avatarCustomerUpload').attr('src') ? $('#avatarCustomerUpload').attr('src') : "" ;
+        data.Avatar = GetFileName();
         data.Birthday = $('#Birthday').val() ? $('#Birthday').val() : "";
         data.Password = $('#txtPassword').val() ? $('#txtPassword').val() : "";
         data.Phone = $('#txtPhone').val() ? $('#txtPhone').val() : "";
@@ -151,6 +151,7 @@
                  },
                  success: function (result) {
                      if (result == "0") {
+                         UploadImage();
                          notiSuccess();
                          LoadCustomer();
                      } else {
@@ -162,6 +163,21 @@
             }
          return false;
     }
+    function UploadImage() {
+        var Video = $("#fileuploadAvatarCustomer")[0].files[0];
+        var formData = new FormData();
+        formData.append("files", Video);
+        $.ajax({
+            url: "/UploadFile/UploadImageCustomer",
+            dataType: "json",
+            type: "POST",
+            contentType: false,
+            processData: false,
+            data: formData,
+            async: true
+        });
+    }
+
 
     function readURL(input) {
         var ext = input.files[0]['name'].substring(input.files[0]['name'].lastIndexOf('.') + 1).toLowerCase();
@@ -174,6 +190,17 @@
             reader.readAsDataURL(input.files[0]);
         } else {
             $('#avatarCustomerUpload').attr('src', '/img/404.png');
+        }
+    }
+    function GetFileName() {
+        var fullPath = document.getElementById('fileuploadAvatarCustomer').value;
+        if (fullPath) {
+            var startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
+            var filename = fullPath.substring(startIndex);
+            if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
+                filename = '../img/Customer/' + filename.substring(1);
+            }
+            return filename;
         }
     }
 </script>

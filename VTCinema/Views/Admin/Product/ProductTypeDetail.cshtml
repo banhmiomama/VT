@@ -12,7 +12,7 @@
         <div>&nbsp</div>
         <div class="btn btn-success upload-btn-wrapper" style="width: 100%; margin-top: 6px;">
             <button class="btn" style="width: 100%">3Mp</button>
-            <input id="fileuploadAvatarEmployee" type="file" @*name="files[]"*@ @*onchange="document.getElementById('avatarProductTypeUpload').src = window.URL.createObjectURL(this.files[0])"*@ onchange="readURL(this);" />
+            <input id="fileuploadAvatarProductType" type="file" @*name="files[]"*@ @*onchange="document.getElementById('avatarProductTypeUpload').src = window.URL.createObjectURL(this.files[0])"*@ onchange="readURL(this);" />
         </div>
     </div>
     <div class="description">
@@ -80,7 +80,7 @@
 
         var data = new Object();
         data.NameType = $('#txtNameProductType').val() ? $('#txtNameProductType').val() : "";
-        data.Image = $('#avatarProductTypeUpload').attr('src') ? $('#avatarProductTypeUpload').attr('src') : "" ;
+        data.Image = GetFileName();
       
          $('#form3').form('validate form');
          if ($('#form3').form('is valid')) {
@@ -99,6 +99,7 @@
                  },
                  success: function (result) {
                      if (result == "0") {
+                         UploadImage();
                          notiSuccess();
                          LoadProduct();
                      } else {
@@ -111,6 +112,23 @@
          return false;
     }
 
+    function UploadImage() {
+        var Video = $("#fileuploadAvatarProductType")[0].files[0];
+        var formData = new FormData();
+        formData.append("files", Video);
+        $.ajax({
+            url: "/UploadFile/UploadImageProduct",
+            dataType: "json",
+            type: "POST",
+            contentType: false,
+            processData: false,
+            data: formData,
+            async: true
+        });
+    }
+
+
+
     function readURL(input) {
         var ext = input.files[0]['name'].substring(input.files[0]['name'].lastIndexOf('.') + 1).toLowerCase();
         if (input.files && input.files[0] && (ext == "gif" || ext == "png" || ext == "jpeg" || ext == "jpg")) {
@@ -122,6 +140,17 @@
             reader.readAsDataURL(input.files[0]);
         } else {
             $('#avatarProductTypeUpload').attr('src', '/img/404.png');
+        }
+    }
+    function GetFileName() {
+        var fullPath = document.getElementById('fileuploadAvatarProductType').value;
+        if (fullPath) {
+            var startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
+            var filename = fullPath.substring(startIndex);
+            if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
+                filename = '../img/Product/' + filename.substring(1);
+            }
+            return filename;
         }
     }
 </script>

@@ -2,8 +2,16 @@
 @{
     Layout = null;
 }
+<script src="~/js/tinymce.min.js"></script>
+
+<script>
+    tinymce.init({
+        selector: '#txtDes'
+    });
+</script>
 
 <div id="headerPopup_CustomerCare" class="header">
+
     Diễn Viên
 </div>
 
@@ -13,11 +21,11 @@
         <div>&nbsp</div>
         <div class="btn btn-success upload-btn-wrapper" style="width: 100%; margin-top: 6px;">
             <button class="btn" style="width: 100%">3Mp</button>
-            <input id="fileuploadAvatarEmployee" type="file" @*name="files[]"*@ @*onchange="document.getElementById('avatarActorUpload').src = window.URL.createObjectURL(this.files[0])"*@  onchange="readURL(this);"/>
+            <input id="fileuploadAvatarActor" type="file" onchange="readURL(this);" />
         </div>
     </div>
     <div class="description">
-        <form class="ui form segment form3" id="form3">
+        <form class="ui form segment form3" id="form3" method="post">
             <div class="ui accordion field">
                 <div class="content field active">
                     <div class="two fields">
@@ -30,6 +38,7 @@
                             <input class="flatpickr" id="Birthday" name="date" type="text" placeholder="Ngày Sinh.." />
                         </div>
                     </div>
+
                     <div class="two fields">
                         <div class="field">
                             <label>Chiều Cao(cm)</label>
@@ -41,7 +50,7 @@
                                 <input type="hidden" name="country">
                                 <i class="dropdown icon"></i>
                                 <div class="default text">Chọn Quốc Tịch</div>
-                                <div class="menu" id="cbbNationality">                                   
+                                <div class="menu" id="cbbNationality">
                                 </div>
                             </div>
                         </div>
@@ -49,7 +58,9 @@
 
                     <div class="field">
                         <label>Ghi Chú</label>
-                        <textarea id="txtDes" rows="5" />
+                        <textarea id="txtDes" name="mytextarea" rows="5" placeholder="Nhập ghi chú...">
+      
+                         </textarea>
                     </div>
 
                 </div>
@@ -69,6 +80,7 @@
 
 <script src="/js/customjs/custom-validation.js"></script>
 <script src="/js/main.js"></script>
+<script src="~/js/ckeditor.js"></script>
 
 <script>
     let ActorDetailID;
@@ -133,11 +145,11 @@
 
         var data = new Object();
         data.Name = $('#txtNameActor').val() ? $('#txtNameActor').val() : "";
-        data.Avatar = $('#avatarActorUpload').attr('src') ? $('#avatarActorUpload').attr('src') : "" ;
+        data.Avatar = GetFileName();
         data.Birthday = $('#Birthday').val() ? $('#Birthday').val() : "";
         data.Height = $('#txtHeight').val() ? Number($('#txtHeight').val()) : 0;
         data.Nationality = $('#Nationality').dropdown('get value') ? $('#Nationality').dropdown('get value') : "";
-        data.Description = $('#txtDes').val() ? $('#txtDes').val() : "";
+        data.Description  = tinymce.activeEditor.getContent();
          $('#form3').form('validate form');
          if ($('#form3').form('is valid')) {
              $.ajax({
@@ -155,6 +167,7 @@
                  },
                  success: function (result) {
                      if (result == "0") {
+                         UploadImage();
                          notiSuccess();
                          LoadActor();
                      } else {
@@ -167,6 +180,20 @@
          return false;
     }
 
+    function UploadImage() {
+        var Video = $("#fileuploadAvatarActor")[0].files[0];
+        var formData = new FormData();
+        formData.append("files", Video);
+        $.ajax({
+            url: "/UploadFile/UploadImageActor",
+            dataType: "json",
+            type: "POST",
+            contentType: false,
+            processData: false,
+            data: formData,
+            async: true
+        });
+    }
     function readURL(input) {
         var ext = input.files[0]['name'].substring(input.files[0]['name'].lastIndexOf('.') + 1).toLowerCase();
         if (input.files && input.files[0] && (ext == "gif" || ext == "png" || ext == "jpeg" || ext == "jpg")) {
@@ -180,7 +207,19 @@
             $('#avatarActorUpload').attr('src', '/img/404.png');
         }
     }
+    function GetFileName() {
+        var fullPath = document.getElementById('fileuploadAvatarActor').value;
+        if (fullPath) {
+            var startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
+            var filename = fullPath.substring(startIndex);
+            if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
+                filename = '../img/Actor/' + filename.substring(1);
+            }
+            return filename;
+        }
+    }
 </script>
+
 <style>
     .upload-btn-wrapper {
         position: relative;
@@ -209,6 +248,7 @@
         top: 0;
         opacity: 0;
     }
+
     .percentIcon {
         color: #e03997;
         padding-left: 10px;
@@ -250,6 +290,7 @@
         display: block;
         text-align: center;
     }
+
     .numservice {
         font-size: 12px !important;
         background: #0190ddf7 !important;

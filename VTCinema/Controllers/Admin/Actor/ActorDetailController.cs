@@ -25,7 +25,7 @@ namespace VTCinema.Controllers.Actor
         [HttpGet]
         public string GetActorDetail(int ActorID)
         {
-            DataTable Combo = LoadComboNational();
+            DataTable Combo = LoadComboNational();        
             DataTable Detail = LoadDetail(ActorID);
             DataSet ds = new DataSet();
             ds.Tables.AddRange(new DataTable[] { Combo, Detail });

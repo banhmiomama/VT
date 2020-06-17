@@ -12,7 +12,7 @@
         <div>&nbsp</div>
         <div class="btn btn-success upload-btn-wrapper" style="width: 100%; margin-top: 6px;">
             <button class="btn" style="width: 100%">Chọn Ảnh</button>
-            <input id="fileuploadAvatarEmployee" type="file" @*name="files[]"*@ @*onchange="document.getElementById('avatarProductUpload').src = window.URL.createObjectURL(this.files[0])"*@ onchange="readURL(this);" />
+            <input id="fileuploadAvatarProduct" type="file" onchange="readURL(this);" />
         </div>
     </div>
     <div class="description">
@@ -113,7 +113,7 @@
 
         var data = new Object();
         data.NameProduct = $('#txtNameProduct').val() ? $('#txtNameProduct').val() : "";
-        data.Image = $('#avatarProductUpload').attr('src') ? $('#avatarProductUpload').attr('src') : "" ;
+        data.Image = GetFileName();
         data.Price = $('#txtPrice').val() ? Number($('#txtPrice').val()) : 0;
         data.TypeID = $('#Type').dropdown('get value') ? $('#Type').dropdown('get value') : "";
         //data.Description = $('#txtDes').val() ? $('#txtDes').val() : "";
@@ -135,6 +135,7 @@
                  success: function (result) {
                      if (result == "0") {
                          notiSuccess();
+                         UploadImage();
                          LoadProduct();
                      } else {
                          notiError("Sản Phẩm Đã Tồn Tại Vui Lòng Kiểm Tra Lại");
@@ -144,6 +145,21 @@
              $('#divDetailPopup').modal('hide');
             }
          return false;
+    }
+
+    function UploadImage() {
+        var Video = $("#fileuploadAvatarProduct")[0].files[0];
+        var formData = new FormData();
+        formData.append("files", Video);
+        $.ajax({
+            url: "/UploadFile/UploadImageProduct",
+            dataType: "json",
+            type: "POST",
+            contentType: false,
+            processData: false,
+            data: formData,
+            async: true
+        });
     }
 
     function readURL(input) {
@@ -157,6 +173,17 @@
             reader.readAsDataURL(input.files[0]);
         } else {
             $('#avatarProductUpload').attr('src', '/img/404.png');
+        }
+    }
+    function GetFileName() {
+        var fullPath = document.getElementById('fileuploadAvatarProduct').value;
+        if (fullPath) {
+            var startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
+            var filename = fullPath.substring(startIndex);
+            if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
+                filename = '../img/Product/' + filename.substring(1);
+            }
+            return filename;
         }
     }
 </script>

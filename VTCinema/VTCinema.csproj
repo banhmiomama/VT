@@ -26,6 +26,9 @@
 
   <ItemGroup>
     <Folder Include="Views\Admin\Customer\" />
+    <Folder Include="wwwroot\img\Actor\" />
+    <Folder Include="wwwroot\img\Customer\" />
+    <Folder Include="wwwroot\img\Product\" />
   </ItemGroup>
 
 </Project>
