@@ -12,10 +12,21 @@
         <div>&nbsp</div>
         <div class="btn btn-success upload-btn-wrapper" style="width: 100%; margin-top: 6px;">
             <button class="btn" style="width: 100%">Chọn Hình</button>
-            <input id="fileuploadImageMovie" type="file" onchange="readURL(this);" />
+            <input id="fileuploadImageMovie" type="file" onchange="readURL(this);" accept="image/*"/>
         </div>
+        <div class="field">
+            <video controls style="width: 100%">
+                <source src="mov_bbb.mp4" id="video_here">
+            </video>
+            <div class="btn btn-success upload-btn-wrapper" style="width: 100%; margin-top: 6px;">
+                <button class="btn" style="width: 100%">Chọn Video Trailer</button>
+                <input type="file" id="Video" class="file_multi_video" accept="video/*" />
+            </div>
+            
+        </div>
+        
+        
 
-        <input type="file" id="Video"/>
     </div>
     <div class="description">
         <form class="ui form segment form3" id="form3">
@@ -34,12 +45,12 @@
                     <div class="two fields">
                         <div class="field">
                             <label>Năm Sản Xuất</label>
-                            <input id="txtYearMovie"  type="text" />
+                            <input  id="YearMovie" name="YearMovie" type="number" />
                         </div>
                         <div class="field">
                             <label>Quốc Gia</label>
                             <div class="ui fluid search selection dropdown" id="Nationality">
-                                <input type="hidden" >
+                                <input type="hidden" name="Nationality">
                                 <i class="dropdown icon"></i>
                                 <div class="default text">Chọn Quốc Gia</div>
                                 <div class="menu" id="cbbNationality">
@@ -51,7 +62,7 @@
                         <div class="field">
                             <label>Lứa Tuổi</label>
                             <div class="ui fluid search selection dropdown" id="AgeType">
-                                <input type="hidden" >
+                                <input type="hidden" name="AgeType">
                                 <i class="dropdown icon"></i>
                                 <div class="default text">Chọn Lứa Tuổi</div>
                                 <div class="menu" id="cbbAgeType">
@@ -60,18 +71,18 @@
                         </div>
                         <div class="field">
                             <label>Thời Gian Khởi Chiếu</label>
-                            <input class="flatpickr" id="Opening_Time" name="date" type="text" placeholder="Ngày Khởi Chiếu.." />
+                            <input class="flatpickr" id="Opening_Time" name="OpeningTime" type="text" placeholder="Ngày Khởi Chiếu.." />
                         </div>
                         <div class="field">
                             <label>Thời Lượng Phim(Phút)</label>
-                            <input id="txtMovieTimeDuration"  type="number" />
+                            <input id="txtMovieTimeDuration" name="MovieTimeDuration" type="number" />
                         </div>
                     </div>
                     <div class="three fields">
                         <div class="field">
                             <label>Sub</label>
                             <div class="ui fluid search selection dropdown" id="SubTitle">
-                                <input type="hidden" >
+                                <input type="hidden" name="SubTitle">
                                 <i class="dropdown icon"></i>
                                 <div class="default text">Chọn Sub</div>
                                 <div class="menu" id="cbbSubTitle">
@@ -81,7 +92,7 @@
                         <div class="field">
                             <label>Thể Loại</label>
                             <div class="ui fluid search multiple selection dropdown" id="MovieType">
-                                <input type="hidden" >
+                                <input type="hidden" name="MovieType">
                                 <i class="dropdown icon"></i>
                                 <div class="default text">Chọn Thể Loại</div>
                                 <div class="menu" id="cbbMovieType">
@@ -91,7 +102,7 @@
                         <div class="field">
                             <label>Loại Trình Chiếu</label>
                             <div class="ui fluid search selection dropdown" id="MovieTicketType">
-                                <input type="hidden" >
+                                <input type="hidden" name="MovieTicketType">
                                 <i class="dropdown icon"></i>
                                 <div class="default text">Chọn Loại Trình Chiếu</div>
                                 <div class="menu" id="cbbMovieTicketType">
@@ -103,7 +114,7 @@
                         <div class="field">
                             <label>Đạo Diễn</label>
                             <div class="ui fluid search selection dropdown" id="Director">
-                                <input type="hidden" >
+                                <input type="hidden" name="Director">
                                 <i class="dropdown icon"></i>
                                 <div class="default text">Chọn Đạo Diễn</div>
                                 <div class="menu" id="cbbDirector">
@@ -113,7 +124,7 @@
                         <div class="field">
                             <label>Diễn Viên</label>
                             <div class="ui fluid search multiple selection dropdown" id="Actor">
-                                <input type="hidden" >
+                                <input type="hidden" name="Actor">
                                 <i class="dropdown icon"></i>
                                 <div class="default text">Chọn Diễn Viên</div>
                                 <div class="menu" id="cbbActor">
@@ -151,7 +162,8 @@
         $("#Opening_Time").flatpickr({
             dateFormat: 'd-m-Y',
             enableTime: false,
-        });
+            minDate: "today"
+        });      
         MovieDetailID = @ViewBag.MovieID;
         LoadDataUpdateMovie();
     });
@@ -171,7 +183,7 @@
                 LoadCombo(result.MovieTicketType, "cbbMovieTicketType");
                 LoadCombo(result.Director, "cbbDirector");
                 LoadCombo(result.Actor, "cbbActor");
-                let data = result.Table1;
+                let data = result.LoadDetail;
                 if (data.length != 0) {
                     $('#txtNameVN').val((data[0].Name_VN));
                     $('#txtNameEN').val((data[0].Name_EN));
@@ -179,7 +191,7 @@
                     $("#Nationality").dropdown("refresh");
                     $("#Nationality").dropdown("set selected", data[0].Nationality);
 
-                    $('#txtYearMovie').val((data[0].Year_Movie));
+                    $('#YearMovie').val((data[0].Year_Movie));
                     $("#AgeType ").dropdown("refresh");
                     $("#AgeType ").dropdown("set selected", data[0].Ages_ID);
 
@@ -194,14 +206,17 @@
                     $("#MovieTicketType").dropdown("set selected", data[0].MovieTicketType_ID);
 
                     $("#Director").dropdown("refresh");
-                    $("#Director").dropdown("set selected", data[0].Director_ID);
+                    $("#Director").dropdown("set selected",data[0].Director_ID);
+                    $("#Actor").dropdown("refresh");                   
+                    $("#Actor").dropdown("set selected", data[0].Actor_ID);
+                    debugger
                     $('#txtNote').val((data[0].Description));
-                    if (data[0].Avatar == '' || data[0].Avatar == undefined) {
+                    if (data[0].Image == '' || data[0].Image == undefined) {
                         $('#avatarMovieUpload').attr('src', '');
                     }
                     else {
-                        $('#avatarMovieUpload').attr('src',data[0].Avatar);
-                        avatarString = data[0].Avatar;
+                        $('#avatarMovieUpload').attr('src', data[0].Image);
+                        avatarString = data[0].Image;
                     }
                 }
             }
@@ -225,62 +240,63 @@
     }
 
     function ExcuteData() {
+        debugger
         var data = new Object();
         data.NameVN = $('#txtNameVN').val() ? $('#txtNameVN').val() : "";
         data.NameEN = $('#txtNameEN').val() ? $('#txtNameEN').val() : "";
-        data.Avatar = $('#avatarMovieUpload').attr('src') ? $('#avatarMovieUpload').attr('src') : "";
         data.Image = GetFileURL();
-        data.NationalityID = $('#Nationality').dropdown('get value') ? Number($('#Nationality').dropdown('get value')) : 0;
-        data.YearMovie = $('#txtYearMovie').val() ? $('#txtYearMovie').val() : "";
+        data.VideoTrailer = GetFileURLVideo();
+        data.NationalityID = $("#Nationality").dropdown('get value') ? $("#Nationality").dropdown('get value') : '';
+        data.YearMovie = $('#YearMovie').val() ? Number($('#YearMovie').val()) : 0;
         data.AgeID = $('#AgeType').dropdown('get value') ? Number($('#AgeType').dropdown('get value')) : 0;
-        data.OpeningTime = $('#Opening_Time').val() ? Number($('#Opening_Time').val()) : 0;
+        data.OpeningTime = $('#Opening_Time').val() ? ConvertStringYMD_DMY($('#Opening_Time').val()) : '';
         data.MovieTimeDuration = $('#txtMovieTimeDuration').val() ? Number($('#txtMovieTimeDuration').val()) : 0;
         data.SubTitleID = $('#SubTitle').dropdown('get value') ? Number($('#SubTitle').dropdown('get value')) : 0;
-        data.MovieTypeID = $('#MovieType').dropdown('get value') ? Number($('#MovieType').dropdown('get value')) : 0;
+        data.MovieTypeID = $('#MovieType').dropdown('get value') ?$('#MovieType').dropdown('get value') : '';
         data.MovieTicketTypeID = $('#MovieTicketType').dropdown('get value') ? Number($('#MovieTicketType').dropdown('get value')) : 0;
         data.DirectorID = $('#Director').dropdown('get value') ? Number($('#Director').dropdown('get value')) : 0;
+        data.ActorID = $('#Actor').dropdown('get value') ? $('#Actor').dropdown('get value') : 0;
         data.Note = $('#txtNote').val() ? $('#txtNote').val() : "";
 
-        //data.Description = $('#txtNote').val() ? $('#txtNote').val() : "";
-           
         $('#form3').form('validate form');
         if ($('#form3').form('is valid')) {
-             $.ajax({
-                 url: "/Admin/MovieDetail/Execute",
-                 dataType: "json",
-                 type: "POST",
-                 data: {
-                     __RequestVerificationToken: token
-                     , MovieID: @ViewBag.MovieID
-                     , data: JSON.stringify(data)
-                 },
-                 async: true,
-                 error: function (XMLHttpRequest, textStatus, errorThrown) {
-                        notiError("Lỗi Hệ Thống");
-                 },
-                 success: function (result) {                     
-                     
-                     if (result == "0") {
-                         UploadVideoMovie();
-                         UploadImageMovie();
-                         notiSuccess();
-                         LoadMovie();
-                     } else {
-                         notiError("Diễn Viên Đã Tồn Tại Vui Lòng Kiểm Tra Lại");
-                        }
-                 }
-             })
-             $('#divDetailPopup').modal('hide');
-            }
+            $.ajax({
+                url: "/Admin/MovieDetail/Execute",
+                dataType: "json",
+                type: "POST",
+                data: {
+                    __RequestVerificationToken: token
+                    , MovieID: @ViewBag.MovieID
+                    , data: JSON.stringify(data)
+                },
+                async: true,
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    notiError("Lỗi Hệ Thống");
+                },
+                success: function (result) {
+                    debugger
+                    if (result == "0") {
+                        
+                        UploadVideoMovie();
+                        UploadImageMovie();
+                        notiSuccess();
+                        LoadMovie();
+                    } else {
+                        notiError();
+                    }
+                }
+            })
+            $('#divDetailPopup').modal('hide');
+        }
          return false;
-    }
+    };
 
     function UploadVideoMovie() {
         var Video = $("#Video")[0].files[0];
         var formData = new FormData();
         formData.append("files", Video);     
         $.ajax({
-            url: "/Admin/UploadFile/Upload",
+            url: "/UploadFile/Upload",
             dataType: "json",
             type: "POST",
             contentType: false,
@@ -294,7 +310,7 @@
         var formData = new FormData();
         formData.append("files", Video);
         $.ajax({
-            url: "/Admin/UploadFile/UploadImageMovie",
+            url: "/UploadFile/UploadImageMovie",
             dataType: "json",
             type: "POST",
             contentType: false,
@@ -323,11 +339,29 @@
             var startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
             var filename = fullPath.substring(startIndex);
             if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
-                filename = '../img/Director/' + filename.substring(1);
+                filename = '../img/Movie/' + filename.substring(1);
             }
             return filename;
         }
     }
+    function GetFileURLVideo() {
+        var fullPath = document.getElementById('Video').value;
+        if (fullPath) {
+            var startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
+            var filename = fullPath.substring(startIndex);
+            if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
+                filename = '../VideoUpload/Movie/' + filename.substring(1);
+            }
+            return filename;
+        }
+    }
+    $(document).on("change", ".file_multi_video", function (evt) {
+        debugger
+        var $source = $('#video_here');
+        $source[0].src = URL.createObjectURL(this.files[0]);
+        $source.parent()[0].load();
+    })
+    
 </script>
 <style>
     .upload-btn-wrapper {

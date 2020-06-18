@@ -28,6 +28,7 @@ namespace VTCinema.Controllers.Movie
         public string GetMovieDetail(int MovieID)
         {
             DataTable Detail = LoadDetail(MovieID);
+            Detail.TableName = "LoadDetail";
             DataTable ComboNational = LoadComboNational();
             ComboNational.TableName = "National";
             DataTable ComboAgeType = LoadComboAgeType();
@@ -240,51 +241,66 @@ namespace VTCinema.Controllers.Movie
         [HttpPost]
         public string Execute(string data, int MovieID)
         {
+            try
+            {
+                DataTable dt = new DataTable();
+                DataMovieChoose dataDetail = JsonConvert.DeserializeObject<DataMovieChoose>(data);
 
-
-            //try
-            //{
-            //    DataTable dt = new DataTable();
-            //    DataMovieChoose dataDetail = JsonConvert.DeserializeObject<DataMovieChoose>(data);
-
-            //    if (MovieID == 0)
-            //    {
-            //        using (Models.ExecuteDataBase connFunc = new Models.ExecuteDataBase())
-            //        {
-            //            //dt = connFunc.ExecuteDataTable("YYY_sp_Movie_Insert", CommandType.StoredProcedure,
-            //            //    "@Name", SqlDbType.NVarChar, dataDetail.Name,
-            //            //    "@Avatar", SqlDbType.VarChar, dataDetail.Avatar,
-            //            //    "@Description", SqlDbType.NVarChar, dataDetail.Description,
-            //            //    "@Birthday", SqlDbType.DateTime, dataDetail.Birthday,
-            //            //    "@Height", SqlDbType.Float, dataDetail.Height,
-            //            //    "@Nationality", SqlDbType.VarChar, dataDetail.Nationality,
-            //            //    "@CurrentID", SqlDbType.Int, HttpContext.Session.GetInt32(Comon.Global.UserID)
-            //            //);
-            //        }
-            //    }
-            //    else
-            //    {
-            //        using (Models.ExecuteDataBase connFunc = new Models.ExecuteDataBase())
-            //        {
-            //           // dt = connFunc.ExecuteDataTable("[YYY_sp_Movie_Update]", CommandType.StoredProcedure,
-            //           //     "@Name", SqlDbType.NVarChar, dataDetail.Name,
-            //           //     "@Avatar", SqlDbType.VarChar, dataDetail.Avatar,
-            //           //     "@Description", SqlDbType.NVarChar, dataDetail.Description,
-            //           //     "@Birthday", SqlDbType.DateTime, dataDetail.Birthday,
-            //           //     "@Height", SqlDbType.Float, dataDetail.Height,
-            //           //     "@Nationality", SqlDbType.VarChar, dataDetail.Nationality,
-            //           //     "@CurrentID", SqlDbType.Int, MovieID,
-            //           //     "@Modified_By", SqlDbType.Int, HttpContext.Session.GetInt32(Comon.Global.UserID)
-            //           //);
-            //        }
-            //    }
-            //    return dt.Rows[0][0].ToString();
-            //}
-            //catch (Exception ex)
-            //{
-            //    return "0";
-            //}
-            return "0";
+                if (MovieID == 0)
+                {
+                    using (Models.ExecuteDataBase connFunc = new Models.ExecuteDataBase())
+                    {
+                        dt = connFunc.ExecuteDataTable("YYY_sp_Movie_Insert", CommandType.StoredProcedure,
+                            "@Name_VN", SqlDbType.NVarChar, dataDetail.NameVN,
+                            "@Name_EN", SqlDbType.NVarChar, dataDetail.NameEN,
+                            "@Image", SqlDbType.VarChar, dataDetail.Image,
+                            "@VideoTrailer", SqlDbType.VarChar, dataDetail.VideoTrailer,
+                            "@Nationality", SqlDbType.Int, dataDetail.NationalityID,
+                            "@Year_Movie", SqlDbType.Int, dataDetail.YearMovie,
+                            "@Ages_ID", SqlDbType.Int, dataDetail.AgeID,
+                            "@Opening_Time", SqlDbType.Int, dataDetail.OpeningTime,
+                            "@SubTitle_ID",SqlDbType.Int,dataDetail.SubTitleID,
+                            "@MovieType_ID", SqlDbType.VarChar,dataDetail.MovieTypeID,
+                            "@MovieTicketType_ID", SqlDbType.Int,dataDetail.MovieTicketTypeID,
+                            "@Director_ID", SqlDbType.Int,dataDetail.DirectorID,
+                            "@Actor_ID", SqlDbType.VarChar,dataDetail.ActorID,
+                            "@Note", SqlDbType.VarChar,dataDetail.ActorID,
+                            "@Movie_Time_Duration", SqlDbType.Int,dataDetail.MovieTimeDuration,
+                            "@CurrentID", SqlDbType.Int, HttpContext.Session.GetInt32(Comon.Global.UserID)
+                        );
+                    }
+                }
+                else
+                {
+                    using (Models.ExecuteDataBase connFunc = new Models.ExecuteDataBase())
+                    {
+                        dt = connFunc.ExecuteDataTable("[YYY_sp_Movie_Update]", CommandType.StoredProcedure,
+                            "@Name_VN", SqlDbType.NVarChar, dataDetail.NameVN,
+                            "@Name_EN", SqlDbType.NVarChar, dataDetail.NameEN,
+                            "@Image", SqlDbType.VarChar, dataDetail.Image,
+                            "@VideoTrailer", SqlDbType.VarChar, dataDetail.VideoTrailer,
+                            "@Nationality", SqlDbType.Int, dataDetail.NationalityID,
+                            "@Year_Movie", SqlDbType.Int, dataDetail.YearMovie,
+                            "@Ages_ID", SqlDbType.Int, dataDetail.AgeID,
+                            "@Opening_Time", SqlDbType.Int, dataDetail.OpeningTime,
+                            "@SubTitle_ID", SqlDbType.Int, dataDetail.SubTitleID,
+                            "@MovieType_ID", SqlDbType.VarChar, dataDetail.MovieTypeID,
+                            "@MovieTicketType_ID", SqlDbType.Int, dataDetail.MovieTicketTypeID,
+                            "@Director_ID", SqlDbType.Int, dataDetail.DirectorID,
+                            "@Actor_ID", SqlDbType.VarChar, dataDetail.ActorID,
+                            "@Note", SqlDbType.VarChar, dataDetail.ActorID,
+                            "@Movie_Time_Duration", SqlDbType.Int, dataDetail.MovieTimeDuration,
+                            "@CurrentID", SqlDbType.Int, MovieID,
+                            "@Modified_By", SqlDbType.Int, HttpContext.Session.GetInt32(Comon.Global.UserID)
+                       );
+                    }
+                }
+                return dt.Rows[0][0].ToString();
+            }
+            catch (Exception ex)
+            {
+                return "0";
+            }
         }
     }
 }
