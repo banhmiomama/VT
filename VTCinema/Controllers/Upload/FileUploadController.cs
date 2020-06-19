@@ -139,6 +139,30 @@ namespace VTCinema.Controllers.Upload
             return Content("Succes");
         }
 
+        [Route("UploadImageInformation")]
+        [HttpPost]
+        public async Task<IActionResult> UploadImageInformation(IList<IFormFile> files)
+        {
+            var httpPostedFile = files[0];
+            string filename = ContentDispositionHeaderValue.Parse(httpPostedFile.ContentDisposition).FileName.Trim('"');
+            if (httpPostedFile != null)
+            {
+                filename = this.EnsureCorrectFilename(filename);
+                // Save the uploaded file to "UploadedFiles" folder
+                GetPathAndFilename(filename);
+                var path = Path.Combine(
+                 Directory.GetCurrentDirectory(), "wwwroot/img/Information",
+                 filename);
+
+                using (var stream = new FileStream(path, FileMode.Create))
+                {
+                    await httpPostedFile.CopyToAsync(stream);
+                }
+            }
+
+            return Content("Succes");
+        }
+
         [Route("UploadImageMovie")]
         [HttpPost]
         public async Task<IActionResult> UploadImageMovie(IList<IFormFile> files)
@@ -162,6 +186,14 @@ namespace VTCinema.Controllers.Upload
 
             return Content("Succes");
         }
+
+
+
+
+
+
+
+
         private string EnsureCorrectFilename(string filename)
         {
             if (filename.Contains("\\"))
