@@ -10,7 +10,7 @@
 <div class="row">
     <div class="sixteen wide tablet eight wide computer column">
         <div class="ui segments">
-            <form class="ui form segment form20" id="form20">
+            <form class="ui form segment form3" id="form3">
                 <div class="ui accordion field">
                     <div class="content field active">
                         <div class="two fields">
@@ -20,7 +20,7 @@
                             </div>
                             <div class="field">
                                 <label>Đơn Giá</label>
-                                <input id="txtPrice" type="text" name="Price" />
+                                <input id="txtPrice" type="text" name="Prices" />
                             </div>
                         </div>
                         <div class="two fields">
@@ -38,7 +38,7 @@
                             <div class="field">
                                 <label>Hiển Thị</label>
                                 <div class="ui fluid search selection dropdown" id="VisibilityChair">
-                                    <input type="hidden" name="country">
+                                    <input type="hidden" name="Display">
                                     <i class="dropdown icon"></i>
                                     <div class="default text">Chọn Hiển Thị</div>
                                     <div class="menu" id="cbbNationality">
@@ -50,7 +50,7 @@
                             <div class="field">
                                 <label>Tình Trạng Ghế</label>
                                 <div class="ui fluid search selection dropdown" id="DisabledChair">
-                                    <input type="hidden" name="country">
+                                    <input type="hidden" name="StatusChair">
                                     <i class="dropdown icon"></i>
                                     <div class="default text">Chọn Tình Trạng</div>
                                     <div class="menu" id="cbbNationality">
@@ -73,7 +73,7 @@
         <button class="ui teal button" form="form3" type="submit" onclick="return ExcuteData()">Save</button>
     </div>
     <div style="float: right">
-        <button class="ui grey button" form="form3" onclick="event.preventDefault();CloseModal()">Cancel</button>
+        <button class="ui grey button" onclick="event.preventDefault();CloseModal()">Cancel</button>
     </div>
 </div>
 <script src="~/ColorPicker/spectrum.js"></script>
@@ -133,8 +133,8 @@
         data.VisibilityChair = $('#VisibilityChair').dropdown('get value') ? $('#VisibilityChair').dropdown('get value') : "";
         data.DisabledChair = $('#DisabledChair').dropdown('get value') ? $('#DisabledChair').dropdown('get value') : "";
         data.ColorCode = $("#ColorCode").spectrum('get').toHexString();
-        //$('#form20').form('validate form');
-        //if ($('#form20').form('is valid')) {
+        $('#form3').form('validate form');
+        if ($('#form3').form('is valid')) {
              $.ajax({
                  url: "/Admin/ChairTypeDetail/Execute",
                  dataType: "json",

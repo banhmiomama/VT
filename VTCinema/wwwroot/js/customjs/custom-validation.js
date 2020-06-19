@@ -85,8 +85,8 @@ $('.ui.form3').form({
                 prompt: 'Vui lòng nhập họ '
             },
             {
-                type: "regExp[/^[aAàÀảẢãÃáÁạẠăĂằẰẳẲẵẴắẮặẶâÂầẦẩẨẫẪấẤậẬbBcCdDđĐeEèÈẻẺẽẼéÉẹẸêÊềỀểỂễỄếẾệỆfFgGhHiIìÌỉỈĩĨíÍịỊjJkKlLmMnNoOòÒỏỎõÕóÓọỌôÔồỒổỔỗỖốỐộỘơƠờỜởỞỡỠớỚợỢpPqQrRsStTuUùÙủỦũŨúÚụỤưƯừỪửỬữỮứỨựỰvVwWxXyYỳỲỷỶỹỸýÝỵỴzZ]/]",
-                prompt: 'Tên không được nhập số'
+                type: "regExp[/^[aAàÀảẢãÃáÁạẠăĂằẰẳẲẵẴắẮặẶâÂầẦẩẨẫẪấẤậẬbBcCdDđĐeEèÈẻẺẽẼéÉẹẸêÊềỀểỂễỄếẾệỆfFgGhHiIìÌỉỈĩĨíÍịỊjJkKlLmMnNoOòÒỏỎõÕóÓọỌôÔồỒổỔỗỖốỐộỘơƠờỜởỞỡỠớỚợỢpPqQrRsStTuUùÙủỦũŨúÚụỤưƯừỪửỬữỮứỨựỰvVwWxXyYỳỲỷỶỹỸýÝỵỴzZ]+$/]",
+                prompt: 'Tên không được nhập số '
             }]       
         },
         name: {
@@ -96,7 +96,7 @@ $('.ui.form3').form({
                 prompt: 'Vui lòng nhập tên'
             },
             {
-                type: "regExp[/^[aAàÀảẢãÃáÁạẠăĂằẰẳẲẵẴắẮặẶâÂầẦẩẨẫẪấẤậẬbBcCdDđĐeEèÈẻẺẽẼéÉẹẸêÊềỀểỂễỄếẾệỆfFgGhHiIìÌỉỈĩĨíÍịỊjJkKlLmMnNoOòÒỏỎõÕóÓọỌôÔồỒổỔỗỖốỐộỘơƠờỜởỞỡỠớỚợỢpPqQrRsStTuUùÙủỦũŨúÚụỤưƯừỪửỬữỮứỨựỰvVwWxXyYỳỲỷỶỹỸýÝỵỴzZ]/]",
+                type: "regExp[/^[aAàÀảẢãÃáÁạẠăĂằẰẳẲẵẴắẮặẶâÂầẦẩẨẫẪấẤậẬbBcCdDđĐeEèÈẻẺẽẼéÉẹẸêÊềỀểỂễỄếẾệỆfFgGhHiIìÌỉỈĩĨíÍịỊjJkKlLmMnNoOòÒỏỎõÕóÓọỌôÔồỒổỔỗỖốỐộỘơƠờỜởỞỡỠớỚợỢpPqQrRsStTuUùÙủỦũŨúÚụỤưƯừỪửỬữỮứỨựỰvVwWxXyYỳỲỷỶỹỸýÝỵỴzZ]+$/]",
                 prompt: 'Tên không được nhập số'
             }]
         },
@@ -281,13 +281,14 @@ $('.ui.form3').form({
         },    
         //MovieType
         
-        MovieType: {
-            identifier: 'MovieType',
+        MovieTypeIP: {
+            identifier: 'MovieTypeIP',
             rules: [{
                 type: 'empty',
                 prompt: 'Vui lòng nhập thể loại phim'
             }]   
         },  
+        
         // product
         
         Producttype: {
@@ -327,6 +328,9 @@ $('.ui.form3').form({
             rules: [{
                 type: 'empty',
                 prompt: 'Vui lòng nhập tên phim'
+            },{
+                    type:"regExp[/^[a-zA-Z0-9]+$/]",
+                prompt: 'Vui lòng nhập tên bằng tiếng anh'
             }]
         },
         YearMovie: {
@@ -402,6 +406,59 @@ $('.ui.form3').form({
                 prompt: 'Vui lòng chọn ít nhất 1 diễn viên'
             }]
         },
+        //ChairType
+        NameChair: {
+            identifier: 'NameChair',
+            rules: [{
+                type: 'empty',
+                prompt: 'Vui lòng Tên Ghế '
+            },
+            {
+                type: "regExp[/^[aAàÀảẢãÃáÁạẠăĂằẰẳẲẵẴắẮặẶâÂầẦẩẨẫẪấẤậẬbBcCdDđĐeEèÈẻẺẽẼéÉẹẸêÊềỀểỂễỄếẾệỆfFgGhHiIìÌỉỈĩĨíÍịỊjJkKlLmMnNoOòÒỏỎõÕóÓọỌôÔồỒổỔỗỖốỐộỘơƠờỜởỞỡỠớỚợỢpPqQrRsStTuUùÙủỦũŨúÚụỤưƯừỪửỬữỮứỨựỰvVwWxXyYỳỲỷỶỹỸýÝỵỴzZ]/]",
+                prompt: 'không được nhập số đầu tiên'
+            }]
+        },
+        Total: {
+            identifier: 'Total',
+            rules: [{
+                type: 'empty',
+                prompt: 'Vui lòng nhập số lượng chỗ ngồi'
+            }, {
+                type: "regExp[/^[0-9]/]",
+                    prompt: 'Vui lòng nhập số cho số lượng chỗ ngồi'
+            }]
+        },    
+        ColorCode: {
+            identifier: 'ColorCode',
+            rules: [{
+                type: 'empty',
+                prompt: 'Vui lòng chọn mã màu'
+            }]
+        },    
+        Display: {
+            identifier: 'Display',
+            rules: [{
+                type: 'empty',
+                prompt: 'Vui lòng chọn hiển thị hay ẩn'
+            }]
+        },    
+        // Information
+        Title: {
+            identifier: 'Title',
+            rules: [{
+                type: 'empty',
+                prompt: 'Vui lòng nhập tiêu đề'
+            }]
+        },    
+        // Room
+        NameRoom: {
+            identifier: 'NameRoom',
+            rules: [{
+                type: 'empty',
+                prompt: 'Vui lòng nhập tên phòng'
+            }]
+        },    
+
     }
 });
 

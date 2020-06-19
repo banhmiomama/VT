@@ -12,7 +12,7 @@
         <div>&nbsp</div>
         <div class="btn btn-success upload-btn-wrapper" style="width: 100%; margin-top: 6px;">
             <button class="btn" style="width: 100%">3Mp</button>
-            <input id="fileuploadAvatarProductType" type="file" @*name="files[]"*@ @*onchange="document.getElementById('avatarProductTypeUpload').src = window.URL.createObjectURL(this.files[0])"*@ onchange="readURL(this);" />
+            <input id="fileuploadAvatarProductType" type="file"  onchange="readURL(this);" />
         </div>
     </div>
     <div class="description">
@@ -34,7 +34,7 @@
         <button class="ui teal button" form="form3" type="submit" onclick="return ExcuteData()">Save</button>
     </div>
     <div style="float: right">
-        <button class="ui grey button" form="form3" onclick="event.preventDefault(); CloseModal();">Cancel</button>
+        <button class="ui grey button" onclick="event.preventDefault(); CloseModal();">Cancel</button>
     </div>
 </div>
 

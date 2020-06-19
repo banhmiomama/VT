@@ -1,131 +1,94 @@
 ﻿
-@{
-    Layout = null;
-}
-<div id="headerPopup_CustomerCare" class="header">
-    Sản Phẩm
-</div>
+@{ Layout = null; }
 
+<div id="headerPopup_CustomerCare" class="header">
+    Tin Tức
+</div>
 <div class="image content">
     <div class="ui massive image">
-        <img id="avatarProductUpload" class="ui mini circular image" src="/img/404.png" alt="label-image" style="width: 100%; height: auto;" />
+        <img id="avatarInformationUpload" class="ui mini circular image" src="/img/404.png" alt="label-image" style="width: 100%; height: auto;" />
         <div>&nbsp</div>
         <div class="btn btn-success upload-btn-wrapper" style="width: 100%; margin-top: 6px;">
             <button class="btn" style="width: 100%">Chọn Ảnh</button>
-            <input id="fileuploadAvatarProduct" type="file" onchange="readURL(this);" />
+            <input id="fileuploadAvatarInformation" type="file" onchange="readURL(this);" />
         </div>
     </div>
     <div class="description">
-        <form class="ui form segment form3" id="form3">
-            <div class="ui accordion field">
-                <div class="content field active">
-                    <div class="two fields">
-                        <div class="field">
-                            <label>Tên Sản Phẩm</label>
-                            <input id="txtNameProduct" name="name" type="text" />
-                        </div>
-                        <div class="field">
-                            <label>Loại</label>
-                            <div class="ui fluid search selection dropdown" id="Type">
-                                <input type="hidden" name="Producttype">
-                                <i class="dropdown icon"></i>
-                                <div class="default text">Chọn Loại Sản Phẩm</div>
-                                <div class="menu" id="cbbType">
-
+                <form class="ui form segment form3" id="form3">
+                    <div class="ui accordion field">
+                        <div class="content field active">
+                            <div class="two fields">
+                                <div class="field">
+                                    <label>Tiêu Đề</label>
+                                    <input id="txtTitle" name="Title" type="text" />
+                                </div>
+                                <div class="field">
+                                    <label>Note</label>
+                                    <input id="txtNote" type="text" name="Note" />
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="two fields">
-                        <div class="field">
-                            <label>Giá Tiền</label>
-                            <input id="txtPrice" name="productPrice" type="text" />
-                        </div>
-                    </div>
-
-                    <div class="field">
-                        <label>Ghi Chú</label>
-                        <textarea id="txtDes" rows="5" />
-                    </div>
-
-                </div>
+                </form>
             </div>
-        </form>
-    </div>
-</div>
-
+        </div>
 <div class="actions">
     <div style="float: right">
         <button class="ui teal button" form="form3" type="submit" onclick="return ExcuteData()">Save</button>
     </div>
     <div style="float: right">
-        <button class="ui grey button" onclick="event.preventDefault(); CloseModal();">Cancel</button>
+        <button class="ui grey button" onclick="event.preventDefault();CloseModal()">Cancel</button>
     </div>
 </div>
-
 <script src="/js/customjs/custom-validation.js"></script>
 <script src="/js/main.js"></script>
 
 <script>
-    let ProductDetailID;
-    let AvatarString = '';
-    let DataAvatar;
+    let InformationDetailID;
+    let ImageString = '';
+    let DataImage;
     $(document).ready(function () {
-        $("#Birthday").flatpickr({
-            dateFormat: 'd-m-Y',
-            enableTime: false,
-        });
-        
-        ProductDetailID = @ViewBag.ProductID;
-        LoadDataUpdateProduct();
-        $('#txtPrice').divide();
+        InformationDetailID = @ViewBag.InformationID;
+        LoadDataUpdateInformation();
     });
 
-    function LoadDataUpdateProduct() {
+    function LoadDataUpdateInformation() {
         $.ajax({
             type: 'GET',
             dataType: "json",
             contentType: 'application/json; charset=utf-8',
-            url: "/Admin/ProductDetail/GetProductDetail/" + ProductDetailID,
+            url: "/Admin/InformationDetail/GetInformationDetail/" + InformationDetailID,
             async: true,
             success: function (data) {
-                let DataCombo = data.Table1;
-                let DataDetail = data.Table2;
-                LoadCombo(DataCombo, "cbbType")
-                if (DataDetail.length != 0) {
-                    $("#Type").dropdown("refresh");
-                    $("#Type").dropdown("set selected", DataDetail[0].Type);
-                    $('#txtNameProduct').val((DataDetail[0].Name));
-                    $('#txtPrice').val((DataDetail[0].Price));
-                    if (DataDetail[0].Image == '' || DataDetail[0].Image == undefined) {
-                        $('#avatarProductUpload').attr('src', '');
+                if (data.length != 0) {
+                    $('#txtTitle').val((data[0].Title));
+                    $('#txtNote').val((data[0].Note));
+                    if (data[0].Image == '' || data[0].Image == undefined) {
+                        $('#avatarInformationUpload').attr('src', '');
                     }
                     else {
-                        $('#avatarProductUpload').attr('src', DataDetail[0].Image);
-                        avatarString = DataDetail[0].Image;
+                        $('#avatarInformationUpload').attr('src', data[0].Image);
+                        ImageString = data[0].Image;
                     }
                 }
             }
         });
     }
-
     function ExcuteData() {
-
         var data = new Object();
-        data.NameProduct = $('#txtNameProduct').val() ? $('#txtNameProduct').val() : "";
+        data.Title = $('#txtTitle').val() ? $('#txtTitle').val() : "";
+        data.Note = $('#txtNote').val() ? $('#txtNote').val() : "";
         data.Image = GetFileName();
-        data.Price = $('#txtPrice').val() ? Number($('#txtPrice').val()) : 0;
-        data.TypeID = $('#Type').dropdown('get value') ? $('#Type').dropdown('get value') : "";
-        //data.Description = $('#txtDes').val() ? $('#txtDes').val() : "";
-         $('#form3').form('validate form');
-         if ($('#form3').form('is valid')) {
+        $('#form3').form('validate form');
+        if ($('#form3').form('is valid')) {
+
              $.ajax({
-                 url: "/Admin/ProductDetail/Execute",
+                 url: "/Admin/InformationDetail/Execute",
                  dataType: "json",
                  type: "POST",
                  data: {
                      __RequestVerificationToken: token
-                     , ProductID: @ViewBag.ProductID
+                     , InformationID: @ViewBag.InformationID
                      , data: JSON.stringify(data)
                  },
                  async: true,
@@ -134,25 +97,24 @@
                  },
                  success: function (result) {
                      if (result == "0") {
-                         notiSuccess();
                          UploadImage();
-                         LoadProduct();
+                         notiSuccess();
+                         LoadInformation();
                      } else {
-                         notiError("Sản Phẩm Đã Tồn Tại Vui Lòng Kiểm Tra Lại");
+                         notiError("Lỗi Hệ Thống");
                         }
                  }
              })
              $('#divDetailPopup').modal('hide');
-            }
+        }
          return false;
     }
-
     function UploadImage() {
-        var Video = $("#fileuploadAvatarProduct")[0].files[0];
+        var Video = $("#fileuploadAvatarInformation")[0].files[0];
         var formData = new FormData();
         formData.append("files", Video);
         $.ajax({
-            url: "/UploadFile/UploadImageProduct",
+            url: "/UploadFile/UploadImageInformation",
             dataType: "json",
             type: "POST",
             contentType: false,
@@ -167,21 +129,22 @@
         if (input.files && input.files[0] && (ext == "gif" || ext == "png" || ext == "jpeg" || ext == "jpg")) {
             var reader = new FileReader();
             reader.onload = function (e) {
-                $('#avatarProductUpload').attr('src', e.target.result);
+                $('#avatarInformationUpload').attr('src', e.target.result);
             }
 
             reader.readAsDataURL(input.files[0]);
         } else {
-            $('#avatarProductUpload').attr('src', '/img/404.png');
+            $('#avatarInformationUpload').attr('src', '/img/404.png');
         }
     }
     function GetFileName() {
-        var fullPath = document.getElementById('fileuploadAvatarProduct').value;
+        debugger
+        var fullPath = document.getElementById('fileuploadAvatarInformation').value;
         if (fullPath) {
             var startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
             var filename = fullPath.substring(startIndex);
             if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
-                filename = '../img/Product/' + filename.substring(1);
+                filename = '../img/Information/' + filename.substring(1);
             }
             return filename;
         }
