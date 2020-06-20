@@ -4,6 +4,9 @@
     Layout = "~/Views/Shared/ClientMaster.cshtml";
 }
 
+@section Style{
+      
+}
 <!-- page title -->
 <section class="section section--first section--bg" data-bg="~/Clients/img/section/section.jpg">
     <div class="container">
@@ -147,7 +150,7 @@
 <div class="catalog">
     <div class="container">
         <div class="row" id="MovieCurrentlyPlaying">
-                 
+
         </div>
     </div>
 </div>
@@ -314,7 +317,7 @@
         let DataMovie = "";
         let Pagination = "";
         let CountPagination = 0;
-        let PageNumber = 0;
+        let PageNumber = 1;
         var firstSlider = document.getElementById('filter__years');
 
         $(document).ready(function () {
@@ -325,28 +328,28 @@
                 PageNumber = $(this).attr('data-page');
                 LoadDataMovie();
             });
-            console.log( firstSlider.noUiSlider.get());
+            console.log(firstSlider.noUiSlider.get());
         })
         function LoadDataMovie() {
             $.ajax({
                 url: "Catalog/LoadDataMovie?page=" + PageNumber,
                 dataType: "json",
                 type: "GET",
-                data: {                
+                data: {
                 },
                 contentType: 'application/json; charset=utf-8',
                 async: true,
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                     notiError();
                 },
-                success: function (result) {                   
+                success: function (result) {
                     DataMovie = result.Table;
-                    Pagination = result.Table1; 
+                    Pagination = result.Table1;
                     if (CountPagination == 0) {
                         CountPagination = Number(Pagination[0].Pagination);
                         RenderPagination(CountPagination, "Pagination");
                     }
-                    RenderMovieList(DataMovie, "MovieCurrentlyPlaying");                  
+                    RenderMovieList(DataMovie, "MovieCurrentlyPlaying");
                 }
             });
         }
@@ -397,21 +400,21 @@
             if (myNode != null) {
                 myNode.innerHTML = '';
                 let stringContent = '<li class="paginator__item paginator__item--prev">'
-                   +' <a href="#"> <i class="icon ion-ios-arrow-back"></i></a>'
-                   +'</li >';             
+                    + ' <a href="#"> <i class="icon ion-ios-arrow-back"></i></a>'
+                    + '</li >';
                 for (var i = 1; i <= num; i++) {
-                    stringContent = stringContent + ((i == 1) ? ('<li class="paginator__item paginator__item--active" data-page="' + i + '"><a href="#">' + i + '</a></li>') : ('<li class="paginator__item" data-page="' + i +'"><a href="#">' + i + '</a></li>'));
+                    stringContent = stringContent + ((i == 1) ? ('<li class="paginator__item paginator__item--active" data-page="' + i + '"><a href="#">' + i + '</a></li>') : ('<li class="paginator__item" data-page="' + i + '"><a href="#">' + i + '</a></li>'));
                 }
-                stringContent = stringContent+ '<li class="paginator__item paginator__item--next">'
-                    +'<a href="#"> <i class="icon ion-ios-arrow-forward"></i></a>'
-                    + '</li>';     
+                stringContent = stringContent + '<li class="paginator__item paginator__item--next">'
+                    + '<a href="#"> <i class="icon ion-ios-arrow-forward"></i></a>'
+                    + '</li>';
                 document.getElementById(id).innerHTML = stringContent;
             }
         }
         function initializeFilterYear() {
             function initializeFirstSlider() {
                 if ($('#filter__years').length) {
-                    
+
                     noUiSlider.create(firstSlider, {
                         range: {
                             'min': 2000,
