@@ -8,14 +8,14 @@ using Newtonsoft.Json;
 
 namespace VTCinema.Controllers.Clients.Detail
 {
-    [Route("Detail")]
+    [Route("MovieDetail")]
     public class MovieDetailController : Controller
     {
         [Route("{MovieDetailID}")]
         [HttpGet]
-        public IActionResult Index(int MovieDetaiID)
+        public IActionResult Index(int MovieDetailID)
         {
-            ViewBag.MovieDetailID = MovieDetaiID;
+            ViewBag.MovieDetailID = MovieDetailID;
             return View("~/Views/Clients/MovieDetail/MovieDetailView.cshtml");
         }
         [Route("GetMovieDetail/{MovieDetailID}")]
