@@ -12,7 +12,7 @@
         <div class="row">
             <!-- title -->
             <div class="col-12">
-                <h1 class="details__title">I Dream in Another Language</h1>
+                <h1 class="details__title" id="MovieName"></h1>
             </div>
             <!-- end title -->
             <!-- content -->
@@ -31,23 +31,20 @@
                             <div class="card__content">
                                 <div class="card__wrap">
                                     <span class="card__rate" id="rating"><i class="icon ion-ios-star"></i>8.4</span>
-
                                     <ul class="card__list">
-                                        <li>HD</li>
-                                        <li>16+</li>
+                                        <li id="">HD</li>
+                                        <li id="Ages"></li>
                                     </ul>
                                 </div>
 
                                 <ul class="card__meta">
                                     <li>
                                         <span>Genre:</span> <a href="#" id="aMovieType">Action</a>
-                                        <a href="#">Triler</a>
                                     </li>
-                                    <li id="Year"><span>Release year:</span> 2017</li>
-                                    <li ><span>Running time:</span><a href="" id="Time"></a></li>
-                                    <li ><span>Country:</span> <a href="#" id="Country">USA</a> </li>
+                                    <li ><span>Release year:</span><span id="Year"></span></li>
+                                    <li><span>Running time:</span><a href="" id="Time"></a></li>
+                                    <li><span>Country:</span> <a href="#" id="Country">USA</a> </li>
                                 </ul>
-
                                 <div class="card__description card__description--details" id="Note">
                                 </div>
                             </div>
@@ -59,16 +56,9 @@
             <!-- end content -->
             <!-- player -->
             <div class="col-12 col-xl-6">
-                <video controls  id="player">
+                <video controls id="player">
                     <!-- Video files -->
-                    
-                    <source src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-1440p.mp4" type="video/mp4" size="1440">
-
-                    <!-- Caption files -->
-                    <track kind="captions" label="English" srclang="en" src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.en.vtt"
-                           default>
-                    <track kind="captions" label="Français" srclang="fr" src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.fr.vtt">
-
+                    <source src="" type="video/mp4" size="1440">
                     <!-- Fallback for browsers that don't support the <video> element -->
                     <a href="" download>Download</a>
                 </video>
@@ -93,9 +83,9 @@
                         <span class="details__share-title">Share with friends:</span>
 
                         <ul class="details__share-list">
-                            <li class="facebook"><a href="#"><i class="icon ion-logo-facebook"></i></a></li>
-                            <li class="instagram"><a href="#"><i class="icon ion-logo-instagram"></i></a></li>
-                            <li class="twitter"><a href="#"><i class="icon ion-logo-twitter"></i></a></li>
+                            <li class="facebook"><a href="https://www.facebook.com/"><i class="icon ion-logo-facebook"></i></a></li>
+                            <li class="instagram"><a href="https://www.instagram.com/?hl=vi"><i class="icon ion-logo-instagram"></i></a></li>
+                            <li class="twitter"><a href="https://twitter.com/explore"><i class="icon ion-logo-twitter"></i></a></li>
                             <li class="vk"><a href="#"><i class="icon ion-logo-vk"></i></a></li>
                         </ul>
                     </div>
@@ -518,36 +508,50 @@
             <!-- end sidebar -->
         </div>
     </div>
-    
-</section>
 
-<script>
+</section>
+@section Script{
+    <script>
     let MovieDetailID;
     let ImageString = '';
+    let VideoString = '';
     let DataImage;
     $(document).ready(function () {
+        MovieDetailID = @ViewBag.MovieDetailID;
+        LoadDataMovie();
     })
     function LoadDataMovie() {
         $.ajax({
             type: 'GET',
             dataType: "json",
             contentType: 'application/json; charset=utf-8',
-            url: "/MovieDetail/GetMovieDetail/" + MovieDetailID,
+            url: "GetMovieDetail/" + MovieDetailID,
             async: true,
             success: function (data) {
-                $('Note').val(data[0].Note);
-                $('year').val(data[0].Year_Movie);
-                $('Time').val(data[0].Movie_Time_Duration);
-                $('Country').val(data[0].Nationality);
-                if (data[0].Image == '' || data[0].Image == undefined) {
-                    $('#Image').attr('src', '');
 
+                $('#MovieName').text(data[0].Name_VN);
+                $('#Note').text(data[0].Note);
+                $('#Year').text(data[0].Year_Movie);
+                $('#Time').text(data[0].Movie_Time_Duration);
+                $('#Country').text(data[0].NationalityName);
+                $('#aMovieType').text(data[0].Name_Type);
+                $('#Ages').text(data[0].Ages);
+                if (data[0].Image == '' || data[0].Image == undefined) {
+                    $('#ImageDetail').attr('src', '');
                 }
                 else {
-                    $('#Image').attr('src', data[0].Image);
+                    $('#ImageDetail').attr('src', data[0].Image);
                     ImageString = data[0].Image;
+                }
+                if (data[0].VideoTrailer == '' || data[0].VideoTrailer == undefined) {
+                    $('#player').attr('src', '');
+                }
+                else {
+                    $('#player').attr('src', data[0].VideoTrailer);
+                    VideoString = data[0].VideoTrailer;
                 }
             }
         })
     }
-</script>
+    </script>
+}
