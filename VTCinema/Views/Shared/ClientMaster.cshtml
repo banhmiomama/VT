@@ -16,12 +16,11 @@
     <link href="~/Clients/css/default-skin.css" rel="stylesheet" />
     <link href="~/Clients/css/ionicons.min.css" rel="stylesheet" />
     <link href="~/Clients/css/jquery.mCustomScrollbar.min.css" rel="stylesheet" />
-    <link href="~/Clients/css/main.css" rel="stylesheet" />
     <link href="~/Clients/css/nouislider.min.css" rel="stylesheet" />
     <link href="~/Clients/css/owl.carousel.min.css" rel="stylesheet" />
     <link href="~/Clients/css/photoswipe.css" rel="stylesheet" />
     <link href="~/Clients/css/plyr.css" rel="stylesheet" />
-
+    <link href="~/Clients/css/main.css" rel="stylesheet" />
 
     <!-- Favicons -->
     <link rel="icon" type="image/png" href="~/Clients/icon/favicon-32x32.png" sizes="32x32">
@@ -229,23 +228,50 @@
     <script src="~/Clients/js/photoswipe-ui-default.min.js"></script>
 
     <script>
-        $(document).ready(function () {
-            //$('#myModal').modal({
-            //    autofocus: false,
-            //    //useFlex: 'auto',
-            //    allowMultiple: true,
-            //    closable: false,
-            //    transition: 'horizontal flip',
-            //    duration: 0,
-            //    observeChanges: true,
-            //    //centered:true,
-            //    onShow: function () {
+        $(document).ready(function () {      
+            /* Open Modal Video Trailer*/
+            $('#Carousel').on('click', '.card__play', function () {
+                let UrlVideo = $(this).attr('data-video');
+                ModalVideo(UrlVideo);
+            });  
 
-            //    },
-            //    onVisible: function () {
-            //        $('#divDetailPopup').modal('refresh');
-            //    }
-            //});
+            $('#MovieCurrentlyPlaying').on('click', '.card__play', function () {
+                let UrlVideo = $(this).attr('data-video');
+                ModalVideo(UrlVideo);
+            });
+
+            $('#UpcomingMovie').on('click', '.card__play', function () {
+                let UrlVideo = $(this).attr('data-video');
+                ModalVideo(UrlVideo);
+            }); 
+            /*==============================
+	        Menu
+	        ==============================*/
+            $('.header__btn').on('click', function () {
+                $(this).toggleClass('header__btn--active');
+                $('.header__nav').toggleClass('header__nav--active');
+                $('.body').toggleClass('body--active');
+
+                if ($('.header__search-btn').hasClass('active')) {
+                    $('.header__search-btn').toggleClass('active');
+                    $('.header__search').toggleClass('header__search--active');
+                }
+            });
+
+            /*==============================
+            Search
+            ==============================*/
+            $('.header__search-btn').on('click', function () {
+                $(this).toggleClass('active');
+                $('.header__search').toggleClass('header__search--active');
+
+                if ($('.header__btn').hasClass('header__btn--active')) {
+                    $('.header__btn').toggleClass('header__btn--active');
+                    $('.header__nav').toggleClass('header__nav--active');
+                    $('.body').toggleClass('body--active');
+                }
+            });
+
             function owlCarousel() {
                 $('.home__bg').owlCarousel({
                     animateOut: 'fadeOut',
@@ -322,9 +348,15 @@
             }
             $(window).on('load', initializePlayer());
         })
-
+        function ModalVideo(url) {
+            $("#source-video").attr('src', url);
+            $("#player").attr('src', url);
+            $("#href-video").attr('href', url);
+            $('#myModal').modal('show');
+            return false;
+        }
     </script>
-
+   
     @RenderSection("Script", required: false)
 
 </body>
