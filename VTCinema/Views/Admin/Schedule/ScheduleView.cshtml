@@ -124,7 +124,6 @@
         var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
         $("#dateFilter").val(formatDateClient(firstDay) + ' to ' + formatDateClient(lastDay));
         LoadSchedule();
-        $("#Branch").dropdown("refresh");
         $("#Branch").dropdown("set selected",0);
         $('#dtContentSchedule tbody').on('click', '.buttonEditClass', function () {
             let ID = Number($(this).closest('tr')[0].childNodes[0].innerHTML);

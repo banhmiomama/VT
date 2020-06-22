@@ -315,3 +315,26 @@ function ConvertDateTimeToStringDMY_HM(x) {
         return "";
     }
 }
+function ConvertDateTimeToStringDMY_HMS(x) {
+    try {
+        var d = new Date(x);
+        let _month = d.getMonth() + 1;
+        var datenow = new Date();
+        let hour = (d.getHours() < 10) ? ("0" + d.getHours()) : d.getHours();
+        let minute = (d.getMinutes() < 10) ? ("0" + d.getMinutes()) : d.getMinutes();
+        let month = (_month < 10) ? ("0" + _month) : _month;
+        let date = (d.getDate() < 10) ? ("0" + d.getDate()) : d.getDate();
+        let second = (d.getSeconds() < 10) ? ("0" + d.getSeconds()) : d.getSeconds();
+
+        if (d.getDate() == datenow.getDate() && d.getYear() == datenow.getYear() && d.getMonth() == datenow.getMonth()) {
+            return hour + ":" + minute;
+        }
+        else {
+            return d.getFullYear() + "-" + month + "-" + date + " " + hour + ":" + minute + ":" + second;
+        }
+        return d;
+    }
+    catch (err) {
+        return "";
+    }
+}
