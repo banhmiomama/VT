@@ -2,12 +2,13 @@
     ViewData["Title"] = "Trang Chủ";
     Layout = "~/Views/Shared/ClientMaster.cshtml";
 }
-@section Style{ 
+@section Style{
     <style>
         .card__cover.active:before {
-            background-color:transparent;
-            background-image:unset;
+            background-color: transparent;
+            background-image: unset;
         }
+
         .card__content.centered {
             position: absolute;
             top: 0;
@@ -17,14 +18,17 @@
             opacity: 0;
             transition: 0.5s;
             background-color: rgba(0, 0, 0, 0.7);
-            margin:0;
+            margin: 0;
         }
+
         .card.card-information {
             position: relative;
         }
+
             .card.card-information:hover .card__content.centered {
                 opacity: 1
             }
+
         #DescriptionInformation p {
             display: -webkit-box;
             max-width: 100%;
@@ -33,13 +37,31 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
+        .btn-information {
+            position: absolute;
+            background-color: transparent;
+            color: white;
+            margin: 20px auto;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 8px 25px;
+            font-size: 20px;
+            border: 2px solid white;
+            text-shadow: 0 0 black;
+            z-index:1000;
+        }
+            .btn-information:hover {
+                background-image: linear-gradient(90deg, #ff55a5 0%, #ff5860 100%);
+                color:white;
+            }
     </style>
 }
 <!-- home -->
 <section class="home">
     <!-- home bg -->
     <div class="owl-carousel home__bg" id="Carousel_bg">
-             
+
     </div>
     <!-- end home bg -->
 
@@ -84,7 +106,7 @@
                             <a class="nav-link" data-toggle="tab" href="#tab-2" role="tab" aria-controls="tab-2" aria-selected="false">Phim Sắp Chiếu</a>
                         </li>
 
-                        
+
                     </ul>
                     <!-- end content tabs nav -->
                     <!-- content mobile tabs nav -->
@@ -97,7 +119,7 @@
                         <div class="content__mobile-tabs-menu dropdown-menu" aria-labelledby="mobile-tabs">
                             <ul class="nav nav-tabs" role="tablist">
                                 <li class="nav-item"><a class="nav-link active" id="1-tab" data-toggle="tab" href="#tab-1" role="tab" aria-controls="tab-1" aria-selected="true">Phim Đang Chiếu</a></li>
-                                <li class="nav-item"><a class="nav-link" id="2-tab" data-toggle="tab" href="#tab-2" role="tab" aria-controls="tab-2" aria-selected="false">Phim Sắp Chiếu</a></li>    
+                                <li class="nav-item"><a class="nav-link" id="2-tab" data-toggle="tab" href="#tab-2" role="tab" aria-controls="tab-2" aria-selected="false">Phim Sắp Chiếu</a></li>
                             </ul>
                         </div>
                     </div>
@@ -112,13 +134,13 @@
         <div class="tab-content" id="myTabContent">
             <div class="tab-pane  show active" id="tab-1" role="tabpanel" aria-labelledby="1-tab">
                 <div class="row" id="MovieCurrentlyPlaying">
-                                   
+
                 </div>
             </div>
 
             <div class="tab-pane " id="tab-2" role="tabpanel" aria-labelledby="2-tab">
                 <div class="row" id="UpcomingMovie">
-                    
+
                 </div>
             </div>
         </div>
@@ -134,7 +156,7 @@
                 <h2 class="section__title">TIN KHUYẾN MÃI</h2>
             </div>
         </div>
-       
+
         <div class="row" id="InformationList">
             <div class="col-12 col-md-6 col-lg-4">
                 <div class="card card-information">
@@ -147,7 +169,7 @@
                         </span>
                     </div>
                 </div>
-            </div>           
+            </div>
         </div>
         <div class="row">
             <div class="col-12">
@@ -229,7 +251,7 @@
             LoadDataMain();
             LoadDataInformation();
         })
-        
+
         function LoadDataMain() {
             $.ajax({
                 url: "Main/LoadDataMain",
@@ -246,7 +268,7 @@
                     DataSlideShow = result.Table;
                     DataMovie = result.Table1;
                     DataUpcomingMovie = result.Table2;
-                    RenderSlideShow_bg(DataSlideShow,"Carousel_bg")
+                    RenderSlideShow_bg(DataSlideShow, "Carousel_bg")
                     RenderSlideShow(DataSlideShow, "Carousel");
                     owlCarousel();
                     RenderMovieList(DataMovie, "MovieCurrentlyPlaying");
@@ -279,14 +301,15 @@
                 if (data && data.length > 0) {
                     for (var i = 0; i < data.length; i++) {
                         let item = data[i];
-                        let tr = 
+                        let tr =
                             ' <div class="card card-information" >'
                             + ' <div class="card__cover active">'
                             + ' <img src="' + item.Image + '" alt=""></div>'
                             + ' <div class="card__content centered">'
                             + ' <h3 class="card__title">' + item.Title + '</h3>'
                             + ' <span class="card__description" id="DescriptionInformation"><p>' + item.Note + '</p></span>'
-                            + ' </div></div>';                           
+                            +'<a class="btn-information"  href="InformationDetail/'+item.ID+'" style="">Chi tiết</a>'
+                            + ' </div></div>';
 
                         stringContent = stringContent + '<div class="col-12 col-md-6 col-lg-4">' + tr + '</div>';
                     }
@@ -294,6 +317,7 @@
                 document.getElementById(id).innerHTML = stringContent;
             }
         }
+        
         function RenderSlideShow(data, id) {
             var myNode = document.getElementById(id);
             if (myNode != null) {
@@ -303,10 +327,10 @@
                     for (var i = 0; i < data.length; i++) {
                         let item = data[i];
                         let tr =
-                             '<div class="card card--big">'
+                            '<div class="card card--big">'
                             + ' <div class="card__cover">'
                             + '<img src="' + item.Image + '" alt="">'
-                            + '<a href="#" class="card__play" data-video= ' + item.VideoTrailer + ' data-title="'+ item.Name_VN + ' - ' + item.Name_EN +'">'
+                            + '<a href="#" class="card__play" data-video= ' + item.VideoTrailer + ' data-title="' + item.Name_VN + ' - ' + item.Name_EN + '">'
                             + '<i class="icon ion-ios-play"></i>'
                             + '</a>'
                             + ' </div>'
@@ -334,7 +358,7 @@
                     for (var i = 0; i < data.length; i++) {
                         let item = data[i];
                         let tr =
-                            '<div class="item home__cover" data-bg="' + item.Image + '"></div> '; 
+                            '<div class="item home__cover" data-bg="' + item.Image + '"></div> ';
 
                         stringContent = stringContent + tr;
                     }
@@ -342,7 +366,6 @@
                 document.getElementById(id).innerHTML = stringContent;
             }
         }
-
         function RenderMovieList(data, id) {
             var myNode = document.getElementById(id);
             if (myNode != null) {
@@ -351,7 +374,7 @@
                 if (data && data.length > 0) {
                     for (var i = 0; i < data.length; i++) {
                         let item = data[i];
-                        let tr = 
+                        let tr =
                             ' <div class="card card--list" >'
                             + ' <div class="row">'
                             + ' <div class="col-12 col-sm-4">'
@@ -362,7 +385,6 @@
                             + ' </a>'
                             + ' </div>'
                             + ' </div>'
-
                             + ' <div class="col-12 col-sm-8">'
                             + ' <div class="card__content">'
                             + ' <h3 class="card__title"><a href="/MovieDetail/' + item.ID + '">' + item.Name_VN + ' - ' + item.Name_EN + '</a></h3>'
@@ -377,7 +399,7 @@
                             + ' <div class="card__description">'
                             + ' <p>' + item.Note + '.</p>'
                             + '</div></div></div></div></div>'
-                            
+
 
                         stringContent = stringContent + '<div class="col-6 col-sm-12 col-lg-6">' + tr + '</div>';
                     }
@@ -386,8 +408,8 @@
             }
         }
         /*==============================
-	    Home
-	    ==============================*/
+        Home
+        ==============================*/
         function owlCarousel() {
             $('.home__bg').owlCarousel({
                 animateOut: 'fadeOut',
@@ -468,6 +490,7 @@
             });
 
         }
+
     </script>
 
 }

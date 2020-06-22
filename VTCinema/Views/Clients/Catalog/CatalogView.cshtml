@@ -319,12 +319,11 @@
         let CountPagination = 0;
         let PageNumber = 1;
         var firstSlider = document.getElementById('filter__years');
-
         $(document).ready(function () {
             initializeFilterYear();
             LoadDataMovie();
             $('#Pagination').on('click', '.paginator__item', function () {
-                $(this).addClass('paginator__item--active').siblings().removeClass('paginator__item--active')
+                $(this).addClass('paginator__item--active').siblings().removeClass('paginator__item--active');
                 PageNumber = $(this).attr('data-page');
                 LoadDataMovie();
             });
@@ -332,7 +331,7 @@
         })
         function LoadDataMovie() {
             $.ajax({
-                url: "Catalog/LoadDataMovie?page=" + PageNumber,
+                url: "Catalog/LoadDataMovie?Page=" + PageNumber ,
                 dataType: "json",
                 type: "GET",
                 data: {

@@ -13,6 +13,7 @@ namespace VTCinema.Controllers.Clients.Catalog
     {
         public IActionResult Index()
         {
+            ViewBag.Year = 2000;
             return View("~/Views/Clients/Catalog/CatalogView.cshtml");
         }
         
@@ -22,7 +23,7 @@ namespace VTCinema.Controllers.Clients.Catalog
         {
             try
             {
-                string Page = HttpContext.Request.Query["page"].ToString();
+                string Page = HttpContext.Request.Query["Page"].ToString();
                 DataSet dt = new DataSet();
                 using (Models.ExecuteDataBase confunc = new Models.ExecuteDataBase())
                 {

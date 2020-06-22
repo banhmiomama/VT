@@ -1,0 +1,173 @@
+﻿
+@{
+    Layout = null;
+}
+
+<script src="~/js/tinymce.min.js"></script>
+
+<script>
+    tinymce.init({
+        selector: '#txtNote'
+    });
+</script>
+
+<div id="headerPopup_CustomerCare" class="header">
+    Lịch Phim
+</div>
+<div class="row">
+    <div class="sixteen wide tablet eight wide computer column">
+        <div class="ui segments">
+            <form class="ui form segment form3" id="form3">
+                <div class="ui accordion field">
+                    <div class="content field active">
+                        <div class="two fields">
+                            <div class="field">
+                                <label>Phim:</label>
+                                <div class="ui fluid search selection dropdown" id="Movie">
+                                    <input type="hidden" name="Movie">
+                                    <i class="dropdown icon"></i>
+                                    <div class="default text">Chọn Phim</div>
+                                    <div class="menu" id="cbbMovie">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label>Loại Trình Chiếu:</label>
+                                <div class="ui fluid search selection dropdown" id="TicketType">
+                                    <input type="hidden" name="TicketType">
+                                    <i class="dropdown icon"></i>
+                                    <div class="default text">Chọn Loại Trình Chiếu</div>
+                                    <div class="menu" id="cbbTicketType">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="two fields">
+                            <div class="field">
+                                <label>Chi Nhánh</label>
+                                <div class="ui fluid search selection dropdown" id="BranchID">
+                                    <input type="hidden" name="Movie">
+                                    <i class="dropdown icon"></i>
+                                    <div class="default text">Chọn Chi Nhánh</div>
+                                    <div class="menu" id="cbbBranchID">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label>Phòng:</label>
+                                <div class="ui fluid search selection dropdown" id="Room">
+                                    <input type="hidden" name="Room">
+                                    <i class="dropdown icon"></i>
+                                    <div class="default text">Chọn Phòng</div>
+                                    <div class="menu" id="cbbRoom">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="two fields">
+                            <div class="field">
+                                <label>Chọn Ngày & Thời Gian Bắt Đầu</label>
+                                <input class="flatpickr"  id="datefrom" type="text" placeholder="Chọn Thời Gian Chiếu" />
+                            </div>
+                            <div class="field">
+                                <label>Thời Gian Kết Thúc</label>
+                                <input class="flatpickr" disabled id="dateto" type="text" placeholder="Thời Gian Kết Thúc" />
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label>Ghi Chú</label>
+                            <textarea id="txtNote" name="mytextarea" rows="5" placeholder="Nhập ghi chú..." />
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="actions">
+    <div style="float: right">
+        <button class="ui teal button" form="form3" type="submit" onclick="return ExcuteData()">Save</button>
+
+    </div>
+    <div style="float: right">
+        <button class="ui grey button" onclick="event.preventDefault();CloseModal()">Cancel</button>
+    </div>
+</div>
+<script src="/js/customjs/custom-validation.js"></script>
+<script src="/js/main.js"></script>
+<script>   
+    let ScheduleDetailID;
+    let DataRoom;
+    let DataTicketType;
+    let DataMovie;
+    let DataBranchDetail;
+    $(document).ready(function () {
+        $("#datefrom").flatpickr({
+            dateFormat: 'd-m-Y H-i',
+            minDate: 'today',
+            enableTime: true
+        });
+        $("#dateto").flatpickr({
+            dateFormat: 'd-m-Y H-i',
+            enableTime: true
+        });
+
+        ScheduleDetailID = @ViewBag.ScheduleID;
+        LoadDataUpdateSchedule();
+    });
+
+    function LoadDataUpdateSchedule() {
+        $.ajax({
+            type: 'GET',
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            url: "/Admin/ScheduleDetail/GetScheduleDetail/" + ScheduleDetailID,
+            async: true,
+            success: function (result) {
+                DataMovie = result.Table1;
+                LoadCombo(DataMovie, "cbbMovie");
+                DataTicketType = result.Table2;
+                LoadCombo(DataTicketType, "cbbTicketType");
+                DataBranchDetail = result.Table3;
+                LoadCombo(DataBranchDetail, "cbbBranchID");
+                DataRoom = result.Table4;
+                LoadCombo(DataRoom, "cbbRoom");                
+                if (data.length != 0) {
+                    
+                }
+            }
+        });
+    }
+    function ExcuteData() {
+        var data = new Object();
+        data.Name = $('#txtName').val() ? $('#txtName').val() : "";
+        data.Note = tinymce.activeEditor.getContent();
+        $('#form3').form('validate form');
+        if ($('#form3').form('is valid')) {
+             $.ajax({
+                 url: "/Admin/ScheduleDetail/Execute",
+                 dataType: "json",
+                 type: "POST",
+                 data: {
+                     __RequestVerificationToken: token
+                     , ScheduleID: @ViewBag.ScheduleID
+                     , data: JSON.stringify(data)
+                 },
+                 async: true,
+                 error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        notiError("Lỗi Hệ Thống");
+                 },
+                 success: function (result) {
+                     if (result == "0") {
+                         notiSuccess();
+                         LoadSchedule();
+                     } else {
+                         notiError("");
+                        }
+                 }
+             })
+             $('#divDetailPopup').modal('hide');
+        }
+         return false;
+    }
+</script>
