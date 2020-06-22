@@ -1,0 +1,268 @@
+﻿@{
+    ViewData["Title"] = "Tin Tức";
+    Layout = "~/Views/Shared/ClientMaster.cshtml";
+}
+@section Style{
+    <style>
+        .card__cover.active:before {
+            background-color: transparent;
+            background-image: unset;
+        }
+
+        .card__content.centered {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            padding: 30px;
+            opacity: 0;
+            transition: 0.5s;
+            background-color: rgba(0, 0, 0, 0.7);
+            margin: 0;  
+        }
+
+        .card.card-information {
+            position: relative;
+        }
+
+            .card.card-information:hover .card__content.centered {
+                opacity: 1
+            }
+
+        #DescriptionInformation p {
+            display: -webkit-box;
+            max-width: 100%;
+            -webkit-line-clamp: 6;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .btn-information {
+            position: absolute;
+            background-color: transparent;
+            color: white;
+            margin: 20px auto;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 5px 10px;
+            font-size: 20px;
+            border: 2px solid white;
+            text-shadow: 0 0 black;
+            z-index: 1000;
+        }
+
+            .btn-information:hover {
+                background-image: linear-gradient(90deg, #ff55a5 0%, #ff5860 100%);
+                color: white;
+            }
+    </style>
+}
+<!-- home -->
+<section class="home">
+</section>
+<!-- end home -->
+<!-- content -->
+<!-- end content -->
+<!-- expected premiere -->
+<section class="section section--bg" data-bg="../Clients/img/section/section.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="section__title"><b>TIN NÓNG</b></h2>
+            </div>
+        </div>
+
+        <div class="row" >
+            <div class="col-9" id="InformationList">
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="card card-information">
+                        <div class="card__cover active">
+                            <img src="" id="Image" alt="">
+                        </div>
+                        <div class="card__content centered">
+                            <h3 class="card__title" id="InformationTitle">I Dream in Another Language</h3>
+                            <span class="card__description" id="Note">
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3">
+                <img src="~/Clients/img/user.png" />
+            </div>
+            
+
+        </div>
+            <div class="row">
+                <div class="col-9">
+                    <a href="#" class="section__btn">Show more</a>
+                </div>
+            </div>
+        </div>
+</section>
+<!-- end expected premiere -->
+<!-- partners -->
+<section class="section">
+    <div class="container">
+        <div class="row">
+            <!-- section title -->
+            <div class="col-12">
+                <h2 class="section__title section__title--no-margin">Our Partners</h2>
+            </div>
+            <!-- end section title -->
+            <!-- section text -->
+            <div class="col-12">
+                <p class="section__text section__text--last-with-margin">It is a long <b>established</b> fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using.</p>
+            </div>
+            <!-- end section text -->
+            <!-- partner -->
+            <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+                <a href="#" class="partner">
+                    <img src="~/Clients/img/partners/themeforest-light-background.png" alt="" class="partner__img">
+                </a>
+            </div>
+            <!-- end partner -->
+            <!-- partner -->
+            <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+                <a href="#" class="partner">
+                    <img src="~/Clients/img/partners/audiojungle-light-background.png" alt="" class="partner__img">
+                </a>
+            </div>
+            <!-- end partner -->
+            <!-- partner -->
+            <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+                <a href="#" class="partner">
+                    <img src="~/Clients/img/partners/codecanyon-light-background.png" alt="" class="partner__img">
+                </a>
+            </div>
+            <!-- end partner -->
+            <!-- partner -->
+            <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+                <a href="#" class="partner">
+                    <img src="~/Clients/img/partners/photodune-light-background.png" alt="" class="partner__img">
+                </a>
+            </div>
+            <!-- end partner -->
+            <!-- partner -->
+            <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+                <a href="#" class="partner">
+                    <img src="~/Clients/img/partners/activeden-light-background.png" alt="" class="partner__img">
+                </a>
+            </div>
+            <!-- end partner -->
+            <!-- partner -->
+            <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+                <a href="#" class="partner">
+                    <img src="~/Clients/img/partners/3docean-light-background.png" alt="" class="partner__img">
+                </a>
+            </div>
+            <!-- end partner -->
+        </div>
+    </div>
+</section>
+<!-- end partners -->
+
+
+@section Script
+{
+    <script>
+        $(document).ready(function () {
+            LoadDataInformation();
+        })
+        function LoadDataInformation() {
+            $.ajax({
+                url: "Information/LoadDataInformation",
+                dataType: "json",
+                type: "POST",
+                data: JSON.stringify({
+                }),
+                contentType: 'application/json; charset=utf-8',
+                async: true,
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    notiError();
+                },
+                success: function (result) {
+                    RenderInformationList(result, "InformationList");
+                }
+            });
+        }
+        function RenderInformationList(data, id) {
+            var myNode = document.getElementById(id);
+            if (myNode != null) {
+                myNode.innerHTML = '';
+                let stringContent = '';
+                if (data && data.length > 0) {
+                    for (var i = 0; i < data.length; i++) {
+                        let item = data[i];
+                        let tr =
+                            ' <div class="card card-information" >'
+                            + ' <div class="card__cover active">'
+                            + ' <img src="' + item.Image + '" alt=""></div>'
+                            + ' <div class="card__content centered">'
+                            + ' <h3 class="card__title">' + item.Title + '</h3>'
+                            + ' <span class="card__description" id="DescriptionInformation"><p>' + item.Note + '</p></span>'
+                            + '<a class="btn-information"  href="InformationDetail/' + item.ID + '" style="">Chi tiết</a>'
+                            + ' </div></div>';
+
+                        stringContent = stringContent + '<div class="col-12 col-md-6 col-lg-4">' + tr + '</div>';
+                    }
+                }
+                document.getElementById(id).innerHTML = stringContent;
+            }
+        }
+    </script>
+    @*<script>
+            let ImageString = "";
+            let DataImage;
+            $(document).ready(function () {
+                LoadDataInformation();
+            })
+            function LoadDataInformation() {
+                $.ajax({
+                    url: "Information/LoadDataInformation",
+                    dataType: "json",
+                    type: "POST",
+                    data: JSON.stringify({
+                    }),
+                    contentType: 'application/json; charset=utf-8',
+                    async: true,
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        notiError();
+                    },
+                    success: function (result) {
+                        RenderInformationList(result, "InformationList");
+                    }
+                });
+            }
+            function RenderInformationList(data, id) {
+                var myNode = document.getElementById(id);
+                if (myNode != null) {
+                    myNode.innerHTML = '';
+                    let stringContent = '';
+                    if (data && data.length > 0) {
+                        for (var i = 0; i < data.length; i++) {
+                            let item = data[i];
+                            let tr =
+                             $('#InformationTitle').text(data[i].Title);
+                            $('#Note').text(data[i].Note);
+                            if (data[0].Image == '' || data[i].Image == undefined) {
+                                $('#Image').attr('src', '');
+                            }
+                            else {
+                                $('#Image').attr('src', data[i].Image);
+                                ImageString = data[i].Image;
+                            }
+                                + '<a class="btn-information"  href="InformationDetail/' + item.ID + '" style="">Chi tiết</a>'
+                                + ' </div></div>';
+
+                            stringContent = stringContent + '<div class="col-12 col-md-6 col-lg-4">' + tr + '</div>';
+                        }
+                    }
+                    document.getElementById(id).innerHTML = stringContent;
+                }
+            }
+
+        </script>*@
+}
