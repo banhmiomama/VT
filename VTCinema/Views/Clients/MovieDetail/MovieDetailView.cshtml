@@ -39,11 +39,11 @@
 
                                 <ul class="card__meta">
                                     <li>
-                                        <span>Genre:</span> <a href="#" id="aMovieType">Action</a>
+                                        <span>Thể Loại:</span> <a href="#" id="aMovieType">Action</a>
                                     </li>
-                                    <li ><span>Release year:</span><span id="Year"></span></li>
-                                    <li><span>Running time:</span><a href="" id="Time"></a></li>
-                                    <li><span>Country:</span> <a href="#" id="Country">USA</a> </li>
+                                    <li ><span>Năm ra mắt:</span><span id="Year"></span></li>
+                                    <li><span>Thời lượng :</span><a href="" id="Time"></a></li>
+                                    <li><span>Quốc gia :</span> <a href="#" id="Country"></a> </li>
                                 </ul>
                                 <div class="card__description card__description--details" id="Note">
                                 </div>
@@ -529,7 +529,7 @@
             async: true,
             success: function (data) {
 
-                $('#MovieName').text(data[0].Name_VN);
+                $('#MovieName').text(data[0].NameMovie);
                 $('#Note').text(data[0].Note);
                 $('#Year').text(data[0].Year_Movie);
                 $('#Time').text(data[0].Movie_Time_Duration);
