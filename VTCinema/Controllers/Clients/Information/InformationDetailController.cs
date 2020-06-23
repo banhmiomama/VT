@@ -6,30 +6,29 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
-namespace VTCinema.Controllers.Clients.Detail
+namespace VTCinema.Controllers.Clients.MovieDetail
 {
-    [Route("MovieDetail")]
-    public class MovieDetailController : Controller
+    [Route("InformationDetail")]
+    public class InformationDetailController : Controller
     {
-        [Route("{MovieDetailID}")]
+        [Route("{InformationDetailID}")]
         [HttpGet]
-        public IActionResult Index(int MovieDetailID)
+        public IActionResult Index( int InformationDetailID)
         {
-            ViewBag.MovieDetailID = MovieDetailID;
-            return View("~/Views/Clients/MovieDetail/MovieDetailView.cshtml");
+            ViewBag.InformationDetailID = InformationDetailID;
+            return View("~/Views/Clients/Information/InformationDetail.cshtml");
         }
-
-        [Route("GetMovieDetail/{MovieDetailID}")]
+        [Route("GetInformationDetail/{InformationDetailID}")]
         [HttpGet]
-        public string GetMovieDetail(int MovieDetailID)
+        public string GetInformationDetail(int InformationDetailID)
         {
             try
             {
                 DataTable dt = new DataTable();
                 using (Models.ExecuteDataBase confunc = new Models.ExecuteDataBase())
                 {
-                    dt = confunc.ExecuteDataTable("[YYY_sp_Movie_LoadDetail]", CommandType.StoredProcedure,
-                      "@CurrentID", SqlDbType.Int, MovieDetailID);
+                    dt = confunc.ExecuteDataTable("[YYY_sp_Client_Infomation_LoadDetail]", CommandType.StoredProcedure,
+                      "@CurrentID", SqlDbType.Int, InformationDetailID);
                 }
                 if (dt != null)
                 {
@@ -45,6 +44,7 @@ namespace VTCinema.Controllers.Clients.Detail
                 return "[]";
             }
         }
+
 
     }
 }

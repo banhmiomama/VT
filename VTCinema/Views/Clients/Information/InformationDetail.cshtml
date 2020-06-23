@@ -1,0 +1,145 @@
+﻿
+@{
+    ViewData["Title"] = "Tin Tức";
+    Layout = "~/Views/Shared/ClientMaster.cshtml";
+}
+@section Style{
+    <style>
+        label{
+            color:white;
+        }
+    </style>
+}
+<!-- home -->
+<section class="home">
+</section>
+<!-- end home -->
+<!-- content -->
+<!-- end content -->
+<!-- expected premiere -->
+<section class="section section--bg" data-bg="../Clients/img/section/section.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="section__title"><b>TIN NÓNG</b></h2>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-9" id="InformationList">
+                <div class="col-12 col-md-12 col-lg-12">
+                    <div class="card card-information">
+                        <div class="card__content centered">
+                            <h2 class="card__title" id="InformationTitle" style="font-weight:bold; font-size:20px;">
+                            </h2>
+                            <ul>
+                                <li class="card__description" id="Note" style="color:white; font-size:15px">
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="form-group">
+                    <label for="exampleFormControlSelect1">Example select</label>
+                    <select class="form-control" id="exampleFormControlSelect1">
+                        <option>1</option>
+                    </select>
+                    <label for="exampleFormControlSelect1">Example select</label>
+                    <select class="form-control" id="exampleFormControlSelect1">
+                        <option>1</option>
+                    </select>
+                    <label for="exampleFormControlSelect1">Example select</label>
+                    <select class="form-control" id="exampleFormControlSelect1">
+                        <option>1</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- end expected premiere -->
+<!-- partners -->
+<section class="section">
+    <div class="container">
+        <div class="row">
+            <!-- section title -->
+            <div class="col-12">
+                <h2 class="section__title section__title--no-margin">Our Partners</h2>
+            </div>
+            <!-- end section title -->
+            <!-- section text -->
+            <div class="col-12">
+                <p class="section__text section__text--last-with-margin">It is a long <b>established</b> fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using.</p>
+            </div>
+            <!-- end section text -->
+            <!-- partner -->
+            <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+                <a href="#" class="partner">
+                    <img src="~/Clients/img/partners/themeforest-light-background.png" alt="" class="partner__img">
+                </a>
+            </div>
+            <!-- end partner -->
+            <!-- partner -->
+            <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+                <a href="#" class="partner">
+                    <img src="~/Clients/img/partners/audiojungle-light-background.png" alt="" class="partner__img">
+                </a>
+            </div>
+            <!-- end partner -->
+            <!-- partner -->
+            <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+                <a href="#" class="partner">
+                    <img src="~/Clients/img/partners/codecanyon-light-background.png" alt="" class="partner__img">
+                </a>
+            </div>
+            <!-- end partner -->
+            <!-- partner -->
+            <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+                <a href="#" class="partner">
+                    <img src="~/Clients/img/partners/photodune-light-background.png" alt="" class="partner__img">
+                </a>
+            </div>
+            <!-- end partner -->
+            <!-- partner -->
+            <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+                <a href="#" class="partner">
+                    <img src="~/Clients/img/partners/activeden-light-background.png" alt="" class="partner__img">
+                </a>
+            </div>
+            <!-- end partner -->
+            <!-- partner -->
+            <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+                <a href="#" class="partner">
+                    <img src="~/Clients/img/partners/3docean-light-background.png" alt="" class="partner__img">
+                </a>
+            </div>
+            <!-- end partner -->
+        </div>
+    </div>
+</section>
+@section Script
+{
+    <script>
+    let InformationDetailID;
+        $(document).ready(function () {
+            debugger
+        InformationDetailID = @ViewBag.InformationDetailID;
+        LoadDataInformationDetail();
+    })
+    function LoadDataInformationDetail() {
+        $.ajax({
+            type: 'GET',
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            url: "GetInformationDetail/" + InformationDetailID,
+            async: true,
+            success: function (data) {
+                $('#InformationTitle').text(data[0].Title);
+                $('#Note').text(data[0].Note);
+            }
+        })
+    }
+    </script>
+}
