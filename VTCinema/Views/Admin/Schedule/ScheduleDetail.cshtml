@@ -111,7 +111,6 @@
             dateFormat: 'Y-m-d H:i:ss',
             enableTime: true
         });
-
         ScheduleDetailID = @ViewBag.ScheduleID;
         LoadDataUpdateSchedule();
     });
@@ -144,6 +143,8 @@
                     $("#TicketType").dropdown("set selected", data[0].TicketTypeID);
                     $("#datefrom").val(data[0].ShowTime);
                     $("#dateto").val(data[0].CloseTime);
+                    $("#txtNote").val(data[0].Note);
+
                     tinymce.activeEditor.setContent(data[0].Note);
                 }
             }
@@ -151,7 +152,12 @@
     }
     function ExcuteData() {
         var data = new Object();
-        data.Name = $('#txtName').val() ? $('#txtName').val() : "";
+        data.MovieID = $('#Movie').dropdown('get value') ? Number($('#Movie').dropdown('get value')) : 0;
+        data.BranchID = $('#BranchID').dropdown('get value') ? Number($('#BranchID').dropdown('get value')) : 0;
+        data.RoomID = $('#Room').dropdown('get value') ? Number($('#Room').dropdown('get value')) : 0;
+        data.TicketTypeID = $('#TicketType').dropdown('get value') ? Number($('#TicketType').dropdown('get value')) : 0;
+        data.ShowTime = $('#datefrom').val() ? $('#datefrom').val() : '';
+        data.CloseTime = $('#dateto').val() ? $('#dateto').val() : '';
         data.Note = tinymce.activeEditor.getContent();
         $('#form3').form('validate form');
         if ($('#form3').form('is valid')) {
@@ -185,7 +191,6 @@
         let MovieID = $('#Movie').dropdown('get value') ? Number($('#Movie').dropdown('get value')) : 0;
         let data = DataMovie.filter(word => word["ID"] == MovieID);        
         let MovieTimeDuration = Number(data[0].MovieTimeDuration) + 20;
-        debugger
         let DateFrom = $('#datefrom').val() ? $('#datefrom').val() : '';
         let DateTo = new Date(DateFrom);
         DateTo.setMinutes(DateTo.getMinutes() + MovieTimeDuration);
@@ -196,6 +201,7 @@
         $("#Room").dropdown("refresh");
         if (BranchID != 0) {
             let Data = DataRoom.filter(word => word["BranchID"] == BranchID);
+            $("#Room").dropdown("refresh");
             LoadCombo(Data, "cbbRoom");
         }
     }
