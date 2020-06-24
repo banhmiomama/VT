@@ -126,11 +126,12 @@
                             + '<input type="checkbox" value="' + item.NameRow + '" id="' + item.NameRow + item.ColumnChair + '" ' + item.DisabledChair + '/>'
                             + '<label for="' + item.NameRow + item.ColumnChair + '" style="background:' + item.ColorCode + '">' + item.NameRow + item.ColumnChair + '</label> </li>'
                     }
-                    tr += '<li class="seat"><button type="button" class="AddNewRowChair"><i class="plus circle icon" style="font-size: 30px;color: green;transition:0.5s;"></i></button></li>';
+                    //tr += '<li class="seat"><button type="button" class="AddNewRowChair"><i class="plus circle icon" style="font-size: 30px;color: green;transition:0.5s;"></i></button></li>';
+                    //stringContent = stringContent + '<li class="row"><ol class="seats" type="' + rc.NameRow + '">' + tr + '</ol></li>';
+                    //if (i == RowChair.length - 1) {
+                    //    stringContent += '<li class="row"><ol class="seats"><li class="seat"><button type="button" class="AddNewRowChair"><i class="plus circle icon" style="font-size: 30px;color: green;transition:0.5s;"></i></button></li></ol></li>'
+                    //}
                     stringContent = stringContent + '<li class="row"><ol class="seats" type="' + rc.NameRow + '">' + tr + '</ol></li>';
-                    if (i == RowChair.length - 1) {
-                        stringContent += '<li class="row"><ol class="seats"><li class="seat"><button type="button" class="AddNewRowChair"><i class="plus circle icon" style="font-size: 30px;color: green;transition:0.5s;"></i></button></li></ol></li>'
-                    }
                 }
             }
             document.getElementById(id).innerHTML = stringContent;

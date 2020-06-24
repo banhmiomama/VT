@@ -1,0 +1,79 @@
+﻿
+@{
+    ViewData["Title"] = "Calendar";
+    Layout = "~/Views/Shared/Master.cshtml";
+}
+<script src="~/Calendar_TUI/tui-code-snippet.min.js"></script>
+<script src="~/Calendar_TUI/dist/tui-calendar.js"></script>
+<link href="~/Calendar_TUI/dist/tui-calendar.css" rel="stylesheet" />
+<style>
+    .tui-full-calendar-today {
+        background: #E1BEE7 !important;
+    }
+</style>
+<div class="pusher">
+    <div class="navslide navwrap">
+        <div class="row" style="background-color: white">
+            <div id="calendar" style="height: 100vh;width:100%;"></div>
+        </div>
+    </div>
+</div>
+<script>
+    var Calendar = tui.Calendar;
+    var calendar = new Calendar('#calendar', {
+        defaultView: 'month',
+        taskView: true,
+        useCreationPopup: true,
+        useDetailPopup: true,
+        template: {
+            monthGridHeader: function (model) {
+                var date = new Date(model.date);
+                var template = '<span class="tui-full-calendar-weekday-grid-date">' + date.getDate() + '</span>';
+                return template;
+            }
+        }
+    });
+    $(document).ready(function () {
+
+    })
+    calendar.createSchedules([
+        {
+            id: '1',
+            calendarId: '1',
+            title: 'my schedule',
+            category: 'time',
+            dueDateClass: '',
+            start: '2020-06-23T22:30:00+09:00',
+            end: '2020-06-23T02:30:00+09:00'
+        },
+        {
+            id: '2',
+            calendarId: '1',
+            title: 'second schedule',
+            category: 'time',
+            dueDateClass: '',
+            start: '2020-06-24T17:30:00+09:00',
+            end: '2020-06-24T17:31:00+09:00',
+            isReadOnly: true    // schedule is read-only
+        }
+    ]);
+    calendar.on({
+        'clickSchedule': function (e) {
+            console.log('clickSchedule', e);
+        },
+        'beforeCreateSchedule': function (e) {
+            console.log('beforeCreateSchedule', e);
+            // open a creation popup
+        },
+        'beforeUpdateSchedule': function (e) {
+            console.log('beforeUpdateSchedule', e);
+            e.schedule.start = e.start;
+            e.schedule.end = e.end;
+            cal.updateSchedule(e.schedule.id, e.schedule.calendarId, e.schedule);
+        },
+        'beforeDeleteSchedule': function (e) {
+            console.log('beforeDeleteSchedule', e);
+            cal.deleteSchedule(e.schedule.id, e.schedule.calendarId);
+        }
+    });
+</script>
