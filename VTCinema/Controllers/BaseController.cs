@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
 using VTCinema.Comon;
 
@@ -13,15 +14,17 @@ namespace VTCinema.Controllers
 {
     public  class BaseController : Controller
     {
-        protected virtual void OnActionExecuting(ActionExecutingContext filterContext)
+        public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            int sessionUser = Convert.ToInt32(HttpContext.Session.GetInt32("UserID"));
-            if (sessionUser == null)
+            
+            if (filterContext.HttpContext.Session.GetInt32(Global.UserID) == null)
             {
-                filterContext.Result = RedirectToAction("Index", "Login");
+                filterContext.Result = new RedirectToRouteResult(
+                    new RouteValueDictionary {
+                                { "Controller", "Admin" },
+                                { "Action", "Login" }
+                                });
             }
-            base.OnActionExecuting(filterContext);
         }
-
     }
 }

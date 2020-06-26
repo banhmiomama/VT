@@ -13,7 +13,7 @@ using VTCinema.Models;
 namespace VTCinema.Controllers.Movie
 {
     [Route("Admin/MovieDetail")]
-    public class MovieDetailController : Controller
+    public class MovieDetailController : BaseController
     {        
 
         [Route("{MovieID}")]

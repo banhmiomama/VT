@@ -19,8 +19,8 @@ namespace VTCinema.Models
         public DateTime OpeningTime { get; set; }
         public int? SubTitleID { get; set; }
         public string MovieTypeID { get; set; }
-        public int? MovieTicketTypeID { get; set; }
-        public int? DirectorID { get; set; }
+        public string MovieTicketTypeID { get; set; }
+        public string DirectorID { get; set; }
         public string ActorID { get; set; }
         public int? MovieTimeDuration { get; set; }
         public IFormFile MovieTrailer { get; set; }
