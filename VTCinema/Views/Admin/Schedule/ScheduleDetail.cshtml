@@ -95,6 +95,7 @@
 </div>
 <script src="/js/customjs/custom-validation.js"></script>
 <script src="/js/main.js"></script>
+
 <script>   
     let ScheduleDetailID;
     let DataRoom;
@@ -103,12 +104,12 @@
     let DataBranchDetail;
     $(document).ready(function () {
         $("#datefrom").flatpickr({
-            dateFormat: 'Y-m-d H:i:ss',
+            dateFormat: 'd-m-Y H:i:ss',
             minDate: 'today',
             enableTime: true
         });
         $("#dateto").flatpickr({
-            dateFormat: 'Y-m-d H:i:ss',
+            dateFormat: 'd-m-Y H:i:ss',
             enableTime: true
         });
         ScheduleDetailID = @ViewBag.ScheduleID;
@@ -189,12 +190,17 @@
     }
     function OnchangeDateFrom() {
         let MovieID = $('#Movie').dropdown('get value') ? Number($('#Movie').dropdown('get value')) : 0;
-        let data = DataMovie.filter(word => word["ID"] == MovieID);        
-        let MovieTimeDuration = Number(data[0].MovieTimeDuration) + 20;
-        let DateFrom = $('#datefrom').val() ? $('#datefrom').val() : '';
-        let DateTo = new Date(DateFrom);
-        DateTo.setMinutes(DateTo.getMinutes() + MovieTimeDuration);
-        $('#dateto').val(ConvertDateTimeToStringDMY_HMS(DateTo));
+        if (MovieID != 0) {         
+            let AdTime = 20;
+            let data = DataMovie.filter(word => word["ID"] == MovieID);
+            let MovieTimeDuration = Number(data[0].MovieTimeDuration) + AdTime;
+            let DateFrom = $('#datefrom').val() ? $('#datefrom').val() : '';
+            DateFrom = moment(DateFrom, 'DD/MM/YYYY HH:mm:ss').format("YYYY/MM/DD HH:mm:ss");
+            let DateTo = new Date(DateFrom);
+            DateTo.setMinutes(DateTo.getMinutes() + MovieTimeDuration);
+            $('#dateto').val(ConvertDateTimeToStringDMY_HMS(DateTo));
+        }
+        
     }
     function OnchangeBranchDetail() {
         let BranchID = $('#BranchID').dropdown('get value') ? Number($('#BranchID').dropdown('get value')) : 0;

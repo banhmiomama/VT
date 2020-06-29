@@ -3,7 +3,7 @@
     ViewData["Title"] = "Lịch Phim";
     Layout = "~/Views/Shared/Master.cshtml";
 }
-
+    <script src="~/Momentjs/moment.js"></script>
 <div class="pusher">
     <div class="navslide navwrap">
         <div class="row" style="background-color: white">
@@ -25,7 +25,7 @@
                         </div>
                     </div>
                     <div class="field">
-                        <input class="flatpickr" id="dateFilter"  type="text" placeholder="Chọn Thời Gian Chiếu" />
+                        <input class="flatpickr" id="dateFilter"  type="text" placeholder="Chọn Thời Gian Chiếu" onchange="onchangeFilterSchedule()"/>
                     </div>
                     <div class="field">
                         <div class="ui icon input" style="max-height: 40px;">
@@ -215,6 +215,20 @@
             let data = DataSchedule.filter(word => word["BranchID"] == BranchID);
             document.getElementById("dtContentScheduleBody").innerHTML = "";
             Render_Schedule(data, "dtContentScheduleBody");
+        }
+    }
+    function onchangeFilterSchedule() {
+        let Date = $('#dateFilter').val();
+        let DateFrom = new Date();
+        let DateTo = new Date();     
+        if (Date.indexOf('to') != -1) {
+            Date = Date.split(' to ');
+            DateFrom = moment(Date[0], 'DD/MM/YYYY').format('YYYY/MM/DD');
+            DateTo = moment(Date[1], 'DD/MM/YYYY').format('YYYY/MM/DD');
+        }
+        else {
+            DateFrom = Date;
+            DateTo = Date;
         }
     }
 </script>

@@ -8,9 +8,11 @@ using Newtonsoft.Json;
 
 namespace VTCinema.Controllers.Admin.Clients.Main
 {
-    [Route("Main")]
+    [Route("Main")]   
     public class MainController : Controller
     {
+        [Route("/")]
+        [Route("")]
         public IActionResult Index()
         {
             return View("~/Views/Clients/Main/MainView.cshtml");

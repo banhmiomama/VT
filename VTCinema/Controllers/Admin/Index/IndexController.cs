@@ -9,9 +9,9 @@ namespace VTCinema.Controllers.Index
     [Route("Admin/Index")]
     public class IndexController : Controller
     {
-        [Route("/")]
-        [Route("")]
-        [Route("Index")]
+        [Route("/Admin")]
+        //[Route("")]
+        //[Route("Index")]
         public IActionResult Index()
         {
             return View("~/Views/Admin/Index/Index.cshtml");
