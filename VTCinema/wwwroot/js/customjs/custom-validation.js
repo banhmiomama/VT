@@ -459,6 +459,35 @@ $('.ui.form3').form({
             }]
         },    
 
+        // Scheduler
+        Movie: {
+            identifier: 'Movie',
+            rules: [{
+                type: 'empty',
+                prompt: 'Vui lòng chọn phim'
+            }]
+        },
+        Room: {
+            identifier: 'Room',
+            rules: [{
+                type: 'empty',
+                prompt: 'Vui lòng chọn phòng'
+            }]
+        },
+        Branch: {
+            identifier: 'Branch',
+            rules: [{
+                type: 'empty',
+                prompt: 'Vui lòng chọn chi nhánh'
+            }]
+        },
+        DateShow: {
+            identifier: 'DateShow',
+            rules: [{
+                type: 'empty',
+                prompt: 'Vui lòng chọn thời gian bắt đầu chiếu'
+            }]
+        },
     }
 });
 

@@ -34,7 +34,7 @@
                             <div class="field">
                                 <label>Loại Trình Chiếu:</label>
                                 <div class="ui fluid search selection dropdown" id="TicketType">
-                                    <input type="hidden" name="TicketType">
+                                    <input type="hidden" name="MovieTicketType">
                                     <i class="dropdown icon"></i>
                                     <div class="default text">Chọn Loại Trình Chiếu</div>
                                     <div class="menu" id="cbbTicketType">
@@ -46,7 +46,7 @@
                             <div class="field">
                                 <label>Chi Nhánh:</label>
                                 <div class="ui fluid search selection dropdown" id="BranchID" onchange="OnchangeBranchDetail();">
-                                    <input type="hidden" name="Movie">
+                                    <input type="hidden" name="Branch">
                                     <i class="dropdown icon"></i>
                                     <div class="default text">Chọn Chi Nhánh</div>
                                     <div class="menu" id="cbbBranchID">
@@ -67,7 +67,7 @@
                         <div class="two fields">
                             <div class="field">
                                 <label>Chọn Ngày & Thời Gian Bắt Đầu:</label>
-                                <input class="flatpickr"  id="datefrom" type="text" placeholder="Chọn Thời Gian Chiếu" onchange="OnchangeDateFrom();" />
+                                <input class="flatpickr"  id="datefrom" type="text" placeholder="Chọn Thời Gian Chiếu" onchange="OnchangeDateFrom();" name="DateShow"/>
                             </div>
                             <div class="field">
                                 <label>Thời Gian Kết Thúc:</label>
@@ -157,8 +157,8 @@
         data.BranchID = $('#BranchID').dropdown('get value') ? Number($('#BranchID').dropdown('get value')) : 0;
         data.RoomID = $('#Room').dropdown('get value') ? Number($('#Room').dropdown('get value')) : 0;
         data.TicketTypeID = $('#TicketType').dropdown('get value') ? Number($('#TicketType').dropdown('get value')) : 0;
-        data.ShowTime = $('#datefrom').val() ? $('#datefrom').val() : '';
-        data.CloseTime = $('#dateto').val() ? $('#dateto').val() : '';
+        data.ShowTime = $('#datefrom').val() ? (moment($('#datefrom').val(), 'DD/MM/YYYY HH:mm:ss').format("YYYY/MM/DD HH:mm:ss")) : '';
+        data.CloseTime = $('#dateto').val() ? (moment($('#dateto').val() , 'DD/MM/YYYY HH:mm:ss').format("YYYY/MM/DD HH:mm:ss")) : '';
         data.Note = tinymce.activeEditor.getContent();
         $('#form3').form('validate form');
         if ($('#form3').form('is valid')) {
@@ -176,12 +176,14 @@
                         notiError("Lỗi Hệ Thống");
                  },
                  success: function (result) {
+                     debugger
                      if (result == "0") {
                          notiSuccess();
                          LoadSchedule();
-                     } else {
-                         notiError("");
-                        }
+                     }
+                     else {
+                         notiError("Thời Gian Lịch Phim Đã Tồn Tại");
+                     }
                  }
              })
              $('#divDetailPopup').modal('hide');
