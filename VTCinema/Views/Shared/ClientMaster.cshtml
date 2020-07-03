@@ -7,9 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Font -->
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600%7CUbuntu:300,400,500,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
 
     <!-- CSS -->
+
     <link href="~/Clients/css/bootstrap.min.css" rel="stylesheet" />
     <link href="~/Clients/css/bootstrap-grid.min.css" rel="stylesheet" />
     <link href="~/Clients/css/bootstrap-reboot.min.css" rel="stylesheet" />
@@ -32,17 +33,20 @@
     <meta name="description" content="">
     <meta name="keywords" content="">
     <meta name="author" content="Dmitry Volkov">
-    <style>      
+    <style>
         .card__play {
             transition: 0.5s;
             transform: scale(0.5);
         }
+
         .card__cover:hover .card__play {
             transform: scale(1);
         }
-        .plyr--video{
-            border:4px solid;
+
+        .plyr--video {
+            border: 4px solid;
         }
+
         .closemodal {
             position: absolute;
             top: 0;
@@ -51,6 +55,18 @@
             background-color: red;
             width: 20px;
             font-size: 13px;
+        }
+
+        .nav-tabs > li > a:hover {
+            border-color: transparent;
+        }
+
+        .nav > li > a:focus, .nav > li > a:hover {
+            background-color: transparent;
+        }
+
+        .dropdown-menu > li > a {
+            color: white;
         }
     </style>
     @RenderSection("Style", required: false)
@@ -164,9 +180,9 @@
                             <a href="" id="href-video" download>Download</a>
                         </video>
                     </div>
-                    </div>
                 </div>
             </div>
+        </div>
 
         <footer class="footer">
             <div class="container">
@@ -233,6 +249,8 @@
     </div>
     <!-- JS -->
     <script src="~/Clients/js/jquery-3.3.1.min.js"></script>
+    <link href="~/flatpickr/flatpickr.min.css" rel="stylesheet" />
+    <script src="~/flatpickr/flatpickr.js"></script>
     <script src="~/Clients/js/bootstrap.bundle.min.js"></script>
     <script src="~/Clients/js/owl.carousel.min.js"></script>
     <script src="~/Clients/js/jquery.mousewheel.min.js"></script>
@@ -245,12 +263,12 @@
     <script src="~/Clients/js/photoswipe-ui-default.min.js"></script>
 
     <script>
-        $(document).ready(function () {      
+        $(document).ready(function () {
             /* Open Modal Video Trailer*/
             $('#Carousel').on('click', '.card__play', function () {
                 let UrlVideo = $(this).attr('data-video');
                 ModalVideo(UrlVideo);
-            });  
+            });
 
             $('#MovieCurrentlyPlaying').on('click', '.card__play', function () {
                 let UrlVideo = $(this).attr('data-video');
@@ -260,10 +278,12 @@
             $('#UpcomingMovie').on('click', '.card__play', function () {
                 let UrlVideo = $(this).attr('data-video');
                 ModalVideo(UrlVideo);
-            }); 
+            });
+
+            
             /*==============================
-	        Menu
-	        ==============================*/
+            Menu
+            ==============================*/
             $('.header__btn').on('click', function () {
                 $(this).toggleClass('header__btn--active');
                 $('.header__nav').toggleClass('header__nav--active');
@@ -372,8 +392,24 @@
             $('#myModal').modal('show');
             return false;
         }
+        //function LoadCombo(data, id) {
+        //    var myNode = document.getElementById(id);
+        //    if (myNode != null) {
+        //        myNode.innerHTML = '';
+        //        let stringContent = '';
+        //        if (data && data.length > 0) {
+        //            for (var i = 0; i < data.length; i++) {
+        //                let item = data[i];
+        //                let tr =
+        //                    '<div class="item" data-value=' + item.ID + '>' + item.Name + '</div>'
+        //                stringContent = stringContent + tr;
+        //            }
+        //        }
+        //        document.getElementById(id).innerHTML = stringContent;
+        //    }
+        //}
     </script>
-   
+
     @RenderSection("Script", required: false)
 
 </body>

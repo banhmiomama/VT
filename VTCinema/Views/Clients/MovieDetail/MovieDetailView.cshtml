@@ -1,6 +1,119 @@
 ﻿@{
-    ViewData["Title"] = "Trang Chủ";
+    ViewData["Title"] = "Chi Tiết";
     Layout = "~/Views/Shared/ClientMaster.cshtml";
+}
+
+@section Style{
+    <style>
+        #dLabel, .flatpickr-input {
+            width: 100%;
+            height: 40px;
+            border-radius: 4px;
+            background-color: #fff;
+            border: solid 1px #cccccc;
+            text-align: left;
+            padding: 7.5px 15px;
+            color: black;
+            letter-spacing: 0.7px;
+        }
+
+        .caret {
+            float: right;
+            margin-top: 9px;
+            display: block;
+        }
+
+        .dropdown-menu {
+            width: 100%;
+            padding: 0;
+            margin: 0;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+        }
+
+        .dropdown button:hover, .dropdown button:focus {
+            border: none;
+            outline: 0;
+        }
+
+        .dropdown.open button#dLabel {
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+            box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.23);
+            border: solid 1px #666;
+            border-bottom: none;
+        }
+
+        .dropdown.open ul {
+            box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.23);
+            border: solid 1px #666;
+            border-top: none;
+            height: 200px;
+            overflow-y: scroll;
+        }
+
+        .dropdown-menu li {
+            line-height: 1.5;
+            letter-spacing: 0.7px;
+            color: #666;
+            font-size: 14px;
+            cursor: pointer;
+            padding: 7.5px 15px;
+            border-top: solid 1px #f3f3f3;
+        }
+
+            .dropdown-menu li:hover {
+                background-color: #ccc;
+            }
+
+        .lable-detail {
+            color: white;
+            font-size: 15px;
+            font-weight: 400;
+        }
+
+        .sessions {
+            padding-left: 0;
+            padding-top: 0;
+            line-height: 1;
+            vertical-align: top;
+            width: 100%;
+            display:flex;
+            flex-wrap:wrap;
+            margin-bottom: 5px;
+        }
+
+        .session {
+            width: calc(25% - 10px);
+            float: left;
+            font-family: 'SF Medium';
+            font-size: 14px;
+            font-weight: 400;
+            margin: 0 10px 10px 0;
+            padding: 8px;
+            transition: all .2s;
+            text-decoration: none;
+            display: block;
+            text-align: center;
+            background-color: white;
+            border-radius: 7px;
+            color: #9b9b9b;
+            border: 1px solid #e4e4e4;
+            letter-spacing: -.12px;
+            cursor: pointer;
+        }
+
+        .s-start-time {
+            font-size: 18px;
+            font-weight: 500;
+            color: #108f3e;
+            letter-spacing: -.16px;
+        }
+
+            .s-start-time:hover {
+                color: orange;
+            }
+    </style>
 }
 
 <section class="section details">
@@ -31,21 +144,26 @@
                             <div class="card__content">
                                 <div class="card__wrap">
                                     <span class="card__rate" id="rating"><i class="icon ion-ios-star"></i>8.4</span>
+                                    <ul class="card__list" id="MovieTicketType">
+                                        <li>HD</li>
+                                    </ul>
                                     <ul class="card__list">
-                                        <li id="">HD</li>
                                         <li id="Ages"></li>
                                     </ul>
                                 </div>
-
                                 <ul class="card__meta">
                                     <li>
-                                        <span>Thể Loại:</span> <a href="#" id="aMovieType">Action</a>
+                                        <span id="MovieType">Thể Loại</span>
                                     </li>
-                                    <li ><span>Năm ra mắt:</span><span id="Year"></span></li>
-                                    <li><span>Thời lượng :</span><a href="" id="Time"></a></li>
+                                    <li>
+                                        <span id="Actor">Diễn Viên</span>
+                                    </li>
+                                    <li><span>Năm ra mắt:</span><span id="Year"></span></li>
+                                    <li><span>Thời lượng :</span><span id="Time"></span></li>
                                     <li><span>Quốc gia :</span> <a href="#" id="Country"></a> </li>
+                                    <li><span>Ngày khởi chiếu :</span> <span id="Opening_Time"></span> </li>
                                 </ul>
-                                <div class="card__description card__description--details" id="Note">
+                                <div class="card__description card__description--details">
                                 </div>
                             </div>
                         </div>
@@ -68,14 +186,11 @@
             <div class="col-12">
                 <div class="details__wrap">
                     <!-- availables -->
-                    <div class="details__devices">
-                        <span class="details__devices-title">Available on devices:</span>
-                        <ul class="details__devices-list">
-                            <li><i class="icon ion-logo-apple"></i><span>IOS</span></li>
-                            <li><i class="icon ion-logo-android"></i><span>Android</span></li>
-                            <li><i class="icon ion-logo-windows"></i><span>Windows</span></li>
-                            <li><i class="icon ion-md-tv"></i><span>Smart TV</span></li>
-                        </ul>
+                    <div class="details__devices card--details">
+                        <span class="details__devices-title">Nội dung phim:</span>
+                        <span class="card__description card__description--details" id="Note">
+
+                        </span>
                     </div>
                     <!-- end availables -->
                     <!-- share -->
@@ -109,16 +224,13 @@
                     <!-- content tabs nav -->
                     <ul class="nav nav-tabs content__tabs" id="content__tabs" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link active" data-toggle="tab" href="#tab-1" role="tab" aria-controls="tab-1" aria-selected="true">Comments</a>
+                            <a class="nav-link active" data-toggle="tab" href="#tab-3" role="tab" aria-controls="tab-3" aria-selected="false">Lịch Chiếu</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link " data-toggle="tab" href="#tab-2" role="tab" aria-controls="tab-2" aria-selected="false">Reviews</a>
                         </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" href="#tab-2" role="tab" aria-controls="tab-2" aria-selected="false">Reviews</a>
-                        </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" href="#tab-3" role="tab" aria-controls="tab-3" aria-selected="false">Photos</a>
-                        </li>
                     </ul>
                     <!-- end content tabs nav -->
                     <!-- content mobile tabs nav -->
@@ -130,11 +242,9 @@
 
                         <div class="content__mobile-tabs-menu dropdown-menu" aria-labelledby="mobile-tabs">
                             <ul class="nav nav-tabs" role="tablist">
-                                <li class="nav-item"><a class="nav-link active" id="1-tab" data-toggle="tab" href="#tab-1" role="tab" aria-controls="tab-1" aria-selected="true">Comments</a></li>
+                                <li class="nav-item"><a class="nav-link active" id="2-tab" data-toggle="tab" href="#tab-2" role="tab" aria-controls="tab-2" aria-selected="true">Reviews</a></li>
 
-                                <li class="nav-item"><a class="nav-link" id="2-tab" data-toggle="tab" href="#tab-2" role="tab" aria-controls="tab-2" aria-selected="false">Reviews</a></li>
-
-                                <li class="nav-item"><a class="nav-link" id="3-tab" data-toggle="tab" href="#tab-3" role="tab" aria-controls="tab-3" aria-selected="false">Photos</a></li>
+                                <li class="nav-item"><a class="nav-link" id="3-tab" data-toggle="tab" href="#tab-3" role="tab" aria-controls="tab-3" aria-selected="false">Lịch Chiếu</a></li>
                             </ul>
                         </div>
                     </div>
@@ -149,234 +259,84 @@
             <div class="col-12 col-lg-8 col-xl-8">
                 <!-- content tabs -->
                 <div class="tab-content" id="myTabContent">
-                    <div class="tab-pane fade show active" id="tab-1" role="tabpanel" aria-labelledby="1-tab">
+                    <div class="tab-pane active show" id="tab-3" role="tabpanel" aria-labelledby="3-tab">
                         <div class="row">
-                            <!-- comments -->
-                            <div class="col-12">
-                                <div class="comments">
-                                    <ul class="comments__list">
-                                        <li class="comments__item">
-                                            <div class="comments__autor">
-                                                <img class="comments__avatar" src="~/Clients/img/user.png" alt="">
-                                                <span class="comments__name">John Doe</span>
-                                                <span class="comments__time">30.08.2018, 17:53</span>
-                                            </div>
-                                            <p class="comments__text">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text.</p>
-                                            <div class="comments__actions">
-                                                <div class="comments__rate">
-                                                    <button type="button"><i class="icon ion-md-thumbs-up"></i>12</button>
-
-                                                    <button type="button">7<i class="icon ion-md-thumbs-down"></i></button>
-                                                </div>
-
-                                                <button type="button"><i class="icon ion-ios-share-alt"></i>Reply</button>
-                                                <button type="button"><i class="icon ion-ios-quote"></i>Quote</button>
-                                            </div>
-                                        </li>
-
-                                        <li class="comments__item comments__item--answer">
-                                            <div class="comments__autor">
-                                                <img class="comments__avatar" src="~/Clients/img/user.png" alt="">
-                                                <span class="comments__name">John Doe</span>
-                                                <span class="comments__time">24.08.2018, 16:41</span>
-                                            </div>
-                                            <p class="comments__text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
-                                            <div class="comments__actions">
-                                                <div class="comments__rate">
-                                                    <button type="button"><i class="icon ion-md-thumbs-up"></i>8</button>
-
-                                                    <button type="button">3<i class="icon ion-md-thumbs-down"></i></button>
-                                                </div>
-
-                                                <button type="button"><i class="icon ion-ios-share-alt"></i>Reply</button>
-                                                <button type="button"><i class="icon ion-ios-quote"></i>Quote</button>
-                                            </div>
-                                        </li>
-
-                                        <li class="comments__item comments__item--quote">
-                                            <div class="comments__autor">
-                                                <img class="comments__avatar" src="~/Clients/img/user.png" alt="">
-                                                <span class="comments__name">John Doe</span>
-                                                <span class="comments__time">11.08.2018, 11:11</span>
-                                            </div>
-                                            <p class="comments__text"><span>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.</span>It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
-                                            <div class="comments__actions">
-                                                <div class="comments__rate">
-                                                    <button type="button"><i class="icon ion-md-thumbs-up"></i>11</button>
-
-                                                    <button type="button">1<i class="icon ion-md-thumbs-down"></i></button>
-                                                </div>
-
-                                                <button type="button"><i class="icon ion-ios-share-alt"></i>Reply</button>
-                                                <button type="button"><i class="icon ion-ios-quote"></i>Quote</button>
-                                            </div>
-                                        </li>
-
-                                        <li class="comments__item">
-                                            <div class="comments__autor">
-                                                <img class="comments__avatar" src="~/Clients/img/user.png" alt="">
-                                                <span class="comments__name">John Doe</span>
-                                                <span class="comments__time">07.08.2018, 14:33</span>
-                                            </div>
-                                            <p class="comments__text">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text.</p>
-                                            <div class="comments__actions">
-                                                <div class="comments__rate">
-                                                    <button type="button"><i class="icon ion-md-thumbs-up"></i>99</button>
-
-                                                    <button type="button">35<i class="icon ion-md-thumbs-down"></i></button>
-                                                </div>
-
-                                                <button type="button"><i class="icon ion-ios-share-alt"></i>Reply</button>
-                                                <button type="button"><i class="icon ion-ios-quote"></i>Quote</button>
-                                            </div>
-                                        </li>
-
-                                        <li class="comments__item">
-                                            <div class="comments__autor">
-                                                <img class="comments__avatar" src="~/Clients/img/user.png" alt="">
-                                                <span class="comments__name">John Doe</span>
-                                                <span class="comments__time">02.08.2018, 15:24</span>
-                                            </div>
-                                            <p class="comments__text">Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).</p>
-                                            <div class="comments__actions">
-                                                <div class="comments__rate">
-                                                    <button type="button"><i class="icon ion-md-thumbs-up"></i>74</button>
-
-                                                    <button type="button">13<i class="icon ion-md-thumbs-down"></i></button>
-                                                </div>
-
-                                                <button type="button"><i class="icon ion-ios-share-alt"></i>Reply</button>
-                                                <button type="button"><i class="icon ion-ios-quote"></i>Quote</button>
-                                            </div>
-                                        </li>
+                            <div class="col-sm-6">
+                                <label class="lable-detail">Chọn Ngày Xem</label>
+                                <input class="flatpickr" id="MovieShowTime" name="date" type="text" onchange="OnchangeSchedule();" />
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="lable-detail">Chọn Chi Nhánh</label>
+                                <div class="dropdown">
+                                    <button id="dLabel" class="dropdown-select" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Chọn  Chi Nhánh
+                                        <span class="caret"></span>
+                                    </button>
+                                    <input id="BranchID" hidden onchange="OnchangeSchedule();" value="0" />
+                                    <ul class="dropdown-menu" aria-labelledby="dLabel" id="cbbBranch">
                                     </ul>
-
-                                    <form action="#" class="form">
-                                        <textarea id="text" name="text" class="form__textarea" placeholder="Add comment"></textarea>
-                                        <button type="button" class="form__btn">Send</button>
-                                    </form>
                                 </div>
                             </div>
-                            <!-- end comments -->
+                        </div>
+                        <div class="reviews" style="margin-top:30px;">
+                            <ul class="reviews__list" id="ScheduleList">
+                                <li class="reviews__item">
+                                    <div class="reviews__autor" style="padding-left:0">
+                                        <span class="reviews__name">
+                                        <strong style="color:#e71a0f">VTCINEMA</strong> - HEADOFFICE
+                                        </span>
+                                        <span class="reviews__time">24.08.2018, 17:53 by John Doe</span>
+                                    </div>
+                                    <div class="sessions">
+                                        <a class="session">
+                                            <span class="s-start-time ng-binding">19:20</span>
+                                            <br class="visible-xs"> ~ 21:00
+                                        </a>
+                                        <a class="session">
+                                            <span class="s-start-time ng-binding">19:20</span>
+                                            <br class="visible-xs"> ~ 21:00
+                                        </a>
+                                    </div>
+                                </li>
+                                <li class="reviews__item">
+                                    <div class="reviews__autor" style="padding-left:0">
+                                        <span class="reviews__name"><strong style="color:#e71a0f">VTCINEMA</strong> - HEADOFFICE</span>
+                                        <span class="reviews__time">24.08.2018, 17:53 by John Doe</span>
+                                    </div>
+                                    <div class="sessions">
+                                        <a class="session">
+                                            <span class="s-start-time ng-binding">19:20</span><br class="visible-xs"> ~ 21:00
+                                        </a>
+                                        <a class="session">
+                                            <span class="s-start-time ng-binding">19:20</span><br class="visible-xs"> ~ 21:00
+                                        </a>
+                                    </div>
+                                </li>
+                            </ul>
                         </div>
                     </div>
-
-                    <div class="tab-pane fade" id="tab-2" role="tabpanel" aria-labelledby="2-tab">
+                    <div class="tab-pane  " id="tab-2" role="tabpanel" aria-labelledby="2-tab">
                         <div class="row">
                             <!-- reviews -->
                             <div class="col-12">
                                 <div class="reviews">
-                                    <ul class="reviews__list">
-                                        <li class="reviews__item">
-                                            <div class="reviews__autor">
-                                                <img class="reviews__avatar" src="~/Clients/img/user.png" alt="">
-                                                <span class="reviews__name">Best Marvel movie in my opinion</span>
-                                                <span class="reviews__time">24.08.2018, 17:53 by John Doe</span>
-
-                                                <span class="reviews__rating"><i class="icon ion-ios-star"></i>8.4</span>
-                                            </div>
-                                            <p class="reviews__text">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text.</p>
-                                        </li>
-
-                                        <li class="reviews__item">
-                                            <div class="reviews__autor">
-                                                <img class="reviews__avatar" src="~/Clients/img/user.png" alt="">
-                                                <span class="reviews__name">Best Marvel movie in my opinion</span>
-                                                <span class="reviews__time">24.08.2018, 17:53 by John Doe</span>
-
-                                                <span class="reviews__rating"><i class="icon ion-ios-star"></i>9.0</span>
-                                            </div>
-                                            <p class="reviews__text">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text.</p>
-                                        </li>
-
-                                        <li class="reviews__item">
-                                            <div class="reviews__autor">
-                                                <img class="reviews__avatar" src="~/Clients/img/user.png" alt="">
-                                                <span class="reviews__name">Best Marvel movie in my opinion</span>
-                                                <span class="reviews__time">24.08.2018, 17:53 by John Doe</span>
-
-                                                <span class="reviews__rating"><i class="icon ion-ios-star"></i>7.5</span>
-                                            </div>
-                                            <p class="reviews__text">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text.</p>
-                                        </li>
+                                    <ul class="reviews__list" id="CommentList">
                                     </ul>
-
-                                    <form action="#" class="form">
-                                        <input type="text" class="form__input" placeholder="Title">
-                                        <textarea class="form__textarea" placeholder="Review"></textarea>
+                                    <form class="form" id="form3" method="post">
+                                        <textarea id="NoteRating" class="form__textarea" placeholder="Review" required></textarea>
                                         <div class="form__slider">
                                             <div class="form__slider-rating" id="slider__rating"></div>
                                             <div class="form__slider-value" id="form__slider-value"></div>
                                         </div>
-                                        <button type="button" class="form__btn">Send</button>
+                                        <button class="form__btn" onclick="return ExecuteRating();">Send</button>
                                     </form>
                                 </div>
                             </div>
                             <!-- end reviews -->
                         </div>
                     </div>
-
-                    <div class="tab-pane fade" id="tab-3" role="tabpanel" aria-labelledby="3-tab">
-                        <!-- project gallery -->
-                        <div class="gallery" itemscope>
-                            <div class="row">
-                                <!-- gallery item -->
-                                <figure class="col-12 col-sm-6 col-xl-4" itemprop="associatedMedia" itemscope>
-                                    <a href="~/Clients/img/gallery/project-1.jpg" itemprop="contentUrl" data-size="1920x1280">
-                                        <img src="~/Clients/img/gallery/project-1.jpg" itemprop="thumbnail" alt="Image description" />
-                                    </a>
-                                    <figcaption itemprop="caption description">Some image caption 1</figcaption>
-                                </figure>
-                                <!-- end gallery item -->
-                                <!-- gallery item -->
-                                <figure class="col-12 col-sm-6 col-xl-4" itemprop="associatedMedia" itemscope>
-                                    <a href="~/Clients/img/gallery/project-2.jpg" itemprop="contentUrl" data-size="1920x1280">
-                                        <img src="~/Clients/img/gallery/project-2.jpg" itemprop="thumbnail" alt="Image description" />
-                                    </a>
-                                    <figcaption itemprop="caption description">Some image caption 2</figcaption>
-                                </figure>
-                                <!-- end gallery item -->
-                                <!-- gallery item -->
-                                <figure class="col-12 col-sm-6 col-xl-4" itemprop="associatedMedia" itemscope>
-                                    <a href="~/Clients/img/gallery/project-3.jpg" itemprop="contentUrl" data-size="1920x1280">
-                                        <img src="~/Clients/img/gallery/project-3.jpg" itemprop="thumbnail" alt="Image description" />
-                                    </a>
-                                    <figcaption itemprop="caption description">Some image caption 3</figcaption>
-                                </figure>
-                                <!-- end gallery item -->
-                                <!-- gallery item -->
-                                <figure class="col-12 col-sm-6 col-xl-4" itemprop="associatedMedia" itemscope>
-                                    <a href="~/Clients/img/gallery/project-4.jpg" itemprop="contentUrl" data-size="1920x1280">
-                                        <img src="~/Clients/img/gallery/project-4.jpg" itemprop="thumbnail" alt="Image description" />
-                                    </a>
-                                    <figcaption itemprop="caption description">Some image caption 4</figcaption>
-                                </figure>
-                                <!-- end gallery item -->
-                                <!-- gallery item -->
-                                <figure class="col-12 col-sm-6 col-xl-4" itemprop="associatedMedia" itemscope>
-                                    <a href="~/Clients/img/gallery/project-5.jpg" itemprop="contentUrl" data-size="1920x1280">
-                                        <img src="~/Clients/img/gallery/project-5.jpg" itemprop="thumbnail" alt="Image description" />
-                                    </a>
-                                    <figcaption itemprop="caption description">Some image caption 5</figcaption>
-                                </figure>
-                                <!-- end gallery item -->
-                                <!-- gallery item -->
-                                <figure class="col-12 col-sm-6 col-xl-4" itemprop="associatedMedia" itemscope>
-                                    <a href="~/Clients/img/gallery/project-6.jpg" itemprop="contentUrl" data-size="1920x1280">
-                                        <img src="~/Clients/img/gallery/project-6.jpg" itemprop="thumbnail" alt="Image description" />
-                                    </a>
-                                    <figcaption itemprop="caption description">Some image caption 6</figcaption>
-                                </figure>
-                                <!-- end gallery item -->
-                            </div>
-                        </div>
-                        <!-- end project gallery -->
-                    </div>
                 </div>
-                <!-- end content tabs -->
             </div>
-
-            <!-- sidebar -->
             <div class="col-12 col-lg-4 col-xl-4">
                 <div class="row">
                     <!-- section title -->
@@ -505,53 +465,287 @@
                     <!-- end card -->
                 </div>
             </div>
-            <!-- end sidebar -->
         </div>
     </div>
-
 </section>
 @section Script{
     <script>
-    let MovieDetailID;
-    let ImageString = '';
-    let VideoString = '';
-    let DataImage;
-    $(document).ready(function () {
-        MovieDetailID = @ViewBag.MovieDetailID;
-        LoadDataMovie();
-    })
-    function LoadDataMovie() {
-        $.ajax({
-            type: 'GET',
-            dataType: "json",
-            contentType: 'application/json; charset=utf-8',
-            url: "GetMovieDetail/" + MovieDetailID,
-            async: true,
-            success: function (data) {
+        let MovieDetailID;
+        let ImageString = '';
+        let VideoString = '';
+        let DataImage;
+        let DataMovie = "";
+        let DataActor = "";
+        let DataMovieType = "";
+        let DataMovieTicketType = "";
+        let DataBranch = "";
+        let DataSchedule = "";
+        $(document).ready(function () {
+            $("#MovieShowTime").flatpickr({
+                dateFormat: 'd-m-Y',
+                enableTime: false,
+                minDate: "today",
+                maxDate: new Date().fp_incr(7),
+                defaultDate: "today"
+            });
+            MovieDetailID = @ViewBag.MovieDetailID;
+            function initializeThirdSlider() {
+                if ($('#slider__rating').length) {
+                    var thirdSlider = document.getElementById('slider__rating');
+                    noUiSlider.create(thirdSlider, {
+                        range: {
+                            'min': 0,
+                            'max': 10
+                        },
+                        connect: [true, false],
+                        step: 0.1,
+                        start: 5.0,
+                        format: wNumb({
+                            decimals: 1,
+                        })
+                    });
 
-                $('#MovieName').text(data[0].NameMovie);
-                $('#Note').text(data[0].Note);
-                $('#Year').text(data[0].Year_Movie);
-                $('#Time').text(data[0].Movie_Time_Duration);
-                $('#Country').text(data[0].NationalityName);
-                $('#aMovieType').text(data[0].Name_Type);
-                $('#Ages').text(data[0].Ages);
-                if (data[0].Image == '' || data[0].Image == undefined) {
-                    $('#ImageDetail').attr('src', '');
+                    var thirdValue = document.getElementById('form__slider-value');
+
+                    thirdSlider.noUiSlider.on('update', function (values, handle) {
+                        thirdValue.innerHTML = values[handle];
+                    });
+                } else {
+                    return false;
                 }
-                else {
-                    $('#ImageDetail').attr('src', data[0].Image);
-                    ImageString = data[0].Image;
-                }
-                if (data[0].VideoTrailer == '' || data[0].VideoTrailer == undefined) {
-                    $('#player').attr('src', '');
-                }
-                else {
-                    $('#player').attr('src', data[0].VideoTrailer);
-                    VideoString = data[0].VideoTrailer;
-                }
+                return false;
             }
-        })
-    }
+            $(window).on('load', initializeThirdSlider());
+            LoadDataMovie();
+            LoadDataScheduleMovie();
+            LoadDataComment();
+        });
+        function onclickDropdown() {
+            $('.dropdown-menu li').on('click', function () {
+                var getValue = $(this).attr("data-value");
+                var gettext = $(this).text();
+                $('.dropdown-select').text(gettext);
+                $('#BranchID').val(getValue).trigger('change');;
+
+            });
+        }
+        function OnchangeSchedule() {
+            debugger
+            let BranchID = $('#BranchID').val() ? Number($('#BranchID').val()) : 0;
+            let MovieShowTime = $('#MovieShowTime').val() ? $('#MovieShowTime').val() : '';
+
+            let data = DataSchedule.filter(word => (word["ShowTime"]) == (MovieShowTime));
+            if (BranchID != 0) {
+                data = data.filter(word => word["BranchID"] == BranchID);
+            }
+            RenderScheduleList(data, "ScheduleList");
+        }
+        function process(date) {
+            var parts = date.split("-");
+            return new Date(parts[2], parts[1] - 1, parts[0]);
+        }
+        function LoadDataMovie() {
+            $.ajax({
+                type: 'GET',
+                dataType: "json",
+                contentType: 'application/json; charset=utf-8',
+                url: "GetMovieDetail/" + MovieDetailID,
+                async: true,
+                success: function (data) {
+                    DataMovie = data.Table;
+                    DataActor = data.Table1;
+                    DataMovieType = data.Table3;
+                    DataMovieTicketType = data.Table4;
+                    if (DataMovie != undefined && DataMovie.length != 0) {
+                        $('#MovieName').text(DataMovie[0].Name_VN);
+                        $('#Note').text(DataMovie[0].Note);
+                        $('#Year').text(DataMovie[0].Year_Movie);
+                        $('#Time').text(DataMovie[0].Movie_Time_Duration);
+                        $('#Country').text(DataMovie[0].Nationality);
+                        $('#MovieType').text(DataMovie[0].Name_Type);
+                        $('#Opening_Time').text(DataMovie[0].Opening_Time);
+                        $('#Ages').text(DataMovie[0].Ages);
+                        if (DataMovie[0].Image == '' || DataMovie[0].Image == undefined) {
+                            $('#ImageDetail').attr('src', '');
+                        }
+                        else {
+                            $('#ImageDetail').attr('src', DataMovie[0].Image);
+                            ImageString = DataMovie[0].Image;
+                        }
+                        if (DataMovie[0].VideoTrailer == '' || DataMovie[0].VideoTrailer == undefined) {
+                            $('#player').attr('src', '');
+                        }
+                        else {
+                            $('#player').attr('src', DataMovie[0].VideoTrailer);
+                            VideoString = DataMovie[0].VideoTrailer;
+                        }
+                        if (DataActor.length != 0) {
+                            RenderList(DataActor, "Actor", 'Diễn viên: ');
+                        }
+                        if (DataMovieType.length != 0) {
+                            RenderList(DataMovieType, "MovieType", 'Thể Loại: ');
+                        }
+                        if (DataMovieTicketType.length != 0) {
+                            RenderListMovieTicketType(DataMovieTicketType, "MovieTicketType");
+                        }
+                    }
+
+                }
+            })
+        };
+        function RenderList(data,id,string) {
+            var myNode = document.getElementById(id);
+            if (myNode != null) {
+                myNode.innerHTML = '';
+                let stringContent = string;
+                if (data && data.length > 0) {
+                    for (var i = 0; i < data.length; i++) {
+                        let item = data[i];
+                        stringContent = stringContent + '<a href="' + item.ID + '">' + item.Name + '</div>';
+                    }
+                }
+                document.getElementById(id).innerHTML = stringContent;
+            }
+        }
+        function RenderListMovieTicketType(data, id) {
+            var myNode = document.getElementById(id);
+            if (myNode != null) {
+                myNode.innerHTML = '';
+                let stringContent = '';
+                if (data && data.length > 0) {
+                    for (var i = 0; i < data.length; i++) {
+                        let item = data[i];
+                        stringContent = stringContent +'<li>'+ item.Name +'</li>';
+                    }
+                }
+                document.getElementById(id).innerHTML = stringContent;
+            }
+        }
+        function LoadDataComment() {
+            $.ajax({
+                url: "LoadDataComment",
+                dataType: "json",
+                type: "POST",
+                data: JSON.stringify({
+                }),
+                contentType: 'application/json; charset=utf-8',
+                async: false,
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    notiError();
+                },
+                success: function (result) {
+                    RenderComment(result, "CommentList");
+                }
+            });
+        }
+        function RenderComment(data, id) {
+            var myNode = document.getElementById(id);
+            if (myNode != null) {
+                myNode.innerHTML = '';
+                let stringContent = '';
+                if (data && data.length > 0) {
+                    for (var i = 0; i < data.length; i++) {
+                        let item = data[i];
+                        let tr = '<div class="reviews__autor">'
+                            + '<img class="reviews__avatar" src="' + item.Avatar + '" alt = "">'
+                            + '<span class="reviews__name">' + item.Name + '</span>'
+                            + '<span class="reviews__time">' + item.Created + '</span>'
+                            + '<span class="reviews__rating"><i class="icon ion-ios-star"></i>' + item.Rating + '</span></div>'
+                            + '<p class="reviews__text">' + item.Note + '</p>';
+                            stringContent = stringContent + '<li class="reviews__item">' + tr + '</li>';
+                    }
+                }
+                document.getElementById(id).innerHTML = stringContent;
+            }
+        }
+        function ExecuteRating() {
+            debugger
+            var data = new Object();
+            data.NoteRating = $("#NoteRating").val() ? $("#NoteRating").val() : '';
+            data.RatingMoive = $("#form__slider-value").text() ? Number($("#form__slider-value").text()) : 0;
+
+            $.ajax({
+                url: "/MovieDetail/ExecuteRating",
+                dataType: "json",
+                type: "POST",
+                data: JSON.stringify(data),
+                contentType: 'application/json; charset=utf-8',
+                async: true,
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+
+                },
+                success: function (result) {
+                    alert(12);
+                }
+            });
+            return false;
+        }
+
+        function LoadDataScheduleMovie() {
+            $.ajax({
+                url: "LoadDataScheduleMovie",
+                dataType: "json",
+                type: "POST",
+                data: JSON.stringify({
+                }),
+                contentType: 'application/json; charset=utf-8',
+                async: true,
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    notiError();
+                },
+                success: function (result) {
+                    DataBranch = result.Branch;
+                    DataSchedule = result.Schedule;
+                    LoadCombo(DataBranch, "cbbBranch");
+                    onclickDropdown();
+                    RenderScheduleList(DataSchedule, "ScheduleList");
+                }
+            });
+        }
+        function RenderScheduleList(data, id) {
+            var myNode = document.getElementById(id);
+            if (myNode != null) {
+                myNode.innerHTML = '';
+                let stringContent = '';
+                if (data && data.length > 0) {
+                    for (var i = 0; i < data.length; i++) {
+                        let items = data[i];
+                        let BranchSchedule = items.BranchID;
+                        let DataBranchSchedule = data.filter(word => word["BranchID"] == BranchSchedule)
+                        let tr = '<div class="reviews__autor" style="padding-left:0">'
+                            + '<span class="reviews__name"><strong style="color:#e71a0f">VTCINEMA</strong> - '
+                            + items.Branch + '</span>'
+                            + '<span class="reviews__time">' + items.Address + '</span></div>';
+                        let stringNote = '';
+                        for (var j = 0; j < DataBranchSchedule.length; j++) {
+                            let item = DataBranchSchedule[j];
+                            stringNote = stringNote + '<a class="session" href="' + item.ID + '">'
+                                + '<span class="s-start-time ng-binding" >' + item.TimeBegin + '</span ><br class="visible-xs"> ~ ' + item.TimeEnd + '</a>';
+                            i = i + 1;
+                        }
+                        i = i - 1;
+                        stringNote = '<div class="sessions">' + stringNote + '</div>';
+                        stringContent = stringContent + '<li class="reviews__item">' + tr + stringNote + '</li>';
+                    }
+                }
+                document.getElementById(id).innerHTML = stringContent;
+            }
+        }
+        function LoadCombo(data, id) {
+            var myNode = document.getElementById(id);
+            if (myNode != null) {
+                myNode.innerHTML = '';
+                let stringContent = '';
+                if (data && data.length > 0) {
+                    for (var i = 0; i < data.length; i++) {
+                        let item = data[i];
+                        let tr =
+                            '<li class="item" data-value=' + item.ID + '>' + item.Name + '</li>'
+                        stringContent = stringContent + tr;
+                    }
+                }
+                document.getElementById(id).innerHTML = stringContent;
+            }
+        }
     </script>
 }
