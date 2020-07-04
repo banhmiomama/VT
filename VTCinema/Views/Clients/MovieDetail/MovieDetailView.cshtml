@@ -322,13 +322,13 @@
                                 <div class="reviews">
                                     <ul class="reviews__list" id="CommentList">
                                     </ul>
-                                    <form class="form" id="form3" method="post">
-                                        <textarea id="NoteRating" class="form__textarea" placeholder="Review" required></textarea>
+                                    <form  class="form" id="form3">
+                                        <textarea id="NoteRating" class="form__textarea" name="comment" placeholder="Review" required></textarea>
                                         <div class="form__slider">
                                             <div class="form__slider-rating" id="slider__rating"></div>
-                                            <div class="form__slider-value" id="form__slider-value"></div>
+                                            <div class="form__slider-value" id="form__slider-value" name="rating"></div>
                                         </div>
-                                        <button class="form__btn" onclick="return ExecuteRating();">Send</button>
+                                        <button class="form__btn" type="submit" onclick="return ExecuteRating();">Send</button>
                                     </form>
                                 </div>
                             </div>
@@ -699,6 +699,7 @@
                     LoadCombo(DataBranch, "cbbBranch");
                     onclickDropdown();
                     RenderScheduleList(DataSchedule, "ScheduleList");
+                    OnchangeSchedule();
                 }
             });
         }

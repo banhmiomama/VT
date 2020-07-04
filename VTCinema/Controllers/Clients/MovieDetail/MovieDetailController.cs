@@ -151,8 +151,7 @@ namespace VTCinema.Controllers.Clients.Detail
             try
             {
                 DataTable ds = new DataTable();
-
-                DataRating dataDetail = JsonConvert.DeserializeObject<DataRating>(data);
+                DataRating dataDetail = (DataRating)JsonConvert.DeserializeObject(data);
 
                 using (Models.ExecuteDataBase confunc = new Models.ExecuteDataBase())
                 {
@@ -160,7 +159,7 @@ namespace VTCinema.Controllers.Clients.Detail
                         , "@MovieID", SqlDbType.Int, ViewBag.MovieDetailID
                         , "@Note", SqlDbType.NVarChar, dataDetail.NoteRating
                         , "@Rating", SqlDbType.Decimal, dataDetail.RatingMoive
-                        , "@CusID", SqlDbType.Int,8);
+                        , "@CusID", SqlDbType.Int, 8) ;
 
                 }
                 if (ds != null)

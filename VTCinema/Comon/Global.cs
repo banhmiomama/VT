@@ -14,6 +14,7 @@ namespace VTCinema.Comon
     {
         public GlobalUser user;
         public int sys_userid { get; set; }
+        public int sys_customerid { get; set; }
         public string sys_username { get; set; }
         public string sys_Role { get; set; }
         public string sys_RoleID { get; set; }
@@ -93,11 +94,47 @@ namespace VTCinema.Comon
             {
                 return 0;
             }
-        }  
+        }
+        public int DetectAuthorisedClient(string user, string pass)
+        {
+            try
+            {
+                using (Models.ExecuteDataBase connFunc = new Models.ExecuteDataBase())
+                {
+                    DataTable dt = connFunc.ExecuteDataTable("[YYY_sp_Permission_UserClient_LogIn]",
+                        CommandType.StoredProcedure,
+                         "@username", SqlDbType.NVarChar, user.Replace("'", "").Trim(),
+                         "@password", SqlDbType.NVarChar, pass.Replace("'", "").Trim()
+                     );
+
+                    if (dt.Rows.Count > 0)
+                    {
+                        sys_customerid = Convert.ToInt32(dt.Rows[0]["ID"].ToString());
+                        //sys_username = dt.Rows[0]["username"].ToString();
+                        //sys_RoleID = dt.Rows[0]["Group_ID"].ToString();
+                        //sys_RoleServerID = dt.Rows[0]["InheritanceServer"].ToString();
+                        //DetectUserInfo(sys_userid);
+                        return sys_customerid;
+                    }
+                    else
+                    {
+                        return 0;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return 0;
+            }
+        }
     }
     
     public class Global
     {
         public static string UserID = "UserID";
+    }
+    public class GlobalClient
+    {
+        public static string CustomerID = "CustomerID";
     }
 }
