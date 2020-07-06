@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using VTCinema.Comon;
 
 namespace VTCinema.Controllers.Clients.Detail
 {
@@ -152,15 +154,14 @@ namespace VTCinema.Controllers.Clients.Detail
             {
                 DataTable ds = new DataTable();
                 DataRating dataDetail = (DataRating)JsonConvert.DeserializeObject(data);
-
+                int CustomerID = (int)HttpContext.Session.GetInt32(Comon.GlobalClient.CustomerID);
                 using (Models.ExecuteDataBase confunc = new Models.ExecuteDataBase())
                 {
                     ds = confunc.ExecuteDataTable("[YYY_sp_Rating_Insert]", CommandType.StoredProcedure
                         , "@MovieID", SqlDbType.Int, ViewBag.MovieDetailID
                         , "@Note", SqlDbType.NVarChar, dataDetail.NoteRating
                         , "@Rating", SqlDbType.Decimal, dataDetail.RatingMoive
-                        , "@CusID", SqlDbType.Int, 8) ;
-
+                        , "@CusID", SqlDbType.Int, CustomerID) ;
                 }
                 if (ds != null)
                 {

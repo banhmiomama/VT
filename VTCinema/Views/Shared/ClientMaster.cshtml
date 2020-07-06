@@ -8,8 +8,15 @@
 
     <!-- Font -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
-
+    <script src="~/Clients/js/jquery-3.3.1.min.js"></script>
     <!-- CSS -->
+    <script src="~/plugins/sweetalert2/sweetalert2.min.js"></script>
+    <link href="~/plugins/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+    <script src="~/plugins/sweetalert2/custom-alert.js"></script>
+    <link href="~/plugins/lobibox/css/lobibox.css" rel="stylesheet" />
+    <link href="~/plugins/lobibox/dist/css/Lobibox.min.css" rel="stylesheet" />
+    <script src="~/plugins/lobibox/js/lobibox.js"></script>
+    <script src="~/js/comon/noti_function.js?ver=<%= DateTime.Now.Ticks %>"></script>
 
     <link href="~/Clients/css/bootstrap.min.css" rel="stylesheet" />
     <link href="~/Clients/css/bootstrap-grid.min.css" rel="stylesheet" />
@@ -248,7 +255,7 @@
         </footer>
     </div>
     <!-- JS -->
-    <script src="~/Clients/js/jquery-3.3.1.min.js"></script>
+   
     <link href="~/flatpickr/flatpickr.min.css" rel="stylesheet" />
     <script src="~/flatpickr/flatpickr.js"></script>
     <script src="~/Clients/js/bootstrap.bundle.min.js"></script>
@@ -261,7 +268,8 @@
     <script src="~/Clients/js/jquery.morelines.min.js"></script>
     <script src="~/Clients/js/photoswipe.min.js"></script>
     <script src="~/Clients/js/photoswipe-ui-default.min.js"></script>
-
+    <script src="~/js/customjs/custom-modal.js"></script>
+    <script src="/js/comon/NotiExe.js?ver=<%=DateTime.Now.Ticks%>"></script>
     <script>
         $(document).ready(function () {
             /* Open Modal Video Trailer*/
@@ -280,7 +288,7 @@
                 ModalVideo(UrlVideo);
             });
 
-            
+
             /*==============================
             Menu
             ==============================*/
@@ -392,22 +400,22 @@
             $('#myModal').modal('show');
             return false;
         }
-        //function LoadCombo(data, id) {
-        //    var myNode = document.getElementById(id);
-        //    if (myNode != null) {
-        //        myNode.innerHTML = '';
-        //        let stringContent = '';
-        //        if (data && data.length > 0) {
-        //            for (var i = 0; i < data.length; i++) {
-        //                let item = data[i];
-        //                let tr =
-        //                    '<div class="item" data-value=' + item.ID + '>' + item.Name + '</div>'
-        //                stringContent = stringContent + tr;
-        //            }
-        //        }
-        //        document.getElementById(id).innerHTML = stringContent;
-        //    }
-        //}
+                //function LoadCombo(data, id) {
+                //    var myNode = document.getElementById(id);
+                //    if (myNode != null) {
+                //        myNode.innerHTML = '';
+                //        let stringContent = '';
+                //        if (data && data.length > 0) {
+                //            for (var i = 0; i < data.length; i++) {
+                //                let item = data[i];
+                //                let tr =
+                //                    '<div class="item" data-value=' + item.ID + '>' + item.Name + '</div>'
+                //                stringContent = stringContent + tr;
+                //            }
+                //        }
+                //        document.getElementById(id).innerHTML = stringContent;
+                //    }
+                //}
     </script>
 
     @RenderSection("Script", required: false)

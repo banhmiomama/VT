@@ -530,7 +530,6 @@
             });
         }
         function OnchangeSchedule() {
-            debugger
             let BranchID = $('#BranchID').val() ? Number($('#BranchID').val()) : 0;
             let MovieShowTime = $('#MovieShowTime').val() ? $('#MovieShowTime').val() : '';
 
@@ -671,8 +670,8 @@
                 data: JSON.stringify(data),
                 contentType: 'application/json; charset=utf-8',
                 async: true,
-                error: function (XMLHttpRequest, textStatus, errorThrown) {
-
+                error: function (error) {
+                    alert(error);
                 },
                 success: function (result) {
                     alert(12);
@@ -720,7 +719,7 @@
                         let stringNote = '';
                         for (var j = 0; j < DataBranchSchedule.length; j++) {
                             let item = DataBranchSchedule[j];
-                            stringNote = stringNote + '<a class="session" href="' + item.ID + '">'
+                            stringNote = stringNote + '<a class="session" href="/checkout/' + item.ID + '">'
                                 + '<span class="s-start-time ng-binding" >' + item.TimeBegin + '</span ><br class="visible-xs"> ~ ' + item.TimeEnd + '</a>';
                             i = i + 1;
                         }

@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 namespace VTCinema.Controllers.ChairType
 {
     [Route("Admin/ChairType")]
-    public class ChairTypeController : Controller
+    public class ChairTypeController : BaseController
     {
         public IActionResult Index()
         {

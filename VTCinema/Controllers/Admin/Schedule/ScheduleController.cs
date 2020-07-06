@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 namespace VTCinema.Controllers.Admin.Schedule
 {
     [Route("Admin/Schedule")]
-    public class ScheduleController : Controller
+    public class ScheduleController : BaseController
     {
         public IActionResult Index()
         {
