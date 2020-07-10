@@ -11,7 +11,7 @@ namespace VTCinema.Controllers.Admin.Clients.SignUp
     {
         public IActionResult Index()
         {
-            return View("~/Views/Clients/Main/SignUp/SignUpView.cshtml");
+            return View("~/Views/Clients/SignUp/SignUpView.cshtml");
         }
     }
 }

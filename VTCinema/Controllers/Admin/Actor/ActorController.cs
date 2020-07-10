@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 namespace VTCinema.Controllers.Actor
 {
     [Route("Admin/Actor")]
-    public class ActorController : Controller
+    public class ActorController : BaseController
     {
         public IActionResult Index()
         {

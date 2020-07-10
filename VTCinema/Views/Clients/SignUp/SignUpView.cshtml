@@ -1,44 +1,120 @@
-﻿
-@{
-    ViewData["Title"] = "Trang Chủ";
-    Layout = "~/Views/Shared/ClientMaster.cshtml";
-}
-    
-<div class="sign section--bg" data-bg="~/Clients/img/section/section.jpg">
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <div class="sign__content">
-                    <!-- registration form -->
-                    <form action="#" class="sign__form">
-                        <a href="index.html" class="sign__logo">
-                            <img src="~/Clients/img/logo.svg" alt="">
-                        </a>
+﻿<head runat="sever">
+    <title>@ViewBag.Title</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-                        <div class="sign__group">
-                            <input type="text" class="sign__input" placeholder="Name">
-                        </div>
+    <!-- Font -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600%7CUbuntu:300,400,500,700" rel="stylesheet">
 
-                        <div class="sign__group">
-                            <input type="text" class="sign__input" placeholder="Email">
-                        </div>
+    <!-- CSS -->
+    <link href="~/Clients/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Clients/css/bootstrap-grid.min.css" rel="stylesheet" />
+    <link href="~/Clients/css/bootstrap-reboot.min.css" rel="stylesheet" />
+    <link href="~/Clients/css/default-skin.css" rel="stylesheet" />
+    <link href="~/Clients/css/ionicons.min.css" rel="stylesheet" />
+    <link href="~/Clients/css/jquery.mCustomScrollbar.min.css" rel="stylesheet" />
+    <link href="~/Clients/css/nouislider.min.css" rel="stylesheet" />
+    <link href="~/Clients/css/owl.carousel.min.css" rel="stylesheet" />
+    <link href="~/Clients/css/photoswipe.css" rel="stylesheet" />
+    <link href="~/Clients/css/plyr.css" rel="stylesheet" />
+    <link href="~/Clients/css/main.css" rel="stylesheet" />
 
-                        <div class="sign__group">
-                            <input type="password" class="sign__input" placeholder="Password">
-                        </div>
+    <!-- Favicons -->
+    <link rel="icon" type="image/png" href="~/Clients/icon/favicon-32x32.png" sizes="32x32">
+    <link rel="apple-touch-icon" href="~/Clients/icon/favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="~/Clients/icon/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="~/Clients/icon/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="~/Clients/icon/apple-touch-icon-144x144.png">
 
-                        <div class="sign__group sign__group--checkbox">
-                            <input id="remember" name="remember" type="checkbox" checked="checked">
-                            <label for="remember">I agree to the <a href="#">Privacy Policy</a></label>
-                        </div>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="Dmitry Volkov">
+    <style>
+        .card__play {
+            transition: 0.5s;
+            transform: scale(0.5);
+        }
 
-                        <button class="sign__btn" type="button">Sign up</button>
+        .card__cover:hover .card__play {
+            transform: scale(1);
+        }
 
-                        <span class="sign__text">Already have an account? <a href="signin.html">Sign in!</a></span>
-                    </form>
-                    <!-- registration form -->
+        .plyr--video {
+            border: 4px solid;
+        }
+
+        .closemodal {
+            position: absolute;
+            top: 0;
+            z-index: 100000;
+            right: 0;
+            background-color: red;
+            width: 20px;
+            font-size: 13px;
+        }
+
+        .nav-tabs > li > a:hover {
+            border-color: transparent;
+        }
+
+        .nav > li > a:focus, .nav > li > a:hover {
+            background-color: transparent;
+        }
+
+        .dropdown-menu > li > a {
+            color: white;
+        }
+    </style>
+</head>
+<body class="body">
+    <div class="sign section--bg" data-bg="~/Clients/img/section/section.jpg">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="sign__content">
+                        <!-- registration form -->
+                        <form action="#" class="sign__form">
+                            <a href="index.html" class="sign__logo">
+                                <img src="~/Clients/img/logo.svg" alt="">
+                            </a>
+
+                            <div class="sign__group">
+                                <input type="text" class="sign__input" placeholder="Name">
+                            </div>
+
+                            <div class="sign__group">
+                                <input type="text" class="sign__input" placeholder="Email">
+                            </div>
+
+                            <div class="sign__group">
+                                <input type="password" class="sign__input" placeholder="Password">
+                            </div>
+
+                            <div class="sign__group sign__group--checkbox">
+                                <input id="remember" name="remember" type="checkbox" checked="checked">
+                                <label for="remember">I agree to the <a href="#">Privacy Policy</a></label>
+                            </div>
+
+                            <button class="sign__btn" type="button">Sign up</button>
+
+                            <span class="sign__text">Already have an account? <a href="signin.html">Sign in!</a></span>
+                        </form>
+                        <!-- registration form -->
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+    <!-- JS -->
+    <script src="~/Clients/js/jquery-3.3.1.min.js"></script>
+    <script src="~/Clients/js/bootstrap.bundle.min.js"></script>
+    <script src="~/Clients/js/owl.carousel.min.js"></script>
+    <script src="~/Clients/js/jquery.mousewheel.min.js"></script>
+    <script src="~/Clients/js/jquery.mCustomScrollbar.min.js"></script>
+    <script src="~/Clients/js/wNumb.js"></script>
+    <script src="~/Clients/js/nouislider.min.js"></script>
+    <script src="~/Clients/js/plyr.min.js"></script>
+    <script src="~/Clients/js/jquery.morelines.min.js"></script>
+    <script src="~/Clients/js/photoswipe.min.js"></script>
+    <script src="~/Clients/js/photoswipe-ui-default.min.js"></script>
+</body>

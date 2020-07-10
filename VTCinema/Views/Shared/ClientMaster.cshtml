@@ -7,9 +7,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Font -->
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600%7CUbuntu:300,400,500,700" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+    <script src="~/Clients/js/jquery-3.3.1.min.js"></script>
     <!-- CSS -->
+    <script src="~/plugins/sweetalert2/sweetalert2.min.js"></script>
+    <link href="~/plugins/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+    <script src="~/plugins/sweetalert2/custom-alert.js"></script>
+    <link href="~/plugins/lobibox/css/lobibox.css" rel="stylesheet" />
+    <link href="~/plugins/lobibox/dist/css/Lobibox.min.css" rel="stylesheet" />
+    <script src="~/plugins/lobibox/js/lobibox.js"></script>
+    <script src="~/js/comon/noti_function.js?ver=<%= DateTime.Now.Ticks %>"></script>
+
     <link href="~/Clients/css/bootstrap.min.css" rel="stylesheet" />
     <link href="~/Clients/css/bootstrap-grid.min.css" rel="stylesheet" />
     <link href="~/Clients/css/bootstrap-reboot.min.css" rel="stylesheet" />
@@ -32,13 +40,40 @@
     <meta name="description" content="">
     <meta name="keywords" content="">
     <meta name="author" content="Dmitry Volkov">
-    <style>      
+    <style>
         .card__play {
             transition: 0.5s;
             transform: scale(0.5);
         }
+
         .card__cover:hover .card__play {
             transform: scale(1);
+        }
+
+        .plyr--video {
+            border: 4px solid;
+        }
+
+        .closemodal {
+            position: absolute;
+            top: 0;
+            z-index: 100000;
+            right: 0;
+            background-color: red;
+            width: 20px;
+            font-size: 13px;
+        }
+
+        .nav-tabs > li > a:hover {
+            border-color: transparent;
+        }
+
+        .nav > li > a:focus, .nav > li > a:hover {
+            background-color: transparent;
+        }
+
+        .dropdown-menu > li > a {
+            color: white;
         }
     </style>
     @RenderSection("Style", required: false)
@@ -59,7 +94,7 @@
                                 <!-- header nav -->
                                 <ul class="header__nav">
                                     <li class="header__nav-item">
-                                        <a href="/Main" class="header__nav-link">Trang Chủ</a>
+                                        <a href="/" class="header__nav-link">Trang Chủ</a>
                                     </li>
                                     <!-- end dropdown -->
                                     <!-- dropdown -->
@@ -82,8 +117,8 @@
 
                                         <ul class="dropdown-menu header__dropdown-menu" aria-labelledby="dropdownMenuMore">
                                             <li><a href="about.html">About</a></li>
-                                            <li><a href="signin.html">Sign In</a></li>
-                                            <li><a href="signup.html">Sign Up</a></li>
+                                            <li><a href="signin">Đăng nhập</a></li>
+                                            <li><a href="signup">Đăng kí</a></li>
                                             <li><a href="404.html">404 Page</a></li>
                                         </ul>
                                     </li>
@@ -96,9 +131,9 @@
                                         <i class="icon ion-ios-search"></i>
                                     </button>
 
-                                    <a href="signin.html" class="header__sign-in">
+                                    <a href="/signin" class="header__sign-in">
                                         <i class="icon ion-ios-log-in"></i>
-                                        <span>sign in</span>
+                                        <span>Đăng nhập</span>
                                     </a>
                                 </div>
                                 <!-- end header auth -->
@@ -136,13 +171,23 @@
         <div class="ui long modal fade in scrolling" id="divModal" tabindex="-1" role="dialog" style="display: none;" aria-hidden="true">
 
         </div>
-        <div class="ui long modal fade in scrolling" id="myModal" tabindex="-1"  role="dialog" style="display:none;background-color: rgba(128,128,128,0.5);" aria-hidden="true">
-            <div class="modal-dialog modal-lg modal-dialog-centered" >
-                <video controls id="player" src="">
-                    <source id="source-video" src="" type="video/mp4" size="576">
-                    <a href="" id="href-video" download>Download</a>
-                </video>
+        <div class="ui long modal fade in scrolling" id="myModal" tabindex="-1" role="dialog" style="display:none;background-color: rgba(128,128,128,0.5);" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered" style="margin-top: 50px;">
+                <div class="modal-content">
 
+                    <div class="modal-header">
+                        <h4 class="modal-title">12</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <video controls id="player" src="">
+                            <source id="source-video" src="" type="video/mp4" size="576">
+                            <a href="" id="href-video" download>Download</a>
+                        </video>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -210,7 +255,9 @@
         </footer>
     </div>
     <!-- JS -->
-    <script src="~/Clients/js/jquery-3.3.1.min.js"></script>
+   
+    <link href="~/flatpickr/flatpickr.min.css" rel="stylesheet" />
+    <script src="~/flatpickr/flatpickr.js"></script>
     <script src="~/Clients/js/bootstrap.bundle.min.js"></script>
     <script src="~/Clients/js/owl.carousel.min.js"></script>
     <script src="~/Clients/js/jquery.mousewheel.min.js"></script>
@@ -221,14 +268,15 @@
     <script src="~/Clients/js/jquery.morelines.min.js"></script>
     <script src="~/Clients/js/photoswipe.min.js"></script>
     <script src="~/Clients/js/photoswipe-ui-default.min.js"></script>
-
+    <script src="~/js/customjs/custom-modal.js"></script>
+    <script src="/js/comon/NotiExe.js?ver=<%=DateTime.Now.Ticks%>"></script>
     <script>
-        $(document).ready(function () {      
+        $(document).ready(function () {
             /* Open Modal Video Trailer*/
             $('#Carousel').on('click', '.card__play', function () {
                 let UrlVideo = $(this).attr('data-video');
                 ModalVideo(UrlVideo);
-            });  
+            });
 
             $('#MovieCurrentlyPlaying').on('click', '.card__play', function () {
                 let UrlVideo = $(this).attr('data-video');
@@ -238,10 +286,12 @@
             $('#UpcomingMovie').on('click', '.card__play', function () {
                 let UrlVideo = $(this).attr('data-video');
                 ModalVideo(UrlVideo);
-            }); 
+            });
+
+
             /*==============================
-	        Menu
-	        ==============================*/
+            Menu
+            ==============================*/
             $('.header__btn').on('click', function () {
                 $(this).toggleClass('header__btn--active');
                 $('.header__nav').toggleClass('header__nav--active');
@@ -350,8 +400,36 @@
             $('#myModal').modal('show');
             return false;
         }
+                //function LoadCombo(data, id) {
+                //    var myNode = document.getElementById(id);
+                //    if (myNode != null) {
+                //        myNode.innerHTML = '';
+                //        let stringContent = '';
+                //        if (data && data.length > 0) {
+                //            for (var i = 0; i < data.length; i++) {
+                //                let item = data[i];
+                //                let tr =
+                //                    '<div class="item" data-value=' + item.ID + '>' + item.Name + '</div>'
+                //                stringContent = stringContent + tr;
+                //            }
+                //        }
+                //        document.getElementById(id).innerHTML = stringContent;
+                //    }
+                //}
+        function Divide(nStr)
+            {
+	            nStr += '';
+	            x = nStr.split('.');
+	            x1 = x[0];
+	            x2 = x.length > 1 ? '.' + x[1] : '';
+	            var rgx = /(\d+)(\d{3})/;
+	            while (rgx.test(x1)) {
+		            x1 = x1.replace(rgx, '$1' + ',' + '$2');
+	            }
+	            return x1 + x2;
+            }
     </script>
-   
+
     @RenderSection("Script", required: false)
 
 </body>

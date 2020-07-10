@@ -83,15 +83,15 @@
 <script src="~/js/ckeditor.js"></script>
 
 <script>
-    let ActorDetailID;
-    let AvatarString = '';
-    let DataAvatar;
+    var ActorDetailID;
+    var AvatarString = '';
+    var DataAvatar;
     $(document).ready(function () {
         $("#Birthday").flatpickr({
             dateFormat: 'd-m-Y',
             enableTime: false,
         });
-        ActorDetailID = @ViewBag.ActorID;
+        ActorDetailID = Number(@ViewBag.ActorID);
         LoadDataUpdateActor();
     });
 

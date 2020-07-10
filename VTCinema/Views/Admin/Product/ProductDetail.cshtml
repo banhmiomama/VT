@@ -22,7 +22,7 @@
                     <div class="two fields">
                         <div class="field">
                             <label>Tên Sản Phẩm</label>
-                            <input id="txtNameProduct" name="name" type="text" />
+                            <input id="txtNameProduct" name="Productname" type="text" />
                         </div>
                         <div class="field">
                             <label>Loại</label>
@@ -67,9 +67,9 @@
 <script src="/js/main.js"></script>
 
 <script>
-    let ProductDetailID;
-    let AvatarString = '';
-    let DataAvatar;
+    var ProductDetailID;
+    var AvatarString = '';
+    var DataAvatar;
     $(document).ready(function () {
         $("#Birthday").flatpickr({
             dateFormat: 'd-m-Y',

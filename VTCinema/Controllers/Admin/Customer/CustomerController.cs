@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 namespace VTCinema.Controllers.Customer
 {
     [Route("Admin/Customer")]
-    public class CustomerController : Controller
+    public class CustomerController : BaseController
     {
         public IActionResult Index()
         {

@@ -1,0 +1,550 @@
+﻿@{
+    ViewData["Title"] = "Checkout";
+    Layout = "~/Views/Shared/ClientMaster.cshtml";
+}
+
+@section Style{
+    <style>
+        .plane {
+            margin: 20px auto;
+            max-width: 300px;
+        }
+
+        .cockpit {
+            height: 250px;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+            border-bottom: 5px solid #d8d8d8;
+        }
+
+            .cockpit:before {
+                content: "";
+                display: block;
+                position: absolute;
+                top: 0;
+                left: 0;
+                height: 500px;
+                width: 100%;
+                border-radius: 50%;
+                border-right: 5px solid #d8d8d8;
+                border-left: 5px solid #d8d8d8;
+            }
+
+            .cockpit h1 {
+                width: 60%;
+                margin: 100px auto 35px auto;
+            }
+
+        .exit {
+            position: relative;
+            height: 50px;
+        }
+
+            .exit:before, .exit:after {
+                content: "EXIT";
+                font-size: 14px;
+                line-height: 18px;
+                padding: 0px 2px;
+                font-family: "Arial Narrow", Arial, sans-serif;
+                display: block;
+                position: absolute;
+                background: green;
+                color: white;
+                top: 50%;
+                transform: translate(0, -50%);
+            }
+
+            .exit:before {
+                left: 0;
+            }
+
+            .exit:after {
+                right: 0;
+            }
+
+        .fuselage {
+            border-right: 5px solid #d8d8d8;
+            border-left: 5px solid #d8d8d8;
+        }
+
+        ol {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .seats {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            justify-content: flex-start;
+            width: 100%;
+        }
+
+        .seat {
+            display: flex;
+            /*flex: 0 0 14.2857142857%;*/
+            padding: 5px;
+            position: relative;
+            max-width: 50px;
+        }
+
+        .seats .seat:nth-child(1) {
+            flex-grow: 1;
+            margin-right: 30px;
+        }
+
+        .seat input[type="checkbox"] {
+            position: absolute;
+            opacity: 0;
+        }
+
+            .seat input[type="checkbox"]:checked + label {
+                background: #44c020 !important;
+                -webkit-animation-name: rubberBand;
+                animation-name: rubberBand;
+                animation-duration: 300ms;
+                animation-fill-mode: both;
+            }
+
+            .seat input[type="checkbox"]:disabled + label {
+                background: #ddd;
+                text-indent: -9999px;
+                overflow: hidden;
+            }
+            .seat input[type="checkbox"].selected:disabled + label {
+                background: #e7eaec !important;
+                opacity:0.8;
+            }
+                .seat input[type="checkbox"].selected:disabled + label:after {
+                    cursor: not-allowed;
+                }
+                .seat input[type="checkbox"]:disabled + label:after {
+                    content: "X";
+                    text-indent: 0;
+                    position: absolute;
+                    top: 4px;
+                    left: 50%;
+                    transform: translate(-50%, 0%);
+                }
+
+                .seat input[type="checkbox"]:disabled + label:hover {
+                    box-shadow: none;
+                    cursor: not-allowed;
+                }
+
+        .seat label {
+            display: block;
+            position: relative;
+            width: 100%;
+            text-align: center;
+            font-size: 14px;
+            font-weight: bold;
+            line-height: 1.5rem;
+            padding: 4px 0;
+            background: #ffffff;
+            border-radius: 5px;
+            animation-duration: 300ms;
+            animation-fill-mode: both;
+        }
+
+            .seat label:before {
+                content: "";
+                position: absolute;
+                width: 75%;
+                height: 75%;
+                top: 1px;
+                left: 50%;
+                transform: translate(-50%, 0%);
+                background: rgba(255, 255, 255, 0.4);
+                border-radius: 3px;
+            }
+
+            .seat label:hover {
+                cursor: pointer;
+                box-shadow: 0 0 0px 2px #5c6aff;
+            }
+
+        .AddNewRowChair {
+            padding: 0;
+            border: none;
+            background-color: transparent;
+            outline: none;
+        }
+
+            .AddNewRowChair:hover i {
+                transform: rotate(90deg);
+            }
+
+            .AddNewRowChair:focus i {
+                color: darkgreen;
+            }
+
+        @@-webkit-keyframes rubberBand {
+            0% {
+                -webkit-transform: scale3d(1, 1, 1);
+                transform: scale3d(1, 1, 1);
+            }
+
+            30% {
+                -webkit-transform: scale3d(1.25, 0.75, 1);
+                transform: scale3d(1.25, 0.75, 1);
+            }
+
+            40% {
+                -webkit-transform: scale3d(0.75, 1.25, 1);
+                transform: scale3d(0.75, 1.25, 1);
+            }
+
+            50% {
+                -webkit-transform: scale3d(1.15, 0.85, 1);
+                transform: scale3d(1.15, 0.85, 1);
+            }
+
+            65% {
+                -webkit-transform: scale3d(0.95, 1.05, 1);
+                transform: scale3d(0.95, 1.05, 1);
+            }
+
+            75% {
+                -webkit-transform: scale3d(1.05, 0.95, 1);
+                transform: scale3d(1.05, 0.95, 1);
+            }
+
+            100% {
+                -webkit-transform: scale3d(1, 1, 1);
+                transform: scale3d(1, 1, 1);
+            }
+        }
+
+        @@keyframes rubberBand {
+            0% {
+                -webkit-transform: scale3d(1, 1, 1);
+                transform: scale3d(1, 1, 1);
+            }
+
+            30% {
+                -webkit-transform: scale3d(1.25, 0.75, 1);
+                transform: scale3d(1.25, 0.75, 1);
+            }
+
+            40% {
+                -webkit-transform: scale3d(0.75, 1.25, 1);
+                transform: scale3d(0.75, 1.25, 1);
+            }
+
+            50% {
+                -webkit-transform: scale3d(1.15, 0.85, 1);
+                transform: scale3d(1.15, 0.85, 1);
+            }
+
+            65% {
+                -webkit-transform: scale3d(0.95, 1.05, 1);
+                transform: scale3d(0.95, 1.05, 1);
+            }
+
+            75% {
+                -webkit-transform: scale3d(1.05, 0.95, 1);
+                transform: scale3d(1.05, 0.95, 1);
+            }
+
+            100% {
+                -webkit-transform: scale3d(1, 1, 1);
+                transform: scale3d(1, 1, 1);
+            }
+        }
+
+        .rubberBand {
+            -webkit-animation-name: rubberBand;
+            animation-name: rubberBand;
+        }
+
+        .p-title {
+            
+            box-sizing: border-box;
+            font-size: 14px;
+            margin-left: 0;
+            margin-right: 0;
+            padding-bottom: 7.5px;
+            color:white;
+        }
+        .border-dashed {
+            border-bottom: 1px dashed #e9e9e9;
+        }
+        .p-title.col-sm-6 {
+            padding-top:17.5px;
+        }
+        .strong {
+            color: #ffffff;
+            background-color: red;
+            font-size: 20px;
+            padding: 0 5px;
+            border-radius: 0.25em;
+        }
+        .product-list {
+            position: absolute;
+            z-index: 3;
+            width: 0;
+            height: 100%;
+            background-color: white;
+            right: calc(100% + 15px);
+            top: 0;
+            transition: 0.5s;
+        }
+        .product-list.active {
+            width: 100%;
+        }
+    </style>
+}
+<!-- content -->
+<section class="section details">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-lg-8 col-xl-8" style="z-index:2">
+                <img src="~/Clients/img/screen.png" style="max-width:100%;" />
+                <div class="tab-content" id="RoomChairBody">
+                </div>
+            </div>
+            <div class="col-12 col-lg-4 col-xl-4" style="position:relative;z-index:4;box-shadow: -6px 2px 15px rgba(140, 121, 121, 0.3);">
+                <div class="row" style="z-index:4;padding:10px;padding-top:35px;">
+                    <!-- section title -->
+                    <div class="col-12 ">
+                        <h2 class="section__title section__title--sidebar" style="font-size:18px;margin-bottom:10px" id="TitleMoive">
+                        </h2>
+                        <p class="p-title" id="Address"></p>
+                        <p class="p-title" id="ShowTime">T</p>
+                    </div>
+                    <!-- end section title -->
+                    <div class="col-12 ">
+                        <div class="border-dashed">
+                            <p class="p-title col-sm-6">Ghế: <span id="Chair" style="font-size:15px;font-weight:600"></span></p>
+                            <p class="p-title col-sm-6" id="PriceChair" style="text-align:right" onchange="OnchangePrice();">0</p>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="border-dashed">
+                            <p class="p-title col-sm-6">
+                                <img class="icon-combo" src="~/Clients/icon/popcorn.png" style="margin-right: 9px; width: 17px; height: 22px;" />Thức Ăn:<span id="Combo"></span>
+                            </p>
+                            <p class="p-title col-sm-6" id="PriceCombo" style="text-align:right">0</p>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="border-dashed">
+                            <p class="p-title col-sm-6">Tổng:</p>
+                            <p class="p-title col-sm-6" id="TotalPrice" style="text-align:right">0</p>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <button class="header__sign-in" type="submit" onclick="return ExecuteBill();" style="margin:0 auto;width:100%;">
+                            <i class="icon ion-ios-log-in"></i>
+                            <span>Thanh Toán</span>
+                        </button>
+                    </div>
+                       
+                    </div>
+                    <div class="row product-list">
+
+                    </div>
+                </div>
+        </div>
+    </div>
+</section>
+<!-- end content -->
+<div id="div" hidden></div>
+@section Script{
+    <script>
+        var ScheduleID = @ViewBag.ScheduleDetailID;
+        var Email = '@ViewBag.Email';
+        var DataBillTicket = [];
+        var PriceTicket = 0;
+        var PriceProduct = 0;
+        var PriceTicketType = 0;
+        var DataMovie;
+        var Total;
+        $(document).ready(function () {
+            LoadDataScheduleMovie();
+            $('img.icon-combo').on('click', function () {
+                $('.product-list').toggleClass('active');
+            });
+            
+        });
+        function OnclickChairLabel() {
+            $(".seat label").click(function () {
+                var NameChair = $(this).attr("for");
+                $('#' + NameChair +':enabled').prop('checked',function () {
+                    var idChair = $(this).attr('data-chair');                  
+                    if (removeItemsById(DataBillTicket, idChair) == 0) {
+                        var rowchair = Number($(this).parent().parent().attr('data-rowchair'));
+                        var price = $(this).attr('data-price');
+                        var typeChair = $(this).attr('data-typechair');
+                        var item = {
+                            NameChair: NameChair,
+                            RowChair: rowchair,
+                            Chair: idChair,
+                            Price: price,
+                            TypeChair: typeChair,
+                        };
+                        DataBillTicket.push(item);                       
+                    }
+                    RenderPrice(DataBillTicket, "Chair", "PriceChair");
+                });    
+                if (DataBillTicket.length == 8) {
+                    notiWarning("Số ghế được chọn tối đa không quá 8 ghế ngồi !");
+                    return;
+                }
+            });
+        }
+        function RenderPrice(data, idNameChair, idPriceChair) {
+            var idChair = document.getElementById(idNameChair);
+            var idPrice = document.getElementById(idPriceChair);
+            if (idChair != null && idPrice != null) {
+                idChair.innerHTML = '';
+                idPrice.innerHTML = '';
+                PriceTicket = 0;
+                let StringChair = '';
+                if (data && data.length > 0) {
+                    for (var i = 0; i < data.length; i++) {
+                        var item = data[i];
+                        PriceTicket += Number(item.Price) + Number(PriceTicketType);
+                        StringChair += item.NameChair + ',';
+                    }
+                }
+
+                document.getElementById(idNameChair).innerHTML = StringChair;
+                $('#' + idPriceChair).trigger('change');
+                document.getElementById(idPriceChair).innerHTML = Divide(PriceTicket);
+            }          
+        }
+        function OnchangePrice() {
+            Total = PriceTicket + PriceProduct;
+            $('#TotalPrice').text(Divide(Total));
+        }
+        function removeItemsById(arr, id) {
+            var LengthArr = arr.length;
+            var result = 0;
+            if (LengthArr > 0) {
+                while (LengthArr--) {
+                    var ChairId = arr[LengthArr];
+                    if (Number(ChairId.Chair) == Number(id)) {
+                        arr.splice(LengthArr, 1);
+                        result = 1;
+                        return result;
+                    }
+                }
+            }
+            return result;
+        }
+        function LoadDataScheduleMovie() {
+            $.ajax({
+                type: 'GET',
+                dataType: "json",
+                contentType: 'application/json; charset=utf-8',
+                url: "/Checkout/ScheduleMovie/" + ScheduleID,
+                async: true,
+                success: function (result) {
+                     DataMovie = result.Table;
+                    if (DataMovie.length > 0) {
+                        $('#TitleMoive').html('<strong class="strong">' + DataMovie[0].TicketType + '</strong> ' + DataMovie[0].MovieName);
+                        $('#Address').text(DataMovie[0].Address + ' - ' + DataMovie[0].Room);
+                        $('#ShowTime').text(DataMovie[0].ShowTime);
+                        PriceTicketType = DataMovie[0].PriceTicketType;
+                    }
+                    let NameRow = result.Table1;
+                    let Chair = result.Table2;
+                    RenderRoomChair(NameRow, Chair, "RoomChairBody");
+                    OnclickChairLabel();
+                }
+            });
+        }
+        function RenderRoomChair(RowChair, Chair, id) {
+            var myNode = document.getElementById(id);
+            if (myNode != null) {
+                myNode.innerHTML = '';
+                let stringContent = '';
+                if (Chair && Chair.length > 0) {
+                    for (var i = 0; i < RowChair.length; i++) {
+                        let rc = RowChair[i];
+                        let items = Chair.filter(data => data.RowChair == RowChair[i].ID);
+                        let tr = '<li class="seat"><label for="' + rc.NameRow + '">' + rc.NameRow + '</label></li>';
+                        for (var j = 0; j < items.length; j++) {
+                            items = items.sort(function (a, b) { return a.ColumnChair - b.ColumnChair; })
+                            item = items[j];
+                            tr += '<li class="seat" style="visibility:' + item.VisibilityChair + ';flex-grow:' + item.Total + ';max-width:calc(40px * ' + item.Total + ')" >'
+                                + '<input type="checkbox" class="' + item.selected + '" ' + ((item.selected == "") ? "" : "disabled") +'  data-typechair="' + item.TypeChairID + '" data-chair="' + item.ID + '" value="' + item.NameRow + '" data-price="' + item.PriceChair + '" id="' + item.NameRow + item.ColumnChair + '" ' + item.DisabledChair + '/>'
+                                + '<label for="' + item.NameRow + item.ColumnChair + '" style="background:' + item.ColorCode + '"></label></li>'
+                        }
+                        stringContent = stringContent + '<li class="row"><ol class="seats" data-rowchair="'+rc.ID+'" type="' + rc.NameRow + '">' + tr + '</ol></li>';
+                    }
+                }
+                document.getElementById(id).innerHTML = stringContent;
+            }
+        }
+
+        function ExecuteBill() {
+            var data = new Object();
+            data.ScheduleID = Number(DataMovie[0].ID);
+            data.Quan = Number(DataBillTicket.length);
+            data.Price = parseFloat(Total);
+            $.ajax({
+                url: "/Checkout/ExecuteBill",
+                dataType: "json",
+                type: "POST",
+                data: {
+                    data: JSON.stringify(data)
+                    , Email: Email
+                },
+                async: true,
+                error: function (error) {
+                    alert(error);
+                },
+                success: function (result) {                    
+                    if (result != "0") {
+                        if (ExecuteBillTicket(result) == 1) {
+                            notiSuccess("Hóa đơn bạn đặt thành công");
+                        }
+                        else notiError("Hóa đơn bạn đặt thất bại");
+                    }
+                }
+            });
+            return false;
+        }
+        function ExecuteBillTicket(idBill) {
+            debugger
+            let TotalInsert = 0;
+            let ticketlength = DataBillTicket.length;           
+            if (ticketlength > 0) {
+                for (var i = 0; i < ticketlength; i++) {
+                    let item = DataBillTicket[i];
+                    item.Bill_ID = Number(idBill);
+                    if (ExecuteBillTicketInsert(item)==1) {
+                        TotalInsert+=1;
+                    }
+                }
+            }
+            return  (TotalInsert == ticketlength) ? 1 : 0;
+        }
+
+        function ExecuteBillTicketInsert(data) {
+            var Equa = 0;
+            $.ajax({
+                url: "/Checkout/ExecuteBillTicket",
+                dataType: "json",
+                type: "POST",
+                data: {
+                    data: JSON.stringify(data)
+                },
+                async: true,
+                error: function (error) {
+                    return 0;
+                },
+                success: function (result) {
+                    Equa = result;
+                }
+            });
+            return 1;
+        }
+        
+    </script>  
+}

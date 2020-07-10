@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 namespace VTCinema.Controllers.Movie
 {
     [Route("Admin/Movie")]
-    public class MovieController : Controller
+    public class MovieController : BaseController
     {
         public IActionResult Index()
         {

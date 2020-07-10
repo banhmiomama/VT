@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace VTCinema.Controllers.Dashboard
 {
     [Route("Admin/SaleMain")]
-    public class SaleMainController : Controller
+    public class SaleMainController : BaseController
     {
         public IActionResult Index()
         {

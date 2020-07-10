@@ -34,7 +34,7 @@
                             <div class="field">
                                 <label>Loại Trình Chiếu:</label>
                                 <div class="ui fluid search selection dropdown" id="TicketType">
-                                    <input type="hidden" name="TicketType">
+                                    <input type="hidden" name="MovieTicketType">
                                     <i class="dropdown icon"></i>
                                     <div class="default text">Chọn Loại Trình Chiếu</div>
                                     <div class="menu" id="cbbTicketType">
@@ -46,7 +46,7 @@
                             <div class="field">
                                 <label>Chi Nhánh:</label>
                                 <div class="ui fluid search selection dropdown" id="BranchID" onchange="OnchangeBranchDetail();">
-                                    <input type="hidden" name="Movie">
+                                    <input type="hidden" name="Branch">
                                     <i class="dropdown icon"></i>
                                     <div class="default text">Chọn Chi Nhánh</div>
                                     <div class="menu" id="cbbBranchID">
@@ -57,6 +57,7 @@
                                 <label>Phòng:</label>
                                 <div class="ui fluid search selection dropdown" id="Room">
                                     <input type="hidden" name="Room">
+                                    <i class="remove icon"></i>
                                     <i class="dropdown icon"></i>
                                     <div class="default text">Chọn Phòng</div>
                                     <div class="menu" id="cbbRoom">
@@ -67,7 +68,7 @@
                         <div class="two fields">
                             <div class="field">
                                 <label>Chọn Ngày & Thời Gian Bắt Đầu:</label>
-                                <input class="flatpickr"  id="datefrom" type="text" placeholder="Chọn Thời Gian Chiếu" onchange="OnchangeDateFrom();" />
+                                <input class="flatpickr"  id="datefrom" type="text" placeholder="Chọn Thời Gian Chiếu" onchange="OnchangeDateFrom();" name="DateShow"/>
                             </div>
                             <div class="field">
                                 <label>Thời Gian Kết Thúc:</label>
@@ -95,23 +96,23 @@
 </div>
 <script src="/js/customjs/custom-validation.js"></script>
 <script src="/js/main.js"></script>
+
 <script>   
-    let ScheduleDetailID;
-    let DataRoom;
-    let DataTicketType;
-    let DataMovie;
-    let DataBranchDetail;
+    var ScheduleDetailID;
+    var DataRoom;
+    var DataTicketType;
+    var DataMovie;
+    var DataBranchDetail;
     $(document).ready(function () {
         $("#datefrom").flatpickr({
-            dateFormat: 'Y-m-d H:i:ss',
+            dateFormat: 'd-m-Y H:i:ss',
             minDate: 'today',
             enableTime: true
         });
         $("#dateto").flatpickr({
-            dateFormat: 'Y-m-d H:i:ss',
+            dateFormat: 'd-m-Y H:i:ss',
             enableTime: true
         });
-
         ScheduleDetailID = @ViewBag.ScheduleID;
         LoadDataUpdateSchedule();
     });
@@ -144,6 +145,8 @@
                     $("#TicketType").dropdown("set selected", data[0].TicketTypeID);
                     $("#datefrom").val(data[0].ShowTime);
                     $("#dateto").val(data[0].CloseTime);
+                    $("#txtNote").val(data[0].Note);
+
                     tinymce.activeEditor.setContent(data[0].Note);
                 }
             }
@@ -151,7 +154,12 @@
     }
     function ExcuteData() {
         var data = new Object();
-        data.Name = $('#txtName').val() ? $('#txtName').val() : "";
+        data.MovieID = $('#Movie').dropdown('get value') ? Number($('#Movie').dropdown('get value')) : 0;
+        data.BranchID = $('#BranchID').dropdown('get value') ? Number($('#BranchID').dropdown('get value')) : 0;
+        data.RoomID = $('#Room').dropdown('get value') ? Number($('#Room').dropdown('get value')) : 0;
+        data.TicketTypeID = $('#TicketType').dropdown('get value') ? Number($('#TicketType').dropdown('get value')) : 0;
+        data.ShowTime = $('#datefrom').val() ? (moment($('#datefrom').val(), 'DD/MM/YYYY HH:mm:ss').format("YYYY/MM/DD HH:mm:ss")) : '';
+        data.CloseTime = $('#dateto').val() ? (moment($('#dateto').val() , 'DD/MM/YYYY HH:mm:ss').format("YYYY/MM/DD HH:mm:ss")) : '';
         data.Note = tinymce.activeEditor.getContent();
         $('#form3').form('validate form');
         if ($('#form3').form('is valid')) {
@@ -169,12 +177,14 @@
                         notiError("Lỗi Hệ Thống");
                  },
                  success: function (result) {
+                     debugger
                      if (result == "0") {
                          notiSuccess();
                          LoadSchedule();
-                     } else {
-                         notiError("");
-                        }
+                     }
+                     else {
+                         notiError("Thời Gian Lịch Phim Đã Tồn Tại");
+                     }
                  }
              })
              $('#divDetailPopup').modal('hide');
@@ -183,19 +193,24 @@
     }
     function OnchangeDateFrom() {
         let MovieID = $('#Movie').dropdown('get value') ? Number($('#Movie').dropdown('get value')) : 0;
-        let data = DataMovie.filter(word => word["ID"] == MovieID);        
-        let MovieTimeDuration = Number(data[0].MovieTimeDuration) + 20;
-        debugger
-        let DateFrom = $('#datefrom').val() ? $('#datefrom').val() : '';
-        let DateTo = new Date(DateFrom);
-        DateTo.setMinutes(DateTo.getMinutes() + MovieTimeDuration);
-        $('#dateto').val(ConvertDateTimeToStringDMY_HMS(DateTo));
+        if (MovieID != 0) {         
+            let AdTime = 20;
+            let data = DataMovie.filter(word => word["ID"] == MovieID);
+            let MovieTimeDuration = Number(data[0].MovieTimeDuration) + AdTime;
+            let DateFrom = $('#datefrom').val() ? $('#datefrom').val() : '';
+            DateFrom = moment(DateFrom, 'DD/MM/YYYY HH:mm:ss').format("YYYY/MM/DD HH:mm:ss");
+            let DateTo = new Date(DateFrom);
+            DateTo.setMinutes(DateTo.getMinutes() + MovieTimeDuration);
+            $('#dateto').val(ConvertDateTimeToStringDMY_HMS(DateTo));
+        }
+        
     }
     function OnchangeBranchDetail() {
         let BranchID = $('#BranchID').dropdown('get value') ? Number($('#BranchID').dropdown('get value')) : 0;
         $("#Room").dropdown("refresh");
         if (BranchID != 0) {
             let Data = DataRoom.filter(word => word["BranchID"] == BranchID);
+            $("#Room").dropdown("refresh");
             LoadCombo(Data, "cbbRoom");
         }
     }

@@ -3,7 +3,7 @@
     ViewData["Title"] = "Lịch Phim";
     Layout = "~/Views/Shared/Master.cshtml";
 }
-
+    <script src="~/Momentjs/moment.js"></script>
 <div class="pusher">
     <div class="navslide navwrap">
         <div class="row" style="background-color: white">
@@ -16,7 +16,7 @@
                         <button class="ui blueli button" data-value="fade up" onclick="return AddNewSchedule()">Thêm mới</button>
                     </div>
                     <div class="field">
-                        <div class="ui fluid search selection dropdown" id="Branch" onchange="OnchangeBranch();">
+                        <div class="ui fluid search selection dropdown" id="Branch" onchange="onchangeFilterSchedule();">
                             <input type="hidden" name="country">
                             <i class="dropdown icon"></i>
                             <div class="default text">Chọn Chi Nhánh</div>
@@ -25,11 +25,11 @@
                         </div>
                     </div>
                     <div class="field">
-                        <input class="flatpickr" id="dateFilter"  type="text" placeholder="Chọn Thời Gian Chiếu" />
+                        <input class="flatpickr" id="dateFilter"  type="text" placeholder="Chọn Thời Gian Chiếu" onchange="onchangeFilterSchedule()"/>
                     </div>
                     <div class="field">
                         <div class="ui icon input" style="max-height: 40px;">
-                            <input id="filterSchedule" type="text" placeholder="Seaching..." onkeyup="event.preventDefault();return onkeyupScheduleFitler();">
+                            <input id="filterSchedule" type="text" placeholder="Seaching..." onkeyup="event.preventDefault();return onchangeFilterSchedule();">
                             <i class="circular search link icon"></i>
                         </div>
                     </div>
@@ -40,10 +40,10 @@
                             <tr role="row">
                                 <th style="display: none">ID</th>
                                 <th style="width: 70px;">#</th>
-                                <th>ScheduleCode</th>
+                                <th style="width: 150px;">ScheduleCode</th>
                                 <th style="min-width: 60px">Tên Phim</th>
                                 <th style="max-width: 120px;">Phòng</th>
-                                <th style="max-width: 300px;">Loại Công Chiếu</th>
+                                <th style="max-width: 100px;">Loại Công Chiếu</th>
                                 <th style="max-width: 300px;">Thời Gian Chiếu</th>
                                 <th>Xoá</th>
                             </tr>
@@ -73,7 +73,7 @@
                     let tr =
                         '<td style="display:none !important">' + item.ID + '</td>'
                         + '<td data-sortValue="' + Number(i) + '">' + (i + 1) + '</td>'
-                        + '<td ><a style="text-decoration: underline;" class="buttonEditClass" href="#">' + item.ScheduleCode + '</a></td>'
+                        + '<td style="text-align:center"><a style="text-decoration: underline;" class="buttonEditClass" href="#">' + item.ScheduleCode + '</a></td>'
                         + '<td >' + item.NameMovie + '</td>'
                         + '<td >' + item.Room + '</td>'
                         + '<td >' + item.TicketType + '</td>'
@@ -104,6 +104,8 @@
                 Render_Schedule(DataSchedule, "dtContentScheduleBody");
                 DataBranch = result.Branch;
                 LoadCombo(DataBranch, "cbbBranch");
+                $("#Branch").dropdown("set selected", '0');
+                onchangeFilterSchedule();
             }
         });
     }
@@ -123,8 +125,7 @@
         var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
         var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
         $("#dateFilter").val(formatDateClient(firstDay) + ' to ' + formatDateClient(lastDay));
-        LoadSchedule();
-        $("#Branch").dropdown("set selected",0);
+        LoadSchedule();              
         $('#dtContentSchedule tbody').on('click', '.buttonEditClass', function () {
             let ID = Number($(this).closest('tr')[0].childNodes[0].innerHTML);
             EditSchedule(ID);
@@ -177,7 +178,7 @@
             }
         });
     }
-
+    
     function onkeyupTicketFitlerAsync(extension) {
         return new Promise((resolve, reject) => {
             setTimeout(
@@ -206,6 +207,7 @@
         await onkeyupTicketFitlerAsync();
         return false;
     }
+
     function OnchangeBranch() {
         let BranchID = $("#Branch").dropdown('get value') ? $("#Branch").dropdown('get value') : 0;
         if (BranchID == 0) {
@@ -215,6 +217,48 @@
             let data = DataSchedule.filter(word => word["BranchID"] == BranchID);
             document.getElementById("dtContentScheduleBody").innerHTML = "";
             Render_Schedule(data, "dtContentScheduleBody");
+        }
+    }
+
+    function onchangeFilterSchedule() {
+        let filterDate = $('#dateFilter').val();        
+        var DateFrom = new Date();
+        var DateTo = new Date();   
+        let search = xoa_dau($('#filterSchedule').val().toLowerCase()).trim();
+        let BranchID = $("#Branch").dropdown('get value') ? $("#Branch").dropdown('get value') : 0;
+        if (filterDate.indexOf('to') != -1) {
+            filterDate = filterDate.split(' to ');
+            DateFrom = moment(filterDate[0], 'DD/MM/YYYY').format('YYYY/MM/DD');
+            DateTo = moment(filterDate[1], 'DD/MM/YYYY').format('YYYY/MM/DD');
+        }
+        else {
+            filterDate = moment(filterDate, 'DD/MM/YYYY').format('YYYY/MM/DD');
+            DateFrom = filterDate;  
+            DateTo = filterDate;
+        }       
+        //Lọc Theo ngày
+        let data = DataSchedule.filter(
+            item => ((Date.parse(moment(item["ShowTime"], 'DD/MM/YYYY').format('YYYY/MM/DD')) >= Date.parse(DateFrom))
+                && (Date.parse(moment(item["ShowTime"], 'DD/MM/YYYY').format('YYYY/MM/DD')) <= Date.parse(DateTo)))     
+        );
+        //Lọc Theo từ khóa
+        if (search!="" ) {          
+            data = data.filter(function (item) {
+                if (xoa_dau(item["ShowTime"]).toLowerCase().includes(search)
+                    || xoa_dau(item["NameNoSign"]).toLowerCase().includes(search))
+                    return true;
+                return false;
+            });
+        }
+        //Lọc Theo chi nhánh
+        if (BranchID != 0) {
+            data = data.filter(word => word["BranchID"] == BranchID);
+        }
+
+        if (data != undefined && data != null) {
+            document.getElementById("dtContentScheduleBody").innerHTML = "";
+            Render_Schedule(data, "dtContentScheduleBody");
+            ColorSearchFilterText(search, "seachRow");
         }
     }
 </script>

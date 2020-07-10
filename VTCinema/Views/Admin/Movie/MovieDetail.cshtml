@@ -101,7 +101,7 @@
                         </div>
                         <div class="field">
                             <label>Loại Trình Chiếu</label>
-                            <div class="ui fluid search selection dropdown" id="MovieTicketType">
+                            <div class="ui fluid search multiple selection dropdown" id="MovieTicketType">
                                 <input type="hidden" name="MovieTicketType">
                                 <i class="dropdown icon"></i>
                                 <div class="default text">Chọn Loại Trình Chiếu</div>
@@ -113,7 +113,7 @@
                     <div class="two fields">
                         <div class="field">
                             <label>Đạo Diễn</label>
-                            <div class="ui fluid search selection dropdown" id="Director">
+                            <div class="ui fluid search  multiple selection dropdown" id="Director">
                                 <input type="hidden" name="Director">
                                 <i class="dropdown icon"></i>
                                 <div class="default text">Chọn Đạo Diễn</div>
@@ -155,9 +155,9 @@
 <script src="/js/main.js"></script>
 
 <script>
-    let MovieDetailID;
-    let AvatarString = '';
-    let DataAvatar;
+    var MovieDetailID;
+    var AvatarString = '';
+    var DataAvatar;
     $(document).ready(function () {
         $("#Opening_Time").flatpickr({
             dateFormat: 'd-m-Y',
@@ -200,16 +200,23 @@
 
                     $("#SubTitle").dropdown("refresh");
                     $("#SubTitle").dropdown("set selected", data[0].SubTitle_ID);
-                    $("#MovieType").dropdown("refresh");
-                    $("#MovieType").dropdown("set selected", data[0].MovieType_ID);
-                    $("#MovieTicketType").dropdown("refresh");
-                    $("#MovieTicketType").dropdown("set selected", data[0].MovieTicketType_ID);
 
+                    var movietype = (data[0].MovieType_ID).split(',');
+                    $("#MovieType").dropdown("refresh");
+                    $("#MovieType").dropdown("set selected", movietype);
+
+                    var movietickettype = (data[0].MovieTicketType_ID).split(',');
+                    $("#MovieTicketType").dropdown("refresh");
+                    $("#MovieTicketType").dropdown("set selected", movietickettype);
+
+                    var director = (data[0].Director_ID).split(',');
                     $("#Director").dropdown("refresh");
-                    $("#Director").dropdown("set selected",data[0].Director_ID);
-                    $("#Actor").dropdown("refresh");                   
-                    $("#Actor").dropdown("set selected", data[0].Actor_ID);
-                    debugger
+                    $("#Director").dropdown("set selected", director);
+
+                    var actor = (data[0].Actor_ID).split(',');
+                    $("#Actor").dropdown("refresh");       
+                    $("#Actor").dropdown("set selected", actor);
+                    
                     $('#txtNote').val((data[0].Description));
                     if (data[0].Image == '' || data[0].Image == undefined) {
                         $('#avatarMovieUpload').attr('src', '');
@@ -240,7 +247,7 @@
     }
 
     function ExcuteData() {
-        debugger
+        
         var data = new Object();
         data.NameVN = $('#txtNameVN').val() ? $('#txtNameVN').val() : "";
         data.NameEN = $('#txtNameEN').val() ? $('#txtNameEN').val() : "";
@@ -252,10 +259,10 @@
         data.OpeningTime = $('#Opening_Time').val() ? ConvertStringYMD_DMY($('#Opening_Time').val()) : '';
         data.MovieTimeDuration = $('#txtMovieTimeDuration').val() ? Number($('#txtMovieTimeDuration').val()) : 0;
         data.SubTitleID = $('#SubTitle').dropdown('get value') ? Number($('#SubTitle').dropdown('get value')) : 0;
-        data.MovieTypeID = $('#MovieType').dropdown('get value') ?$('#MovieType').dropdown('get value') : '';
-        data.MovieTicketTypeID = $('#MovieTicketType').dropdown('get value') ? Number($('#MovieTicketType').dropdown('get value')) : 0;
-        data.DirectorID = $('#Director').dropdown('get value') ? Number($('#Director').dropdown('get value')) : 0;
-        data.ActorID = $('#Actor').dropdown('get value') ? $('#Actor').dropdown('get value') : 0;
+        data.MovieTypeID = $('#MovieType').dropdown('get value') ? ($('#MovieType').dropdown('get value')+',') : '';
+        data.MovieTicketTypeID = $('#MovieTicketType').dropdown('get value') ? ($('#MovieTicketType').dropdown('get value')+',') : 0;
+        data.DirectorID = $('#Director').dropdown('get value') ? ($('#Director').dropdown('get value')+',') : 0;
+        data.ActorID = $('#Actor').dropdown('get value') ? ($('#Actor').dropdown('get value')+',') : '';
         data.Note = $('#txtNote').val() ? $('#txtNote').val() : "";
 
         $('#form3').form('validate form');
@@ -274,7 +281,7 @@
                     notiError("Lỗi Hệ Thống");
                 },
                 success: function (result) {
-                    debugger
+                    
                     if (result == "0") {
                         
                         UploadVideoMovie();
@@ -356,7 +363,7 @@
         }
     }
     $(document).on("change", ".file_multi_video", function (evt) {
-        debugger
+        
         var $source = $('#video_here');
         $source[0].src = URL.createObjectURL(this.files[0]);
         $source.parent()[0].load();

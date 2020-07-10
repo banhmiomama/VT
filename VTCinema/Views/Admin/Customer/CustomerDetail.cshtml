@@ -84,15 +84,14 @@
 <script src="/js/main.js"></script>
 
 <script>
-    let CustomerDetailID;
-    let AvatarString = '';
-    let DataAvatar;
+    var CustomerDetailID = @ViewBag.CustomerID;
+    var AvatarString = '';
+    var DataAvatar;
     $(document).ready(function () {
         $("#Birthday").flatpickr({
             dateFormat: 'd-m-Y',
             enableTime: false,
         });
-        CustomerDetailID = @ViewBag.CustomerID;
         LoadDataUpdateCustomer();
     });
 
@@ -103,7 +102,7 @@
             contentType: 'application/json; charset=utf-8',
             url: "/Admin/CustomerDetail/GetCustomerDetail/" + CustomerDetailID,
             async: true,
-            success: function (data) {
+            success: function (data) {               
                 if (data.length != 0) {
                     $('#txtNameCustomer').val((data[0].Name));
                     $('#txtLastNameCustomer').val((data[0].LastName));

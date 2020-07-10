@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using VTCinema.Models;
 
 namespace VTCinema.Controllers.Admin.Schedule
 {
@@ -153,49 +155,50 @@ namespace VTCinema.Controllers.Admin.Schedule
         [HttpPost]
         public string Execute(string data, int ScheduleID)
         {
-            //try
-            //{
-            //    DataTable dt = new DataTable();
-            //    DataScheduleChoose dataDetail = JsonConvert.DeserializeObject<DataScheduleChoose>(data);
+            try
+            {
+                DataTable dt = new DataTable();
+                DataScheduleChoose dataDetail = JsonConvert.DeserializeObject<DataScheduleChoose>(data);
 
-            //    if (ScheduleID == 0)
-            //    {
-            //        using (Models.ExecuteDataBase connFunc = new Models.ExecuteDataBase())
-            //        {
-            //            dt = connFunc.ExecuteDataTable("YYY_sp_Schedule_Insert", CommandType.StoredProcedure,
-            //                "@Name", SqlDbType.NVarChar, dataDetail.Name,
-            //                "@Avatar", SqlDbType.VarChar, dataDetail.Avatar,
-            //                "@Description", SqlDbType.NVarChar, dataDetail.Description,
-            //                "@Birthday", SqlDbType.DateTime, dataDetail.Birthday,
-            //                "@Height", SqlDbType.Float, dataDetail.Height,
-            //                "@Nationality", SqlDbType.VarChar, dataDetail.Nationality,
-            //                "@CurrentID", SqlDbType.Int, HttpContext.Session.GetInt32(Comon.Global.UserID)
-            //            );
-            //        }
-            //    }
-            //    else
-            //    {
-            //        using (Models.ExecuteDataBase connFunc = new Models.ExecuteDataBase())
-            //        {
-            //            dt = connFunc.ExecuteDataTable("[YYY_sp_Schedule_Update]", CommandType.StoredProcedure,
-            //                "@Name", SqlDbType.NVarChar, dataDetail.Name,
-            //                "@Avatar", SqlDbType.VarChar, dataDetail.Avatar,
-            //                "@Description", SqlDbType.NVarChar, dataDetail.Description,
-            //                "@Birthday", SqlDbType.DateTime, dataDetail.Birthday,
-            //                "@Height", SqlDbType.Float, dataDetail.Height,
-            //                "@Nationality", SqlDbType.VarChar, dataDetail.Nationality,
-            //                "@CurrentID", SqlDbType.Int, ScheduleID,
-            //                "@Modified_By", SqlDbType.Int, HttpContext.Session.GetInt32(Comon.Global.UserID)
-            //           );
-            //        }
-            //    }
-            //    return dt.Rows[0][0].ToString();
-            //}
-            //catch (Exception ex)
-            //{
-            //    return "0";
-            //}
-            return "0";
+                if (ScheduleID == 0)
+                {
+                    using (Models.ExecuteDataBase connFunc = new Models.ExecuteDataBase())
+                    {
+                        dt = connFunc.ExecuteDataTable("YYY_sp_Schedule_Insert", CommandType.StoredProcedure,
+                            "@MovieID",SqlDbType.Int,dataDetail.MovieID,
+                            "@BranchID", SqlDbType.Int,dataDetail.BranchID,
+                            "@RoomID", SqlDbType.Int,dataDetail.RoomID,
+                            "@TicketTypeID", SqlDbType.Int,dataDetail.TicketTypeID,
+                            "@ShowTime", SqlDbType.DateTime,dataDetail.ShowTime,
+                            "@CloseTime", SqlDbType.DateTime,dataDetail.CloseTime,
+                            "@Note", SqlDbType.NVarChar,dataDetail.Note,
+                            "@CurrentID", SqlDbType.Int, HttpContext.Session.GetInt32(Comon.Global.UserID)
+                        );
+                    }
+                }
+                else
+                {
+                    using (Models.ExecuteDataBase connFunc = new Models.ExecuteDataBase())
+                    {
+                        dt = connFunc.ExecuteDataTable("[YYY_sp_Schedule_Update]", CommandType.StoredProcedure,
+                           "@MovieID", SqlDbType.Int, dataDetail.MovieID,
+                            "@BranchID", SqlDbType.Int, dataDetail.BranchID,
+                            "@RoomID", SqlDbType.Int, dataDetail.RoomID,
+                            "@TicketTypeID", SqlDbType.Int, dataDetail.TicketTypeID,
+                            "@ShowTime", SqlDbType.DateTime, dataDetail.ShowTime,
+                            "@CloseTime", SqlDbType.DateTime, dataDetail.CloseTime,
+                            "@Note", SqlDbType.NVarChar, dataDetail.Note,
+                            "@CurrentID", SqlDbType.Int, ScheduleID,
+                            "@Modified_By", SqlDbType.Int, HttpContext.Session.GetInt32(Comon.Global.UserID)
+                       );
+                    }
+                }
+                return dt.Rows[0][0].ToString();
+            }
+            catch (Exception ex)
+            {
+                return "0";
+            }
         }
     }
 }
