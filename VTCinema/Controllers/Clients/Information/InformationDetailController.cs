@@ -45,6 +45,70 @@ namespace VTCinema.Controllers.Clients.MovieDetail
             }
         }
 
+        [Route("LoadTicket")]
+        [HttpPost]
+        public string LoadTicket()
+        {
+            DataSet ds = new DataSet();
+            DataTable Movie = DataMovie();
+            Movie.TableName = "Movie";
+            DataTable Branch = DataBranch();
+            Branch.TableName = "Branch";
+            ds.Tables.AddRange(new DataTable[] { Movie, Branch });
+            return JsonConvert.SerializeObject(ds);
+        }
+        DataTable DataMovie()
+        {
+            try
+            {
+                DataTable dt = new DataTable();
+                using (Models.ExecuteDataBase confunc = new Models.ExecuteDataBase())
+                {
+                    dt = confunc.ExecuteDataTable("[YYY_sp_MovieAll_LoadCombo]", CommandType.StoredProcedure);
+
+                }
+                if (dt != null)
+                {
+                    dt.TableName = "Movie";
+                    return dt;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+        DataTable DataBranch()
+        {
+            try
+            {
+                DataTable dt = new DataTable();
+                using (Models.ExecuteDataBase confunc = new Models.ExecuteDataBase())
+                {
+                    dt = confunc.ExecuteDataTable("[YYY_sp_BranchAll_LoadCombo]", CommandType.StoredProcedure);
+
+                }
+                if (dt != null)
+                {
+                    dt.TableName = "Branch";
+                    return dt;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+
 
     }
 }

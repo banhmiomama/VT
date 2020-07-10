@@ -89,5 +89,6 @@ namespace VTCinema.Controllers.Admin.Information
                 return "0";
             }
         }
+
     }
 }

@@ -4,6 +4,7 @@
     Layout = "~/Views/Shared/Master.cshtml";
 }
 
+
 <div class="pusher">
     <div class="navslide navwrap">
         <div class="row" style="background-color: white">
@@ -30,7 +31,7 @@
                             <tr role="row">
                                 <th style="display: none">ID</th>
                                 <th style="width: 70px;">#</th>
-                                <th >Title</th>
+                                <th>Title</th>
                                 <th>Note</th>
                                 <th>Xoá</th>
                             </tr>
@@ -135,7 +136,7 @@
 
     function ExecuteDeleteInformation(ID) {
         $.ajax({
-            url: "Information/DeleteInformation/"+ID,
+            url: "Information/DeleteInformation/" + ID,
             dataType: "json",
             type: "GET",
             data: JSON.stringify({

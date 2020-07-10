@@ -42,16 +42,18 @@
             </div>
             <div class="col-3">
                 <div class="form-group">
-                    <label for="exampleFormControlSelect1">Example select</label>
-                    <select class="form-control" id="exampleFormControlSelect1">
-                        <option>1</option>
+                    <div id="MovieID">
+                        <label for="exampleFormControlSelect1">Example select</label>
+                        <select class="form-control" id="cbbMovie" onchange="OnchangeMovie();">
+                            <option></option>
+                        </select>
+                    </div>
+                    <label for="exampleFormControlSelect1" onchange="OnchangeBranch();">Example select</label>
+                    <select class="form-control" id="cbbBranch">
+                        <option id="cbbBranch">1</option>
                     </select>
                     <label for="exampleFormControlSelect1">Example select</label>
-                    <select class="form-control" id="exampleFormControlSelect1">
-                        <option>1</option>
-                    </select>
-                    <label for="exampleFormControlSelect1">Example select</label>
-                    <select class="form-control" id="exampleFormControlSelect1">
+                    <select class="form-control" id="">
                         <option>1</option>
                     </select>
                 </div>
@@ -122,24 +124,55 @@
 @section Script
 {
     <script>
-    let InformationDetailID;
+        let InformationDetailID;
+
         $(document).ready(function () {
-            debugger
         InformationDetailID = @ViewBag.InformationDetailID;
-        LoadDataInformationDetail();
+            LoadDataInformationDetail();
     })
-    function LoadDataInformationDetail() {
-        $.ajax({
-            type: 'GET',
-            dataType: "json",
-            contentType: 'application/json; charset=utf-8',
-            url: "GetInformationDetail/" + InformationDetailID,
-            async: true,
-            success: function (data) {
-                $('#InformationTitle').text(data[0].Title);
-                $('#Note').text(data[0].Note);
+        function LoadDataInformationDetail() {
+            $.ajax({
+                type: 'GET',
+                dataType: "json",
+                contentType: 'application/json; charset=utf-8',
+                url: "GetInformationDetail/" + InformationDetailID,
+                async: true,
+                success: function (data) {
+                        $('#InformationTitle').text(data[0].Title);
+                        $('#Note').text(data[0].Note);
+                    }
+
+            });
+        }
+        let DataMovie;
+        let DataBranch;
+        function LoadSchedule() {
+            $.ajax({
+                url: "Information/LoadTicket",
+                dataType: "json",
+                type: "POST",
+                data: JSON.stringify({
+                }),
+                contentType: 'application/json; charset=utf-8',
+                async: true,
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    notiError();
+                },
+                success: function (result) {
+                    DataMovie = result.Name;
+                    LoadCombo(DataMovie,"cbbMovie")
+                    DataBranch = result.Branch;
+                    LoadCombo(DataBranch, "cbbBranch");
+                }
+            });
+        }
+        function OnchangeMovie() {
+            let MovieID = $('#MovieID').dropdown('get value') ? Number($('#MovieID').dropdown('get value')) : 0;
+            $("#BranchID").dropdown("refresh");
+            if (MovieID != 0) {
+                let Data = DataBranch.filter(word => word["MovieID"] == MovieID);
+                LoadCombo(Data, "cbbBranch");
             }
-        })
-    }
+        }
     </script>
 }

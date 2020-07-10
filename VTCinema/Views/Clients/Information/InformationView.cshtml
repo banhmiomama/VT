@@ -90,11 +90,39 @@
                 </div>
             </div>
             <div class="col-3">
-                <img src="~/Clients/img/user.png" />
+                <div class="dropdown show">
+                    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Chọn phim
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink" id="cbbMovieName" onchange="OnchangeMovieName">
+                        <a class="dropdown-item" href="#"></a>
+                    </div>
+                </div>
+                <div class="dropdown show">
+                    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Chọn chi nhánh
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink" id="cbbBranchName">
+                        <a class="dropdown-item" href="#">Action</a>
+                    </div>
+                </div>
+                <div class="dropdown show">
+                    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Chọn ngày chiếu
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink" id="cbbShowMovieDate">
+                        <a class="dropdown-item" href="#">Action</a>
+                    </div>
+                </div>
+                <div class="dropdown show">
+                    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Chọn suất chiếu
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink" id="cbbShowMovieTime">
+                        <a class="dropdown-item" href="#">Action</a>
+                    </div>
+                </div>
             </div>
-            
-
-        </div>
             <div class="row">
                 <div class="col-9">
                     <a href="#" class="section__btn">Show more</a>
@@ -168,8 +196,13 @@
 @section Script
 {
     <script>
+        let DataMovieName
+        let DataBranchName
+        let DataDate
         $(document).ready(function () {
             LoadDataInformation();
+            debugger
+            Loadcbb();
         })
         function LoadDataInformation() {
             $.ajax({
@@ -212,57 +245,21 @@
                 document.getElementById(id).innerHTML = stringContent;
             }
         }
+        function Loadcbb() {
+            $.ajax({
+                type: 'POST',
+                dataType: "json",
+                contentType: 'application/json; charset=utf-8',
+                url: "Information/LoadDataBuyTicket",
+                async: true,
+                success: function (result) {
+                    DataMovieName = result.Table1;
+                    LoadCombo(DataMovieName, "cbbMovieName");
+                    }
+            });
+        }
+        //function OnchangeMovieName() {
+        //    let MovieName = ('#cbbBranchName').dropdown('get value') ? Number($('#cbbBranchName').dropdown('get value')) : 0;
+        //}
     </script>
-    @*<script>
-            let ImageString = "";
-            let DataImage;
-            $(document).ready(function () {
-                LoadDataInformation();
-            })
-            function LoadDataInformation() {
-                $.ajax({
-                    url: "Information/LoadDataInformation",
-                    dataType: "json",
-                    type: "POST",
-                    data: JSON.stringify({
-                    }),
-                    contentType: 'application/json; charset=utf-8',
-                    async: true,
-                    error: function (XMLHttpRequest, textStatus, errorThrown) {
-                        notiError();
-                    },
-                    success: function (result) {
-                        RenderInformationList(result, "InformationList");
-                    }
-                });
-            }
-            function RenderInformationList(data, id) {
-                var myNode = document.getElementById(id);
-                if (myNode != null) {
-                    myNode.innerHTML = '';
-                    let stringContent = '';
-                    if (data && data.length > 0) {
-                        for (var i = 0; i < data.length; i++) {
-                            let item = data[i];
-                            let tr =
-                             $('#InformationTitle').text(data[i].Title);
-                            $('#Note').text(data[i].Note);
-                            if (data[0].Image == '' || data[i].Image == undefined) {
-                                $('#Image').attr('src', '');
-                            }
-                            else {
-                                $('#Image').attr('src', data[i].Image);
-                                ImageString = data[i].Image;
-                            }
-                                + '<a class="btn-information"  href="InformationDetail/' + item.ID + '" style="">Chi tiết</a>'
-                                + ' </div></div>';
-
-                            stringContent = stringContent + '<div class="col-12 col-md-6 col-lg-4">' + tr + '</div>';
-                        }
-                    }
-                    document.getElementById(id).innerHTML = stringContent;
-                }
-            }
-
-        </script>*@
 }
