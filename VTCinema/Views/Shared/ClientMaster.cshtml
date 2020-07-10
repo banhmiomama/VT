@@ -117,8 +117,8 @@
 
                                         <ul class="dropdown-menu header__dropdown-menu" aria-labelledby="dropdownMenuMore">
                                             <li><a href="about.html">About</a></li>
-                                            <li><a href="signin.html">Sign In</a></li>
-                                            <li><a href="signup.html">Sign Up</a></li>
+                                            <li><a href="signin">Đăng nhập</a></li>
+                                            <li><a href="signup">Đăng kí</a></li>
                                             <li><a href="404.html">404 Page</a></li>
                                         </ul>
                                     </li>
@@ -131,9 +131,9 @@
                                         <i class="icon ion-ios-search"></i>
                                     </button>
 
-                                    <a href="signin.html" class="header__sign-in">
+                                    <a href="/signin" class="header__sign-in">
                                         <i class="icon ion-ios-log-in"></i>
-                                        <span>sign in</span>
+                                        <span>Đăng nhập</span>
                                     </a>
                                 </div>
                                 <!-- end header auth -->
@@ -416,6 +416,18 @@
                 //        document.getElementById(id).innerHTML = stringContent;
                 //    }
                 //}
+        function Divide(nStr)
+            {
+	            nStr += '';
+	            x = nStr.split('.');
+	            x1 = x[0];
+	            x2 = x.length > 1 ? '.' + x[1] : '';
+	            var rgx = /(\d+)(\d{3})/;
+	            while (rgx.test(x1)) {
+		            x1 = x1.replace(rgx, '$1' + ',' + '$2');
+	            }
+	            return x1 + x2;
+            }
     </script>
 
     @RenderSection("Script", required: false)

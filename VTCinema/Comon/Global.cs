@@ -14,7 +14,7 @@ namespace VTCinema.Comon
     {
         public GlobalUser user;
         public int sys_userid { get; set; }
-        public int sys_customerid { get; set; }
+      
         public string sys_username { get; set; }
         public string sys_Role { get; set; }
         public string sys_RoleID { get; set; }
@@ -33,15 +33,9 @@ namespace VTCinema.Comon
 
         public string sys_userAvatar;
 
-        // Permission Invidual User       
-        // Extension
-        public string sys_CalLExtension;
-        public string sys_CalLExtensionPassword;
-        public int sys_UsingCallCenter;
-        // Limit By Branch
-        public int sys_LimitPic { get; set; }
-        public int sys_LimitSMS { get; set; }
-        public int sys_isLimit { get; set; }
+       
+        public int sys_customerid { get; set; }
+        public static string sys_Email { get; set; }
 
 
         public int DetectLimitDate(int userID)
@@ -110,8 +104,7 @@ namespace VTCinema.Comon
                     if (dt.Rows.Count > 0)
                     {
                         sys_customerid = Convert.ToInt32(dt.Rows[0]["ID"].ToString());
-                        //sys_username = dt.Rows[0]["username"].ToString();
-                        //sys_RoleID = dt.Rows[0]["Group_ID"].ToString();
+                        sys_Email = dt.Rows[0]["Email"].ToString();
                         //sys_RoleServerID = dt.Rows[0]["InheritanceServer"].ToString();
                         //DetectUserInfo(sys_userid);
                         return sys_customerid;

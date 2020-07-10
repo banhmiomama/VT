@@ -152,8 +152,8 @@ namespace VTCinema.Controllers.Clients.Detail
         {
             try
             {
-                DataTable ds = new DataTable();
-                DataRating dataDetail = (DataRating)JsonConvert.DeserializeObject(data);
+                DataTable ds = new DataTable();;
+                DataRating dataDetail = JsonConvert.DeserializeObject<DataRating>(data);
                 int CustomerID = (int)HttpContext.Session.GetInt32(Comon.GlobalClient.CustomerID);
                 using (Models.ExecuteDataBase confunc = new Models.ExecuteDataBase())
                 {
@@ -163,14 +163,7 @@ namespace VTCinema.Controllers.Clients.Detail
                         , "@Rating", SqlDbType.Decimal, dataDetail.RatingMoive
                         , "@CusID", SqlDbType.Int, CustomerID) ;
                 }
-                if (ds != null)
-                {
-                    return JsonConvert.SerializeObject(ds);
-                }
-                else
-                {
-                    return "[]";
-                }
+                return ds.Rows[0][0].ToString();
             }
             catch (Exception ex)
             {

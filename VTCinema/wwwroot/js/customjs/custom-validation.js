@@ -83,21 +83,13 @@ $('.ui.form3').form({
             rules: [{
                 type: 'empty',
                 prompt: 'Vui lòng nhập họ '
-            },
-            {
-                type: "regExp[/^[aAàÀảẢãÃáÁạẠăĂằẰẳẲẵẴắẮặẶâÂầẦẩẨẫẪấẤậẬbBcCdDđĐeEèÈẻẺẽẼéÉẹẸêÊềỀểỂễỄếẾệỆfFgGhHiIìÌỉỈĩĨíÍịỊjJkKlLmMnNoOòÒỏỎõÕóÓọỌôÔồỒổỔỗỖốỐộỘơƠờỜởỞỡỠớỚợỢpPqQrRsStTuUùÙủỦũŨúÚụỤưƯừỪửỬữỮứỨựỰvVwWxXyYỳỲỷỶỹỸýÝỵỴzZ]+$/]",
-                prompt: 'Tên không được nhập số '
-            }]       
+            }] 
         },
         name: {
             identifier: 'name',
             rules: [{
                 type: 'empty',
                 prompt: 'Vui lòng nhập tên'
-            },
-            {
-                type: "regExp[/^[aAàÀảẢãÃáÁạẠăĂằẰẳẲẵẴắẮặẶâÂầẦẩẨẫẪấẤậẬbBcCdDđĐeEèÈẻẺẽẼéÉẹẸêÊềỀểỂễỄếẾệỆfFgGhHiIìÌỉỈĩĨíÍịỊjJkKlLmMnNoOòÒỏỎõÕóÓọỌôÔồỒổỔỗỖốỐộỘơƠờỜởỞỡỠớỚợỢpPqQrRsStTuUùÙủỦũŨúÚụỤưƯừỪửỬữỮứỨựỰvVwWxXyYỳỲỷỶỹỸýÝỵỴzZ]+$/]",
-                prompt: 'Tên không được nhập số'
             }]
         },
         email: {
@@ -290,7 +282,13 @@ $('.ui.form3').form({
         },  
         
         // product
-        
+        Productname: {
+            identifier: 'Productname',
+            rules: [{
+                type: 'empty',
+                prompt: 'Vui lòng nhập tên sản phẩm'
+            }]
+        },  
         Producttype: {
             identifier: 'Producttype',
             rules: [{

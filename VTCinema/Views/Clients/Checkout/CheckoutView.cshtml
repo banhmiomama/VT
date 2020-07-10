@@ -101,7 +101,7 @@
         }
 
             .seat input[type="checkbox"]:checked + label {
-                background: #bada55 !important;
+                background: #44c020 !important;
                 -webkit-animation-name: rubberBand;
                 animation-name: rubberBand;
                 animation-duration: 300ms;
@@ -113,7 +113,13 @@
                 text-indent: -9999px;
                 overflow: hidden;
             }
-
+            .seat input[type="checkbox"].selected:disabled + label {
+                background: #e7eaec !important;
+                opacity:0.8;
+            }
+                .seat input[type="checkbox"].selected:disabled + label:after {
+                    cursor: not-allowed;
+                }
                 .seat input[type="checkbox"]:disabled + label:after {
                     content: "X";
                     text-indent: 0;
@@ -266,6 +272,9 @@
         .border-dashed {
             border-bottom: 1px dashed #e9e9e9;
         }
+        .p-title.col-sm-6 {
+            padding-top:17.5px;
+        }
         .strong {
             color: #ffffff;
             background-color: red;
@@ -273,75 +282,100 @@
             padding: 0 5px;
             border-radius: 0.25em;
         }
+        .product-list {
+            position: absolute;
+            z-index: 3;
+            width: 0;
+            height: 100%;
+            background-color: white;
+            right: calc(100% + 15px);
+            top: 0;
+            transition: 0.5s;
+        }
+        .product-list.active {
+            width: 100%;
+        }
     </style>
 }
 <!-- content -->
 <section class="section details">
     <div class="container">
         <div class="row">
-            <div class="col-12 col-lg-8 col-xl-8">
-                <!-- content tabs -->
+            <div class="col-12 col-lg-8 col-xl-8" style="z-index:2">
                 <img src="~/Clients/img/screen.png" style="max-width:100%;" />
                 <div class="tab-content" id="RoomChairBody">
-
                 </div>
-                <!-- end content tabs -->
             </div>
-
-            <!-- sidebar -->
-            <div class="col-12 col-lg-4 col-xl-4">
-                <div class="row">
+            <div class="col-12 col-lg-4 col-xl-4" style="position:relative;z-index:4;box-shadow: -6px 2px 15px rgba(140, 121, 121, 0.3);">
+                <div class="row" style="z-index:4;padding:10px;padding-top:35px;">
                     <!-- section title -->
                     <div class="col-12 ">
                         <h2 class="section__title section__title--sidebar" style="font-size:18px;margin-bottom:10px" id="TitleMoive">
-                            <strong class="strong">VTCINEMA</strong> Giải Cứu Cây Ước Nguyện
-                            The Wishmas Tree
                         </h2>
-                        <p class="p-title" id="Address">
-                            CGV - Crescent Mall
-                        </p>
-                        <p class="p-title border-dashed" id="ShowTime">Thứ tư 08/07/2020 - 19:30 - Cinema 7</p>
+                        <p class="p-title" id="Address"></p>
+                        <p class="p-title" id="ShowTime">T</p>
                     </div>
                     <!-- end section title -->
                     <div class="col-12 ">
-                        <div class="row">
-                            <p class="p-title col-sm-6 border-dashed">Ghế:<span id="Chair">qưe</span></p>
-                            <p class="p-title col-sm-6 border-dashed" id="PriceChair" style="text-align:right">120000</p>
+                        <div class="border-dashed">
+                            <p class="p-title col-sm-6">Ghế: <span id="Chair" style="font-size:15px;font-weight:600"></span></p>
+                            <p class="p-title col-sm-6" id="PriceChair" style="text-align:right" onchange="OnchangePrice();">0</p>
                         </div>
                     </div>
                     <div class="col-12">
-                        <div class="row">
-                            <p class="p-title col-sm-6">Combo:<span id="Combo"></span></p>
-                            <p class="p-title col-sm-6" id="PriceCombo" style="text-align:right">120000</p>
+                        <div class="border-dashed">
+                            <p class="p-title col-sm-6">
+                                <img class="icon-combo" src="~/Clients/icon/popcorn.png" style="margin-right: 9px; width: 17px; height: 22px;" />Thức Ăn:<span id="Combo"></span>
+                            </p>
+                            <p class="p-title col-sm-6" id="PriceCombo" style="text-align:right">0</p>
                         </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="border-dashed">
+                            <p class="p-title col-sm-6">Tổng:</p>
+                            <p class="p-title col-sm-6" id="TotalPrice" style="text-align:right">0</p>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <button class="header__sign-in" type="submit" onclick="return ExecuteBill();" style="margin:0 auto;width:100%;">
+                            <i class="icon ion-ios-log-in"></i>
+                            <span>Thanh Toán</span>
+                        </button>
+                    </div>
+                       
+                    </div>
+                    <div class="row product-list">
 
                     </div>
                 </div>
-            </div>
-            <!-- end sidebar -->
         </div>
     </div>
 </section>
 <!-- end content -->
-
+<div id="div" hidden></div>
 @section Script{
     <script>
         var ScheduleID = @ViewBag.ScheduleDetailID;
-        var DataBill = [];
+        var Email = '@ViewBag.Email';
+        var DataBillTicket = [];
+        var PriceTicket = 0;
+        var PriceProduct = 0;
         var PriceTicketType = 0;
+        var DataMovie;
+        var Total;
         $(document).ready(function () {
             LoadDataScheduleMovie();
+            $('img.icon-combo').on('click', function () {
+                $('.product-list').toggleClass('active');
+            });
             
         });
-        function clickLabel() {
+        function OnclickChairLabel() {
             $(".seat label").click(function () {
-                if (DataBill.length == 8){
-
-                }
                 var NameChair = $(this).attr("for");
-                $('#' + NameChair).prop('checked',function () {
-                    var idChair = $(this).attr('data-chair');
-                    if (removeItemsById(DataBill, idChair) == 0) {
+                $('#' + NameChair +':enabled').prop('checked',function () {
+                    var idChair = $(this).attr('data-chair');                  
+                    if (removeItemsById(DataBillTicket, idChair) == 0) {
                         var rowchair = Number($(this).parent().parent().attr('data-rowchair'));
                         var price = $(this).attr('data-price');
                         var typeChair = $(this).attr('data-typechair');
@@ -352,20 +386,23 @@
                             Price: price,
                             TypeChair: typeChair,
                         };
-                        DataBill.push(item);                       
+                        DataBillTicket.push(item);                       
                     }
-                    RenderPrice(DataBill, "Chair", "PriceChair");
-                });              
+                    RenderPrice(DataBillTicket, "Chair", "PriceChair");
+                });    
+                if (DataBillTicket.length == 8) {
+                    notiWarning("Số ghế được chọn tối đa không quá 8 ghế ngồi !");
+                    return;
+                }
             });
         }
         function RenderPrice(data, idNameChair, idPriceChair) {
-            debugger
             var idChair = document.getElementById(idNameChair);
             var idPrice = document.getElementById(idPriceChair);
             if (idChair != null && idPrice != null) {
                 idChair.innerHTML = '';
                 idPrice.innerHTML = '';
-                let PriceTicket = 0;
+                PriceTicket = 0;
                 let StringChair = '';
                 if (data && data.length > 0) {
                     for (var i = 0; i < data.length; i++) {
@@ -374,16 +411,21 @@
                         StringChair += item.NameChair + ',';
                     }
                 }
+
                 document.getElementById(idNameChair).innerHTML = StringChair;
-                document.getElementById(idPriceChair).innerHTML = PriceTicket;
-            }
-            
+                $('#' + idPriceChair).trigger('change');
+                document.getElementById(idPriceChair).innerHTML = Divide(PriceTicket);
+            }          
+        }
+        function OnchangePrice() {
+            Total = PriceTicket + PriceProduct;
+            $('#TotalPrice').text(Divide(Total));
         }
         function removeItemsById(arr, id) {
             var LengthArr = arr.length;
             var result = 0;
             if (LengthArr > 0) {
-                while (--LengthArr) {
+                while (LengthArr--) {
                     var ChairId = arr[LengthArr];
                     if (Number(ChairId.Chair) == Number(id)) {
                         arr.splice(LengthArr, 1);
@@ -402,17 +444,17 @@
                 url: "/Checkout/ScheduleMovie/" + ScheduleID,
                 async: true,
                 success: function (result) {
-                    let DataMovie = result.Table;
+                     DataMovie = result.Table;
                     if (DataMovie.length > 0) {
                         $('#TitleMoive').html('<strong class="strong">' + DataMovie[0].TicketType + '</strong> ' + DataMovie[0].MovieName);
-                        $('#Address').text(DataMovie[0].Address);
+                        $('#Address').text(DataMovie[0].Address + ' - ' + DataMovie[0].Room);
                         $('#ShowTime').text(DataMovie[0].ShowTime);
                         PriceTicketType = DataMovie[0].PriceTicketType;
                     }
                     let NameRow = result.Table1;
                     let Chair = result.Table2;
                     RenderRoomChair(NameRow, Chair, "RoomChairBody");
-                    clickLabel();
+                    OnclickChairLabel();
                 }
             });
         }
@@ -430,7 +472,7 @@
                             items = items.sort(function (a, b) { return a.ColumnChair - b.ColumnChair; })
                             item = items[j];
                             tr += '<li class="seat" style="visibility:' + item.VisibilityChair + ';flex-grow:' + item.Total + ';max-width:calc(40px * ' + item.Total + ')" >'
-                                + '<input type="checkbox" data-typechair="' + item.TypeChairID + '" data-chair="' + item.ID + '" value="' + item.NameRow + '" data-price="' + item.PriceChair + '" id="' + item.NameRow + item.ColumnChair + '" ' + item.DisabledChair + '/>'
+                                + '<input type="checkbox" class="' + item.selected + '" ' + ((item.selected == "") ? "" : "disabled") +'  data-typechair="' + item.TypeChairID + '" data-chair="' + item.ID + '" value="' + item.NameRow + '" data-price="' + item.PriceChair + '" id="' + item.NameRow + item.ColumnChair + '" ' + item.DisabledChair + '/>'
                                 + '<label for="' + item.NameRow + item.ColumnChair + '" style="background:' + item.ColorCode + '"></label></li>'
                         }
                         stringContent = stringContent + '<li class="row"><ol class="seats" data-rowchair="'+rc.ID+'" type="' + rc.NameRow + '">' + tr + '</ol></li>';
@@ -439,7 +481,70 @@
                 document.getElementById(id).innerHTML = stringContent;
             }
         }
-    </script>
 
-    
+        function ExecuteBill() {
+            var data = new Object();
+            data.ScheduleID = Number(DataMovie[0].ID);
+            data.Quan = Number(DataBillTicket.length);
+            data.Price = parseFloat(Total);
+            $.ajax({
+                url: "/Checkout/ExecuteBill",
+                dataType: "json",
+                type: "POST",
+                data: {
+                    data: JSON.stringify(data)
+                    , Email: Email
+                },
+                async: true,
+                error: function (error) {
+                    alert(error);
+                },
+                success: function (result) {                    
+                    if (result != "0") {
+                        if (ExecuteBillTicket(result) == 1) {
+                            notiSuccess("Hóa đơn bạn đặt thành công");
+                        }
+                        else notiError("Hóa đơn bạn đặt thất bại");
+                    }
+                }
+            });
+            return false;
+        }
+        function ExecuteBillTicket(idBill) {
+            debugger
+            let TotalInsert = 0;
+            let ticketlength = DataBillTicket.length;           
+            if (ticketlength > 0) {
+                for (var i = 0; i < ticketlength; i++) {
+                    let item = DataBillTicket[i];
+                    item.Bill_ID = Number(idBill);
+                    if (ExecuteBillTicketInsert(item)==1) {
+                        TotalInsert+=1;
+                    }
+                }
+            }
+            return  (TotalInsert == ticketlength) ? 1 : 0;
+        }
+
+        function ExecuteBillTicketInsert(data) {
+            var Equa = 0;
+            $.ajax({
+                url: "/Checkout/ExecuteBillTicket",
+                dataType: "json",
+                type: "POST",
+                data: {
+                    data: JSON.stringify(data)
+                },
+                async: true,
+                error: function (error) {
+                    return 0;
+                },
+                success: function (result) {
+                    Equa = result;
+                }
+            });
+            return 1;
+        }
+        
+    </script>  
 }

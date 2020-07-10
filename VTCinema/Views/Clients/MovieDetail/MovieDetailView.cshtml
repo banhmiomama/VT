@@ -263,9 +263,9 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <label class="lable-detail">Chọn Ngày Xem</label>
-                                <input class="flatpickr" id="MovieShowTime" name="date" type="text" onchange="OnchangeSchedule();" />
+                                <input class="flatpickr" style="font-size:13px;" id="MovieShowTime" name="date" type="text" onchange="OnchangeSchedule();" />
                             </div>
-                            <div class="col-sm-6">
+                            <div class="col-sm-6" style="font-size:13px;">
                                 <label class="lable-detail">Chọn Chi Nhánh</label>
                                 <div class="dropdown">
                                     <button id="dLabel" class="dropdown-select" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -280,38 +280,6 @@
                         </div>
                         <div class="reviews" style="margin-top:30px;">
                             <ul class="reviews__list" id="ScheduleList">
-                                <li class="reviews__item">
-                                    <div class="reviews__autor" style="padding-left:0">
-                                        <span class="reviews__name">
-                                        <strong style="color:#e71a0f">VTCINEMA</strong> - HEADOFFICE
-                                        </span>
-                                        <span class="reviews__time">24.08.2018, 17:53 by John Doe</span>
-                                    </div>
-                                    <div class="sessions">
-                                        <a class="session">
-                                            <span class="s-start-time ng-binding">19:20</span>
-                                            <br class="visible-xs"> ~ 21:00
-                                        </a>
-                                        <a class="session">
-                                            <span class="s-start-time ng-binding">19:20</span>
-                                            <br class="visible-xs"> ~ 21:00
-                                        </a>
-                                    </div>
-                                </li>
-                                <li class="reviews__item">
-                                    <div class="reviews__autor" style="padding-left:0">
-                                        <span class="reviews__name"><strong style="color:#e71a0f">VTCINEMA</strong> - HEADOFFICE</span>
-                                        <span class="reviews__time">24.08.2018, 17:53 by John Doe</span>
-                                    </div>
-                                    <div class="sessions">
-                                        <a class="session">
-                                            <span class="s-start-time ng-binding">19:20</span><br class="visible-xs"> ~ 21:00
-                                        </a>
-                                        <a class="session">
-                                            <span class="s-start-time ng-binding">19:20</span><br class="visible-xs"> ~ 21:00
-                                        </a>
-                                    </div>
-                                </li>
                             </ul>
                         </div>
                     </div>
@@ -322,13 +290,13 @@
                                 <div class="reviews">
                                     <ul class="reviews__list" id="CommentList">
                                     </ul>
-                                    <form  class="form" id="form3">
+                                    <form  class="form" id="formr" method="post">
                                         <textarea id="NoteRating" class="form__textarea" name="comment" placeholder="Review" required></textarea>
                                         <div class="form__slider">
                                             <div class="form__slider-rating" id="slider__rating"></div>
                                             <div class="form__slider-value" id="form__slider-value" name="rating"></div>
                                         </div>
-                                        <button class="form__btn" type="submit" onclick="return ExecuteRating();">Send</button>
+                                        <button class="form__btn" form="formr" type="submit" onclick="return ExecuteRating();">Send</button>
                                     </form>
                                 </div>
                             </div>
@@ -667,8 +635,9 @@
                 url: "/MovieDetail/ExecuteRating",
                 dataType: "json",
                 type: "POST",
-                data: JSON.stringify(data),
-                contentType: 'application/json; charset=utf-8',
+                data: {
+                    data: JSON.stringify(data)
+                },
                 async: true,
                 error: function (error) {
                     alert(error);

@@ -3,17 +3,17 @@
     ViewData["Title"] = "Calendar";
     Layout = "~/Views/Shared/Master.cshtml";
 }
-@*<script src="~/Calendar_TUI/tui-code-snippet.min.js"></script>
+<script src="~/Calendar_TUI/tui-code-snippet.min.js"></script>
     <script src="~/Calendar_TUI/dist/tui-calendar.js"></script>
-    <link href="~/Calendar_TUI/dist/tui-calendar.css" rel="stylesheet" />*@
-<link rel="stylesheet" type="text/css" href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css" />
+    <link href="~/Calendar_TUI/dist/tui-calendar.css" rel="stylesheet" />
+@*<link rel="stylesheet" type="text/css" href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css" />
 <link rel="stylesheet" type="text/css" href="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.css" />
 <script src="https://uicdn.toast.com/tui.code-snippet/latest/tui-code-snippet.js"></script>
 <script src="https://uicdn.toast.com/tui.dom/v3.0.0/tui-dom.js"></script>
 <script src="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.min.js"></script>
 <script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.min.js"></script>
 <script src="https://uicdn.toast.com/tui-calendar/latest/tui-calendar.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>*@
 <style>
     .tui-full-calendar-today {
         background: #E1BEE7 !important;
@@ -22,7 +22,7 @@
 <div class="pusher">
     <div class="navslide navwrap">
         <div class="row" style="background-color: white">
-            <span id="menu-navi">
+            @*<span id="menu-navi">
                 <button type="button" class="btn btn-default btn-sm move-today" data-action="move-today">Today</button>
                 <button type="button" class="btn btn-default btn-sm move-day" data-action="move-prev">
                     <i class="calendar-icon ic-arrow-line-left" data-action="move-prev"></i><
@@ -30,7 +30,7 @@
                 <button type="button" class="btn btn-default btn-sm move-day" data-action="move-next">
                     <i class="calendar-icon ic-arrow-line-right" data-action="move-next"></i>>
                 </button>
-            </span>
+            </span>*@
             <span id="renderRange" class="render-range"></span>
 
             <div class="promo_card" id="post">
@@ -125,7 +125,7 @@
     }
 
     var calendar = new tui.Calendar('#calendar', {
-        defaultView: 'month',
+        defaultView: 'week',
         taskView: true,    // Can be also ['milestone', 'task']
         scheduleView: true,  // Can be also ['allday', 'time']
         template: {
@@ -133,13 +133,13 @@
                 return '<span class="calendar-font-icon ic-milestone-b"></span> <span style="background-color: ' + schedule.bgColor + '">' + schedule.title + '</span>';
             },
             milestoneTitle: function () {
-                return 'Milestone';
+                //return 'Milestone';
             },
-            task: function (schedule) {
-                return '&nbsp;&nbsp;#' + schedule.title;
-            },
+            //task: function (schedule) {
+            //    return '&nbsp;&nbsp;#' + schedule.title;
+            //},
             taskTitle: function () {
-                return '<label><input type="checkbox" />Task</label>';
+                //return '<label><input type="checkbox" />Task</label>';
             },
             allday: function (schedule) {
                 return schedule.title + ' <i class="fa fa-refresh"></i>';
@@ -148,7 +148,7 @@
                 return 'All Day';
             },
             time: function (schedule) {
-                return '<span style="background-color:' + schedule.bgColor + ';color:' + schedule.color + '"> ' + schedule.title + ' <i class="fa fa-refresh"></i>' + schedule.start + '</span>';
+                return '<span style="background-color:' + schedule.bgColor + ';color:' + schedule.color + '"> ' + schedule.title + ' <i class="fa fa-refresh"></i></span>';
             }
         },
         month: {
@@ -4213,7 +4213,7 @@
             -webkit-transform: rotate(90deg);
             transform: rotate(90deg);
             padding: 6px;
-        }
+        }   
 
             .schedule_calender_header .move-day.move-next {
                 -webkit-transform: rotate(-90deg);

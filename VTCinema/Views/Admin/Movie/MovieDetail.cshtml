@@ -155,9 +155,9 @@
 <script src="/js/main.js"></script>
 
 <script>
-    let MovieDetailID;
-    let AvatarString = '';
-    let DataAvatar;
+    var MovieDetailID;
+    var AvatarString = '';
+    var DataAvatar;
     $(document).ready(function () {
         $("#Opening_Time").flatpickr({
             dateFormat: 'd-m-Y',
@@ -200,15 +200,22 @@
 
                     $("#SubTitle").dropdown("refresh");
                     $("#SubTitle").dropdown("set selected", data[0].SubTitle_ID);
-                    $("#MovieType").dropdown("refresh");
-                    $("#MovieType").dropdown("set selected", data[0].MovieType_ID);
-                    $("#MovieTicketType").dropdown("refresh");
-                    $("#MovieTicketType").dropdown("set selected", data[0].MovieTicketType_ID);
 
+                    var movietype = (data[0].MovieType_ID).split(',');
+                    $("#MovieType").dropdown("refresh");
+                    $("#MovieType").dropdown("set selected", movietype);
+
+                    var movietickettype = (data[0].MovieTicketType_ID).split(',');
+                    $("#MovieTicketType").dropdown("refresh");
+                    $("#MovieTicketType").dropdown("set selected", movietickettype);
+
+                    var director = (data[0].Director_ID).split(',');
                     $("#Director").dropdown("refresh");
-                    $("#Director").dropdown("set selected",data[0].Director_ID);
-                    $("#Actor").dropdown("refresh");                   
-                    $("#Actor").dropdown("set selected", data[0].Actor_ID);
+                    $("#Director").dropdown("set selected", director);
+
+                    var actor = (data[0].Actor_ID).split(',');
+                    $("#Actor").dropdown("refresh");       
+                    $("#Actor").dropdown("set selected", actor);
                     
                     $('#txtNote').val((data[0].Description));
                     if (data[0].Image == '' || data[0].Image == undefined) {

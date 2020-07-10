@@ -3,8 +3,15 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Storage;
 using Newtonsoft.Json;
+using VTCinema.Comon;
+using MailKit.Net.Smtp;
+using MailKit;
+using MimeKit;
+using MailKit.Security;
 
 namespace VTCinema.Controllers.Clients.Checkout
 {
@@ -15,35 +22,43 @@ namespace VTCinema.Controllers.Clients.Checkout
         [HttpGet]
         public IActionResult Index(int ScheduleID)
         {
+            if(HttpContext.Session.GetInt32(GlobalClient.CustomerID) == null)
+            {
+                return Redirect("/SignIn");
+            }
             ViewBag.ScheduleDetailID = ScheduleID;
-            if(ScheduleID == 0)
+            if(ScheduleID == 0 )
             {
                 return Redirect("/");
             }
+            ViewBag.Email = GlobalUser.sys_Email;
             return View("~/Views/Clients/Checkout/CheckoutView.cshtml");
         }
         [Route("ScheduleMovie/{ScheduleID}")]
         [HttpGet]
         public string ScheduleMovie(int ScheduleID)
         {
-            DataTable Combo = LoadComboNational();
+            DataSet Combo = LoadDataProduct();
+            DataTable ProductType = Combo.Tables["Table"].Copy();
+            ProductType.TableName = "ProductType";
+            DataTable Product = Combo.Tables["Table2"].Copy();
+            Product.TableName = "Product";
             DataSet Detail = LoadDetail(ScheduleID);
-            DataSet ds = new DataSet();
-            Detail.Tables.AddRange(new DataTable[] { Combo });
+            Detail.Tables.AddRange(new DataTable[] { ProductType, Product });
             return JsonConvert.SerializeObject(Detail);
         }
-        DataTable LoadComboNational()
+        DataSet LoadDataProduct()
         {
             try
             {
-                DataTable dt = new DataTable();
+                DataSet ds = new DataSet();
                 using (Models.ExecuteDataBase confunc = new Models.ExecuteDataBase())
                 {
-                    dt = confunc.ExecuteDataTable("[YYY_sp_National_LoadCombo]", CommandType.StoredProcedure);
+                    ds = confunc.ExecuteDataSet("[YYY_sp_Product_LoadList]", CommandType.StoredProcedure);
                 }
-                if (dt != null)
+                if (ds != null)
                 {
-                    return dt;
+                    return ds;
                 }
                 else
                 {
@@ -78,6 +93,88 @@ namespace VTCinema.Controllers.Clients.Checkout
             {
                 return null;
             }
+        }
+
+        [Route("ExecuteBill")]
+        [HttpPost]
+        public string ExecuteBill(string data,string Email)
+        {
+            try
+            {
+                DataTable dt = new DataTable();
+
+                DataBill dataDetail = JsonConvert.DeserializeObject<DataBill>(data);
+                int CustomerID = (int)HttpContext.Session.GetInt32(Comon.GlobalClient.CustomerID);
+                using (Models.ExecuteDataBase confunc = new Models.ExecuteDataBase())
+                {
+                    dt = confunc.ExecuteDataTable("[YYY_sp_Bill_Insert]", CommandType.StoredProcedure
+                        , "@CustomerID", SqlDbType.Int, CustomerID
+                        , "@ScheduleID", SqlDbType.Int, dataDetail.ScheduleID
+                        , "@Quan", SqlDbType.Int, dataDetail.Quan
+                        , "@Price", SqlDbType.Float, dataDetail.Price);
+                }               
+
+                //MimeMessage message = new MimeMessage();
+                //message.Subject = "VTCinema";
+
+                //BodyBuilder bodyBuilder = new BodyBuilder();
+                //bodyBuilder.HtmlBody = "<h1>Hello World!</h1>";
+                //bodyBuilder.TextBody = "hello every !";
+                //message.Body = bodyBuilder.ToMessageBody();
+
+                //message.From.Add(new MailboxAddress("VTCinema"));
+                //message.To.Add(new MailboxAddress(Email));
+                //using (var client = new SmtpClient())
+                //{
+                //    client.Connect("smtp.gmail.com"
+                //    , 587
+                //    , MailKit.Security.SecureSocketOptions.StartTls);
+                //    client.Authenticate("riva.friend.2605@gmail.com","CuBaKhoTinh1804");
+                //    client.Send(message);
+                //    client.Disconnect(true);
+                //}
+
+                return dt.Rows[0][0].ToString();
+            }
+            catch (Exception ex)
+            {
+                return "0";
+            }
+        }
+        [Route("ExecuteBillTicket")]
+        [HttpPost]
+        public int ExecuteBillTicket(string data)
+        {
+            try
+            {
+                DataTable dt = new DataTable();
+                DataBillTicket dataDetail = JsonConvert.DeserializeObject<DataBillTicket>(data);
+
+                using (Models.ExecuteDataBase confunc = new Models.ExecuteDataBase())
+                {
+                    dt = confunc.ExecuteDataTable("[YYY_sp_Bill_Ticket_Insert]", CommandType.StoredProcedure
+                        , "@Bill_ID", SqlDbType.Int, dataDetail.Bill_ID
+                        , "@Chair", SqlDbType.Int, dataDetail.Chair
+                        , "@Price", SqlDbType.Float, dataDetail.Price);
+                }
+                return 1;
+            }
+            catch (Exception ex)
+            {
+                return 0;
+            }
+        }
+        class DataBill
+        {
+            public int ScheduleID;
+            public int Quan;
+            public float Price;
+        }
+        class DataBillTicket
+        {
+            public int Bill_ID;
+            public int Chair;
+            public float Price;
         }
     }
 }

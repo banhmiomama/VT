@@ -38,7 +38,7 @@ namespace VTCinema.Controllers.Clients.SignIn
                 {
                     //string Status = "Wrong username password";
                     //ViewBag.Status = Status;
-                    return View("~/Views/Admin/Login/Login.cshtml");
+                    return View("~/Views/Clients/SignIn/SignInView.cshtml");
                 }
             }
             return View();
