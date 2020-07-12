@@ -1,0 +1,333 @@
+﻿
+@{
+    ViewData["Title"] = "Người Dùng";
+    Layout = "~/Views/Shared/Master.cshtml";
+}
+
+<div class="pusher">
+    <div class="navslide navwrap">
+        <div class="row" style="background-color: white;" id="UsertList">
+            <div class="ui form segment form3">
+                <h2 class="ui center aligned header" style="padding-top: 10px; font-family: 'Times New Roman'; background-color: white">
+                    Danh Sách Người Dùng
+                </h2>
+                <div class="sixteen wide tablet sixteen wide computer column">
+                    <div class="ui grid" style="margin-left: 5px; margin-right: 5px">
+                        <div class="stretched row">
+                            <div class="sixteen wide tablet four wide computer column">
+                                <div class="field" style="max-height: 64px;">
+                                    <div id="btnAddUserGroup">
+                                        <button class="ui blue button modalfour _tab_control_" data-tab="add_User_type" data-value="fade up" onclick="return AddNewUserGroup()">Nhóm Người Dùng Mới</button>
+                                    </div>
+                                    <div class="ui labeled input fluid">
+                                        <input style="background: white; color: #0288d1; font-size: 13px;" id="totalUserGroup" type="text" readonly>
+                                    </div>
+                                </div>
+                                <table id="dtContentUserGroup" class="ui sortable celled table">
+                                    <thead class="hiddenCollapse">
+                                        <tr role="row">
+                                            <th style="display: none">ID</th>
+                                            <th>Tên Nhóm</th>
+                                            <th class="no-sort" style="width: 50px;">Xóa</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="dtContentUserGroupBody">
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="sixteen wide tablet twelve wide computer column">
+                                <div class="field" style="margin-bottom: -19px; max-height: max-content;">
+                                    <div id="btnAddUser" style="display: inline;">
+                                        <button class="ui blue button modalfour _tab_control_" data-tab="add_User" data-value="fade up" onclick="event.preventDefault();return AddNewUser()">Người Dùng Mới</button>
+                                    </div>
+                                    <div class="two fields">
+                                        <div class="field">
+                                            <div class="ui labeled input fluid">
+                                                <input style="background: white; color: #0288d1; font-size: 13px;" id="totalUser" type="text" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="field">
+                                            <div class="ui icon input" style="max-height: 40px;">
+                                                <input style="font-size: 13px; height: 31px;" id="filterUser" type="text" placeholder="Seaching..." onkeyup="event.preventDefault();return onkeyupUserFitler();">
+                                                <i class="circular search link icon"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="loaderList" style="border: none; display: none; height: -webkit-fill-available;">
+                                    <div class="ui active inverted dimmer">
+                                        <div class="ui large text loader">Loading</div>
+                                    </div>
+                                </div>
+                                <div id="dtContentArrea" class="ui segment" style="border: none; overflow-x: auto; box-shadow: none; padding: unset;">
+                                    <table id="dtContentUser" class="ui sortable celled table">
+                                        <thead class="hiddenCollapse">
+                                            <tr role="row">
+                                                <th style="display: none">ID</th>
+                                                <th style="width: 50px;">#</th>
+                                                <th>Tên Người Dùng</th>
+                                                <th style="min-width: 70px;">Tên Hiển Thị</th>
+                                                <th class="no-sort" style="max-width: 100px;">Người Tạo</th>
+                                                <th class="no-sort" style="width: 30px;">Xóa</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="dtContentUserBody">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" id="UserDetail_Div" style="display: none; background-color: white; padding: 20px">
+        </div>
+    </div>
+</div>
+<style>
+    .rowUserGroup:hover, .seachRow:hover {
+        background: #bee3ff !important;
+    }
+</style>
+<script type="text/javascript">
+    let DataUser;
+    let RowUserID;
+    function Render_User(data, id) {
+        var myNode = document.getElementById(id);
+        if (myNode != null) {
+            myNode.innerHTML = '';
+            let stringContent = '';
+            if (data && data.length > 0) {
+                for (var i = 0; i < data.length; i++) {
+                    let item = data[i];
+                    let tr =
+                        '<td style="display:none !important">' + item.ID + '</td>'
+                        + '<td data-sortValue="' + Number(i) + '">' + (i + 1) + '</td>'
+                        + '<td ><a style="text-decoration: underline;" class="buttonEditClass" href="#">' + item.Name + '</a></td>'
+                        + '<td data-sortValue="' + item.Username + '">' + item.Username + '</td>'
+                        + '<td>' + item.Created_By + '</td>'
+                        + '<td class="selectedtd"><button class="buttonGrid _tab_control_" data-tab="delete_service_type" value="'
+                        + item.ID
+                        + '"><img class="buttonDeleteClass imgGrid" src="/img/ButtonImg/delete_ver2.png"></button></td>'
+                    stringContent = stringContent + '<tr class="seachRow" role="row">' + tr + '</tr>';
+                }
+            }
+            document.getElementById(id).innerHTML = stringContent;
+        }
+    }
+    function Render_UserGroup(data, id) {
+        var myNode = document.getElementById(id);
+        if (myNode != null) {
+            myNode.innerHTML = '';
+            let stringContent = '';
+            if (data && data.length > 0) {
+                for (var i = 0; i < data.length; i++) {
+                    let item = data[i];
+                    let tr =
+                        '<td style="display:none !important">' + item.ID + '</td>'
+                        + '<td class="selectedtd" ><a style="text-decoration: underline;" class="buttonEditClass" href="#">' + item.Name + '</a></td>'
+                        + ((item.ButtonDelete == 0)
+                            ? '<td class="selectedtd"><button class="buttonGrid _tab_control_" data-tab="delete_service_type" value="'
+                            + item.ID
+                            + '"><img class="buttonDeleteClass imgGrid" src="/img/ButtonImg/delete_ver2.png"></button></td>' : '<td></td>')
+                    stringContent = stringContent + '<tr class="rowUserGroup" data-id=' + item.ID + ' role="row">' + tr + '</tr>';
+                }
+            }
+            document.getElementById(id).innerHTML = stringContent;
+        }
+        EventRowUserGroup();
+    }
+
+    function LoadUser() {
+        $.ajax({
+            url: "User/LoadUser",
+            dataType: "json",
+            type: "POST",
+            data: JSON.stringify({
+            }),
+            contentType: 'application/json; charset=utf-8',
+            async: true,
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                notiError();
+            },
+          
+            success: function (result) {
+                Render_UserGroup(result.Table, "dtContentUserGroupBody");
+                let TotalUserGroup = result.Table1;
+                document.getElementById("totalUserGroup").value = 'Tổng Nhóm Người Dùng: ' + TotalUserGroup[0].TotalUserGroup;
+                DataUser = result.Table2;
+                Render_User(result.Table2, "dtContentUserBody");
+                let TotalUser = result.Table3;
+                document.getElementById("totalUser").value = 'Tổng Số Người Dùng: ' + TotalUser[0].TotalUser;
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        //$('#dtContentUser').tablesort();
+        LoadUser();
+        $('#dtContentUser tbody').on('click', '.buttonEditClass', function () {
+            let ID = Number($(this).closest('tr')[0].childNodes[0].innerHTML);
+            EditUser(ID);
+        });
+        $('#dtContentUser tbody').on('click', '.buttonDeleteClass', function () {
+            let ID = Number($(this).closest('tr')[0].childNodes[0].innerHTML);
+            DeleteUser(ID);
+        });
+        $('#dtContentUserGroup tbody').on('click', '.buttonEditClass', function () {
+            let ID = Number($(this).closest('tr')[0].childNodes[0].innerHTML);
+            if (ID != 0) EditUserGroup(ID);
+            else return;
+
+        });
+        $('#dtContentUserGroup tbody').on('click', '.buttonDeleteClass', function () {
+            let ID = Number($(this).closest('tr')[0].childNodes[0].innerHTML);
+            DeleteUserGroup(ID);
+        });
+    });
+    function EventRowUserGroup() {
+        $('.rowUserGroup').on('click', function () {
+            let CurrentGroupID = Number($(this).attr('data-id'));
+            RowUserID = CurrentGroupID;
+            let Data = "";
+            if (CurrentGroupID != 0) {
+                Data = DataUser.filter(
+                    word => word["GroupID"] == CurrentGroupID
+                )
+            }
+            else {
+                Data = DataUser;
+            }
+            if (Data != undefined && Data != null) {
+                document.getElementById("totalUser").value = 'Tổng sản phẩm: ' + Data.length;
+            }
+            document.getElementById("dtContentUserBody").innerHTML = '';
+            Render_User(Data, "dtContentUserBody");
+            EventSetColorRow();
+        })
+    }
+
+    function EventSetColorRow() {
+        let ID = document.getElementsByClassName('rowUserGroup');
+        for (var i = 0; i < ID.length; i++) {
+            if (RowUserID == Number(ID[i].attributes["data-id"].value)) {
+                ID[i].style.background = "#bee3ff";
+            }
+            else {
+                ID[i].style.background = "white";
+            }
+        }
+    }
+
+    function AddNewUser() {
+        document.getElementById("divDetailPopup").innerHTML = '';
+        $("#divDetailPopup").load("UserDetail/" + 0);
+        $('#divDetailPopup').modal('show');
+        return false;
+    }
+
+    function EditUser(CurrentID) {
+        document.getElementById("divDetailPopup").innerHTML = '';
+        $("#divDetailPopup").load("UserDetail/" + CurrentID);
+        $('#divDetailPopup').modal('show');
+        return false;
+    }
+
+    function AddNewUserGroup() {
+        document.getElementById("divDetailPopup").innerHTML = '';
+        $("#divDetailPopup").load("UserGroupDetail/" + 0);
+        $('#divDetailPopup').modal('show');
+        return false;
+    }
+
+    function EditUserGroup(CurrentID) {
+        document.getElementById("divDetailPopup").innerHTML = '';
+        $("#divDetailPopup").load("UserGroupDetail/" + CurrentID);
+        $('#divDetailPopup').modal('show');
+        return false;
+    }
+
+    function DeleteUser(id) {
+        const promise = notiConfirm();
+        promise.then(function () { ExecuteDeleteUser(id); }, function () { });
+    }
+    function DeleteUserGroup(id) {
+        const promise = notiConfirm();
+        promise.then(function () { ExecuteDeleteUserGroup(id); }, function () { });
+    }
+
+    function ExecuteDeleteUser(ID) {
+        $.ajax({
+            url: "User/DeleteUser/" + ID,
+            dataType: "json",
+            type: "GET",
+            data: JSON.stringify({
+                'ID': ID
+            }),
+            contentType: 'application/json; charset=utf-8',
+            async: true,
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                notiError(textStatus);
+            },
+            success: function (result) {
+                if (result == "1") {
+                    notiSuccess();
+                    LoadUser();
+                } else {
+                    notiError();
+                }
+            }
+        });
+    }
+    function ExecuteDeleteUserGroup(ID) {
+        $.ajax({
+            url: "User/DeleteUserGroup/" + ID,
+            dataType: "json",
+            type: "GET",
+            data: JSON.stringify({
+                'ID': ID
+            }),
+            contentType: 'application/json; charset=utf-8',
+            async: true,
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                notiError(textStatus);
+            },
+            success: function (result) {
+                if (result == "1") {
+                    notiSuccess();
+                    LoadUser();
+                } else {
+                    notiError();
+                }
+            }
+        });
+    }
+    function onkeyupTicketFitlerAsync(extension) {
+        return new Promise((resolve, reject) => {
+            setTimeout(
+                () => {
+                    let search = xoa_dau($('#filterUser').val().toLowerCase()).trim();
+
+                    let data = DataUser.filter(function (item) {
+                        if (xoa_dau(item["Name"]).toLowerCase().includes(search))
+                            return true;
+                        return false;
+                    });
+                    if (data != undefined && data != null) {
+                        document.getElementById("dtContentUserBody").innerHTML = "";
+                        Render_User(data, "dtContentUserBody");
+                        ColorSearchFilterText(search, "seachRow");
+                    }
+                    resolve()
+                },
+                Math.floor(Math.random() * 300) + 1
+            )
+        })
+    }
+
+    async function onkeyupUserFitler() {
+        await onkeyupTicketFitlerAsync();
+        return false;
+    }
+</script>
