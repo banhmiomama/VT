@@ -35,25 +35,5 @@ namespace VTCinema.Controllers.Clients.Information
                 return "[]";
             }
         }
-
-        [Route("LoadDataBuyTicket")]
-        [HttpPost]
-        public string LoadDataBuyTicket()
-        {
-            try
-            {
-                DataSet ds = new DataSet();
-
-                using (Models.ExecuteDataBase confunc = new Models.ExecuteDataBase())
-                {
-                    ds = confunc.ExecuteDataSet("[YYY_sp_BuyTicket_LoadList]", CommandType.StoredProcedure);
-                }
-                return ds != null ? JsonConvert.SerializeObject(ds) : "[]";
-            }
-            catch (Exception ex)
-            {
-                return "[]";
-            }
-        }
     }
 }

@@ -191,18 +191,12 @@
     </div>
 </section>
 <!-- end partners -->
-
-
 @section Script
 {
     <script>
-        let DataMovieName
-        let DataBranchName
         let DataDate
         $(document).ready(function () {
             LoadDataInformation();
-            debugger
-            Loadcbb();
         })
         function LoadDataInformation() {
             $.ajax({
@@ -245,21 +239,5 @@
                 document.getElementById(id).innerHTML = stringContent;
             }
         }
-        function Loadcbb() {
-            $.ajax({
-                type: 'POST',
-                dataType: "json",
-                contentType: 'application/json; charset=utf-8',
-                url: "Information/LoadDataBuyTicket",
-                async: true,
-                success: function (result) {
-                    DataMovieName = result.Table1;
-                    LoadCombo(DataMovieName, "cbbMovieName");
-                    }
-            });
-        }
-        //function OnchangeMovieName() {
-        //    let MovieName = ('#cbbBranchName').dropdown('get value') ? Number($('#cbbBranchName').dropdown('get value')) : 0;
-        //}
     </script>
 }

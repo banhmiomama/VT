@@ -5,8 +5,8 @@
 }
 @section Style{
     <style>
-        label{
-            color:white;
+        label {
+            color: white;
         }
     </style>
 }
@@ -30,9 +30,11 @@
                 <div class="col-12 col-md-12 col-lg-12">
                     <div class="card card-information">
                         <div class="card__content centered">
-                            <h2 class="card__title" id="InformationTitle" style="font-weight:bold; font-size:20px;">
-                            </h2>
+                            <h2 class="card__title" id="InformationTitle" style="font-weight:bold; font-size:20px;"></h2>
                             <ul>
+                                <li class="card__description" style="color:white; font-size:15px">
+                                    <img src="" id="loadImg" />
+                                </li>
                                 <li class="card__description" id="Note" style="color:white; font-size:15px">
                                 </li>
                             </ul>
@@ -40,23 +42,15 @@
                     </div>
                 </div>
             </div>
-            <div class="col-3">
-                <div class="form-group">
-                    <div id="MovieID">
-                        <label for="exampleFormControlSelect1">Example select</label>
-                        <select class="form-control" id="cbbMovie" onchange="OnchangeMovie();">
-                            <option></option>
-                        </select>
-                    </div>
-                    <label for="exampleFormControlSelect1" onchange="OnchangeBranch();">Example select</label>
-                    <select class="form-control" id="cbbBranch">
-                        <option id="cbbBranch">1</option>
-                    </select>
-                    <label for="exampleFormControlSelect1">Example select</label>
-                    <select class="form-control" id="">
-                        <option>1</option>
-                    </select>
-                </div>
+            <div class="col-3" id="InformationList">
+                <ul>
+                    <li class="card__description" style="color:white; font-size:15px">
+                        <img src="" id="ImgMovieComingSoon" />
+                    </li>
+                    <li class="card__description" style="color:white; font-size:15px" id="MovieName">
+                    </li>
+                </ul>
+
             </div>
         </div>
     </div>
@@ -139,40 +133,17 @@
                 async: true,
                 success: function (data) {
                         $('#InformationTitle').text(data[0].Title);
-                        $('#Note').text(data[0].Note);
+                    $('#Note').text(data[0].Note);
+                    if (data[0].Image == '' || data[0].Image == undefined) { // note
+                        $('#loadImg').attr('src', '');
                     }
+                    else {
+                        $('#loadImg').attr('src', data[0].Image);
+                        avatarString = data[0].Image;
+                    }
+                    }
+            });
+        }
 
-            });
-        }
-        let DataMovie;
-        let DataBranch;
-        function LoadSchedule() {
-            $.ajax({
-                url: "Information/LoadTicket",
-                dataType: "json",
-                type: "POST",
-                data: JSON.stringify({
-                }),
-                contentType: 'application/json; charset=utf-8',
-                async: true,
-                error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    notiError();
-                },
-                success: function (result) {
-                    DataMovie = result.Name;
-                    LoadCombo(DataMovie,"cbbMovie")
-                    DataBranch = result.Branch;
-                    LoadCombo(DataBranch, "cbbBranch");
-                }
-            });
-        }
-        function OnchangeMovie() {
-            let MovieID = $('#MovieID').dropdown('get value') ? Number($('#MovieID').dropdown('get value')) : 0;
-            $("#BranchID").dropdown("refresh");
-            if (MovieID != 0) {
-                let Data = DataBranch.filter(word => word["MovieID"] == MovieID);
-                LoadCombo(Data, "cbbBranch");
-            }
-        }
     </script>
 }
