@@ -1,259 +1,266 @@
 ﻿
 @{ Layout = null; }
-
 <div id="headerPopup_CustomerCare" class="header">
     Tin Tức
 </div>
-<div class="image content">
-    <div class="ui massive image">
-        <img id="avatarInformationUpload" class="ui mini circular image" src="/img/404.png" alt="label-image" style="width: 100%; height: auto;" />
-        <div>&nbsp</div>
-        <div class="btn btn-success upload-btn-wrapper" style="width: 100%; margin-top: 6px;">
-            <button class="btn" style="width: 100%">Chọn Ảnh</button>
-            <input id="fileuploadAvatarInformation" type="file" onchange="readURL(this);" />
-        </div>
-    </div>
-    <div class="description">
-                <form class="ui form segment form3" id="form3">
-                    <div class="ui accordion field">
-                        <div class="content field active">
-                            <div class="two fields">
-                                <div class="field">
-                                    <label>Tiêu Đề</label>
-                                    <input id="txtTitle" name="Title" type="text" />
-                                </div>
-                                <div class="field">
-                                    <label>Note</label>
-                                    <input id="txtNote" type="text" name="Note" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
+@*<script src="~/bootstrap.min.js"></script>
+    <script src="~/jquery-3.3.1.slim.min.js"></script>
+    <script src="~/popper.min.js"></script>
+    <link href="~/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/summernote.min.css" rel="stylesheet" />
+    <script src="~/summernote.min.js"></script>*@
+@*<script src="~/ckeditor/ckeditor.js" type="text/javascript"></script>*@
+    @*<script src="~/ckeditor_4.14.1_standard/ckeditor/ckeditor.js" type="text/javascript"></script>*@
+<script src="" type="text/javascript"></script>
+    <div class="image content">
+        <div class="ui massive image">
+            <img id="avatarInformationUpload" class="ui mini circular image" src="/img/404.png" alt="label-image" style="width: 100%; height: auto;" />
+            <div>&nbsp</div>
+            <div class="btn btn-success upload-btn-wrapper" style="width: 100%; margin-top: 6px;">
+                <button class="btn" style="width: 100%">Chọn Ảnh</button>
+                <input id="fileuploadAvatarInformation" type="file" onchange="readURL(this);" />
             </div>
         </div>
-<div class="actions">
-    <div style="float: right">
-        <button class="ui teal button" form="form3" type="submit" onclick="return ExcuteData()">Save</button>
+        <div class="description">
+            <form class="ui form segment form3" id="form3">
+                <div class="ui accordion field">
+                    <div class="content field active">
+                        <div class="field">
+                            <label>Tiêu Đề</label>
+                            <input id="txtTitle" name="Title" type="text" />
+                        </div>
+                        <div class="field">
+                            <label>Note</label>
+                            <textarea class="form-control ckeditor" name="content" id="txtNote">
+                                </textarea>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
-    <div style="float: right">
-        <button class="ui grey button" onclick="event.preventDefault();CloseModal()">Cancel</button>
+    <div class="actions">
+        <div style="float: right">
+            <button class="ui teal button" form="form3" type="submit" onclick="return ExcuteData()">Save</button>
+        </div>
+        <div style="float: right">
+            <button class="ui grey button" onclick="event.preventDefault();CloseModal()">Cancel</button>
+        </div>
     </div>
-</div>
-<script src="/js/customjs/custom-validation.js"></script>
-<script src="/js/main.js"></script>
+    <script src="/js/customjs/custom-validation.js"></script>
+    <script src="/js/main.js"></script>
+    <script>
+        let InformationDetailID;
+        let ImageString = '';
+        let DataImage;
 
-<script>
-    let InformationDetailID;
-    let ImageString = '';
-    let DataImage;
-    $(document).ready(function () {
-        InformationDetailID = @ViewBag.InformationID;
-        LoadDataUpdateInformation();
-    });
+        //$('#summernote').summnernote();
+        $(document).ready(function () {
+            InformationDetailID = @ViewBag.InformationID;
+            LoadDataUpdateInformation();
+        });
 
-    function LoadDataUpdateInformation() {
-        $.ajax({
-            type: 'GET',
-            dataType: "json",
-            contentType: 'application/json; charset=utf-8',
-            url: "/Admin/InformationDetail/GetInformationDetail/" + InformationDetailID,
-            async: true,
-            success: function (data) {
-                if (data.length != 0) {
-                    $('#txtTitle').val((data[0].Title));
-                    $('#txtNote').val((data[0].Note));
-                    if (data[0].Image == '' || data[0].Image == undefined) {
-                        $('#avatarInformationUpload').attr('src', '');
-                    }
-                    else {
-                        $('#avatarInformationUpload').attr('src', data[0].Image);
-                        ImageString = data[0].Image;
+        function LoadDataUpdateInformation() {
+            $.ajax({
+                type: 'GET',
+                dataType: "json",
+                contentType: 'application/json; charset=utf-8',
+                url: "/Admin/InformationDetail/GetInformationDetail/" + InformationDetailID,
+                async: true,
+                success: function (data) {
+                    if (data.length != 0) {
+                        $('#txtTitle').val((data[0].Title));
+                        $('#txtNote').html((data[0].Note));
+                        if (data[0].Image == '' || data[0].Image == undefined) {
+                            $('#avatarInformationUpload').attr('src', '');
+                        }
+                        else {
+                            $('#avatarInformationUpload').attr('src', data[0].Image);
+                            ImageString = data[0].Image;
+                        }
                     }
                 }
-            }
-        });
-    }
-    function ExcuteData() {
-        var data = new Object();
-        data.Title = $('#txtTitle').val() ? $('#txtTitle').val() : "";
-        data.Note = $('#txtNote').val() ? $('#txtNote').val() : "";
-        data.Image = GetFileName();
-        $('#form3').form('validate form');
-        if ($('#form3').form('is valid')) {
-
-             $.ajax({
-                 url: "/Admin/InformationDetail/Execute",
-                 dataType: "json",
-                 type: "POST",
-                 data: {
-                     __RequestVerificationToken: token
-                     , InformationID: @ViewBag.InformationID
-                     , data: JSON.stringify(data)
-                 },
-                 async: true,
-                 error: function (XMLHttpRequest, textStatus, errorThrown) {
-                        notiError("Lỗi Hệ Thống");
-                 },
-                 success: function (result) {
-                     if (result == "0") {
-                         UploadImage();
-                         notiSuccess();
-                         LoadInformation();
-                     } else {
-                         notiError("Lỗi Hệ Thống");
-                        }
-                 }
-             })
-             $('#divDetailPopup').modal('hide');
+            });
         }
-         return false;
-    }
-    function UploadImage() {
-        var Video = $("#fileuploadAvatarInformation")[0].files[0];
-        var formData = new FormData();
-        formData.append("files", Video);
-        $.ajax({
-            url: "/UploadFile/UploadImageInformation",
-            dataType: "json",
-            type: "POST",
-            contentType: false,
-            processData: false,
-            data: formData,
-            async: true
-        });
-    }
+        function ExcuteData() {
+            var data = new Object();
+            data.Title = $('#txtTitle').val() ? $('#txtTitle').val() : "";
+            data.Note = $('#txtNote').html() ? $('#txtNote').html() : "";
+            data.Image = GetFileName();
+            $('#form3').form('validate form');
+            if ($('#form3').form('is valid')) {
 
-    function readURL(input) {
-        var ext = input.files[0]['name'].substring(input.files[0]['name'].lastIndexOf('.') + 1).toLowerCase();
-        if (input.files && input.files[0] && (ext == "gif" || ext == "png" || ext == "jpeg" || ext == "jpg")) {
-            var reader = new FileReader();
-            reader.onload = function (e) {
-                $('#avatarInformationUpload').attr('src', e.target.result);
+                 $.ajax({
+                     url: "/Admin/InformationDetail/Execute",
+                     dataType: "json",
+                     type: "POST",
+                     data: {
+                         __RequestVerificationToken: token
+                         , InformationID: @ViewBag.InformationID
+                         , data: JSON.stringify(data)
+                     },
+                     async: true,
+                     error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            notiError("Lỗi Hệ Thống");
+                     },
+                     success: function (result) {
+                         if (result == "0") {
+                             UploadImage();
+                             notiSuccess();
+                             LoadInformation();
+                         } else {
+                             notiError("Lỗi Hệ Thống");
+                            }
+                     }
+                 })
+                 $('#divDetailPopup').modal('hide');
             }
-
-            reader.readAsDataURL(input.files[0]);
-        } else {
-            $('#avatarInformationUpload').attr('src', '/img/404.png');
+             return false;
         }
-    }
-    function GetFileName() {
-        debugger
-        var fullPath = document.getElementById('fileuploadAvatarInformation').value;
-        if (fullPath) {
-            var startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
-            var filename = fullPath.substring(startIndex);
-            if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
-                filename = '../img/Information/' + filename.substring(1);
+        function UploadImage() {
+            var Video = $("#fileuploadAvatarInformation")[0].files[0];
+            var formData = new FormData();
+            formData.append("files", Video);
+            $.ajax({
+                url: "/UploadFile/UploadImageInformation",
+                dataType: "json",
+                type: "POST",
+                contentType: false,
+                processData: false,
+                data: formData,
+                async: true
+            });
+        }
+
+        function readURL(input) {
+            var ext = input.files[0]['name'].substring(input.files[0]['name'].lastIndexOf('.') + 1).toLowerCase();
+            if (input.files && input.files[0] && (ext == "gif" || ext == "png" || ext == "jpeg" || ext == "jpg")) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#avatarInformationUpload').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            } else {
+                $('#avatarInformationUpload').attr('src', '/img/404.png');
             }
-            return filename;
         }
-    }
-</script>
-<style>
-    .upload-btn-wrapper {
-        position: relative;
-        overflow: hidden;
-        display: inline-block;
-    }
+        function GetFileName() {
+            var fullPath = document.getElementById('fileuploadAvatarInformation').value;
+            if (fullPath) {
+                var startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
+                var filename = fullPath.substring(startIndex);
+                if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
+                    filename = '../img/Information/' + filename.substring(1);
+                }
+                return filename;
+            }
+        }
+    </script>
+    <style>
+        .upload-btn-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
 
-    .btn {
-        color: #0288d1;
-        background-color: white;
-        border-radius: 21px;
-        font-size: 12px;
-        /* font-weight: bold; */
-        border-style: solid;
-        border-width: 1px;
-    }
+        .btn {
+            color: #0288d1;
+            background-color: white;
+            border-radius: 21px;
+            font-size: 12px;
+            /* font-weight: bold; */
+            border-style: solid;
+            border-width: 1px;
+        }
 
-    .iti {
-        width: 100%;
-    }
+        .iti {
+            width: 100%;
+        }
 
-    .upload-btn-wrapper input[type=file] {
-        font-size: 100px;
-        position: absolute;
-        left: 0;
-        top: 0;
-        opacity: 0;
-    }
+        .upload-btn-wrapper input[type=file] {
+            font-size: 100px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+        }
 
-    .percentIcon {
-        color: #e03997;
-        padding-left: 10px;
-    }
+        .percentIcon {
+            color: #e03997;
+            padding-left: 10px;
+        }
 
-    .vtth_unit {
-        padding: 0px 5px 0px 5px;
-        color: red;
-    }
+        .vtth_unit {
+            padding: 0px 5px 0px 5px;
+            color: red;
+        }
 
-    .vtth_row {
-        padding: 3px 10px 3px 10px;
-        background: #f3f3f5;
-        color: #0288d1;
-        border-radius: 20px;
-        margin-right: 5px;
-    }
+        .vtth_row {
+            padding: 3px 10px 3px 10px;
+            background: #f3f3f5;
+            color: #0288d1;
+            border-radius: 20px;
+            margin-right: 5px;
+        }
 
-    .vtth_num {
-        font-size: 16px;
-    }
+        .vtth_num {
+            font-size: 16px;
+        }
 
-    .state1 {
-        background: #037e20;
-        padding: 3px;
-        color: white;
-        border-radius: 20px;
-        font-size: 12px;
-        display: block;
-        text-align: center;
-    }
+        .state1 {
+            background: #037e20;
+            padding: 3px;
+            color: white;
+            border-radius: 20px;
+            font-size: 12px;
+            display: block;
+            text-align: center;
+        }
 
-    .state0 {
-        background: #e0e0e0;
-        padding: 3px;
-        color: #0288d1;
-        border-radius: 20px;
-        font-size: 12px;
-        display: block;
-        text-align: center;
-    }
+        .state0 {
+            background: #e0e0e0;
+            padding: 3px;
+            color: #0288d1;
+            border-radius: 20px;
+            font-size: 12px;
+            display: block;
+            text-align: center;
+        }
 
-    .numservice {
-        font-size: 12px !important;
-        background: #0190ddf7 !important;
-        color: #fcfcfc !important;
-        min-width: 32px;
-        margin: 0px 6px !important;
-        padding: 4px 10px !important;
-    }
+        .numservice {
+            font-size: 12px !important;
+            background: #0190ddf7 !important;
+            color: #fcfcfc !important;
+            min-width: 32px;
+            margin: 0px 6px !important;
+            padding: 4px 10px !important;
+        }
 
-    .numservicetotal {
-        background: #6435c9 !important;
-        font-size: 14px !important;
-    }
+        .numservicetotal {
+            background: #6435c9 !important;
+            font-size: 14px !important;
+        }
 
-    .percentIcon {
-        color: #e03997;
-        padding-left: 10px;
-    }
+        .percentIcon {
+            color: #e03997;
+            padding-left: 10px;
+        }
 
-    .vtth_unit {
-        padding: 0px 5px 0px 5px;
-        color: #21ba45;
-    }
+        .vtth_unit {
+            padding: 0px 5px 0px 5px;
+            color: #21ba45;
+        }
 
-    .vtth_row {
-        padding: 3px 10px 3px 10px;
-        background: #f3f3f5;
-        color: #056fa8;
-        border-radius: 20px;
-        margin-right: 5px;
-    }
+        .vtth_row {
+            padding: 3px 10px 3px 10px;
+            background: #f3f3f5;
+            color: #056fa8;
+            border-radius: 20px;
+            margin-right: 5px;
+        }
 
-    .vtth_num {
-        color: rgba(0,0,0,.95);
-    }
-</style>
+        .vtth_num {
+            color: rgba(0,0,0,.95);
+        }
+    </style>

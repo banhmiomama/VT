@@ -5,8 +5,8 @@
 }
 @section Style{
     <style>
-        label{
-            color:white;
+        label {
+            color: white;
         }
     </style>
 }
@@ -30,9 +30,11 @@
                 <div class="col-12 col-md-12 col-lg-12">
                     <div class="card card-information">
                         <div class="card__content centered">
-                            <h2 class="card__title" id="InformationTitle" style="font-weight:bold; font-size:20px;">
-                            </h2>
+                            <h2 class="card__title" id="InformationTitle" style="font-weight:bold; font-size:20px;"></h2>
                             <ul>
+                                <li class="card__description" style="color:white; font-size:15px">
+                                    <img src="" id="loadImg" />
+                                </li>
                                 <li class="card__description" id="Note" style="color:white; font-size:15px">
                                 </li>
                             </ul>
@@ -40,21 +42,15 @@
                     </div>
                 </div>
             </div>
-            <div class="col-3">
-                <div class="form-group">
-                    <label for="exampleFormControlSelect1">Example select</label>
-                    <select class="form-control" id="exampleFormControlSelect1">
-                        <option>1</option>
-                    </select>
-                    <label for="exampleFormControlSelect1">Example select</label>
-                    <select class="form-control" id="exampleFormControlSelect1">
-                        <option>1</option>
-                    </select>
-                    <label for="exampleFormControlSelect1">Example select</label>
-                    <select class="form-control" id="exampleFormControlSelect1">
-                        <option>1</option>
-                    </select>
-                </div>
+            <div class="col-3" id="InformationList">
+                <ul>
+                    <li class="card__description" style="color:white; font-size:15px">
+                        <img src="" id="ImgMovieComingSoon" />
+                    </li>
+                    <li class="card__description" style="color:white; font-size:15px" id="MovieName">
+                    </li>
+                </ul>
+
             </div>
         </div>
     </div>
@@ -122,24 +118,32 @@
 @section Script
 {
     <script>
-    let InformationDetailID;
+        let InformationDetailID;
+
         $(document).ready(function () {
-            debugger
         InformationDetailID = @ViewBag.InformationDetailID;
-        LoadDataInformationDetail();
+            LoadDataInformationDetail();
     })
-    function LoadDataInformationDetail() {
-        $.ajax({
-            type: 'GET',
-            dataType: "json",
-            contentType: 'application/json; charset=utf-8',
-            url: "GetInformationDetail/" + InformationDetailID,
-            async: true,
-            success: function (data) {
-                $('#InformationTitle').text(data[0].Title);
-                $('#Note').text(data[0].Note);
-            }
-        })
-    }
+        function LoadDataInformationDetail() {
+            $.ajax({
+                type: 'GET',
+                dataType: "json",
+                contentType: 'application/json; charset=utf-8',
+                url: "GetInformationDetail/" + InformationDetailID,
+                async: true,
+                success: function (data) {
+                        $('#InformationTitle').text(data[0].Title);
+                    $('#Note').text(data[0].Note);
+                    if (data[0].Image == '' || data[0].Image == undefined) { // note
+                        $('#loadImg').attr('src', '');
+                    }
+                    else {
+                        $('#loadImg').attr('src', data[0].Image);
+                        avatarString = data[0].Image;
+                    }
+                    }
+            });
+        }
+
     </script>
 }
