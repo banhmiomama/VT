@@ -104,7 +104,7 @@ namespace VTCinema.Comon
                     if (dt.Rows.Count > 0)
                     {
                         sys_customerid = Convert.ToInt32(dt.Rows[0]["ID"].ToString());
-                        sys_Email = dt.Rows[0]["Email"].ToString();
+                        sys_Email = dt.Rows[0]["Email"].ToString();                     
                         //sys_RoleServerID = dt.Rows[0]["InheritanceServer"].ToString();
                         //DetectUserInfo(sys_userid);
                         return sys_customerid;

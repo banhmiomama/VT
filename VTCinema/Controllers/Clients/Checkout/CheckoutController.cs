@@ -41,10 +41,11 @@ namespace VTCinema.Controllers.Clients.Checkout
             DataSet Combo = LoadDataProduct();
             DataTable ProductType = Combo.Tables["Table"].Copy();
             ProductType.TableName = "ProductType";
-            DataTable Product = Combo.Tables["Table2"].Copy();
+            DataTable Product = Combo.Tables["Table1"].Copy();
             Product.TableName = "Product";
+            DataTable dtChairType = LoadDataChairType();
             DataSet Detail = LoadDetail(ScheduleID);
-            Detail.Tables.AddRange(new DataTable[] { ProductType, Product });
+            Detail.Tables.AddRange(new DataTable[] { ProductType, Product, dtChairType });
             return JsonConvert.SerializeObject(Detail);
         }
         DataSet LoadDataProduct()
@@ -54,11 +55,35 @@ namespace VTCinema.Controllers.Clients.Checkout
                 DataSet ds = new DataSet();
                 using (Models.ExecuteDataBase confunc = new Models.ExecuteDataBase())
                 {
-                    ds = confunc.ExecuteDataSet("[YYY_sp_Product_LoadList]", CommandType.StoredProcedure);
+                    ds = confunc.ExecuteDataSet("[YYY_sp_Client_Product_LoadList]", CommandType.StoredProcedure);
                 }
                 if (ds != null)
                 {
                     return ds;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+        DataTable LoadDataChairType()
+        {
+            try
+            {
+                DataTable dt = new DataTable();
+                using (Models.ExecuteDataBase confunc = new Models.ExecuteDataBase())
+                {
+                    dt = confunc.ExecuteDataTable("[YYY_sp_Client_ChairType_LoadList]", CommandType.StoredProcedure);
+                }
+                if (dt != null)
+                {
+                    dt.TableName = "ChairType";
+                    return dt;
                 }
                 else
                 {
@@ -157,6 +182,30 @@ namespace VTCinema.Controllers.Clients.Checkout
                         , "@Chair", SqlDbType.Int, dataDetail.Chair
                         , "@Price", SqlDbType.Float, dataDetail.Price);
                 }
+                return Convert.ToInt32(dt.Rows[0][0].ToString());
+            }
+            catch (Exception ex)
+            {
+                return 0;
+            }
+        }
+        [Route("ExecuteBillProduct")]
+        [HttpPost]
+        public int ExecuteBillProduct(string data)
+        {
+            try
+            {
+                DataTable dt = new DataTable();
+                DataBillProduct dataDetail = JsonConvert.DeserializeObject<DataBillProduct>(data);
+
+                using (Models.ExecuteDataBase confunc = new Models.ExecuteDataBase())
+                {
+                    dt = confunc.ExecuteDataTable("[YYY_sp_Bill_Product_Insert]", CommandType.StoredProcedure
+                        , "@Bill_ID", SqlDbType.Int, dataDetail.Bill_ID
+                        , "@Product_ID", SqlDbType.Int, dataDetail.Product_ID
+                        , "@Quan", SqlDbType.Int, dataDetail.Quan
+                        , "@Price", SqlDbType.Float, dataDetail.Price);
+                }
                 return 1;
             }
             catch (Exception ex)
@@ -174,6 +223,13 @@ namespace VTCinema.Controllers.Clients.Checkout
         {
             public int Bill_ID;
             public int Chair;
+            public float Price;
+        }
+        class DataBillProduct
+        {
+            public int Bill_ID;
+            public int Product_ID;
+            public int Quan;
             public float Price;
         }
     }
