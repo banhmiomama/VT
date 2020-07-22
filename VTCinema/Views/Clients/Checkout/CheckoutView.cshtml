@@ -121,7 +121,7 @@
                     cursor: not-allowed;
                 }
                 .seat input[type="checkbox"]:disabled + label:after {
-                    content: "X";
+                    content: "";
                     text-indent: 0;
                     position: absolute;
                     top: 4px;
@@ -291,10 +291,143 @@
             right: calc(100% + 15px);
             top: 0;
             transition: 0.5s;
+            overflow-y: auto;
+            font-size: 13px;
+            border-radius:0.5em;
         }
+            .product-list::-webkit-scrollbar {
+                width: 5px;
+            }
+
+        /* Track */
+            .product-list::-webkit-scrollbar-track {
+                background: #f1f1f1;
+                border-radius:0.5em;
+            }
+
+        /* Handle */
+            .product-list::-webkit-scrollbar-thumb {
+                background: #888;
+            }
+
+            /* Handle on hover */
+                .product-list::-webkit-scrollbar-thumb:hover {
+                    background: #555;
+                }
         .product-list.active {
+            width: 400px;
+        }
+            .product-list .product-list-content{
+                padding:15px;
+                width:100%;
+            }
+        .quantity {
+            box-sizing: border-box;
+            float: left;
+            min-height: 1px;
+            position: relative;
+            width: 25%;
+            text-align:center;
+        }
+        .minus {
+            color: #9b9b9b !important;
+            cursor: initial;
+            -webkit-appearance: button;
+            background-position: 0 0;
+            border-color: transparent;
+            box-sizing: border-box;
+            color: #9b9b9b !important;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 0 5px 0 0;
+            overflow: visible;
+            text-transform: none;
+            transform: scaleX(3);
+        }
+        .qty {
+            border: 1px solid #e9e9e9;
+            border-radius: 4px;
+            box-sizing: border-box;
+            display: inline-block;
+            font-size: 16px;
+            height: 32px;
+            padding-top: 4px;
+            text-align: center;
+            width: 32px;
+            margin:0 5px;
+        }
+        .plus {
+            -webkit-appearance: button;
+            background-position: 0 0;
+            border-color: transparent;
+            box-sizing: border-box;
+            color: #fb4226 !important;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 0;
+            overflow: visible;
+            text-transform: none;
+            transform: scale(1.5);
+        }
+        .title-product_list {
+            margin-bottom: 15px;
+            font-size: 18px;
+            background-color: #f5f5f5;
+            border-bottom: 1px dashed #ddd;
+            padding: 3%;
             width: 100%;
         }
+        .itemname{
+            font-weight:600;
+            font-size:16px;
+        }
+        .product-list-content img {
+            border-width: 0;
+            box-sizing: border-box;
+            vertical-align: middle;
+            width: 100%;
+        }
+        .item.row {
+            margin-bottom: 10px;
+        }
+        input[type=number].qty::-webkit-outer-spin-button,
+        input[type=number].qty::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        .payment:disabled {
+            background: #afafaf;
+        }
+        .seat-cinema {
+            border-width: 0;
+            box-sizing: border-box;
+            font-size: 100%;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            vertical-align: baseline;
+            display: flex;
+            justify-content: center;
+            font-size:12px
+        }
+            .seat-cinema .seat-cinema_item{
+                text-align:center;
+                margin-right:20px;
+            }
+                .seat-cinema .seat-cinema_item div {
+                    width: 20px;
+                    height: 20px;
+                    background-color: white;
+                    margin: 5px auto;
+                    border-radius:5px;
+                }
+                .seat-cinema span {
+                    border-width: 0;
+                    box-sizing: border-box;
+                    font-size: 14px;
+                    padding: 0;
+                    vertical-align: baseline;
+                }
     </style>
 }
 <!-- content -->
@@ -304,6 +437,19 @@
             <div class="col-12 col-lg-8 col-xl-8" style="z-index:2">
                 <img src="~/Clients/img/screen.png" style="max-width:100%;" />
                 <div class="tab-content" id="RoomChairBody">
+                </div>
+                <div class="row" style="height: 30px; margin-top: 30px;color: white;display: flex;justify-content: center;">
+                    <div class="seat-cinema" id="ChairType">
+                        <div class="seat-cinema_item">
+                            <div style=""></div><span class="seat-cinema-selected">Ghế đang chọn</span>
+                        </div>
+                        <div class="seat-cinema_item">
+                            <div style=""></div><span class="seat-cinema-selected">Ghế đang chọn</span>
+                        </div>
+                        <div class="seat-cinema_item">
+                            <div style=""></div><span class="seat-cinema-selected">Ghế đang chọn</span>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="col-12 col-lg-4 col-xl-4" style="position:relative;z-index:4;box-shadow: -6px 2px 15px rgba(140, 121, 121, 0.3);">
@@ -315,6 +461,12 @@
                         <p class="p-title" id="Address"></p>
                         <p class="p-title" id="ShowTime">T</p>
                     </div>
+                    <div class="col-12 ">
+                        <div class="border-dashed">
+                            <p class="p-title col-sm-6">Email: <span style="font-size:15px;font-weight:600"></span></p>
+                            <p class="p-title col-sm-6" id="CustomerEmail" style="text-align:right">...</p>
+                        </div>
+                    </div>
                     <!-- end section title -->
                     <div class="col-12 ">
                         <div class="border-dashed">
@@ -325,9 +477,9 @@
                     <div class="col-12">
                         <div class="border-dashed">
                             <p class="p-title col-sm-6">
-                                <img class="icon-combo" src="~/Clients/icon/popcorn.png" style="margin-right: 9px; width: 17px; height: 22px;" />Thức Ăn:<span id="Combo"></span>
+                                <img class="icon-combo" src="~/Clients/icon/popcorn.png" style="margin-right: 9px; width: 17px; height: 22px;cursor:pointer;" />Thức Ăn:<span id="Combo"></span>
                             </p>
-                            <p class="p-title col-sm-6" id="PriceCombo" style="text-align:right">0</p>
+                            <p class="p-title col-sm-6" id="PriceCombo" style="text-align:right" onchange="OnchangePrice();">0</p>
                         </div>
                     </div>
                     <div class="col-12">
@@ -337,15 +489,113 @@
                         </div>
                     </div>
                     <div class="col-12">
-                        <button class="header__sign-in" type="submit" onclick="return ExecuteBill();" style="margin:0 auto;width:100%;">
+                        <button class="header__sign-in payment" type="submit" disabled onclick="return ExecuteBill();" style="margin:0 auto;width:100%;">
                             <i class="icon ion-ios-log-in"></i>
                             <span>Thanh Toán</span>
                         </button>
                     </div>
-                       
-                    </div>
-                    <div class="row product-list">
 
+                </div>
+                    <div class="row product-list">
+                        <div class="product-list-content" id="ContentProductList">
+                            <div class="title-product_list">Sản Phẩm</div>
+                            <div>
+                                <div class="item row">
+                                    <div class="col-sm-2 col-xs-3 logoitem"><img src="https://www.cgv.vn/media/concession/app/5e0b46f7da51c_1577797368.png" style="border-width: 0; box-sizing: border-box; vertical-align: middle; width: 100%;"></div>
+                                    <div class="col-sm-7 col-xs-5">
+                                        <div class="itemname" data-toggle="collapse" data-target="#description561297">
+                                            <i name=" icon information-circle-outline"></i>MY COMBO MR 2020 (ONLINE)
+                                        </div>
+                                        <div id="description561297" class="desc collapse">
+                                            1 bắp vừa + 1 nước siêu lớn. Nhận trong ngày xem phim*
+                                            ** Miễn phí đổi vị bắp Dâu, Phô mai và Caramel **
+                                        </div>
+                                        <div style="color:#44c020;font-size:18px;font-weight:500">79.000 đ</div>
+                                    </div>
+                                    <div class="col-sm-3 col-xs-4 opnum quantity">
+                                        <button class="minus">-</button>
+                                        <input type='text' name='quantity' value='0' class='qty' />
+                                        <button class="plus">+</button>
+                                    </div>
+                                </div>
+                                <div class="item row">
+                                    <div class="col-sm-2 col-xs-3 logoitem"><img src="https://www.cgv.vn/media/concession/app/5e0b46f7da51c_1577797368.png" style="border-width: 0; box-sizing: border-box; vertical-align: middle; width: 100%;"></div>
+                                    <div class="col-sm-7 col-xs-5">
+                                        <div class="itemname" data-toggle="collapse" data-target="#description561297">
+                                            <i name=" icon information-circle-outline"></i>MY COMBO MR 2020 (ONLINE)
+                                        </div>
+                                        <div id="description561297" class="desc collapse">
+                                            1 bắp vừa + 1 nước siêu lớn. Nhận trong ngày xem phim*
+                                            ** Miễn phí đổi vị bắp Dâu, Phô mai và Caramel **
+                                        </div>
+                                        <div style="color:#44c020;font-size:18px;font-weight:500">79.000 đ</div>
+                                    </div>
+                                    <div class="col-sm-3 col-xs-4 opnum quantity">
+                                        <button class="minus">-</button>
+                                        <input type='text' name='quantity' value='0' class='qty' />
+                                        <button class="plus">+</button>
+                                    </div>
+                                </div>
+                                <div class="item row">
+                                    <div class="col-sm-2 col-xs-3 logoitem">
+                                    <img src="https://www.cgv.vn/media/concession/app/5e0b46f7da51c_1577797368.png" ></div>
+                                    <div class="col-sm-7 col-xs-5">
+                                        <div class="itemname" data-toggle="collapse" data-target="#description561297">
+                                            <i name=" icon information-circle-outline"></i>MY COMBO MR 2020 (ONLINE)
+                                        </div>
+                                        <div id="description561297" class="desc collapse">
+                                            1 bắp vừa + 1 nước siêu lớn. Nhận trong ngày xem phim*
+                                            ** Miễn phí đổi vị bắp Dâu, Phô mai và Caramel **
+                                        </div>
+                                        <div style="color:#44c020;font-size:18px;font-weight:500">79.000 đ</div>
+                                    </div>
+                                    <div class="col-sm-3 col-xs-4 opnum quantity">
+                                        <button class="minus">-</button>
+                                        <input type='text' name='quantity' onchange="OnchangeProduct();" value='0' class='qty' />
+                                        <button class="plus">+</button>
+                                    </div>
+                                </div>
+                                <div class="item row">
+                                    <div class="col-sm-2 col-xs-3 logoitem"><img src="https://www.cgv.vn/media/concession/app/5e0b46f7da51c_1577797368.png" style="border-width: 0; box-sizing: border-box; vertical-align: middle; width: 100%;"></div>
+                                    <div class="col-sm-7 col-xs-5">
+                                        <div class="itemname" data-toggle="collapse" data-target="#description561297">
+                                            <i name=" icon information-circle-outline"></i>MY COMBO MR 2020 (ONLINE)
+                                        </div>
+                                        <div id="description561297" class="desc collapse">
+                                            1 bắp vừa + 1 nước siêu lớn. Nhận trong ngày xem phim*
+                                            ** Miễn phí đổi vị bắp Dâu, Phô mai và Caramel **
+                                        </div>
+                                        <div style="color:#44c020;font-size:18px;font-weight:500">79.000 đ</div>
+                                    </div>
+                                    <div class="col-sm-3 col-xs-4 opnum quantity">
+                                        <button class="minus">-</button>
+                                        <input type='text' name='quantity' value='0' class='qty' />
+                                        <button class="plus">+</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="title-product_list">Sản Phẩm</div>
+                            <div>
+                                <div class="item row">
+                                    <div class="col-sm-2 col-xs-3"><img src="https://www.cgv.vn/media/concession/app/5e0b46f7da51c_1577797368.png" style="border-width: 0; box-sizing: border-box; vertical-align: middle; width: 100%;"></div>
+                                    <div class="col-sm-7 col-xs-5">
+                                        <div class="itemname" data-toggle="collapse" data-target="#description561297">
+                                            <i name=" icon information-circle-outline"></i>MY COMBO MR 2020 (ONLINE)
+                                        </div>
+                                        <div id="description561297" class="desc collapse">
+                                            1 bắp vừa + 1 nước siêu lớn. Nhận trong ngày xem phim*
+                                            ** Miễn phí đổi vị bắp Dâu, Phô mai và Caramel **
+                                        </div>
+                                        <div style="color:#44c020;font-size:18px;font-weight:500">79.000 đ</div>
+                                    </div>
+                                    <div class="col-sm-3 col-xs-4 opnum quantity">
+                                        <button class="minus">-</button>
+                                        <input type='text' name='quantity' value='0' class='qty' />
+                                        <button class="plus">+</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
         </div>
@@ -358,23 +608,26 @@
         var ScheduleID = @ViewBag.ScheduleDetailID;
         var Email = '@ViewBag.Email';
         var DataBillTicket = [];
+        var DataBillProduct = [];
         var PriceTicket = 0;
         var PriceProduct = 0;
         var PriceTicketType = 0;
         var DataMovie;
         var Total;
+        var DataProduct;
+        var DataProductType;
         $(document).ready(function () {
             LoadDataScheduleMovie();
+            $("#CustomerEmail").text(Email);
             $('img.icon-combo').on('click', function () {
                 $('.product-list').toggleClass('active');
             });
-            
         });
         function OnclickChairLabel() {
             $(".seat label").click(function () {
                 var NameChair = $(this).attr("for");
                 $('#' + NameChair +':enabled').prop('checked',function () {
-                    var idChair = $(this).attr('data-chair');                  
+                    var idChair = $(this).attr('data-chair');
                     if (removeItemsById(DataBillTicket, idChair) == 0) {
                         var rowchair = Number($(this).parent().parent().attr('data-rowchair'));
                         var price = $(this).attr('data-price');
@@ -386,17 +639,21 @@
                             Price: price,
                             TypeChair: typeChair,
                         };
-                        DataBillTicket.push(item);                       
+                        DataBillTicket.push(item);
                     }
-                    RenderPrice(DataBillTicket, "Chair", "PriceChair");
-                });    
+                    RenderPriceTicket(DataBillTicket, "Chair", "PriceChair");
+                });
                 if (DataBillTicket.length == 8) {
                     notiWarning("Số ghế được chọn tối đa không quá 8 ghế ngồi !");
                     return;
                 }
+                if (DataBillTicket.length != 0) {
+                    $('.payment').removeAttr("disabled");
+                }
+                else $('.payment').attr("disabled","");
             });
         }
-        function RenderPrice(data, idNameChair, idPriceChair) {
+        function RenderPriceTicket(data, idNameChair, idPriceChair) {
             var idChair = document.getElementById(idNameChair);
             var idPrice = document.getElementById(idPriceChair);
             if (idChair != null && idPrice != null) {
@@ -415,7 +672,7 @@
                 document.getElementById(idNameChair).innerHTML = StringChair;
                 $('#' + idPriceChair).trigger('change');
                 document.getElementById(idPriceChair).innerHTML = Divide(PriceTicket);
-            }          
+            }
         }
         function OnchangePrice() {
             Total = PriceTicket + PriceProduct;
@@ -455,8 +712,36 @@
                     let Chair = result.Table2;
                     RenderRoomChair(NameRow, Chair, "RoomChairBody");
                     OnclickChairLabel();
+                    DataProductType = result.ProductType;
+                    DataProduct = result.Product;
+                    RenderProductList(DataProductType, DataProduct, "ContentProductList");
+                    QuantityProduct();
+                    let DataChairType = result.ChairType;
+                    RenderChairType(DataChairType, "ChairType");
                 }
             });
+        }
+        function RenderChairType(data, id) {
+            var myNode = document.getElementById(id);
+            if (myNode != null) {
+                myNode.innerHTML = '';
+                let stringContent = '';
+                if (data && data.length > 0) {
+                    for (var i = 0; i < data.length; i++) {
+                        var item = data[i];
+                        let tr =
+                            '<div style="background-color:' + item.ColorCode + '"></div><span class="seat-cinema-selected">' + item.NameChair + '</span>'
+                        stringContent = stringContent + '<div class="seat-cinema_item">' + tr + '</div>';
+                    }
+                }
+                stringContent += '<div class="seat-cinema_item">'
+                    + '<div style="background:#e7eaec !important;opacity:.8"></div>'
+                    + '<span class="seat-cinema-selected">Ghế đã có người chọn</span>'
+                    + '</div><div class="seat-cinema_item">'
+                    + '<div style="background:#44c020"></div>'
+                    + '<span class="seat-cinema-selected">Ghế đang chọn</span></div>'
+                document.getElementById(id).innerHTML = stringContent;
+            }
         }
         function RenderRoomChair(RowChair, Chair, id) {
             var myNode = document.getElementById(id);
@@ -481,53 +766,147 @@
                 document.getElementById(id).innerHTML = stringContent;
             }
         }
-
-        function ExecuteBill() {
-            var data = new Object();
-            data.ScheduleID = Number(DataMovie[0].ID);
-            data.Quan = Number(DataBillTicket.length);
-            data.Price = parseFloat(Total);
-            $.ajax({
-                url: "/Checkout/ExecuteBill",
-                dataType: "json",
-                type: "POST",
-                data: {
-                    data: JSON.stringify(data)
-                    , Email: Email
-                },
-                async: true,
-                error: function (error) {
-                    alert(error);
-                },
-                success: function (result) {                    
-                    if (result != "0") {
-                        if (ExecuteBillTicket(result) == 1) {
-                            notiSuccess("Hóa đơn bạn đặt thành công");
+        function RenderProductList(dataProductType, dataProduct, id) {
+            var myNode = document.getElementById(id);
+            if (myNode != null) {
+                myNode.innerHTML = '';
+                let stringContent = '';
+                if (dataProductType && dataProductType.length > 0) {
+                    for (var i = 0; i < dataProductType.length; i++) {
+                        let rowType = dataProductType[i];
+                        let title = '<div class="title-product_list">' + rowType.Name + '</div>';
+                        let items = dataProduct.filter(word => word["TypeID"] == rowType.ID);
+                        let content = '';
+                        for (var j = 0; j < items.length; j++) {
+                            let item = items[j];
+                            content += '<div class="item row">'
+                                + '<div class="col-sm-2 col-xs-3 logoitem">'
+                                + ' <img src="' + item.Image + '" ></div>'
+                                + '<div class="col-sm-7 col-xs-5">'
+                                + '<div class="itemname" data-toggle="collapse">'
+                                + '<i name=" icon information-circle-outline"></i>' + item.Name + '</div>'
+                                + '<div style="color:#44c020;font-size:16px;font-weight:600">' + Divide(item.Price) + '</div>'
+                                + '</div>'
+                                + '<div class="col-sm-3 col-xs-4 opnum quantity">'
+                                + '<button class="minus">-</button>'
+                                + '<input type="number" min="0" name="quantity" onchange="OnchangeProduct(' + item.ID + ');" id="p-' + item.ID + '" data-price="' + item.Price + '" value="0" class="qty" />'
+                                + '<button class="plus">+</button>'
+                                + '</div>'
+                                + '</div>'
                         }
-                        else notiError("Hóa đơn bạn đặt thất bại");
+                        stringContent = stringContent + title + '<div class"content-item">' + content + '</div>';
                     }
                 }
+                document.getElementById(id).innerHTML = stringContent;
+            }
+        }
+        function QuantityProduct() {
+            $('.quantity').on('click', '.plus', function (e) {
+                let $input = $(this).prev('input.qty');
+                let val = parseInt($input.val());
+                $input.val(val + 1).change();
             });
+
+            $('.quantity').on('click', '.minus',
+                function (e) {
+                    let $input = $(this).next('input.qty');
+                    var val = parseInt($input.val());
+                    if (val > 0) {
+                        $input.val(val - 1).change();
+                    }
+                });
+        }
+        function OnchangeProduct(id) {
+            let Quantity = $('#p-' + id).val();
+            let Price = Number($('#p-' + id).attr('data-price'));
+            removeItemProductById(DataBillProduct, id);
+            if (Quantity > 0) {
+                var item = {
+                    ProductID:id,
+                    Price: Price,
+                    Quan: Quantity
+                };
+                DataBillProduct.push(item);
+            }
+            RenderPriceProduct(DataBillProduct,"PriceCombo");
+        }
+        function RenderPriceProduct(data,id) {
+            var priceCombo = document.getElementById(id);
+            if (priceCombo != null) {
+                if (data && data.length > 0) {
+                    PriceProduct = 0;
+                    for (var i = 0; i < data.length; i++) {
+                        var item = data[i];
+                        PriceProduct += (Number(item.Price) * Number(item.Quan));
+                    }
+                }
+                document.getElementById(id).innerHTML = PriceProduct;
+                OnchangePrice();
+            }
+        }
+        function removeItemProductById(arr, id) {
+            var LengthArr = arr.length;
+            if (LengthArr > 0) {
+                while (LengthArr--) {
+                    var productID = arr[LengthArr];
+                    if (Number(productID.ProductID) == Number(id)) {
+                        arr.splice(LengthArr, 1);
+                    }
+                }
+            }
+        }
+        function ExecuteBill() {
+            if (DataBillTicket.length > 0) {
+                var data = new Object();
+                data.ScheduleID = Number(DataMovie[0].ID);
+                data.Quan = Number(DataBillTicket.length);
+                data.Price = parseFloat(Total);
+                $.ajax({
+                    url: "/Checkout/ExecuteBill",
+                    dataType: "json",
+                    type: "POST",
+                    data: {
+                        data: JSON.stringify(data)
+                        , Email: Email
+                    },
+                    async: true,
+                    error: function (error) {
+                        alert(error);
+                    },
+                    success: function (result) {
+                        if (result != "0") {
+                            if (ExecuteBillTicket(result) == 0 && ExecuteBillProduct(result)==0) {
+                                notiSuccess("Hóa đơn bạn đặt thành công");
+                            }
+                            else notiError("Hóa đơn bạn đặt thất bại");
+                        }
+                    },
+                    beforeSend: function () {
+                        $('.loader').css("display","flex");
+                    },
+                    complete: function () {
+                        $('.loader').css("display", "none");
+                    }
+                });
+            }
+            else notiWarning("Vui lòng chọn chỗ ngồi");
             return false;
         }
         function ExecuteBillTicket(idBill) {
-            debugger
             let TotalInsert = 0;
-            let ticketlength = DataBillTicket.length;           
+            let ticketlength = DataBillTicket.length;
             if (ticketlength > 0) {
                 for (var i = 0; i < ticketlength; i++) {
                     let item = DataBillTicket[i];
                     item.Bill_ID = Number(idBill);
-                    if (ExecuteBillTicketInsert(item)==1) {
+                    if (ExecuteBillTicketInsert(item)==0) {
                         TotalInsert+=1;
                     }
                 }
             }
             return  (TotalInsert == ticketlength) ? 1 : 0;
         }
-
         function ExecuteBillTicketInsert(data) {
-            var Equa = 0;
             $.ajax({
                 url: "/Checkout/ExecuteBillTicket",
                 dataType: "json",
@@ -535,16 +914,43 @@
                 data: {
                     data: JSON.stringify(data)
                 },
-                async: true,
+                async: false,
                 error: function (error) {
-                    return 0;
+                    return 1;
                 },
                 success: function (result) {
-                    Equa = result;
+                    console.log(result);
+                    return Number(result);
                 }
             });
-            return 1;
         }
-        
+        function ExecuteBillProduct(idBill) {
+            let TotalInsert = 0;
+            let productlength = DataBillProduct.length;
+            if (productlength > 0) {
+                for (var i = 0; i < productlength; i++) {
+                    let item = DataBillProduct[i];
+                    item.Bill_ID = Number(idBill);
+                    ExecuteBillProductInsert(item);
+                }
+            }
+            return (TotalInsert == productlength) ? 1 : 0;
+        }
+        function ExecuteBillProductInsert(data) {
+            $.ajax({
+                url: "/Checkout/ExecuteBillProduct",
+                dataType: "json",
+                type: "POST",
+                data: {
+                    data: JSON.stringify(data)
+                },
+                async: true,
+                error: function (error) {
+
+                },
+                success: function (result) {
+                }
+            });
+        }
     </script>  
 }

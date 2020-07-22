@@ -33,6 +33,7 @@ namespace VTCinema.Controllers.Clients.SignIn
                     }
                     //return RedirectToAction("Index", "ServiceDetail", new { Type = 27 });
                     return RedirectToAction("Index", "Main");
+                    
                 }
                 else
                 {
