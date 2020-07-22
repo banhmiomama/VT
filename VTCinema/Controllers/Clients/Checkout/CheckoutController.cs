@@ -202,7 +202,7 @@ namespace VTCinema.Controllers.Clients.Checkout
                 {
                     dt = confunc.ExecuteDataTable("[YYY_sp_Bill_Product_Insert]", CommandType.StoredProcedure
                         , "@Bill_ID", SqlDbType.Int, dataDetail.Bill_ID
-                        , "@Product_ID", SqlDbType.Int, dataDetail.Product_ID
+                        , "@Product_ID", SqlDbType.Int, dataDetail.ProductID
                         , "@Quan", SqlDbType.Int, dataDetail.Quan
                         , "@Price", SqlDbType.Float, dataDetail.Price);
                 }
@@ -228,7 +228,7 @@ namespace VTCinema.Controllers.Clients.Checkout
         class DataBillProduct
         {
             public int Bill_ID;
-            public int Product_ID;
+            public int ProductID;
             public int Quan;
             public float Price;
         }

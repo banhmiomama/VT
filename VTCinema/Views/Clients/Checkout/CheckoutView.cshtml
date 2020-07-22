@@ -438,7 +438,7 @@
                 <img src="~/Clients/img/screen.png" style="max-width:100%;" />
                 <div class="tab-content" id="RoomChairBody">
                 </div>
-                <div class="row" style="height: 30px; margin-top: 30px;color:white">
+                <div class="row" style="height: 30px; margin-top: 30px;color: white;display: flex;justify-content: center;">
                     <div class="seat-cinema" id="ChairType">
                         <div class="seat-cinema_item">
                             <div style=""></div><span class="seat-cinema-selected">Ghế đang chọn</span>
@@ -621,13 +621,13 @@
             $("#CustomerEmail").text(Email);
             $('img.icon-combo').on('click', function () {
                 $('.product-list').toggleClass('active');
-            });      
+            });
         });
         function OnclickChairLabel() {
             $(".seat label").click(function () {
                 var NameChair = $(this).attr("for");
                 $('#' + NameChair +':enabled').prop('checked',function () {
-                    var idChair = $(this).attr('data-chair');                  
+                    var idChair = $(this).attr('data-chair');
                     if (removeItemsById(DataBillTicket, idChair) == 0) {
                         var rowchair = Number($(this).parent().parent().attr('data-rowchair'));
                         var price = $(this).attr('data-price');
@@ -639,10 +639,10 @@
                             Price: price,
                             TypeChair: typeChair,
                         };
-                        DataBillTicket.push(item);                       
+                        DataBillTicket.push(item);
                     }
                     RenderPriceTicket(DataBillTicket, "Chair", "PriceChair");
-                });    
+                });
                 if (DataBillTicket.length == 8) {
                     notiWarning("Số ghế được chọn tối đa không quá 8 ghế ngồi !");
                     return;
@@ -672,7 +672,7 @@
                 document.getElementById(idNameChair).innerHTML = StringChair;
                 $('#' + idPriceChair).trigger('change');
                 document.getElementById(idPriceChair).innerHTML = Divide(PriceTicket);
-            }          
+            }
         }
         function OnchangePrice() {
             Total = PriceTicket + PriceProduct;
@@ -731,13 +731,17 @@
                         var item = data[i];
                         let tr =
                             '<div style="background-color:' + item.ColorCode + '"></div><span class="seat-cinema-selected">' + item.NameChair + '</span>'
-
                         stringContent = stringContent + '<div class="seat-cinema_item">' + tr + '</div>';
                     }
                 }
-                stringContent += '<div class="seat-cinema_item"><div style="background:#e7eaec"></div><span class="seat-cinema-selected">Ghế đã có người chọn</span></div><div class="seat-cinema_item"><div style="background:#44c020"></div><span class="seat-cinema-selected">Ghế đang chọn</span></div>'
+                stringContent += '<div class="seat-cinema_item">'
+                    + '<div style="background:#e7eaec !important;opacity:.8"></div>'
+                    + '<span class="seat-cinema-selected">Ghế đã có người chọn</span>'
+                    + '</div><div class="seat-cinema_item">'
+                    + '<div style="background:#44c020"></div>'
+                    + '<span class="seat-cinema-selected">Ghế đang chọn</span></div>'
                 document.getElementById(id).innerHTML = stringContent;
-            }           
+            }
         }
         function RenderRoomChair(RowChair, Chair, id) {
             var myNode = document.getElementById(id);
@@ -828,7 +832,7 @@
         }
         function RenderPriceProduct(data,id) {
             var priceCombo = document.getElementById(id);
-            if (priceCombo != null) {              
+            if (priceCombo != null) {
                 if (data && data.length > 0) {
                     PriceProduct = 0;
                     for (var i = 0; i < data.length; i++) {
@@ -838,7 +842,7 @@
                 }
                 document.getElementById(id).innerHTML = PriceProduct;
                 OnchangePrice();
-            }           
+            }
         }
         function removeItemProductById(arr, id) {
             var LengthArr = arr.length;
@@ -888,13 +892,13 @@
             else notiWarning("Vui lòng chọn chỗ ngồi");
             return false;
         }
-        function ExecuteBillTicket(idBill) {           
+        function ExecuteBillTicket(idBill) {
             let TotalInsert = 0;
-            let ticketlength = DataBillTicket.length;           
+            let ticketlength = DataBillTicket.length;
             if (ticketlength > 0) {
                 for (var i = 0; i < ticketlength; i++) {
                     let item = DataBillTicket[i];
-                    item.Bill_ID = Number(idBill);                  
+                    item.Bill_ID = Number(idBill);
                     if (ExecuteBillTicketInsert(item)==0) {
                         TotalInsert+=1;
                     }
@@ -915,12 +919,11 @@
                     return 1;
                 },
                 success: function (result) {
-                    debugger
                     console.log(result);
                     return Number(result);
                 }
-            });            
-        }   
+            });
+        }
         function ExecuteBillProduct(idBill) {
             let TotalInsert = 0;
             let productlength = DataBillProduct.length;
@@ -928,7 +931,7 @@
                 for (var i = 0; i < productlength; i++) {
                     let item = DataBillProduct[i];
                     item.Bill_ID = Number(idBill);
-                    ExecuteBillProduct(item);
+                    ExecuteBillProductInsert(item);
                 }
             }
             return (TotalInsert == productlength) ? 1 : 0;
@@ -943,11 +946,11 @@
                 },
                 async: true,
                 error: function (error) {
-                    
+
                 },
                 success: function (result) {
                 }
             });
-        }   
+        }
     </script>  
 }
