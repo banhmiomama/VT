@@ -18,7 +18,7 @@
                         <div class="field">
                             <label>Thông Tin </label>
                             <div class="ui fluid search selection dropdown" id="Employee">
-                                <input type="hidden" name="Employee">
+                                <input type="hidden" name="Employeei">
                                 <i class="dropdown icon"></i>
                                 <div class="default text">Chọn </div>
                                 <div class="menu" id="cbbEmployee">
@@ -31,7 +31,7 @@
                         <div class="field">
                             <label>Chi Nhánh </label>
                             <div class="ui fluid search selection dropdown" id="Branch">
-                                <input type="hidden" name="Branch">
+                                <input type="hidden" name="BranchID">
                                 <i class="dropdown icon"></i>
                                 <div class="default text">Chọn </div>
                                 <div class="menu" id="cbbBranch">
@@ -41,7 +41,7 @@
                         <div class="field">
                             <label>Nhóm Người Dùng</label>
                             <div class="ui fluid search selection dropdown" id="Group">
-                                <input type="hidden" name="Group">
+                                <input type="hidden" name="GroupID">
                                 <i class="dropdown icon"></i>
                                 <div class="default text">Chọn </div>
                                 <div class="menu" id="cbbGroup">
@@ -49,12 +49,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="two fields">
-                        <div class="field">
-                            <label>Tên Hiển Thị</label>
-                            <input id="txtUsername" name="Username" type="text" />
-                        </div>
-                        <div class="field">
+                      
+                        @*<div class="field">
                             <label>Tất Cả Chi Nhánh</label>
                             <div class="ui fluid search selection dropdown" id="isAllBranch">
                                 <input type="hidden" name="isAllBranch">
@@ -63,18 +59,17 @@
                                 <div class="menu" id="cbbisAllBranch">
                                 </div>
                             </div>
-                        </div>
+                        </div>*@
+                <div class="two fields">
+                    <div class="field">
+                        <label>Tên Hiển Thị</label>
+                        <input id="txtUsername" name="Username" type="text" />
                     </div>
-                    <div class="two fields">
-                        <div class="field">
-                            <label>Mật Khẩu</label>
-                            <input id="txtPassword" name="Password" type="password" />
-                        </div>
-                        <div class="field">
-                            <label>Khu Vực</label>
-                            <input id="txtAreaBranch" name="AreaBranch" type="text" />
-                        </div>
+                    <div class="field">
+                        <label>Khu Vực</label>
+                        <input id="txtAreaBranch" name="AreaBranch" type="text" />
                     </div>
+                </div>
 
                     <div class="field">
                         <label>Ghi Chú</label>
@@ -122,14 +117,14 @@
                 LoadCombo(DataComboGroup, "cbbGroup");
                 if (DataDetail.length != 0) {
                     $("#Employee").dropdown("refresh");
-                    $("#Employee").dropdown("set selected", DataDetail[0].Employee_ID);
+                    $("#Employee").dropdown("set selected", DataDetail[0].EmployeeID);
                     $("#Branch").dropdown("refresh");
-                    $("#Branch").dropdown("set selected", DataDetail[0].Branch_ID);
+                    $("#Branch").dropdown("set selected", DataDetail[0].BranchID);
                     $("#Group").dropdown("refresh");
-                    $("#Group").dropdown("set selected", DataDetail[0].Group_ID);
+                    $("#Group").dropdown("set selected", DataDetail[0].GroupID);
                     $('#txtName').val((DataDetail[0].Name));
                     $('#txtUsername').val((DataDetail[0].Username)); 
-                    $('#txtPassword').val((DataDetail[0].Password));
+                    //$('#txtPassword').val((DataDetail[0].Password));
                     $('#txtAreaBranch').val((DataDetail[0].AreaBranch));
                     $('#txtNote').val((DataDetail[0].Note));
                 }
@@ -138,13 +133,14 @@
     }
 
     function ExcuteData() {
+        debugger
         var data = new Object();
-        data.Name = $('#txtName').val() ? $('#txtName').val() : ""; 
-        data.Employee_ID = $('#Employee').dropdown('get value') ? ($('#Employee').dropdown('get value') + ',') : "";
-        data.Branch_ID = $('#Branch').dropdown('get value') ? ($('#Branch').dropdown('get value') + ',') : "";
-        data.Group_ID = $('#Group').dropdown('get value') ? ($('#Group').dropdown('get value') + ',') : "";
+        data.Name = $('#txtName').val() ? $('#txtName').val() : "";
+        data.EmployeeID = $('#Employee').dropdown('get value') ? ($('#Employee').dropdown('get value')) : "";
+        data.BranchID = $('#Branch').dropdown('get value') ? ($('#Branch').dropdown('get value')) : "";
+        data.GroupID = $('#Group').dropdown('get value') ? ($('#Group').dropdown('get value')) : "";
         data.Username = $('#txtUsername').val() ? $('#txtUsername').val() : "";
-        data.Password = $('#txtPassword').val() ? $('#txtPassword').val() : "";
+        //data.Password = $('#txtPassword').val() ? $('#txtPassword').val() : "";
         data.Note = $('#txtNote').val() ? $('#txtNote').val() : "";
         data.AreaBranch = $('#txtAreaBranch').val() ? $('#txtAreaBranch').val() : "";
         //data.Description = $('#txtDes').val() ? $('#txtDes').val() : "";
