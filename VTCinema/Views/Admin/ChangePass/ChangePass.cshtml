@@ -1,0 +1,66 @@
+﻿<div id="headerPopup_CustomerCare" class="header">
+    Thay Đỗi Mật Khẩu
+</div>
+<div class="row">
+    <div class="sixteen wide tablet eight wide computer column">
+        <div class="ui segments">
+            <form class="ui form segment form3" id="form3">
+                <div class="ui accordion field">
+                    <div class="content field active">
+                        <div class="two fields">
+                            <div class="field">
+                                <label>Mật Khẩu Mới</label>
+                                <input id="txtPassword" name="password" type="password" />
+                            </div>
+                            <div class="field">
+                                <label>Nhập Mật Khẩu Mới</label>
+                                <input id="txtPassWordAgain" type="password" name="passwordAgain" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="actions">
+    <div style="float: right">
+        <button class="ui teal button" form="form3" type="submit" onclick="return ExcuteData()">Save</button>
+
+    </div>
+    <div style="float: right">
+        <button class="ui grey button" onclick="event.preventDefault();CloseModal()">Cancel</button>
+    </div>
+</div>
+<script src="/js/customjs/custom-validation.js"></script>
+<script src="/js/main.js"></script>
+<script>
+    function ExcuteData() {
+        var password = $('#txtPassword').val() ? $('#txtPassword').val() : "";
+        $('#form3').form('validate form');
+        if ($('#form3').form('is valid')) {
+             $.ajax({
+                 url: "/Admin/ChangePass/Execute",
+                 dataType: "json",
+                 type: "POST",
+                 data: {
+                     __RequestVerificationToken: token
+                     , Password: password
+                 },
+                 async: true,
+                 error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        notiError("Lỗi Hệ Thống");
+                 },
+                 success: function (result) {
+                     if (result == "0") {
+                         notiSuccess();
+                     } else {
+                         notiError("Lỗi Hệ Thống");
+                        }
+                 }
+             })
+            $('#divDetailPopupSign').modal('hide');
+        }
+         return false;
+    }
+</script>

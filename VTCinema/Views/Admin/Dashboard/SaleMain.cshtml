@@ -4,76 +4,149 @@
     ViewBag.Title = "Dashboard";
 }
 <div class="pusher">
-        <div class="navslide navwrap">
-            <div class="row" style="background-color: white">
-                <div class="ui form segment form3">
-                    <h2 class="ui center aligned header" style="border-top: 1px; font-family: 'Times New Roman'">
-                        Danh Sách Nhân Viên Bị Xử Phạt
-                        <div class="sub header" style="font-family: 'Times New Roman'">Danh Sách các nhân viên bị xử phạt</div>
-                    </h2>
-                    <div class="four fields" style="margin: 0px;">
-                        <div class="field">
-                            <button style="display: inline;" class="ui blue button" data-value="fade up" onclick="event.preventDefault();return exportData_PunishEmployee();">Xuất File</button>
-                            <button class="ui blueli button" data-value="fade up" onclick="return onclickCreateCustomer()">Thêm mới</button>
-                        </div>
-                        <div class="field">
-                            <div class="ui fluid search selection dropdown" id="Branch_ID" onchange="LoadData_PunishEmployee()">
-                                <input type="hidden" name="branch" />
-                                <input class="search" autocomplete="off" tabindex="0" />
-                                <div class="default text">Chi Nhánh</div>
-                                <div id="cbbBranch" class="menu" tabindex="-1">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="field">
-                            <div class="ui icon input" style="max-height: 40px;">
-                                <input id="filterEmployee" type="text" placeholder="Seaching..." onkeyup="event.preventDefault();return onkeyupTicketFitler();">
-                                <i class="circular search link icon"></i>
-                            </div>
-                        </div>
-                        <div class="field">
-                            <input class="flatpickr" id="dateFilter" type="text" placeholder="Select Date.." onchange="LoadData_PunishEmployee()" />
-                        </div>
-                    </div>
-                    <div class="ui segment" style="border: none; overflow-x: auto; padding: unset;">
-                        <table id="dtContentPunishEmployee" class="ui sortable celled table">
-                            <thead class="hiddenCollapse">
-                                <tr role="row">
-                                    <th style="display: none">ID</th>
-                                    <th style="width: 70px;">#</th>
-                                    <th>Nhân Viên</th>
-                                    <th style="min-width: 60px">Mức Xử Phạt</th>
-                                    <th style="min-width: 150px" class="no-sort">Loại Xử Phạt</th>
-                                    <th style="max-width: 120px;">Số Tiền Xử Phạt</th>
-                                    <th style="max-width: 300px;">Ngày Xử Phạt</th>
-                                </tr>
-                            </thead>
-                            <tbody id="dtContentPunishEmployeeBody">
-                            </tbody>
-                        </table>
-
-                    </div>
+    <div class="navslide navwrap">
+        <div class="row" style="background-color: white">
+            <div class="ui segments">
+                <div class="ui segment headerSegmentReport">
+                    <span class="headerReport header_form_report" data-languagestatic="chart_revenue_by_branch_header">
+                        Biểu đồ doanh thu theo chi nhánh
+                    </span>
+                </div>
+                <div class="field">
+                    <input class="flatpickr" id="dateFilter" type="text" placeholder="Chọn Thời Gian Chiếu" onchange="LoadData_ReportBranchPie()" />
+                </div>
+                <div class="ui segment">
+                    <div id="BranchPie"></div>
                 </div>
             </div>
-
         </div>
     </div>
+</div>
 
-
+<script src="~/Momentjs/moment.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.min.css">
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.min.js"></script>
 <script>
     $(document).ready(function () {
         $("#dateFilter").flatpickr({
             mode: "range",
             dateFormat: 'd-m-Y',
             enableTime: false,
+            onClose: function (selectedDates, dateStr, instance) {
+                if (selectedDates.length == 1) {
+                    instance.setDate([selectedDates[0], selectedDates[0]], true);
+                }
+            }
         });
         var date = new Date();
         var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
         var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+        $("#dateFilter").val(formatDateClient(firstDay) + ' to ' + formatDateClient(lastDay));
+        LoadData_ReportBranchPie();
     });
-    function onclickCreateCustomer() {
-        $("#divDetailPopupContent").load("/CustomerDetail/" + 0);
-        $('#divDetailPopup').modal('show');
-        return false;
+    function LoadData_ReportBranchPie() {
+        let filterDate = $('#dateFilter').val();
+        if (filterDate.indexOf('to') != -1) {
+            filterDate = filterDate.split(' to ');
+            firstDay = moment(filterDate[0], 'DD/MM/YYYY').format('YYYY/MM/DD');
+            lastDay = moment(filterDate[1], 'DD/MM/YYYY').format('YYYY/MM/DD');
+        }
+        else {
+            filterDate = moment(filterDate, 'DD/MM/YYYY').format('YYYY/MM/DD');
+            firstDay = filterDate;
+            lastDay = filterDate;
+        }
+        $.ajax({
+            url: "SaleMain/RevenuePayment",
+            data: "json",
+            type: "POST",
+            data: { 'dateFrom': firstDay, 'dateTo': lastDay },
+            async: true,
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                notiError("Lỗi Hệ Thống");
+            },
+            success: function (result) {
+                debugger
+                if (result.d != "") {
+                    RenderReport_BranchPie(result, "#BranchPie");
+                } else {
+                    notiError("Lỗi Hệ Thống");
+                }
+            }
+        })
+    }
+    function RenderReport_BranchPie(data, id) {
+        let colorChart = ['#ff7f0e', '#ffbb78', '#2ca02c', '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2', '#f7b6d2', '#7f7f7f', '#c7c7c7', '#bcbd22', '#dbdb8d', '#17becf', '#9edae5'];
+        var chart = c3.generate({
+            bindto: id,
+            data: {
+                columns: [],
+                type: 'pie'
+            },
+            size: {
+                height: '400'
+            },
+            color: {
+                pattern: colorChart
+            },
+            legend: {
+                position: 'right'
+            },
+            //pie: {
+            //    label: {
+            //        format: function (value, ratio, id) {
+            //            return formatNumberPrice(value.toString());
+            //        }
+            //    }
+            //},
+            //tooltip: {
+            //    contents: function (d, defaultTitleFormat, defaultValueFormat, color) {
+            //        let colorX = '';
+            //        var colors = colorChart;
+            //        if (d[0].index !== undefined) {
+            //            colorX = colors[d[0].index];
+            //        }
+            //        return '<table class="c3-tooltip"><tbody><tr><td class="name"><span style="background-color: '
+            //            + colorX + '"></span>' + d[0].name + '</td><td class="value">'
+            //            + d[0].value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " VND" + '</td><td class="value">'
+            //            + Math.round(d[0].ratio * 10000) / 100 + ' %</td></tr></tbody></table>'
+            //    }
+            //},
+             axis: {
+                x: {
+                    label: 'Sepal.Width'
+                },
+                y: {
+                    label: 'Petal.Width'
+                }
+            }
+        });
+        //var chart = c3.generate({
+        //    data: {
+        //        columns: [
+        //        ],
+        //        type: 'pie',
+        //        onmouseover: function (d, i) { console.log("onmouseover", d, i, this); },
+        //        onmouseout: function (d, i) { console.log("onmouseout", d, i, this); },
+        //        onclick: function (d, i) { console.log("onclick", d, i, this); },
+        //    },
+        //    axis: {
+        //        x: {
+        //            label: 'Sepal.Width'
+        //        },
+        //        y: {
+        //            label: 'Petal.Width'
+        //        }
+        //    }
+        //});
+        for (var i = 0; i < data.length; i++) {
+            debugger
+            chart.load({
+                columns: [
+                    [data[i].BranchName, Number(data[i].Amount)],
+                ]
+            });
+        }
     }
 </script>

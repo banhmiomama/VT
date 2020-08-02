@@ -31,13 +31,11 @@ namespace VTCinema.Comon
         public string sys_CompanyAddress;
         public string sys_hotline;
 
-        public string sys_userAvatar;
+        public static string sys_userAvatar { get; set; }
 
        
         public int sys_customerid { get; set; }
         public static string sys_Email { get; set; }
-
-
         public int DetectLimitDate(int userID)
         {
             using (Models.ExecuteDataBase connFunc = new Models.ExecuteDataBase())
@@ -74,6 +72,7 @@ namespace VTCinema.Comon
                         sys_userid = Convert.ToInt32(dt.Rows[0]["ID"].ToString());
                         sys_username = dt.Rows[0]["username"].ToString();
                         sys_RoleID = dt.Rows[0]["Group_ID"].ToString();
+                        sys_userAvatar = dt.Rows[0]["Avatar"].ToString();
                         //sys_RoleServerID = dt.Rows[0]["InheritanceServer"].ToString();
                         //DetectUserInfo(sys_userid);
                         return sys_userid;
