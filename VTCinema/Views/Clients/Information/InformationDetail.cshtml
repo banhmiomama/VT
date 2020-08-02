@@ -5,6 +5,14 @@
 }
 @section Style{
     <style>
+        #DescriptionInformation p {
+            display: -webkit-box;
+            max-width: 100%;
+            -webkit-line-clamp: 6;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
         label {
             color: white;
         }
@@ -42,17 +50,18 @@
                     </div>
                 </div>
             </div>
-            <div class="col-3" id="InformationList">
-                <ul>
-                    <li class="card__description" style="color:white; font-size:15px">
-                        <img src="" id="ImgMovieComingSoon" />
-                    </li>
-                    <li class="card__description" style="color:white; font-size:15px" id="MovieName">
-                    </li>
-                </ul>
-
+            <div class="col-3" id="InformationLists">
+                <div class="col-12 col-md-12 col-lg-12">
+                    <ul>
+                        <li class="card__description" style="color:white; font-size:15px">
+                            <img src="" id="ImgMovieComingSoon" />
+                        </li>
+                        <li class="card__description" style="color:white; font-size:15px" id="MovieName">
+                        </li>
+                    </ul>
+                    </div>
+                </div>
             </div>
-        </div>
     </div>
 </section>
 <!-- end expected premiere -->
@@ -122,6 +131,7 @@
 
         $(document).ready(function () {
         InformationDetailID = @ViewBag.InformationDetailID;
+            LoadDataInformation()
             LoadDataInformationDetail();
     })
         function LoadDataInformationDetail() {
@@ -143,6 +153,49 @@
                     }
                     }
             });
+        }
+        function LoadDataInformation() {
+            $.ajax({
+                url: "LoadDataInformation",
+                dataType: "json",
+                type: "POST",
+                data: JSON.stringify({
+                }),
+                contentType: 'application/json; charset=utf-8',
+                async: true,
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    notiError();
+                },
+                success: function (result) {
+                    RenderInformationList(result, "InformationLists");
+                }
+            });
+        }
+        function RenderInformationList(data, id) {
+            debugger
+            var myNode = document.getElementById(id);
+            if (myNode != null) {
+                myNode.innerHTML = '';
+                let stringContent = '';
+                if (data && data.length > 0) {
+                    for (var i = 0; i < data.length; i++) {
+                        let item = data[i];
+                        let td =
+                            ' <div class="card card-information" >'
+                            + ' <div class="card__cover active">'
+                            + ' <img src="' + item.Image + '" alt=""></div>'
+                            + '<a class="card__title"  href="' + item.ID + '" style="display:block;text-overflow: Ellipsis;width: 200px;overflow: hidden; white-space: nowrap;">' + item.Title + '</a>'
+                            + ' <div class="card__content centered">'
+                            + ' <span class="card__description" id="DescriptionInformation"><p>' + item.Note + '</p></span>'
+                           
+                            //+ ' <h3 class="card__title">' + item.Title + '</h3>'
+                            + ' </div></div>';
+
+                        stringContent = stringContent + '<div class="col-12 col-md-12 col-lg-12">' + td + '</div>';
+                    }
+                }
+                document.getElementById(id).innerHTML = stringContent;
+            }
         }
 
     </script>

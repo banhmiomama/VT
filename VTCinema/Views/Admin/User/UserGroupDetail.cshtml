@@ -1,0 +1,94 @@
+﻿@{
+    Layout = null;
+}
+<div id="headerPopup_CustomerCare" class="header">
+    Nhóm Người Dùng
+</div>
+<div class="image content">
+    <div class="description">
+        <form class="ui form segment form3" id="form3">
+            <div class="ui accordion field">
+                <div class="content field active">
+                    <div class="two fields">
+                        <div class="field">
+                            <label>Tên Nhóm Người Dùng</label>
+                            <input id="txtNameGroup" name="NameGroup" type="text" />
+                        </div>
+                        <div class="field">
+                            <label>Ghi Chú</label>
+                            <input id="txtNote" name="Note" type="text" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="actions">
+    <div style="float: right">
+        <button class="ui teal button" form="form3" type="submit" onclick="return ExcuteData()">Save</button>
+    </div>
+    <div style="float: right">
+        <button class="ui grey button" onclick="event.preventDefault(); CloseModal();">Cancel</button>
+    </div>
+</div>
+
+<script src="/js/customjs/custom-validation.js"></script>
+<script src="/js/main.js"></script>
+<script>
+    let UserGroupDetailID;
+    $(document).ready(function () {
+        UserGroupDetail = @ViewBag.UserGroupID;
+        LoadDataUpdateUserGroup();
+    });
+
+    function LoadDataUpdateUserGroup() {
+        $.ajax({
+            type: 'GET',
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            url: "/Admin/UserGroupDetail/GetUserGroupDetail/" + UserGroupDetailID,
+            async: true,
+            success: function (data) {
+                if (data.length != 0) {
+                    $('#txtNameGroup').val((data[0].GroupName));
+                    $('#txtNote').val((data[0].Note));
+                }
+            }
+        });
+    }
+    function ExcuteData() {
+        var data = new Object();
+        data.GroupName = $('#txtNameGroup').val() ? $('#txtNameGroup').val() : "";
+        data.Note = $('#txtNote').val() ? $('#txtNote').val() : "";
+        $('#form3').form('validate form');
+        if ($('#form3').form('is valid')) {
+
+             $.ajax({
+                 url: "/Admin/UserGroupDetail/Execute",
+                 dataType: "json",
+                 type: "POST",
+                 data: {
+                     __RequestVerificationToken: token
+                     , UserGroupID: @ViewBag.UserGroupID
+                     , data: JSON.stringify(data)
+                 },
+                 async: true,
+                 error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        notiError("Lỗi Hệ Thống");
+                 },
+                 success: function (result) {
+                     if (result == "0") {
+                         notiSuccess();
+                         LoadUser();
+                     } else {
+                         notiError("Nhóm  Đã Tồn Tại Vui Lòng Kiểm Tra Lại");
+                        }
+                 }
+             })
+             $('#divDetailPopup').modal('hide');
+        }
+         return false;
+    }
+</script>
