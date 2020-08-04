@@ -37,19 +37,43 @@
 <div class="row">
     <div class="ui internally celled grid">
         <div class="row">
-            <div class="sixteen wide column">
+            <div class="thirteen wide column">
                 <div class="row">
                     @*<div class="exit exit--front fuselage">
-                        </div>*@
+                    </div>*@
                     <ol class="cabin fuselage" id="RoomChairBody">
                     </ol>
                     @*<div class="exit exit--back fuselage">
-                        </div>*@
+                    </div>*@
                 </div>
             </div>
-            @*<div class="three wide column">
-
-                </div>*@
+            <div class="three wide column">
+                <div class="ui segments">
+                    <form class="ui form segment">
+                        <div class="ui accordion field">
+                            <div class="content field active">
+                                <div class="field">
+                                    <label>Ghế</label>
+                                    <input id="txtNameChair" type="text" style="pointer-events: none;"/>
+                                </div>
+                                <div class="field">
+                                    <label>Loại</label>
+                                    <div class="ui fluid search selection dropdown" id="ChairType">
+                                        <input type="hidden" name="country">
+                                        <i class="dropdown icon"></i>
+                                        <div class="default text">Chọn Chi Nhánh</div>
+                                        <div class="menu" id="cbbChairType">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <button style="width:100%;" class="ui teal button" type="button" onclick="return ExcuteDataChairType()">Cập Nhật</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -69,10 +93,12 @@
 
     var RoomDetailID;
     var DataBranch;
-
+    var DataChairType;
+    var IDChair;
     $(document).ready(function () {
         RoomDetailID = @ViewBag.RoomID;
         LoadDataUpdateRoom();
+        LoadDataChairType();
     });
 
     function LoadDataUpdateRoom() {
@@ -118,13 +144,13 @@
                 for (var i = 0; i < RowChair.length; i++) {
                     let rc = RowChair[i];
                     let items = Chair.filter(data => data.RowChair == RowChair[i].ID);
-                    let tr = '<li class="seat"><label for="' + rc.NameRow +'">' + rc.NameRow +'</label></li>';
+                    let tr = '<li class="seat"><label for="' + rc.NameRow +'" >' + rc.NameRow +'</label></li>';
                     for (var j = 0; j < items.length; j++) {
                         items = items.sort(function (a, b) { return a.ColumnChair - b.ColumnChair; })
                         item = items[j];
-                        tr += '<li class="seat" style="visibility:' + item.VisibilityChair + ';flex-grow:' + item.Total + ';max-width:calc(50px * ' + item.Total + ')" >'
+                        tr += '<li class="seat"  style="flex-grow:' + item.Total + ';max-width:calc(40px * ' + item.Total + ')" >'
                             + '<input type="checkbox" value="' + item.NameRow + '" id="' + item.NameRow + item.ColumnChair + '" ' + item.DisabledChair + '/>'
-                            + '<label for="' + item.NameRow + item.ColumnChair + '" style="background:' + item.ColorCode + '">' + item.NameRow + item.ColumnChair + '</label> </li>'
+                            + '<label data-id="' + item.ID + '" data-type="' + item.TypeChair + '" for="' + item.NameRow + item.ColumnChair + '" style="background:' + item.ColorCode + '">' + item.NameRow + item.ColumnChair + '</label> </li>'
                     }
                     //tr += '<li class="seat"><button type="button" class="AddNewRowChair"><i class="plus circle icon" style="font-size: 30px;color: green;transition:0.5s;"></i></button></li>';
                     //stringContent = stringContent + '<li class="row"><ol class="seats" type="' + rc.NameRow + '">' + tr + '</ol></li>';
@@ -135,11 +161,39 @@
                 }
             }
             document.getElementById(id).innerHTML = stringContent;
+            OnclickSeatDetail();
         }
+
+    }
+    function OnclickSeatDetail() {
+        $('#RoomChairBody').on('click', '.seat label', function () {
+            var idSeat = $(this).attr('data-id');
+            var idChairType = $(this).attr('data-type');
+            var name = $(this).attr('for');
+            if (idSeat != 0) {
+                IDChair = Number(idSeat);
+                $('#txtNameChair').val(name);
+                $("#ChairType").dropdown("refresh");
+                $("#ChairType").dropdown("set selected", idChairType);
+            }
+        })
+    }
+    function LoadDataChairType() {
+        $.ajax({
+            type: 'POST',
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            url: "/Admin/RoomDetail/DataChairType",
+            async: true,
+            success: function (data) {
+                DataChairType = data;
+                LoadCombo(DataChairType,"cbbChairType");
+            }
+        });
     }
     function ExcuteData() {
         var data = new Object();
-        data.Room = $('#txtNameRoom').val() ? $('#txtNameRoom').val() : "";
+        data.NameRoom = $('#txtNameRoom').val() ? $('#txtNameRoom').val() : "";
         data.BranchID = $("#Branch").dropdown('get value') ? Number($("#Branch").dropdown('get value')) : 0;
 
         $('#form3').form('validate form');
@@ -171,7 +225,32 @@
         }
          return false;
     }
-
+    function ExcuteDataChairType() {
+        var data = new Object();
+        data.IDChair = IDChair
+        data.Type = $("#ChairType").dropdown('get value') ? Number($("#ChairType").dropdown('get value')) : 0;
+        if (IDChair != 0) {
+            $.ajax({
+                url: "/Admin/RoomDetail/ExecuteChairType",
+                dataType: "json",
+                type: "POST",
+                data: {
+                    __RequestVerificationToken: token
+                    , data: JSON.stringify(data)
+                },
+                async: true,
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    notiError("Lỗi Hệ Thống");
+                },
+                success: function (result) {
+                    notiSuccess();
+                    LoadDataUpdateRoom();
+                }
+            })
+            return false;
+        }
+        else notiWarning("Vui Lòng Chọn Ghế Cần Thay Đỗi");
+    }
 </script>
 <style>
     .plane {
@@ -231,11 +310,6 @@
         .exit:after {
             right: 0;
         }
-
-    .fuselage {
-        border-right: 5px solid #d8d8d8;
-        border-left: 5px solid #d8d8d8;
-    }
 
     ol {
         list-style: none;

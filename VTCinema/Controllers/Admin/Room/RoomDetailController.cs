@@ -114,6 +114,31 @@ namespace VTCinema.Controllers.Room
             }
         }
 
+        [Route("DataChairType")]
+        [HttpPost]
+        public string DataChairType()
+        {
+            try
+            {
+                DataTable dt = new DataTable();
+                using (Models.ExecuteDataBase confunc = new Models.ExecuteDataBase())
+                {
+                    dt = confunc.ExecuteDataTable("[YYY_sp_ChairType_LoadCombo]", CommandType.StoredProcedure);
+                }
+                if (dt != null)
+                {
+                    return JsonConvert.SerializeObject(dt);
+                }
+                else
+                {
+                    return "";
+                }
+            }
+            catch (Exception ex)
+            {
+                return "[]";
+            }
+        }
         [Route("Execute")]
         [ValidateAntiForgeryToken]
         [HttpPost]
@@ -153,6 +178,35 @@ namespace VTCinema.Controllers.Room
             {
                 return "0";
             }
+        }
+        [Route("ExecuteChairType")]
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public string ExecuteChairType(string data)
+        {
+            try
+            {
+                DataTable dt = new DataTable();
+                ChairType dataDetail = JsonConvert.DeserializeObject<ChairType>(data);
+                using (Models.ExecuteDataBase connFunc = new Models.ExecuteDataBase())
+                {
+                    dt = connFunc.ExecuteDataTable("[YYY_sp_Cinema_ChairType_Update]", CommandType.StoredProcedure,
+                        "@Chair", SqlDbType.Int, dataDetail.IDChair,
+                        "@Type", SqlDbType.Int, dataDetail.Type,
+                        "@Modified_By", SqlDbType.Int, HttpContext.Session.GetInt32(Comon.Global.UserID)
+                    );
+                }
+                return dt.Rows[0][0].ToString();
+            }
+            catch (Exception ex)
+            {
+                return "0";
+            }
+        }
+        class ChairType
+        {
+            public int IDChair { get; set; }
+            public int Type { get; set; }
         }
     }
 }

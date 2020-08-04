@@ -115,7 +115,6 @@
             }
     </style>
 }
-
 <section class="section details">
     <!-- details background -->
     <div class="details__bg" data-bg="~/Clients/img/home/home__bg.jpg"></div>
@@ -291,12 +290,12 @@
                                     <ul class="reviews__list" id="CommentList">
                                     </ul>
                                     <form  class="form" id="formr" method="post">
-                                        <textarea id="NoteRating" class="form__textarea" name="comment" placeholder="Review" required></textarea>
+                                        <textarea id="NoteRating" class="form__textarea" name="comment" placeholder="Bình Luận" required></textarea>
                                         <div class="form__slider">
                                             <div class="form__slider-rating" id="slider__rating"></div>
                                             <div class="form__slider-value" id="form__slider-value" name="rating"></div>
                                         </div>
-                                        <button class="form__btn" form="formr" type="submit" onclick="return ExecuteRating();">Send</button>
+                                        <button class="form__btn" form="formr" type="submit" onclick="return ExecuteRating();">Gửi</button>
                                     </form>
                                 </div>
                             </div>
@@ -309,7 +308,7 @@
                 <div class="row">
                     <!-- section title -->
                     <div class="col-12">
-                        <h2 class="section__title section__title--sidebar">You may also like...</h2>
+                        <h2 class="section__title section__title--sidebar">Có thể bạn thích..</h2>
                     </div>
                     <!-- end section title -->
                     <!-- card -->
@@ -626,7 +625,6 @@
             }
         }
         function ExecuteRating() {
-            debugger
             var data = new Object();
             data.NoteRating = $("#NoteRating").val() ? $("#NoteRating").val() : '';
             data.RatingMoive = $("#form__slider-value").text() ? Number($("#form__slider-value").text()) : 0;
@@ -643,7 +641,9 @@
                     alert(error);
                 },
                 success: function (result) {
-                    alert(12);
+                    $("#NoteRating").val('');
+                    $("#form__slider-value").text('1');
+                    LoadDataComment();
                 }
             });
             return false;
