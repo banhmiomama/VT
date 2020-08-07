@@ -131,7 +131,7 @@
 
         $(document).ready(function () {
         InformationDetailID = @ViewBag.InformationDetailID;
-            LoadDataInformation()
+            LoadDataInformation();
             LoadDataInformationDetail();
     })
         function LoadDataInformationDetail() {
@@ -142,7 +142,7 @@
                 url: "GetInformationDetail/" + InformationDetailID,
                 async: true,
                 success: function (data) {
-                        $('#InformationTitle').text(data[0].Title);
+                    $('#InformationTitle').text(data[0].Title);
                     $('#Note').text(data[0].Note);
                     if (data[0].Image == '' || data[0].Image == undefined) { // note
                         $('#loadImg').attr('src', '');

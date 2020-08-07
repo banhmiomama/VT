@@ -36,7 +36,7 @@
                                 </table>
                             </div>
                             <div class="sixteen wide tablet twelve wide computer column">
-                                <div class="field" style="margin-bottom: -19px; max-height: max-content;">
+                                <div class="field" style="margin-bottom: -19px; max-height: max-content;max-height:98px;">
                                     <div id="btnAddUser" style="display: inline;">
                                         <button class="ui blue button modalfour _tab_control_" data-tab="add_User" data-value="fade up" onclick="event.preventDefault();return AddNewUser()">Người Dùng Mới</button>
                                     </div>
@@ -93,6 +93,7 @@
 <script type="text/javascript">
     let DataUser;
     let RowUserID;
+    var DataGroupUser;
     function Render_User(data, id) {
         var myNode = document.getElementById(id);
         if (myNode != null) {
@@ -117,6 +118,7 @@
         }
     }
     function Render_UserGroup(data, id) {
+        debugger
         var myNode = document.getElementById(id);
         if (myNode != null) {
             myNode.innerHTML = '';
@@ -154,6 +156,7 @@
           
             success: function (result) {
                 Render_UserGroup(result.Table, "dtContentUserGroupBody");
+                DataGroupUser = result.Table;
                 let TotalUserGroup = result.Table1;
                 document.getElementById("totalUserGroup").value = 'Tổng Nhóm Người Dùng: ' + TotalUserGroup[0].TotalUserGroup;
                 DataUser = result.Table2;
@@ -188,13 +191,13 @@
     });
     function EventRowUserGroup() {
         debugger
-        $('.rowUserGroup').on('click', function () {
+        $('#dtContentUserGroup tbody').on('click','.rowUserGroup', function () {
             let CurrentGroupID = Number($(this).attr('data-id'));
             RowUserID = CurrentGroupID;
             let Data = "";
             if (CurrentGroupID != 0) {
                 Data = DataUser.filter(
-                    word => word["GroupID"] == CurrentGroupID
+                    word => word["Group_ID"] == CurrentGroupID
                 )
             }
             else {

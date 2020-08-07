@@ -84,6 +84,9 @@
                             <div class="sign__group">
                                 <input type="text" class="sign__input" placeholder="Name" id="Name">
                             </div>
+                            <div class="sign__group">
+                                <input type="text" class="sign__input" placeholder="LastName" id="LastName">
+                            </div>
 
                             <div class="sign__group">
                                 <input type="text" class="sign__input" placeholder="Email" id="Email">
@@ -125,81 +128,48 @@
     <script src="~/Clients/js/photoswipe.min.js"></script>
     <script src="~/Clients/js/photoswipe-ui-default.min.js"></script>
     <script>
+        var alt = '';
         $(document).ready(function () {
-            LoadDataCustomer();
         })
         function ExecuteCustomer() {
             var data = new Object();
             data.UserName = $("#UserName").val() ? $("#UserName").val() : '';
             data.Name = $("#Name").val() ? $("#Name").val() : '';
+            data.LastName = $("#LastName").val() ? $("#LastName").val() : '';
             data.Email = $("#Email").val() ? $("#Email").val() : '';
             data.Password = $("#Password").val() ? $("#Password").val() : '';
-            //if (CheckUsername() != 0) {
-            //    alert(" Ten Người Dùng Đã tồn tại!!");
-            //}
-            //if (CheckUsername() == 0) {
-                if (document.getElementById('Password').value !=
-                    document.getElementById('RePassword').value)
-                    alert("Mật khẩu nhập lại không trùng khớp!!");
-            //}
-                else {
-                    $.ajax({
-                        url: "/SignUp/ExecuteCustomer",
-                        dataType: "json",
-                        type: "POST",
-                        data: {
-                            data: JSON.stringify(data)
-                        },
-                        async: true,
-                        error: function (error) {
-                            alert(error);
-                        },
-                        success: function (result) {
-                            alert('Đăng kí tài khoản thành công');
-                            $("#Password").val('');
-                            $("#UserName").val('');
-                            $("#Email").val('');
-                            $("#Name").val('');
-                            $("#RePassword").val('');
-                        }
-                    });
-                    return false;
-                }
+            debugger
+            if (document.getElementById('Password').value !=
+                document.getElementById('RePassword').value)
+                alert("Mật khẩu nhập lại không trùng khớp!!");
+            else {
+                $.ajax({
+                    url: "/SignUp/ExecuteCustomer",
+                    dataType: "json",
+                    type: "POST",
+                    data: {
+                        data: JSON.stringify(data)
+                    },
+                    async: true,
+                    contentType: 'application/json; charset=utf-8',
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert("Lỗi Hệ Thống");
+                    },
+                    success: function (result) {
+                        
+                        console.log(result);    
+                        alt = (result);
+                        alert(result);
+                        $("#Password").val('');
+                        $("#UserName").val('');
+                        $("#Email").val('');
+                        $("#Name").val('');
+                        $("#LastName").val('');
+                        $("#RePassword").val('');
+                    }
+                });
+                return false;
+            }
         }
-        function LoadDataCustomer() {
-            $.ajax({
-                url: "SignUp/LoadDataCustomer",
-                dataType: "json",
-                type: "POST",
-                data: JSON.stringify({
-                }),
-                contentType: 'application/json; charset=utf-8',
-                async: true,
-                error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    notiError();
-                },
-                success: function (result) {
-                    CheckUsername(result);
-                }
-            });
-        }
-        //function CheckUsername(data,id) {
-        //    debugger
-        //    var count = 0;
-        //    var myNode = document.getElementById(id);
-        //    if (myNode != null) {
-        //        myNode.innerHTML = '';
-        //        let stringContent = '';
-        //        if (data && data.length > 0) {
-        //            for (var i = 0; i < data.length; i++) {
-        //                let item = data[i];
-        //                if (item.UserName == $("#UserName").val())
-        //                    count = count + 1;
-        //            }
-
-        //        }
-        //        return count;
-        //    }
-        //}
     </script>
 </body>
