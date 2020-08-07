@@ -20,9 +20,6 @@ namespace VTCinema.Controllers.Admin.User
             ViewBag.UserID = UserID;
             return View("~/Views/Admin/User/UserDetail.cshtml");
         }
-
-
-
         [Route("GetUserDetail/{UserID}")]
         [HttpGet]
         public string GetUserDetail(int UserID)
