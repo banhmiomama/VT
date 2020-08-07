@@ -23,6 +23,7 @@ namespace VTCinema.Models
         public string DirectorID { get; set; }
         public string ActorID { get; set; }
         public int? MovieTimeDuration { get; set; }
+        public string Note { get; set; }
         public IFormFile MovieTrailer { get; set; }
 
     }

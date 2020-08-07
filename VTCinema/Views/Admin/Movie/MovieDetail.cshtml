@@ -157,6 +157,7 @@
 <script>
     var MovieDetailID;
     var AvatarString = '';
+    var VideoString = '';
     var DataAvatar;
     $(document).ready(function () {
         $("#Opening_Time").flatpickr({
@@ -176,6 +177,7 @@
             url: "/Admin/MovieDetail/GetMovieDetail/" + MovieDetailID,
             async: true,
             success: function (result) {
+                
                 LoadComboNational(result.National, "cbbNationality");
                 LoadCombo(result.AgeType, "cbbAgeType");
                 LoadCombo(result.SubTitle, "cbbSubTitle");
@@ -216,14 +218,20 @@
                     var actor = (data[0].Actor_ID).split(',');
                     $("#Actor").dropdown("refresh");       
                     $("#Actor").dropdown("set selected", actor);
-                    
-                    $('#txtNote').val((data[0].Description));
+                    $('#txtNote').val((data[0].Note));
                     if (data[0].Image == '' || data[0].Image == undefined) {
                         $('#avatarMovieUpload').attr('src', '');
                     }
                     else {
                         $('#avatarMovieUpload').attr('src', data[0].Image);
                         avatarString = data[0].Image;
+                    }
+                    if (data[0].VideoTrailer == '' || data[0].VideoTrailer == undefined) {
+                        $('#video_here').attr('src', '');
+                    }
+                    else {
+                        $('#video_here').attr('src', data[0].VideoTrailer);
+                        VideoString = data[0].VideoTrailer;
                     }
                 }
             }
@@ -264,7 +272,6 @@
         data.DirectorID = $('#Director').dropdown('get value') ? ($('#Director').dropdown('get value')+',') : 0;
         data.ActorID = $('#Actor').dropdown('get value') ? ($('#Actor').dropdown('get value')+',') : '';
         data.Note = $('#txtNote').val() ? $('#txtNote').val() : "";
-
         $('#form3').form('validate form');
         if ($('#form3').form('is valid')) {
             $.ajax({
@@ -284,8 +291,9 @@
                     
                     if (result == "0") {
                         
+                            UploadImageMovie();
                         UploadVideoMovie();
-                        UploadImageMovie();
+                        
                         notiSuccess();
                         LoadMovie();
                     } else {
@@ -331,7 +339,6 @@
         if (input.files && input.files[0] && (ext == "gif" || ext == "png" || ext == "jpeg" || ext == "jpg")) {
             var reader = new FileReader();
             reader.onload = function (e) {
-                console.log(e.target.result);
                 $('#avatarMovieUpload').attr('src', e.target.result);
             }
 
@@ -341,26 +348,30 @@
         }
     }
     function GetFileURL() {
-        var fullPath = document.getElementById('fileuploadImageMovie').value;
-        if (fullPath) {
-            var startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
-            var filename = fullPath.substring(startIndex);
-            if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
-                filename = '../img/Movie/' + filename.substring(1);
+        if (document.getElementById("fileuploadImageMovie").files.length != 0) {
+            var fullPath = document.getElementById('fileuploadImageMovie').value;
+            if (fullPath) {
+                var startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
+                var filename = fullPath.substring(startIndex);
+                if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
+                    filename = '../img/Movie/' + filename.substring(1);
+                }
+                return filename;
             }
-            return filename;
-        }
+        } else return avatarString;
     }
     function GetFileURLVideo() {
-        var fullPath = document.getElementById('Video').value;
-        if (fullPath) {
-            var startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
-            var filename = fullPath.substring(startIndex);
-            if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
-                filename = '../VideoUpload/Movie/' + filename.substring(1);
+        if (document.getElementById("Video").files.length != 0) {
+            var fullPath = document.getElementById('Video').value;
+            if (fullPath) {
+                var startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
+                var filename = fullPath.substring(startIndex);
+                if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
+                    filename = '../VideoUpload/Movie/' + filename.substring(1);
+                }
+                return filename;
             }
-            return filename;
-        }
+        } else return VideoString;
     }
     $(document).on("change", ".file_multi_video", function (evt) {
         

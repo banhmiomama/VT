@@ -74,9 +74,9 @@
 <script src="/js/main.js"></script>
 
 <script>
-    let DirectorDetailID;
-    let AvatarString = '';
-    let DataAvatar;
+    var DirectorDetailID;
+    var AvatarString = '';
+    var DataAvatar;
     $(document).ready(function () {
         $("#Birthday").flatpickr({
             dateFormat: 'Y-m-d',
@@ -158,7 +158,9 @@
                  },
                  success: function (result) {
                      if (result == "0") {
-                         UploadImage();
+                         if (document.getElementById('fileuploadAvatarDirector').files.length == 0) {
+                             UploadImage();
+                         }
                          notiSuccess();
                          LoadDirector();
                      } else {
@@ -199,15 +201,17 @@
     }
     //Get file URL Image
     function GetFileName() {
-        var fullPath = document.getElementById('fileuploadAvatarDirector').value;
-        if (fullPath) {
-            var startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
-            var filename = fullPath.substring(startIndex);
-            if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
-                filename = '../img/Director/' + filename.substring(1);
+        if (document.getElementById('fileuploadAvatarDirector').files.length != 0) {
+            var fullPath = document.getElementById('fileuploadAvatarDirector').value;
+            if (fullPath) {
+                var startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
+                var filename = fullPath.substring(startIndex);
+                if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
+                    filename = '../img/Director/' + filename.substring(1);
+                }
+                return filename;
             }
-            return filename;
-        }
+        } else return avatarString;
     }
 
 </script>
