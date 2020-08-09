@@ -156,7 +156,7 @@
                         notiError("Lỗi Hệ Thống");
                  },
                  success: function (result) {
-                     if (result == "0") {
+                     if (result == "0") {                 
                          UploadImage();
                          notiSuccess();
                          LoadCustomer();
@@ -199,15 +199,17 @@
         }
     }
     function GetFileName() {
-        var fullPath = document.getElementById('fileuploadAvatarCustomer').value;
-        if (fullPath) {
-            var startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
-            var filename = fullPath.substring(startIndex);
-            if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
-                filename = '../img/Customer/' + filename.substring(1);
+        if (document.getElementById('fileuploadAvatarCustomer').files.length != 0) {
+            var fullPath = document.getElementById('fileuploadAvatarCustomer').value;
+            if (fullPath) {
+                var startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
+                var filename = fullPath.substring(startIndex);
+                if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
+                    filename = '../img/Customer/' + filename.substring(1);
+                }
+                return filename;
             }
-            return filename;
-        }
+        } else return avatarString;
     }
 </script>
 <style>

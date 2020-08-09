@@ -60,9 +60,11 @@
                         + '<td data-sortValue="' + Number(i) + '">' + (i + 1) + '</td>'
                         + '<td ><a style="text-decoration: underline;" class="buttonEditClass" href="#">' + item.Name + '</a></td>'
                         + '<td >' + item.Ages + '</td>'
-                        + '<td class="selectedtd"><button class="buttonGrid _tab_control_" data-tab="delete_service_type" value="'
+                        +( (item.ButtonDelete==0)?
+                        ( '<td class="selectedtd"><button class="buttonGrid _tab_control_" data-tab="delete_service_type" value="'
                         + item.ID
-                        + '"><img class="buttonDeleteClass imgGrid" src="/img/ButtonImg/delete_ver2.png"></button></td>'
+                                + '"><img class="buttonDeleteClass imgGrid" src="/img/ButtonImg/delete_ver2.png"></button></td>') :
+                            ('<td class="selectedtd"></td>'))
                     stringContent = stringContent + '<tr class="seachRow" role="row">' + tr + '</tr>';
                 }
             }

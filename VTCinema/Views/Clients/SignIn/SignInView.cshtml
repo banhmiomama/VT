@@ -45,7 +45,7 @@
                         <!-- authorization form -->
                         <form action="/SignIn/Login" class="sign__form validate-input" method="get">
                             <a href="index.html" class="sign__logo">
-                                <img src="~/Clients/img/logo.svg" alt="">
+                                <img src="~/Clients/img/logo.png" alt="">
                             </a>
 
                             <div class="sign__group">
@@ -56,16 +56,11 @@
                                 <input name="pass" type="password" class="sign__input input100" placeholder="Password">
                             </div>
 
-                            <div class="sign__group sign__group--checkbox">
-                                <input id="remember" name="remember" type="checkbox" checked="checked">
-                                <label for="remember">Remember Me</label>
-                            </div>
+                            <button class="sign__btn" type="submit">Đăng Nhập</button>
 
-                            <button class="sign__btn" type="submit">Sign in</button>
+                            <span class="sign__text">Bạn Chưa Có Tài Khoản? <a href="/SignUp">Đăng Kí</a></span>
 
-                            <span class="sign__text">Don't have an account? <a href="signup.html">Sign up!</a></span>
-
-                            <span class="sign__text"><a href="#">Forgot password?</a></span>
+                            <span class="sign__text"><a href="#">Quên Mật Khẩu?</a></span>
                         </form>
                         <!-- end authorization form -->
                     </div>

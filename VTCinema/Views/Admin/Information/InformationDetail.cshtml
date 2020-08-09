@@ -3,14 +3,6 @@
 <div id="headerPopup_CustomerCare" class="header">
     Tin Tức
 </div>
-@*<script src="~/bootstrap.min.js"></script>
-    <script src="~/jquery-3.3.1.slim.min.js"></script>
-    <script src="~/popper.min.js"></script>
-    <link href="~/bootstrap.min.css" rel="stylesheet" />
-    <link href="~/summernote.min.css" rel="stylesheet" />
-    <script src="~/summernote.min.js"></script>*@
-@*<script src="~/ckeditor/ckeditor.js" type="text/javascript"></script>*@
-    @*<script src="~/ckeditor_4.14.1_standard/ckeditor/ckeditor.js" type="text/javascript"></script>*@
 <script src="" type="text/javascript"></script>
     <div class="image content">
         <div class="ui massive image">
@@ -146,15 +138,17 @@
             }
         }
         function GetFileName() {
-            var fullPath = document.getElementById('fileuploadAvatarInformation').value;
-            if (fullPath) {
-                var startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
-                var filename = fullPath.substring(startIndex);
-                if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
-                    filename = '../img/Information/' + filename.substring(1);
+            if (document.getElementById('fileuploadAvatarInformation').files.length != 0) {
+                var fullPath = document.getElementById('fileuploadAvatarInformation').value;
+                if (fullPath) {
+                    var startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
+                    var filename = fullPath.substring(startIndex);
+                    if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
+                        filename = '../img/Information/' + filename.substring(1);
+                    }
+                    return filename;
                 }
-                return filename;
-            }
+            } else return ImageString;
         }
     </script>
     <style>

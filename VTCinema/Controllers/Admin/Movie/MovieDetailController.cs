@@ -264,7 +264,7 @@ namespace VTCinema.Controllers.Movie
                             "@MovieTicketType_ID", SqlDbType.Int,dataDetail.MovieTicketTypeID,
                             "@Director_ID", SqlDbType.Int,dataDetail.DirectorID,
                             "@Actor_ID", SqlDbType.VarChar,dataDetail.ActorID,
-                            "@Note", SqlDbType.VarChar,dataDetail.ActorID,
+                            "@Note", SqlDbType.VarChar,dataDetail.Note,
                             "@Movie_Time_Duration", SqlDbType.Int,dataDetail.MovieTimeDuration,
                             "@CurrentID", SqlDbType.Int, HttpContext.Session.GetInt32(Comon.Global.UserID)
                         );
@@ -288,7 +288,7 @@ namespace VTCinema.Controllers.Movie
                             "@MovieTicketType_ID", SqlDbType.Int, dataDetail.MovieTicketTypeID,
                             "@Director_ID", SqlDbType.Int, dataDetail.DirectorID,
                             "@Actor_ID", SqlDbType.VarChar, dataDetail.ActorID,
-                            "@Note", SqlDbType.VarChar, dataDetail.ActorID,
+                            "@Note", SqlDbType.VarChar, dataDetail.Note,
                             "@Movie_Time_Duration", SqlDbType.Int, dataDetail.MovieTimeDuration,
                             "@CurrentID", SqlDbType.Int, MovieID,
                             "@Modified_By", SqlDbType.Int, HttpContext.Session.GetInt32(Comon.Global.UserID)

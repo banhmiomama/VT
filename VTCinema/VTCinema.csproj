@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <Compile Remove="Comon\CallCenter.cs" />
+    <Compile Remove="Comon\Comon.cs" />
   </ItemGroup>
 
   <ItemGroup>

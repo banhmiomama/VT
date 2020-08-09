@@ -4,7 +4,7 @@
 <head runat="server">
     <title>@ViewBag.Title</title>
     <meta charset="utf-8" />
-    <link rel="icon" href="/img/favicon.ico">
+    <link rel="icon" href="/img/logo.png">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
     <script src="/js/jquery-3.3.1.min.js"></script>
@@ -102,7 +102,7 @@
     <div id="contextWrap" style="height: 100%;">
         <div class="ui left sidebar vertical left menu overlay borderless visible sidemenu inverted  grey" style="-webkit-transition-duration: 0.1s; transition-duration: 0.1s;" data-color="grey">
             <a class="item logo" style="height: 60px;overflow:hidden;" target="_blank" href="http://vttechsolution.com.vn">
-                <img src="/img/logo.png" alt="stagblogo" /><img src="/img/thumblogo.png" style="padding-top: 10px;" alt="stagblogo" class="displaynone" />
+                <img src="/img/logo.png" alt="stagblogo" style="margin-top: -29px;"/><img src="/img/thumblogo.png" style="padding-top: 10px;" alt="stagblogo" class="displaynone" />
             </a>
             @*<div class="item" style="height: 40px;">
 
@@ -118,10 +118,20 @@
                     <div class="title item">
                         <img src="/img/ButtonImg/apointment.png">
                         <i class="dropdown icon"></i>
-                        Lịch Phim
+                        Nhân Viên
                     </div>
                     <div class="content">
+                        <a data-tab="undefined" data-index="4" data-search="dich vu" class="item menudesktop_render _tab_control_ transition hidden" style="font-size: 11px !important; background: transparent;" href="/Admin/User">Nhân Viên</a>
+                    </div>
+                    <div class="title item">
+                        <img src="/img/ButtonImg/apointment.png">
+                        <i class="dropdown icon"></i>
+                        Phim
+                    </div>
+                    <div class="content">
+                        <a data-tab="undefined" data-index="4" data-search="dich vu" class="item menudesktop_render _tab_control_ transition hidden" style="font-size: 11px !important; background: transparent;" href="/Admin/Movie">Phim</a>
                         <a data-tab="undefined" data-index="4" data-search="dich vu" class="item menudesktop_render _tab_control_ transition hidden" style="font-size: 11px !important; background: transparent;" href="/Admin/Schedule">Lịch Phim</a>
+                        <a data-tab="undefined" data-index="4" data-search="dich vu" class="item menudesktop_render _tab_control_ transition hidden" style="font-size: 11px !important; background: transparent;" href="/Admin/Calendar">Lịch Phim Trong Ngày</a>
                     </div>
                     <div class="title item">
                         <img src="/img/ButtonImg/service.png">
@@ -147,6 +157,15 @@
                     </div>
                     <div class="content">
                         <a data-tab="undefined" data-index="4" data-search="dich vu" class="item menudesktop_render _tab_control_ transition hidden" style="font-size: 11px !important; background: transparent;" href="/Admin/Customer">Khách Hàng</a>
+                    </div>
+                    <div class="title item">
+                        <img src="/img/ButtonImg/service.png">
+                        <i class="dropdown icon"></i>
+                        Phòng & Ghế
+                    </div>
+                    <div class="content">
+                        <a data-tab="undefined" data-index="4" data-search="dich vu" class="item menudesktop_render _tab_control_ transition hidden" style="font-size: 11px !important; background: transparent;" href="/Admin/Room">Phòng</a>
+                        <a data-tab="undefined" data-index="4" data-search="san pham" class="item menudesktop_render _tab_control_ transition hidden" style="font-size: 11px !important; background: transparent;" href="/Admin/ChairType">Loại Ghế</a>
                     </div>
                     <div class="title item">
                         <img src="~/img/ButtonImg/setting.png">
@@ -313,75 +332,19 @@
                 $('.nav-fostrap').toggleClass('visible');
                 $('body').toggleClass('cover-bg');
             });
-
-            $('#avatarofUserCircle').attr('src', 'http://connect.awing.vn/static/Files/lgn/4869811863153391143/logo.jpg?1012904');
-
-
+            var AvatarUser = '@ViewBag.AvatarUser';
+            $('#avatarofUserCircle').attr('src', AvatarUser);
+            $('#changepasswordid').on('click',function(){
+            ChangePasswordUser();
+            })
         });
 
-        // #region LoadCombo
-        function LoadCombo(data, id) {
-            var myNode = document.getElementById(id);
-            if (myNode != null) {
-                myNode.innerHTML = '';
-                let stringContent = '';
-                if (data && data.length > 0) {
-                    for (var i = 0; i < data.length; i++) {
-                        let item = data[i];
-                        let tr =
-                            '<div class="item" data-value=' + item.ID + '>' + item.Name + '</div>'
-                        stringContent = stringContent + tr;
-                    }
-                }
-                document.getElementById(id).innerHTML = stringContent;
-            }
+         function ChangePasswordUser() {
+            document.getElementById("divDetailPopupSign").innerHTML = '';
+            $("#divDetailPopupSign").load("ChangePass");
+            $('#divDetailPopupSign').modal('show');
+            return false;
         }
-        //#endregion
-        //#region Export
-        function exportToExcel(id, filename) {
-            $("#tablePrintForAll").empty();
-            var idbody = document.getElementById(id).tBodies[0].id;
-            var table = $("#" + id).clone();
-            let newtableid = id + "Copy";
-            let newbodytableid = idbody + "Copy";
-            table.attr('id', newtableid);
-            $("#tablePrintForAll").html(table);
-            document.getElementById(newtableid).tBodies[0].id = newbodytableid;
-            // Detect TH Hide
-            let foundTH = 0;
-            let THHide = [];
-            table = document.getElementById(newtableid);
-            for (var i = 0, row; row = table.rows[i]; i++) {
-                for (var j = 0, col; col = row.cells[j]; j++) {
-                    if (row.cells[j].nodeName == "TH") {
-                        if (row.cells[j].style.display == "none" || row.cells[j].innerHTML == "Sửa" || row.cells[j].innerHTML == "Xóa") {
-                            let element = {};
-                            element.NodeName = j;
-                            THHide.push(element);
-                        }
-                        foundTH = 1;
-                    }
-                }
-                if (foundTH === 1) break;
-            }
-
-            for (var i = 0, row; row = table.rows[i]; i++) {
-                for (var j = table.rows[i].cells.length - 1, col; col = row.cells[j]; j--) {
-
-                    for (var z = 0; z < THHide.length; z++) {
-                        if (j == THHide[z].NodeName) row.deleteCell(j);
-                    }
-                }
-            }
-            $("#" + newtableid).table2excel({
-                exclude: ".noExl",
-                name: "Worksheet Name",
-                filename: filename,
-                fileext: ".xls" // file extension
-            });
-            $("#tablePrintForAll").empty();
-        }
-        //#endregion
         //#region Format Number
         function formatNumber(num) {
             return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
@@ -590,8 +553,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.css">
+
+    <link href="~/C3/c3.css" rel="stylesheet" />
+    <script src="https://d3js.org/d3.v5.min.js" charset="utf-8"></script>
+    <script src="~/C3/c3.js"></script>
     <style>
         .imgogo {
             position: absolute;

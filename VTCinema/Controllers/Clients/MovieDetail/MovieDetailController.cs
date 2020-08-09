@@ -120,7 +120,7 @@ namespace VTCinema.Controllers.Clients.Detail
         }
         [Route("LoadDataComment")]
         [HttpPost]
-        public string LoadDataComment()
+        public string LoadDataComment(int MovieID)
         {
             try
             {
@@ -129,7 +129,7 @@ namespace VTCinema.Controllers.Clients.Detail
                 using (Models.ExecuteDataBase confunc = new Models.ExecuteDataBase())
                 {
                     ds = confunc.ExecuteDataTable("[YYY_sp_Rating_LoadList]", CommandType.StoredProcedure
-                        , "@MovieID", SqlDbType.Int, ViewBag.MovieDetailID);
+                        , "@MovieID", SqlDbType.Int, MovieID);
 
                 }
                 if (ds != null)
@@ -154,11 +154,15 @@ namespace VTCinema.Controllers.Clients.Detail
             {
                 DataTable ds = new DataTable();;
                 DataRating dataDetail = JsonConvert.DeserializeObject<DataRating>(data);
+                if(HttpContext.Session.GetInt32(Comon.GlobalClient.CustomerID) == null)
+                {
+                    return "0";
+                }
                 int CustomerID = (int)HttpContext.Session.GetInt32(Comon.GlobalClient.CustomerID);
                 using (Models.ExecuteDataBase confunc = new Models.ExecuteDataBase())
                 {
                     ds = confunc.ExecuteDataTable("[YYY_sp_Rating_Insert]", CommandType.StoredProcedure
-                        , "@MovieID", SqlDbType.Int, ViewBag.MovieDetailID
+                        , "@MovieID", SqlDbType.Int, dataDetail.MovieID
                         , "@Note", SqlDbType.NVarChar, dataDetail.NoteRating
                         , "@Rating", SqlDbType.Decimal, dataDetail.RatingMoive
                         , "@CusID", SqlDbType.Int, CustomerID) ;
@@ -174,6 +178,7 @@ namespace VTCinema.Controllers.Clients.Detail
         {
             public string NoteRating;
             public decimal RatingMoive;
+            public int MovieID;
             
         }
     }

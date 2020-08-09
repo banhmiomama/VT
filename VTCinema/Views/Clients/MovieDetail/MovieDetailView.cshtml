@@ -113,12 +113,14 @@
             .s-start-time:hover {
                 color: orange;
             }
+        .breadcrumb{
+            background-color:gray;
+        }
     </style>
 }
-
 <section class="section details">
     <!-- details background -->
-    <div class="details__bg" data-bg="~/Clients/img/home/home__bg.jpg"></div>
+    <div class="details__bg section section--first section--bg" data-bg="~/Clients/img/home/home__bg.jpg" ></div>
     <!-- end details background -->
     <!-- details content -->
     <div class="container">
@@ -154,6 +156,9 @@
                                 <ul class="card__meta">
                                     <li>
                                         <span id="MovieType">Thể Loại</span>
+                                    </li>
+                                    <li>
+                                        <span id="Director">Đạo Diễn</span>
                                     </li>
                                     <li>
                                         <span id="Actor">Diễn Viên</span>
@@ -195,7 +200,7 @@
                     <!-- end availables -->
                     <!-- share -->
                     <div class="details__share">
-                        <span class="details__share-title">Share with friends:</span>
+                        <span class="details__share-title">Chia Sẻ:</span>
 
                         <ul class="details__share-list">
                             <li class="facebook"><a href="https://www.facebook.com/"><i class="icon ion-logo-facebook"></i></a></li>
@@ -219,7 +224,7 @@
             <div class="row">
                 <div class="col-12">
                     <!-- content title -->
-                    <h2 class="content__title">Discover</h2>
+                    <h2 class="content__title"></h2>
                     <!-- end content title -->
                     <!-- content tabs nav -->
                     <ul class="nav nav-tabs content__tabs" id="content__tabs" role="tablist">
@@ -227,7 +232,7 @@
                             <a class="nav-link active" data-toggle="tab" href="#tab-3" role="tab" aria-controls="tab-3" aria-selected="false">Lịch Chiếu</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link " data-toggle="tab" href="#tab-2" role="tab" aria-controls="tab-2" aria-selected="false">Reviews</a>
+                            <a class="nav-link " data-toggle="tab" href="#tab-2" role="tab" aria-controls="tab-2" aria-selected="false">Bình Luận</a>
                         </li>
 
 
@@ -291,12 +296,12 @@
                                     <ul class="reviews__list" id="CommentList">
                                     </ul>
                                     <form  class="form" id="formr" method="post">
-                                        <textarea id="NoteRating" class="form__textarea" name="comment" placeholder="Review" required></textarea>
+                                        <textarea id="NoteRating" class="form__textarea" name="comment" placeholder="Bình Luận" required></textarea>
                                         <div class="form__slider">
                                             <div class="form__slider-rating" id="slider__rating"></div>
                                             <div class="form__slider-value" id="form__slider-value" name="rating"></div>
                                         </div>
-                                        <button class="form__btn" form="formr" type="submit" onclick="return ExecuteRating();">Send</button>
+                                        <button class="form__btn" form="formr" type="submit" onclick="return ExecuteRating();">Gửi</button>
                                     </form>
                                 </div>
                             </div>
@@ -309,7 +314,7 @@
                 <div class="row">
                     <!-- section title -->
                     <div class="col-12">
-                        <h2 class="section__title section__title--sidebar">You may also like...</h2>
+                        <h2 class="section__title section__title--sidebar">Có thể bạn thích..</h2>
                     </div>
                     <!-- end section title -->
                     <!-- card -->
@@ -438,12 +443,13 @@
 </section>
 @section Script{
     <script>
-        let MovieDetailID;
+        let MovieDetailID = Number(@ViewBag.MovieDetailID);
         let ImageString = '';
         let VideoString = '';
         let DataImage;
         let DataMovie = "";
         let DataActor = "";
+        let DataDirector = "";
         let DataMovieType = "";
         let DataMovieTicketType = "";
         let DataBranch = "";
@@ -456,7 +462,6 @@
                 maxDate: new Date().fp_incr(7),
                 defaultDate: "today"
             });
-            MovieDetailID = @ViewBag.MovieDetailID;
             function initializeThirdSlider() {
                 if ($('#slider__rating').length) {
                     var thirdSlider = document.getElementById('slider__rating');
@@ -521,6 +526,7 @@
                 success: function (data) {
                     DataMovie = data.Table;
                     DataActor = data.Table1;
+                    DataDirector = data.Table2;
                     DataMovieType = data.Table3;
                     DataMovieTicketType = data.Table4;
                     if (DataMovie != undefined && DataMovie.length != 0) {
@@ -548,6 +554,9 @@
                         }
                         if (DataActor.length != 0) {
                             RenderList(DataActor, "Actor", 'Diễn viên: ');
+                        }
+                        if (DataDirector.length != 0) {
+                            RenderList(DataDirector, "Director", 'Đạo Diễn: ');
                         }
                         if (DataMovieType.length != 0) {
                             RenderList(DataMovieType, "MovieType", 'Thể Loại: ');
@@ -589,14 +598,15 @@
             }
         }
         function LoadDataComment() {
+            console.log(MovieDetailID);
             $.ajax({
                 url: "LoadDataComment",
                 dataType: "json",
                 type: "POST",
-                data: JSON.stringify({
-                }),
-                contentType: 'application/json; charset=utf-8',
-                async: false,
+                data:{
+                    MovieID: MovieDetailID
+                },
+                async: true,
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                     notiError();
                 },
@@ -626,11 +636,10 @@
             }
         }
         function ExecuteRating() {
-            debugger
             var data = new Object();
             data.NoteRating = $("#NoteRating").val() ? $("#NoteRating").val() : '';
             data.RatingMoive = $("#form__slider-value").text() ? Number($("#form__slider-value").text()) : 0;
-
+            data.MovieID = MovieDetailID
             $.ajax({
                 url: "/MovieDetail/ExecuteRating",
                 dataType: "json",
@@ -643,7 +652,9 @@
                     alert(error);
                 },
                 success: function (result) {
-                    alert(12);
+                    $("#NoteRating").val('');
+                    $("#form__slider-value").text('1');
+                    LoadDataComment();
                 }
             });
             return false;

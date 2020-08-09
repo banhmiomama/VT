@@ -45,14 +45,11 @@
 <script src="/js/customjs/custom-validation.js"></script>
 <script src="/js/main.js"></script>
 <script>
-    debugger
     let MovieTypeDetailID;
     $(document).ready(function () {
         MovieTypeDetailID = @ViewBag.MovieTypeID;
         LoadDataUpdateMovieType();
     });
-    debugger
-
     function LoadDataUpdateMovieType() {
         $.ajax({
             type: 'GET',

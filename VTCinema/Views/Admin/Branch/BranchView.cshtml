@@ -64,22 +64,11 @@
             </div>
         </div>
     </div>
-    <div id="map"></div>
 </div>
-<script>
-    var map;
-    function initMap() {
-        map = new google.maps.Map(document.getElementById('map'), {
-            center: { lat: 10.8007178, lng: 106.6880956 },
-            zoom: 8
-        });
-    }
-</script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBsJT9UWw7frs5z80Knu_gXwF-pCp_tefM&callback=initMap"
- async defer></script>
+
 
 <script type="text/javascript">
-    let DataBranch;
+    var DataBranch;
 
     function Render_Branch(data, id) {
         var myNode = document.getElementById(id);

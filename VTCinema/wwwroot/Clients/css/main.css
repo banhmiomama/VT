@@ -1,4 +1,4 @@
-/*----------------------------------------
+﻿/*----------------------------------------
 [Master Stylesheet]
 
 Project:	FlixGo
@@ -1362,6 +1362,8 @@ ul {
     justify-content: flex-start;
     align-items: center;
     margin-top: 5px;
+    background-color: gray;
+    display:none;
 }
 
 .breadcrumb__item {
@@ -1741,7 +1743,7 @@ ul {
 
     .card--list .card__title {
         font-size: 20px;
-        line-height: 24px;
+        line-height: 42px;
         margin-bottom: 5px;
         margin-top: -4px;
     }
@@ -3070,6 +3072,7 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
     top: 0;
     left: 0;
     width: 40px;
+    height: 40px;
     -webkit-border-radius: 50%;
     border-radius: 50%;
 }
@@ -3219,7 +3222,7 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
 }
 
     .form__slider:before {
-        content: 'Rate:';
+        content: 'Điểm:';
         position: absolute;
         bottom: 100%;
         left: 0;
@@ -3588,14 +3591,13 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
 
 @media (min-width: 768px) {
     .footer {
-        padding: 60px 0 30px;
+        padding: 20px 0 30px;
     }
 
     .footer__copyright {
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
-        margin-top: 60px;
     }
 
         .footer__copyright ul {
