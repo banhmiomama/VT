@@ -81,43 +81,38 @@
 </head>
 <body class="body">
     <div class="sign section--bg" data-bg="~/Clients/img/section/section.jpg">
+     
 
-        <div class="container">
-            <div class="row">
-                <div class="col-3"></div>
-                <div class="col-6">
-                    
-                    <form action="#" class="sign__form">
-                        <a href="index.html" class="sign__logo">
-                            <img src="~/Clients/img/logo.svg" alt="">
-                        </a>
-                        <div class="sign__group">
-                            <input type="text" class="sign__input" placeholder="Name" id="Name">
-                        </div>
-                        <div class="sign__group">
-                            <input type="text" class="sign__input" placeholder="Name" id="LastName">
-                        </div>
-                       
-                        <div class="sign__group">
-                            <input type="text" class="sign__input" placeholder="Birthday" id="Birthday">
-                        </div>
-                        <div class="sign__group">
-                            <input type="text" class="sign__input" placeholder="Phone" id="Phone">
-                        </div>
-                        
-                        <div class="sign__group">
-                            <input type="password" class="sign__input" placeholder="Password" id="Password">
-                        </div>
-                        <div class="sign__group">
-                            <input type="password" class="sign__input" placeholder="Password" id="RePassword">
-                        </div>
-                        <div class="sign__group sign__group--checkbox">
-                            <input id="remember" name="remember" type="checkbox" checked="checked">
-                            <label for="remember">I agree to the <a href="#">Privacy Policy</a></label>
-                        </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-3"></div>
+                    <div class="col-6">
 
-                        <button class="sign__btn" type="button" onclick="return ExecuteCustomer()">Update</button>
-                    </form>
+                        <form action="#" class="sign__form">
+
+                            <a href="index.html" class="sign__logo">
+                                <img src="~/Clients/img/logo.svg" alt="">
+
+                            </a>
+                            <div style="font-size:25px; color:white;">Thông Tin Cá Nhân </div>
+                            <div class="sign__group">
+                                <input type="text" class="sign__input" placeholder="Name" id="Name">
+                            </div>
+                            <div class="sign__group">
+                                <input type="text" class="sign__input" placeholder="LastName" id="LastName">
+                            </div>
+
+                            <div class="sign__group">
+                                <input type="text" class="sign__input" placeholder="Birthday" id="Birthday">
+                            </div>
+                            <div class="sign__group">
+                                <input type="text" class="sign__input" placeholder="Phone" id="Phone">
+                            </div>
+
+                          
+
+                            <button class="sign__btn" type="button" onclick="return ExecuteCustomer()">Update</button>
+                        </form>
                     </div>
                     <div class="col-3">
                         <form action="#" class="sign__form">
@@ -133,26 +128,23 @@
                             </div>
                         </form>
                     </div>
-                    </div>
-
-            
-            
+                </div>
             </div>
         </div>
 
-    <!-- JS -->
-    <script src="~/Clients/js/jquery-3.3.1.min.js"></script>
-    <script src="~/Clients/js/bootstrap.bundle.min.js"></script>
-    <script src="~/Clients/js/owl.carousel.min.js"></script>
-    <script src="~/Clients/js/jquery.mousewheel.min.js"></script>
-    <script src="~/Clients/js/jquery.mCustomScrollbar.min.js"></script>
-    <script src="~/Clients/js/wNumb.js"></script>
-    <script src="~/Clients/js/nouislider.min.js"></script>
-    <script src="~/Clients/js/plyr.min.js"></script>
-    <script src="~/Clients/js/jquery.morelines.min.js"></script>
-    <script src="~/Clients/js/photoswipe.min.js"></script>
-    <script src="~/Clients/js/photoswipe-ui-default.min.js"></script>
-    <script>
+        <!-- JS -->
+        <script src="~/Clients/js/jquery-3.3.1.min.js"></script>
+        <script src="~/Clients/js/bootstrap.bundle.min.js"></script>
+        <script src="~/Clients/js/owl.carousel.min.js"></script>
+        <script src="~/Clients/js/jquery.mousewheel.min.js"></script>
+        <script src="~/Clients/js/jquery.mCustomScrollbar.min.js"></script>
+        <script src="~/Clients/js/wNumb.js"></script>
+        <script src="~/Clients/js/nouislider.min.js"></script>
+        <script src="~/Clients/js/plyr.min.js"></script>
+        <script src="~/Clients/js/jquery.morelines.min.js"></script>
+        <script src="~/Clients/js/photoswipe.min.js"></script>
+        <script src="~/Clients/js/photoswipe-ui-default.min.js"></script>
+        <script>
         var CustomerID;
         var AvatarString = '';
         var DataAvatar;
@@ -186,22 +178,17 @@
             debugger
             var data = new Object();
             data.Avatar = GetFileName();
-            data.UserName = $("#UserName").val() ? $("#UserName").val() : '';
             data.Name = $("#Name").val() ? $("#Name").val() : '';
             data.LastName = $("#LastName").val() ? $("#LastName").val() : '';
             data.Birthday = $("#Birthday").val() ? $("#Birthday").val() : '';
             data.Phone = $("#Phone").val() ? $("#Phone").val() : '';
-            data.Password = $("#Password").val() ? $("#Password").val() : '';
-            if (document.getElementById('Password').value !=
-                document.getElementById('RePassword').value)
-                alert("Mật khẩu nhập lại không trùng khớp!!");
-            else {
                 $.ajax({
                     url: "/SignUpDetail/ExecuteCustomer",
                     dataType: "json",
                     type: "POST",
                     data: {
-                        data: JSON.stringify(data)
+                        CustomerID : @ViewBag.CustomerID
+                        ,data: JSON.stringify(data)
                     },
                     async: true,
                     error: function (error) {
@@ -213,7 +200,6 @@
                     }
                 });
                 return false;
-            }
         }
         function UploadImage() {
             var Video = $("#fileuploadAvatarCustomer")[0].files[0];
@@ -253,5 +239,5 @@
                 return filename;
             }
         }
-    </script>
+        </script>
 </body>

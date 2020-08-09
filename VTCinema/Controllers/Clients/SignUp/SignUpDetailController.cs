@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using VTCinema.Models;
@@ -16,6 +17,7 @@ namespace VTCinema.Controllers.Clients.SignUp
         [HttpGet]
         public IActionResult Index(int CustomerID)
         {
+            
             ViewBag.CustomerID = CustomerID;
             return View("~/Views/Clients/SignUp/SignUpDetail.cshtml");
         }
@@ -47,7 +49,7 @@ namespace VTCinema.Controllers.Clients.SignUp
         }
         [Route("ExecuteCustomer")]
         [HttpPost]
-        public string ExecuteCustomer(string data)
+        public string ExecuteCustomer(string data , int CustomerID)
         {
             try
             {
@@ -63,6 +65,7 @@ namespace VTCinema.Controllers.Clients.SignUp
                               , "@Phone", SqlDbType.NVarChar, dataDetail.Phone
                               , "@Password", SqlDbType.NVarChar, dataDetail.Password
                               , "@Avatar", SqlDbType.VarChar, dataDetail.Avatar
+                              ,"@CurrentID", SqlDbType.Int, CustomerID
                               );
                         return "Chỉnh Sửa Tài Khoản thành công";
                 }
