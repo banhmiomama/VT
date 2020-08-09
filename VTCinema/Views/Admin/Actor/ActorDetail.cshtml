@@ -166,10 +166,7 @@
                  },
                  success: function (result) {
                      if (result == "0") {
-                         if (document.getElementById('fileuploadAvatarActor').files.length == 0) {
-                             UploadImage();
-                         }
-                         
+                         UploadImage();
                          notiSuccess();
                          LoadActor();
                      } else {

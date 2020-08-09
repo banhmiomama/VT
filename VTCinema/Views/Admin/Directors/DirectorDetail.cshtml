@@ -41,7 +41,7 @@
                                 <input type="hidden" name="country">
                                 <i class="dropdown icon"></i>
                                 <div class="default text">Chọn Quốc Tịch</div>
-                                <div class="menu" id="cbbNationality">                                   
+                                <div class="menu" id="cbbNationality">
                                 </div>
                             </div>
                         </div>
@@ -158,9 +158,7 @@
                  },
                  success: function (result) {
                      if (result == "0") {
-                         if (document.getElementById('fileuploadAvatarDirector').files.length == 0) {
-                             UploadImage();
-                         }
+                         UploadImage();
                          notiSuccess();
                          LoadDirector();
                      } else {

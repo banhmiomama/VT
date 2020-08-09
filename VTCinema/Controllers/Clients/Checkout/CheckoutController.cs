@@ -137,7 +137,7 @@ namespace VTCinema.Controllers.Clients.Checkout
                         , "@ScheduleID", SqlDbType.Int, dataDetail.ScheduleID
                         , "@Quan", SqlDbType.Int, dataDetail.Quan
                         , "@Price", SqlDbType.Float, dataDetail.Price);
-                }               
+                }
 
                 //MimeMessage message = new MimeMessage();
                 //message.Subject = "VTCinema";
@@ -154,7 +154,7 @@ namespace VTCinema.Controllers.Clients.Checkout
                 //    client.Connect("smtp.gmail.com"
                 //    , 587
                 //    , MailKit.Security.SecureSocketOptions.StartTls);
-                //    client.Authenticate("riva.friend.2605@gmail.com","CuBaKhoTinh1804");
+                //    client.Authenticate("riva.friend.2605@gmail.com", "CuBaKhoTinh1804");
                 //    client.Send(message);
                 //    client.Disconnect(true);
                 //}

@@ -97,9 +97,7 @@
                      },
                      success: function (result) {
                          if (result == "0") {
-                             if (document.getElementById('fileuploadAvatarInformation').files.length == 0) {
-                                 UploadImage();
-                             }
+                             UploadImage();
                              notiSuccess();
                              LoadInformation();
                          } else {

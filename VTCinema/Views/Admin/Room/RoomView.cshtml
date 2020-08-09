@@ -33,6 +33,7 @@
                                 <th style="width: 70px;">#</th>
                                 <th>Tên Phòng</th>
                                 <th style="min-width: 60px">Chi nhánh</th>
+                                <th style="min-width: 60px">Chỉnh Sửa Ghế Ngồi</th>
                                 <th style="max-width: 300px;">Ngày Tạo</th>
                                 <th>Xoá</th>
                             </tr>
@@ -63,7 +64,11 @@
                         + '<td data-sortValue="' + Number(i) + '">' + (i + 1) + '</td>'
                         + '<td ><a style="text-decoration: underline;" class="buttonEditClass" href="#">' + item.Name + '</a></td>'
                         + '<td >' + item.Branch + '</td>'
+                        + '<td class="selectedtd"><button class="buttonGrid _tab_control_" data-tab="delete_service_type" value="'
+                        + item.ID
+                        + '"><img class="buttonEditChair imgGrid" src="/img/ButtonImg/edit.png"></button></td>'
                         + '<td >' + item.Created + '</td>'
+                       
                         + ((item.ButtonDelete == "0") ? ('<td class="selectedtd"><button class="buttonGrid _tab_control_" data-tab="delete_service_type" value="'
                             + item.ID
                             + '"><img class="buttonDeleteClass imgGrid" src="/img/ButtonImg/delete_ver2.png"></button></td>'):'<td></td>')
@@ -116,6 +121,10 @@
             let ID = Number($(this).closest('tr')[0].childNodes[0].innerHTML);
             DeleteRoom(ID);
         });
+        $('#dtContentRoom tbody').on('click', '.buttonEditChair', function () {
+            let ID = Number($(this).closest('tr')[0].childNodes[0].innerHTML);
+            EditChairRoom(ID);
+        });
     });
 
     function AddNewRoom() {
@@ -128,6 +137,12 @@
     function EditRoom(CurrentID) {
         document.getElementById("divDetailPopup").innerHTML = '';
         $("#divDetailPopup").load("RoomDetail/" + CurrentID);
+        $('#divDetailPopup').modal('show');
+        return false;
+    }
+    function EditChairRoom(CurrentID) {
+        document.getElementById("divDetailPopup").innerHTML = '';
+        $("#divDetailPopup").load("RoomChairDetail/" + CurrentID);
         $('#divDetailPopup').modal('show');
         return false;
     }

@@ -156,10 +156,8 @@
                         notiError("Lỗi Hệ Thống");
                  },
                  success: function (result) {
-                     if (result == "0") {
-                         if (document.getElementById('fileuploadAvatarCustomer').files.length == 0) {
-                             UploadImage();
-                         }
+                     if (result == "0") {                 
+                         UploadImage();
                          notiSuccess();
                          LoadCustomer();
                      } else {

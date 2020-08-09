@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -63,6 +64,35 @@ namespace VTCinema.Controllers.Admin.Clients.Main
             catch (Exception ex)
             {
                 return "[]";
+            }
+        }
+
+        [Route("LoadDataCustomer")]
+        [HttpPost]
+        public string LoadDataCustomer()
+        {
+            try
+            {
+                DataTable dt = new DataTable();
+                int CustomerID = 0;
+                if(HttpContext.Session.GetInt32(Comon.GlobalClient.CustomerID) == null)
+                {
+                    CustomerID = 0;
+                }
+                else
+                {
+                    CustomerID = (int)HttpContext.Session.GetInt32(Comon.GlobalClient.CustomerID);
+                }
+                using (Models.ExecuteDataBase confunc = new Models.ExecuteDataBase())
+                {
+                    dt = confunc.ExecuteDataTable("[YYY_sp_Client_Customer_LoadDetail]", CommandType.StoredProcedure
+                        , "@CusID", SqlDbType.Int, CustomerID);
+                }
+                return dt != null ? JsonConvert.SerializeObject(dt) : "[]";
+            }
+            catch (Exception ex)
+            {
+                return "0";
             }
         }
     }
