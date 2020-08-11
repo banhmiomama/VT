@@ -39,7 +39,7 @@
                         </div>
                         <div class="field">
                             <label>Tên Phim - EN</label>
-                            <input id="txtNameEN" name="NameMovieEN"  type="text" />
+                            <input id="txtNameEN" name="name"  type="text" />
                         </div>
                     </div>
                     <div class="two fields">
@@ -288,12 +288,9 @@
                     notiError("Lỗi Hệ Thống");
                 },
                 success: function (result) {
-                    
                     if (result == "0") {
-                        
-                            UploadImageMovie();
+                        UploadImageMovie();
                         UploadVideoMovie();
-                        
                         notiSuccess();
                         LoadMovie();
                     } else {
@@ -348,6 +345,7 @@
         }
     }
     function GetFileURL() {
+        debugger
         if (document.getElementById("fileuploadImageMovie").files.length != 0) {
             var fullPath = document.getElementById('fileuploadImageMovie').value;
             if (fullPath) {
@@ -361,6 +359,7 @@
         } else return avatarString;
     }
     function GetFileURLVideo() {
+        debugger
         if (document.getElementById("Video").files.length != 0) {
             var fullPath = document.getElementById('Video').value;
             if (fullPath) {
@@ -373,8 +372,7 @@
             }
         } else return VideoString;
     }
-    $(document).on("change", ".file_multi_video", function (evt) {
-        
+    $(document).on("change", ".file_multi_video", function (evt) { 
         var $source = $('#video_here');
         $source[0].src = URL.createObjectURL(this.files[0]);
         $source.parent()[0].load();
