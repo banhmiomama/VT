@@ -50,15 +50,15 @@ namespace VTCinema.Controllers.Clients.Detail
             }
         }
 
-        [Route("LoadDataScheduleMovie")]
-        [HttpPost]
-        public string LoadDataScheduleMovie()
+        [Route("LoadDataScheduleMovie/{MovieDetailID}")]
+        [HttpGet]
+        public string LoadDataScheduleMovie(int MovieDetailID)
         {
             try
             {
                 DataSet ds = new DataSet();
                 DataTable dtBranch = DataBranch();
-                DataTable dtSchedule = DataScheduleMovie();
+                DataTable dtSchedule = DataScheduleMovie(MovieDetailID);
 
                 ds.Tables.AddRange(new DataTable[] { dtBranch, dtSchedule });
                 return JsonConvert.SerializeObject(ds);
@@ -93,14 +93,14 @@ namespace VTCinema.Controllers.Clients.Detail
                 return null;
             }
         }
-        DataTable DataScheduleMovie()
+        DataTable DataScheduleMovie(int MovieDetailID)
         {
             try
             {
                 DataTable dt = new DataTable();
                 using (Models.ExecuteDataBase confunc = new Models.ExecuteDataBase())
                 {
-                    dt = confunc.ExecuteDataTable("[YYY_sp_Client_Schedule_LoadDetail]", CommandType.StoredProcedure, "@MovieID",SqlDbType.Int, ViewBag.MovieDetailID);
+                    dt = confunc.ExecuteDataTable("[YYY_sp_Client_Schedule_LoadDetail]", CommandType.StoredProcedure, "@MovieID",SqlDbType.Int, MovieDetailID);
 
                 }
                 if (dt != null)

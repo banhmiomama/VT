@@ -663,9 +663,9 @@
 
         function LoadDataScheduleMovie() {
             $.ajax({
-                url: "LoadDataScheduleMovie",
+                url: "LoadDataScheduleMovie/" + MovieDetailID,
                 dataType: "json",
-                type: "POST",
+                type: "GET",
                 data: JSON.stringify({
                 }),
                 contentType: 'application/json; charset=utf-8',
