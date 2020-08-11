@@ -20,6 +20,33 @@ namespace VTCinema.Controllers.Admin.User
             ViewBag.UserGroupID = UserGroupID;
             return View("~/Views/Admin/User/UserGroupDetail.cshtml");
         }
+
+        [Route("GetUserGroupDetail/{UserGroupID}")]
+        [HttpGet]
+        public string GetUserGroupDetail(int UserGroupID)
+        {
+            try
+            {
+                DataTable dt = new DataTable();
+                using (Models.ExecuteDataBase confunc = new Models.ExecuteDataBase())
+                {
+                    dt = confunc.ExecuteDataTable("[YYY_sp_UserGroup_LoadDetail]", CommandType.StoredProcedure,
+                      "@CurrentID", SqlDbType.Int, UserGroupID);
+                }
+                if (dt != null)
+                {
+                    return JsonConvert.SerializeObject(dt);
+                }
+                else
+                {
+                    return "";
+                }
+            }
+            catch (Exception ex)
+            {
+                return "[]";
+            }
+        }
         [Route("Execute")]
         [ValidateAntiForgeryToken]
         [HttpPost]

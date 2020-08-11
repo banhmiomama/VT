@@ -38,14 +38,11 @@
 <script src="/js/customjs/custom-validation.js"></script>
 <script src="/js/main.js"></script>
 <script>
-    debugger
-    let AgesDetailID;
+    var AgesDetailID;
     $(document).ready(function () {
         AgesDetailID = @ViewBag.AgesID;
         LoadDataUpdateAges();
     });
-    debugger
-
     function LoadDataUpdateAges() {
         $.ajax({
             type: 'GET',

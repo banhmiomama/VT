@@ -37,13 +37,15 @@
 <script src="/js/customjs/custom-validation.js"></script>
 <script src="/js/main.js"></script>
 <script>
-    let UserGroupDetailID;
+    var UserGroupDetailID;
     $(document).ready(function () {
+        debugger
         UserGroupDetail = @ViewBag.UserGroupID;
         LoadDataUpdateUserGroup();
     });
 
     function LoadDataUpdateUserGroup() {
+        debugger
         $.ajax({
             type: 'GET',
             dataType: "json",

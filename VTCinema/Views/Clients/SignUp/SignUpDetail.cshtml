@@ -1,0 +1,243 @@
+﻿<head runat="sever">
+    <title>@ViewBag.Title</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Font -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600%7CUbuntu:300,400,500,700" rel="stylesheet">
+
+    <!-- CSS -->
+    <link href="~/Clients/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Clients/css/bootstrap-grid.min.css" rel="stylesheet" />
+    <link href="~/Clients/css/bootstrap-reboot.min.css" rel="stylesheet" />
+    <link href="~/Clients/css/default-skin.css" rel="stylesheet" />
+    <link href="~/Clients/css/ionicons.min.css" rel="stylesheet" />
+    <link href="~/Clients/css/jquery.mCustomScrollbar.min.css" rel="stylesheet" />
+    <link href="~/Clients/css/nouislider.min.css" rel="stylesheet" />
+    <link href="~/Clients/css/owl.carousel.min.css" rel="stylesheet" />
+    <link href="~/Clients/css/photoswipe.css" rel="stylesheet" />
+    <link href="~/Clients/css/plyr.css" rel="stylesheet" />
+    <link href="~/Clients/css/main.css" rel="stylesheet" />
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/png" href="~/Clients/icon/favicon-32x32.png" sizes="32x32">
+    <link rel="apple-touch-icon" href="~/Clients/icon/favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="~/Clients/icon/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="~/Clients/icon/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="~/Clients/icon/apple-touch-icon-144x144.png">
+
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="Dmitry Volkov">
+    <style>
+        .sign__group{
+            border:1px solid;
+        }
+        input[type="file"] {
+            display: none;
+        }
+
+        .custom-file-upload {
+            display: inline-block;
+            padding: 6px 12px;
+            cursor: pointer;
+        }
+
+        .card__play {
+            transition: 0.5s;
+            transform: scale(0.5);
+        }
+
+        .card__cover:hover .card__play {
+            transform: scale(1);
+        }
+
+        .plyr--video {
+            border: 4px solid;
+        }
+
+        .closemodal {
+            position: absolute;
+            top: 0;
+            z-index: 100000;
+            right: 0;
+            background-color: red;
+            width: 20px;
+            font-size: 13px;
+        }
+
+        .nav-tabs > li > a:hover {
+            border-color: transparent;
+        }
+
+        .nav > li > a:focus, .nav > li > a:hover {
+            background-color: transparent;
+        }
+
+        .dropdown-menu > li > a {
+            color: white;
+        }
+    </style>
+</head>
+<body class="body">
+    <div class="sign section--bg" data-bg="~/Clients/img/section/section.jpg">
+     
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-3"></div>
+                    <div class="col-6">
+
+                        <form action="#" class="sign__form">
+
+                            <a href="index.html" class="sign__logo">
+                                <img src="~/Clients/img/logo.svg" alt="">
+
+                            </a>
+                            <div style="font-size:25px; color:white;">Thông Tin Cá Nhân </div>
+                            <div class="sign__group">
+                                <input type="text" class="sign__input" placeholder="Name" id="Name">
+                            </div>
+                            <div class="sign__group">
+                                <input type="text" class="sign__input" placeholder="LastName" id="LastName">
+                            </div>
+
+                            <div class="sign__group">
+                                <input type="text" class="sign__input" placeholder="Birthday" id="Birthday">
+                            </div>
+                            <div class="sign__group">
+                                <input type="text" class="sign__input" placeholder="Phone" id="Phone">
+                            </div>
+
+                          
+
+                            <button class="sign__btn" type="button" onclick="return ExecuteCustomer()">Update</button>
+                        </form>
+                    </div>
+                    <div class="col-3">
+                        <form action="#" class="sign__form">
+                            <div class="ui massive image" style="width:200px;height:200px;">
+                                <img id="avatarCustomerUpload" class="ui mini circular image" src="/img/404.png" alt="label-image" style="width: 100%; height: 80%;" />
+                                <div>&nbsp</div>
+                                <div class="btn btn-success upload-btn-wrapper" style="width: 50%; margin-left:50px;height:50px;">
+                                    <label class="custom-file-upload">
+                                        <input type="file" id="fileuploadAvatarCustomer" onchange="readURL(this);" />
+                                        <i class="fa fa-cloud-upload"></i>UpDate
+                                    </label>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- JS -->
+        <script src="~/Clients/js/jquery-3.3.1.min.js"></script>
+        <script src="~/Clients/js/bootstrap.bundle.min.js"></script>
+        <script src="~/Clients/js/owl.carousel.min.js"></script>
+        <script src="~/Clients/js/jquery.mousewheel.min.js"></script>
+        <script src="~/Clients/js/jquery.mCustomScrollbar.min.js"></script>
+        <script src="~/Clients/js/wNumb.js"></script>
+        <script src="~/Clients/js/nouislider.min.js"></script>
+        <script src="~/Clients/js/plyr.min.js"></script>
+        <script src="~/Clients/js/jquery.morelines.min.js"></script>
+        <script src="~/Clients/js/photoswipe.min.js"></script>
+        <script src="~/Clients/js/photoswipe-ui-default.min.js"></script>
+        <script>
+        var CustomerID;
+        var AvatarString = '';
+        var DataAvatar;
+        $(document).ready(function () {
+            CustomerID = @ViewBag.CustomerID;
+            LoadDataCustomerDetail();
+        })
+        function LoadDataCustomerDetail() {
+            $.ajax({
+                type: 'GET',
+                dataType: "json",
+                contentType: 'application/json; charset=utf-8',
+                url: "GetCusDetail/" + CustomerID,
+                async: true,
+                success: function (data) {
+                    $('#Name').val((data[0].Name));
+                    $('#LastName').val((data[0].LastName));
+                    $('#Birthday').val((data[0].Birthday));
+                    $('#Phone').val((data[0].Phone));
+                    if (data[0].Avatar == '' || data[0].Avatar == undefined) {
+                        $('#avatarCustomerUpload').attr('src', '');
+                    }
+                    else {
+                        $('#avatarCustomerUpload').attr('src', data[0].Avatar);
+                        avatarString = data[0].Avatar;
+                    }
+                    }
+            });
+            }
+        function ExecuteCustomer() {
+            debugger
+            var data = new Object();
+            data.Avatar = GetFileName();
+            data.Name = $("#Name").val() ? $("#Name").val() : '';
+            data.LastName = $("#LastName").val() ? $("#LastName").val() : '';
+            data.Birthday = $("#Birthday").val() ? $("#Birthday").val() : '';
+            data.Phone = $("#Phone").val() ? $("#Phone").val() : '';
+                $.ajax({
+                    url: "/SignUpDetail/ExecuteCustomer",
+                    dataType: "json",
+                    type: "POST",
+                    data: {
+                        CustomerID : @ViewBag.CustomerID
+                        ,data: JSON.stringify(data)
+                    },
+                    async: true,
+                    error: function (error) {
+                        alert(error);
+                    },
+                    success: function (result) {
+                        alert('Cập nhật tài khoản thành công');
+                        UploadImage();
+                    }
+                });
+                return false;
+        }
+        function UploadImage() {
+            var Video = $("#fileuploadAvatarCustomer")[0].files[0];
+            var formData = new FormData();
+            formData.append("files", Video);
+            $.ajax({
+                url: "/UploadFile/UploadImageClientCustomer",
+                dataType: "json",
+                type: "POST",
+                contentType: false,
+                processData: false,
+                data: formData,
+                async: true
+            });
+        }
+        function readURL(input) {
+            var ext = input.files[0]['name'].substring(input.files[0]['name'].lastIndexOf('.') + 1).toLowerCase();
+            if (input.files && input.files[0] && (ext == "gif" || ext == "png" || ext == "jpeg" || ext == "jpg")) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#avatarCustomerUpload').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            } else {
+                $('#avatarCustomerUpload').attr('src', '/img/404.png');
+            }
+        }
+        function GetFileName() {
+            var fullPath = document.getElementById('fileuploadAvatarCustomer').value;
+            if (fullPath) {
+                var startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
+                var filename = fullPath.substring(startIndex);
+                if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
+                    filename = '../img/Customer/' + filename.substring(1);
+                }
+                return filename;
+            }
+        }
+        </script>
+</body>

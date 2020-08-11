@@ -15,6 +15,7 @@ namespace VTCinema.Controllers.Clients.Information
         {
             return View("~/Views/Clients/Information/InformationView.cshtml");
         }
+
         [Route("LoadDataInformation")]
         [HttpPost]
         public string LoadDataInformation()
