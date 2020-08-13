@@ -29,10 +29,82 @@
     <meta name="description" content="">
     <meta name="keywords" content="">
     <meta name="author" content="Dmitry Volkov">
+
+    @*@import "https://fonts.googleapis.com/css?family=Raleway";
+    * { box-sizing: border-box; }*@
     <style>
-        .sign__group{
-            border:1px solid;
+        h1 {
+            margin: 0;
         }
+
+        #contact {
+            -webkit-user-select: none; /* Chrome/Safari */
+            -moz-user-select: none; /* Firefox */
+            -ms-user-select: none; /* IE10+ */
+            width: 200px;
+            height: 50px;
+            line-height: 30px;
+            background: #00ff21;
+            color: black;
+            font-weight: 700;
+            text-align: center;
+            cursor: pointer;
+            border: 1px solid white;
+        }
+
+            #contact:hover {
+                background: #666;
+            }
+
+            #contact:active {
+                background: #444;
+            }
+
+        #contactForm {
+            display: none;
+            border-bottom-color:aqua;
+            padding: 2em;
+            width: 400px;
+            text-align: center;
+            background: #28282d;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            -webkit-transform: translate(-50%,-50%)
+        }
+
+        input, textarea {
+            margin: .8em auto;
+            font-family: inherit;
+            text-transform: inherit;
+            font-size: inherit;
+            display: block;
+            width: 280px;
+            padding: .4em;
+        }
+
+        textarea {
+            height: 80px;
+            resize: none;
+        }
+
+        .formBtn {
+            width: 140px;
+            display: inline-block;
+            background: teal;
+            color: #fff;
+            font-weight: 100;
+            font-size: 1.2em;
+            border: none;
+            height: 30px;
+        }
+
+
+        .sign__group {
+            border: 1px solid;
+        }
+
         input[type="file"] {
             display: none;
         }
@@ -81,78 +153,101 @@
 </head>
 <body class="body">
     <div class="sign section--bg" data-bg="~/Clients/img/section/section.jpg">
-     
 
-            <div class="container">
-                <div class="row">
-                    <div class="col-3"></div>
-                    <div class="col-6">
 
-                        <form action="#" class="sign__form">
+        <div class="container">
+            <div class="row">
+                <div class="col-3"></div>
+                <div class="col-6">
 
-                            <a href="index.html" class="sign__logo">
-                                <img src="~/Clients/img/logo.svg" alt="">
+                    <form action="#" class="sign__form">
 
-                            </a>
-                            <div style="font-size:25px; color:white;">Thông Tin Cá Nhân </div>
-                            <div class="sign__group">
-                                <input type="text" class="sign__input" placeholder="Name" id="Name">
+                        <a href="index.html" class="sign__logo">
+                            <img src="~/Clients/img/logo.png" alt="">
+
+                        </a>
+                        <div style="font-size:25px; color:white;">Thông Tin Cá Nhân </div>
+                        <div class="sign__group">
+                            <input type="text" class="sign__input" placeholder="Name" id="Name">
+                        </div>
+                        <div class="sign__group">
+                            <input type="text" class="sign__input" placeholder="LastName" id="LastName">
+                        </div>
+
+                        <div class="sign__group">
+                            <input type="text" class="sign__input" placeholder="Birthday" id="Birthday">
+                        </div>
+                        <div class="sign__group">
+                            <input type="text" class="sign__input" placeholder="Phone" id="Phone">
+                        </div>
+                        <button type="submit" class="btn btn-success" id="contact">Đổi mật khẩu</button>
+                        <button class="sign__btn" type="submit" onclick="return ExecuteCustomer()">Update</button>
+                    </form>
+                </div>
+                <div class="col-3">
+                    <form action="#" class="sign__form">
+                        <div class="ui massive image" style="width:200px;height:200px;">
+                            <img id="avatarCustomerUpload" class="ui mini circular image" src="/img/404.png" alt="label-image" style="width: 100%; height: 80%;" />
+                            <div>&nbsp</div>
+                            <div class="btn btn-success upload-btn-wrapper" style="width: 50%; margin-left:50px;height:50px;">
+                                <label class="custom-file-upload">
+                                    <input type="file" id="fileuploadAvatarCustomer" onchange="readURL(this);" />
+                                    <i class="fa fa-cloud-upload"></i>Chọn ảnh
+                                </label>
                             </div>
-                            <div class="sign__group">
-                                <input type="text" class="sign__input" placeholder="LastName" id="LastName">
-                            </div>
-
-                            <div class="sign__group">
-                                <input type="text" class="sign__input" placeholder="Birthday" id="Birthday">
-                            </div>
-                            <div class="sign__group">
-                                <input type="text" class="sign__input" placeholder="Phone" id="Phone">
-                            </div>
-
-                          
-
-                            <button class="sign__btn" type="button" onclick="return ExecuteCustomer()">Update</button>
-                        </form>
-                    </div>
-                    <div class="col-3">
-                        <form action="#" class="sign__form">
-                            <div class="ui massive image" style="width:200px;height:200px;">
-                                <img id="avatarCustomerUpload" class="ui mini circular image" src="/img/404.png" alt="label-image" style="width: 100%; height: 80%;" />
-                                <div>&nbsp</div>
-                                <div class="btn btn-success upload-btn-wrapper" style="width: 50%; margin-left:50px;height:50px;">
-                                    <label class="custom-file-upload">
-                                        <input type="file" id="fileuploadAvatarCustomer" onchange="readURL(this);" />
-                                        <i class="fa fa-cloud-upload"></i>UpDate
-                                    </label>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
+    </div>
+    <div id="contactForm">
+        <form action="#">
+            <input id="Newpass" placeholder="Mật khẩu mới" type="password" required style="background-color:#2b2b31; color:white"  />
+            <input placeholder="Xác nhận mật khẩu" type="password" required style="background-color:#2b2b31;color:white" />
+            <input placeholder="Mật khẩu cũ" type="password" required  style="background-color:#2b2b31;color:white"/>
+            <button class="btn btn-primary" type="submit" onclick="return ExecutePassword()">Update</button>
+        </form>
+    </div>
 
-        <!-- JS -->
-        <script src="~/Clients/js/jquery-3.3.1.min.js"></script>
-        <script src="~/Clients/js/bootstrap.bundle.min.js"></script>
-        <script src="~/Clients/js/owl.carousel.min.js"></script>
-        <script src="~/Clients/js/jquery.mousewheel.min.js"></script>
-        <script src="~/Clients/js/jquery.mCustomScrollbar.min.js"></script>
-        <script src="~/Clients/js/wNumb.js"></script>
-        <script src="~/Clients/js/nouislider.min.js"></script>
-        <script src="~/Clients/js/plyr.min.js"></script>
-        <script src="~/Clients/js/jquery.morelines.min.js"></script>
-        <script src="~/Clients/js/photoswipe.min.js"></script>
-        <script src="~/Clients/js/photoswipe-ui-default.min.js"></script>
-        <script>
+    <!-- JS -->
+    <script src="~/Clients/js/jquery-3.3.1.min.js"></script>
+    <script src="~/Clients/js/bootstrap.bundle.min.js"></script>
+    <script src="~/Clients/js/owl.carousel.min.js"></script>
+    <script src="~/Clients/js/jquery.mousewheel.min.js"></script>
+    <script src="~/Clients/js/jquery.mCustomScrollbar.min.js"></script>
+    <script src="~/Clients/js/wNumb.js"></script>
+    <script src="~/Clients/js/nouislider.min.js"></script>
+    <script src="~/Clients/js/plyr.min.js"></script>
+    <script src="~/Clients/js/jquery.morelines.min.js"></script>
+    <script src="~/Clients/js/photoswipe.min.js"></script>
+    <script src="~/Clients/js/photoswipe-ui-default.min.js"></script>
+    <script>
         var CustomerID;
         var AvatarString = '';
         var DataAvatar;
+        $(function () {
+
+            // contact form animations
+            $('#contact').click(function () {
+                $('#contactForm').fadeToggle();
+            })
+            $(document).mouseup(function (e) {
+                var container = $("#contactForm");
+
+                if (!container.is(e.target) // if the target of the click isn't the container...
+                    && container.has(e.target).length === 0) // ... nor a descendant of the container
+                {
+                    container.fadeOut();
+                }
+            });
+
+        });
         $(document).ready(function () {
             CustomerID = @ViewBag.CustomerID;
             LoadDataCustomerDetail();
         })
-        function LoadDataCustomerDetail() {
+            function LoadDataCustomerDetail() {
             $.ajax({
                 type: 'GET',
                 dataType: "json",
@@ -201,7 +296,30 @@
                 });
                 return false;
         }
-        function UploadImage() {
+        
+        function ExecutePassword() {
+            debugger
+            var data = new Object();
+            if (document.getElementById)
+            data.Password = $("#Newpass").val() ? $("#Newpass").val() : ''; 
+                $.ajax({
+                    url: "/SignUpDetail/ExecutePassword",
+                    dataType: "json",
+                    type: "POST",
+                    data: {
+                        CustomerID : @ViewBag.CustomerID
+                        ,data: JSON.stringify(data)
+                    },
+                    async: true,
+                    error: function (error) {
+                        alert(error);
+                    },
+                    success: function (result) {
+                    }
+                });
+                return false;
+        }
+            function UploadImage() {
             var Video = $("#fileuploadAvatarCustomer")[0].files[0];
             var formData = new FormData();
             formData.append("files", Video);
@@ -215,7 +333,8 @@
                 async: true
             });
         }
-        function readURL(input) {
+            function readURL(input) {
+
             var ext = input.files[0]['name'].substring(input.files[0]['name'].lastIndexOf('.') + 1).toLowerCase();
             if (input.files && input.files[0] && (ext == "gif" || ext == "png" || ext == "jpeg" || ext == "jpg")) {
                 var reader = new FileReader();
@@ -238,6 +357,16 @@
                 }
                 return filename;
             }
-        }
-        </script>
+            }
+            $('#dtContentMovieTicketType tbody').on('click', '.buttonEditClass', function () {
+                let ID = Number($(this).closest('tr')[0].childNodes[0].innerHTML);
+                EditMovieTicketType(ID);
+            });
+            function ChangePassword(CustomerID) {
+                document.getElementById("divDetailPopup").innerHTML = '';
+                $("#divDetailPopup").load("ChangePassword/" + CustomerID);
+                $('#divDetailPopup').modal('show');
+                return false;
+            }
+    </script>
 </body>

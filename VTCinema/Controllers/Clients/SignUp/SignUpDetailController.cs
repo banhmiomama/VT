@@ -75,5 +75,27 @@ namespace VTCinema.Controllers.Clients.SignUp
                 return "[]";
             }
         }
+        [Route("ExecutePassword")]
+        [HttpPost]
+        public string ExecutePassword(string data, int CustomerID)
+        {
+            try
+            {
+                DataTable dt = new DataTable();
+                DataCustomerChoose dataDetail = JsonConvert.DeserializeObject<DataCustomerChoose>(data);
+                using (Models.ExecuteDataBase confunc = new Models.ExecuteDataBase())
+                {
+                    dt = confunc.ExecuteDataTable("[YYY_sp_Client_Customer_ChangePassword]", CommandType.StoredProcedure
+                          , "@Password", SqlDbType.NVarChar, dataDetail.Password
+                          , "@CurrentID", SqlDbType.Int, CustomerID
+                          );
+                    return Content("<script language='javascript' type='text/javascript'>alert('Chỉnh Sửa Tài Khoản thành công');</script>").ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                return "[]";
+            }
+        }
     }
 }
