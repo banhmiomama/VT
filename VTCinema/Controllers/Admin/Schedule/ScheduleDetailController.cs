@@ -86,7 +86,8 @@ namespace VTCinema.Controllers.Admin.Schedule
                 DataTable dt = new DataTable();
                 using (Models.ExecuteDataBase confunc = new Models.ExecuteDataBase())
                 {
-                    dt = confunc.ExecuteDataTable("[YYY_sp_MovieTicketType_LoadCombo]", CommandType.StoredProcedure);
+                    dt = confunc.ExecuteDataTable("[YYY_sp_MovieTicketType_LoadCombo]", CommandType.StoredProcedure, 
+                        "@MovieID", SqlDbType.Int, 0);
                 }
                 if (dt != null)
                 {
@@ -150,6 +151,32 @@ namespace VTCinema.Controllers.Admin.Schedule
             }
         }
 
+        [Route("LoadComboMovieTicketType/{MovieID}")]
+        [HttpGet]
+        public string LoadComboMovieTicketType(int MovieID)
+        {
+            try
+            {
+                DataTable dt = new DataTable();
+                using (Models.ExecuteDataBase confunc = new Models.ExecuteDataBase())
+                {
+                    dt = confunc.ExecuteDataTable("[YYY_sp_MovieTicketType_LoadCombo]", CommandType.StoredProcedure
+                        , "@MovieID", SqlDbType.Int, MovieID);
+                }
+                if (dt != null)
+                {
+                    return JsonConvert.SerializeObject(dt);
+                }
+                else
+                {
+                    return "[]";
+                }
+            }
+            catch (Exception ex)
+            {
+                return "[]";
+            }
+        }
         [Route("Execute")]
         [ValidateAntiForgeryToken]
         [HttpPost]

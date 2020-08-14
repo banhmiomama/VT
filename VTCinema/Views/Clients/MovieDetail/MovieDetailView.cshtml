@@ -145,7 +145,7 @@
                         <div class="col-12 col-sm-8 col-md-8 col-lg-9 col-xl-7">
                             <div class="card__content">
                                 <div class="card__wrap">
-                                    <span class="card__rate" id="rating"><i class="icon ion-ios-star"></i>8.4</span>
+                                    <span class="card__rate"><i class="icon ion-ios-star"></i><span id="rating"></span></span>
                                     <ul class="card__list" id="MovieTicketType">
                                         <li>HD</li>
                                     </ul>
@@ -536,6 +536,7 @@
                         $('#Time').text(DataMovie[0].Movie_Time_Duration);
                         $('#Country').text(DataMovie[0].Nationality);
                         $('#MovieType').text(DataMovie[0].Name_Type);
+                        $('#rating').text(DataMovie[0].Rating);
                         $('#Opening_Time').text(DataMovie[0].Opening_Time);
                         $('#Ages').text(DataMovie[0].Ages);
                         if (DataMovie[0].Image == '' || DataMovie[0].Image == undefined) {
@@ -662,9 +663,9 @@
 
         function LoadDataScheduleMovie() {
             $.ajax({
-                url: "LoadDataScheduleMovie",
+                url: "LoadDataScheduleMovie/" + MovieDetailID,
                 dataType: "json",
-                type: "POST",
+                type: "GET",
                 data: JSON.stringify({
                 }),
                 contentType: 'application/json; charset=utf-8',

@@ -23,7 +23,7 @@
                         <div class="two fields">
                             <div class="field">
                                 <label>Phim:</label>
-                                <div class="ui fluid search selection dropdown" id="Movie">
+                                <div class="ui fluid search selection dropdown" id="Movie" onchange="OnchangeMovie();">
                                     <input type="hidden" name="Movie">
                                     <i class="dropdown icon"></i>
                                     <div class="default text">Chọn Phim</div>
@@ -116,7 +116,6 @@
         ScheduleDetailID = @ViewBag.ScheduleID;
         LoadDataUpdateSchedule();
     });
-
     function LoadDataUpdateSchedule() {
         $.ajax({
             type: 'GET',
@@ -207,11 +206,30 @@
     }
     function OnchangeBranchDetail() {
         let BranchID = $('#BranchID').dropdown('get value') ? Number($('#BranchID').dropdown('get value')) : 0;
-        $("#Room").dropdown("refresh");
+        $("#Room").dropdown("clear");
         if (BranchID != 0) {
             let Data = DataRoom.filter(word => word["BranchID"] == BranchID);
             $("#Room").dropdown("refresh");
             LoadCombo(Data, "cbbRoom");
         }
+    }
+    function OnchangeMovie() {
+        let MovieID = $('#Movie').dropdown('get value') ? Number($('#Movie').dropdown('get value')) : 0;
+        $("#TicketType").dropdown("clear");
+        if (MovieID != 0) {
+            LoadDataTicketTypeMovie(MovieID);
+        }
+    }
+    function LoadDataTicketTypeMovie(MovieID) {
+        $.ajax({
+            type: 'GET',
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            url: "/Admin/ScheduleDetail/LoadComboMovieTicketType/" + MovieID,
+            async: true,
+            success: function (result) {
+                LoadCombo(result, "cbbTicketType");
+            }
+        });
     }
 </script>
