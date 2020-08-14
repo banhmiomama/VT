@@ -17,7 +17,7 @@ namespace VTCinema.Controllers.Clients.SignUp
         [HttpGet]
         public IActionResult Index(int CustomerID)
         {
-            
+
             ViewBag.CustomerID = CustomerID;
             return View("~/Views/Clients/SignUp/SignUpDetail.cshtml");
         }
@@ -31,7 +31,7 @@ namespace VTCinema.Controllers.Clients.SignUp
                 using (Models.ExecuteDataBase confunc = new Models.ExecuteDataBase())
                 {
                     dt = confunc.ExecuteDataTable("[YYY_sp_Client_Customer_LoadDetail]", CommandType.StoredProcedure,
-                      "@UserID", SqlDbType.NVarChar, CustomerID);
+                      "@CusID", SqlDbType.NVarChar, CustomerID);
                 }
                 if (dt != null)
                 {
@@ -47,9 +47,10 @@ namespace VTCinema.Controllers.Clients.SignUp
                 return "[]";
             }
         }
+
         [Route("ExecuteCustomer")]
         [HttpPost]
-        public string ExecuteCustomer(string data , int CustomerID)
+        public string ExecuteCustomer(string data, int CustomerID)
         {
             try
             {
@@ -57,17 +58,17 @@ namespace VTCinema.Controllers.Clients.SignUp
                 DataCustomerChoose dataDetail = JsonConvert.DeserializeObject<DataCustomerChoose>(data);
                 using (Models.ExecuteDataBase confunc = new Models.ExecuteDataBase())
                 {
-                        dt = confunc.ExecuteDataTable("[YYY_sp_Client_Customer_Update]", CommandType.StoredProcedure
-                              , "@Name", SqlDbType.NVarChar, dataDetail.Name
-                              , "@LastName", SqlDbType.NVarChar, dataDetail.LastName
-                              , "@Email", SqlDbType.NVarChar, dataDetail.Email
-                              , "@Birthday", SqlDbType.NVarChar, dataDetail.Birthday
-                              , "@Phone", SqlDbType.NVarChar, dataDetail.Phone
-                              , "@Password", SqlDbType.NVarChar, dataDetail.Password
-                              , "@Avatar", SqlDbType.VarChar, dataDetail.Avatar
-                              ,"@CurrentID", SqlDbType.Int, CustomerID
-                              );
-                        return "Chỉnh Sửa Tài Khoản thành công";
+                    dt = confunc.ExecuteDataTable("[YYY_sp_Client_Customer_Update]", CommandType.StoredProcedure
+                          , "@Name", SqlDbType.NVarChar, dataDetail.Name
+                          , "@LastName", SqlDbType.NVarChar, dataDetail.LastName
+                          , "@Email", SqlDbType.NVarChar, dataDetail.Email
+                          , "@Birthday", SqlDbType.NVarChar, dataDetail.Birthday
+                          , "@Phone", SqlDbType.NVarChar, dataDetail.Phone
+                          , "@Password", SqlDbType.NVarChar, dataDetail.Password
+                          , "@Avatar", SqlDbType.VarChar, dataDetail.Avatar
+                          , "@CurrentID", SqlDbType.Int, CustomerID
+                          );
+                    return "Chỉnh Sửa Tài Khoản thành công";
                 }
             }
             catch (Exception ex)
@@ -89,7 +90,7 @@ namespace VTCinema.Controllers.Clients.SignUp
                           , "@Password", SqlDbType.NVarChar, dataDetail.Password
                           , "@CurrentID", SqlDbType.Int, CustomerID
                           );
-                    return Content("<script language='javascript' type='text/javascript'>alert('Chỉnh Sửa Tài Khoản thành công');</script>").ToString();
+                    return "Đổi mật khẩu thành công";
                 }
             }
             catch (Exception ex)

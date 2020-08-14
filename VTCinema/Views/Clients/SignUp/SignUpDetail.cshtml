@@ -31,7 +31,7 @@
     <meta name="author" content="Dmitry Volkov">
 
     @*@import "https://fonts.googleapis.com/css?family=Raleway";
-    * { box-sizing: border-box; }*@
+        * { box-sizing: border-box; }*@
     <style>
         h1 {
             margin: 0;
@@ -62,7 +62,7 @@
 
         #contactForm {
             display: none;
-            border-bottom-color:aqua;
+            border-bottom-color: aqua;
             padding: 2em;
             width: 400px;
             text-align: center;
@@ -203,9 +203,10 @@
     </div>
     <div id="contactForm">
         <form action="#">
-            <input id="Newpass" placeholder="Mật khẩu mới" type="password" required style="background-color:#2b2b31; color:white"  />
-            <input placeholder="Xác nhận mật khẩu" type="password" required style="background-color:#2b2b31;color:white" />
-            <input placeholder="Mật khẩu cũ" type="password" required  style="background-color:#2b2b31;color:white"/>
+            <input id="Newpass" placeholder="Mật khẩu mới" type="password" required style="background-color:#2b2b31; color:white" />
+            <input id="Repass" placeholder="Xác nhận mật khẩu" type="password" required style="background-color:#2b2b31;color:white" />
+            <input id="Oldpass" placeholder="Mật khẩu cũ" type="password" required style="background-color:#2b2b31;color:white" />
+            <label id="message" style="color:red;"></label>
             <button class="btn btn-primary" type="submit" onclick="return ExecutePassword()">Update</button>
         </form>
     </div>
@@ -226,28 +227,12 @@
         var CustomerID;
         var AvatarString = '';
         var DataAvatar;
-        $(function () {
-
-            // contact form animations
-            $('#contact').click(function () {
-                $('#contactForm').fadeToggle();
-            })
-            $(document).mouseup(function (e) {
-                var container = $("#contactForm");
-
-                if (!container.is(e.target) // if the target of the click isn't the container...
-                    && container.has(e.target).length === 0) // ... nor a descendant of the container
-                {
-                    container.fadeOut();
-                }
-            });
-
-        });
+        var pass ;
         $(document).ready(function () {
             CustomerID = @ViewBag.CustomerID;
             LoadDataCustomerDetail();
         })
-            function LoadDataCustomerDetail() {
+        function LoadDataCustomerDetail() {
             $.ajax({
                 type: 'GET',
                 dataType: "json",
@@ -259,6 +244,7 @@
                     $('#LastName').val((data[0].LastName));
                     $('#Birthday').val((data[0].Birthday));
                     $('#Phone').val((data[0].Phone));
+                    pass = data[0].Password;
                     if (data[0].Avatar == '' || data[0].Avatar == undefined) {
                         $('#avatarCustomerUpload').attr('src', '');
                     }
@@ -270,7 +256,6 @@
             });
             }
         function ExecuteCustomer() {
-            debugger
             var data = new Object();
             data.Avatar = GetFileName();
             data.Name = $("#Name").val() ? $("#Name").val() : '';
@@ -282,8 +267,8 @@
                     dataType: "json",
                     type: "POST",
                     data: {
-                        CustomerID : @ViewBag.CustomerID
-                        ,data: JSON.stringify(data)
+                        CustomerID : @ViewBag.CustomerID,
+                        data: JSON.stringify(data)
                     },
                     async: true,
                     error: function (error) {
@@ -294,30 +279,46 @@
                         UploadImage();
                     }
                 });
-                return false;
+            return false;
         }
-        
         function ExecutePassword() {
             debugger
-            var data = new Object();
-            if (document.getElementById)
-            data.Password = $("#Newpass").val() ? $("#Newpass").val() : ''; 
+            if (document.getElementById('Oldpass').value != pass) {
+                //$("#message").val("Nhập sai mật khẩu cũ");   SỬA XONG THÌ SÀI CÁI NÀY NHA
+                alert("Nhập sai mật khẩu cũ");
+            }
+            else {
+                if (document.getElementById('Newpass').value != document.getElementById('Repass').value)
+                {
+                    //$("#message").val("Nhập lại mật khẩu không trùng khớp");
+                    alert("Nhập lại mật khẩu không trùng khớp");
+                }
+                else {
+                    var data = new Object();
+                    data.Password = $("#Newpass").val() ? $("#Newpass").val() : '';
                 $.ajax({
                     url: "/SignUpDetail/ExecutePassword",
                     dataType: "json",
                     type: "POST",
                     data: {
-                        CustomerID : @ViewBag.CustomerID
-                        ,data: JSON.stringify(data)
+                        CustomerID: @ViewBag.CustomerID,
+                        data: JSON.stringify(data)
                     },
                     async: true,
                     error: function (error) {
                         alert(error);
                     },
                     success: function (result) {
+                        debugger
+                        alert(result);
+                        $("#Newpass").val('');
+                        $("#Oldpass").val('');
+                        $("#Repass").val('');
                     }
                 });
-                return false;
+                    return false;
+            }
+            }
         }
             function UploadImage() {
             var Video = $("#fileuploadAvatarCustomer")[0].files[0];
@@ -367,6 +368,21 @@
                 $("#divDetailPopup").load("ChangePassword/" + CustomerID);
                 $('#divDetailPopup').modal('show');
                 return false;
-            }
+        }
+        $(function Loadpas() {
+            // contact form animations
+            $('#contact').click(function Loadpas () {
+                $('#contactForm').fadeToggle();
+            })
+            $(document).mouseup(function Loadpas (e) {
+                var container = $("#contactForm");
+
+                if (!container.is(e.target) // if the target of the click isn't the container...
+                    && container.has(e.target).length === 0) // ... nor a descendant of the container
+                {
+                    container.fadeOut();
+                }
+            });
+        });
     </script>
 </body>
