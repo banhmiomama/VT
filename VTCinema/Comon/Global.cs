@@ -16,45 +16,11 @@ namespace VTCinema.Comon
         public int sys_userid { get; set; }
       
         public string sys_username { get; set; }
-        public string sys_Role { get; set; }
         public string sys_RoleID { get; set; }
-        public string sys_RoleName { get; set; }
-        public string sys_BranchShortName { get; set; }
-
-        public string sys_RoleServerID { get; set; }
-        public string sys_BranchName { get; set; }
-        public int sys_branchID { get; set; }
-        public int sys_AllBranchID { get; set; }
-        public int sys_employeeid { get; set; }
-        public string sys_branchCode;
-        public string sys_CompanyName;
-        public string sys_CompanyAddress;
-        public string sys_hotline;
-
-        public static string sys_userAvatar { get; set; }
-
-       
+        public static string sys_userAvatar { get; set; }      
         public int sys_customerid { get; set; }
         public static string sys_Email { get; set; }
-        public int DetectLimitDate(int userID)
-        {
-            using (Models.ExecuteDataBase connFunc = new Models.ExecuteDataBase())
-            {
-                DataTable dt = connFunc.ExecuteDataTable("[YYY_sp_Permission_User_LimitDate]",
-                    CommandType.StoredProcedure, "@userID", SqlDbType.Int, userID
 
-                 );
-
-                if (dt != null && dt.Rows.Count > 0)
-                {
-                    return Convert.ToInt32(dt.Rows[0][0].ToString());
-                }
-                else
-                {
-                    return 0;
-                }
-            }
-        }
         public int DetectAuthorised(string user, string pass)
         {
             try

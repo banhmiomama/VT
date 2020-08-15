@@ -20,15 +20,7 @@ namespace VTCinema.Models
         {
             //Dispose(true);GC.SuppressFinalize(this);
         }
-        //private bool _disposed = false;
-        //protected virtual void Dispose(bool disposing)
-        //{
-        //    if (!_disposed)//    {
-        //        if (disposing)//        {
-
-        //        }
-        //        _conn.Close();
-        //    }                                                                                                                                         //}
+   
         ~ExecuteDataBase()
         {
             //Dispose(false);
@@ -75,167 +67,7 @@ namespace VTCinema.Models
             }
         }
 
-
-        public string ExecuteDatabaseLog(string s)
-        {
-            if (_conn.State == ConnectionState.Closed) _conn.Open();
-            SqlCommand command = _conn.CreateCommand();
-            SqlTransaction transaction = _conn.BeginTransaction();
-            command.Transaction = transaction; command.CommandText = @s;
-            try
-            {
-                command.ExecuteNonQuery();
-                transaction.Commit();
-                EnterLog(s);
-                if (_conn.State == ConnectionState.Open) _conn.Close();
-                return "";
-            }
-            catch (Exception ex)
-            {
-                transaction.Rollback();
-                throw ex;
-            }
-            finally
-            {
-                transaction.Dispose();
-            }
-        }
-        public string ExecuteDatabaseNoLog(string s)
-        {
-            if (_conn.State == ConnectionState.Closed) _conn.Open();
-            SqlCommand command = _conn.CreateCommand();
-            SqlTransaction transaction = _conn.BeginTransaction();
-            command.Transaction = transaction;
-            command.CommandText = @s;
-            try
-            {
-                command.ExecuteNonQuery();
-                transaction.Commit();
-
-                if (_conn.State == ConnectionState.Open) _conn.Close();
-                return "";
-            }
-            catch (Exception ex)
-            {
-                transaction.Rollback();
-                throw ex;
-            }
-            finally
-            {
-                transaction.Dispose();
-            }
-        }
-        public DataTable LoadDataSource_Table(string s)
-        {
-            try
-            {
-                if (_conn.State == ConnectionState.Closed) _conn.Open();
-                SqlCommand cmd = new SqlCommand(@s, _conn);
-                SqlDataAdapter da = new SqlDataAdapter(cmd);
-                DataTable table = new DataTable("myTable");
-                da.Fill(table);
-                if (_conn.State == ConnectionState.Open) _conn.Close();
-                return table;
-            }
-            catch
-            {
-                return null;
-            }
-        }
-        public DataSet LoadDataSource_DataSet(string s)
-        {
-            try
-            {
-                if (_conn.State == ConnectionState.Closed) _conn.Open();
-                SqlCommand cmd = new SqlCommand(@s, _conn);
-                SqlDataAdapter da = new SqlDataAdapter(cmd);
-                DataSet ds = new DataSet();
-                da.Fill(ds);
-                if (_conn.State == ConnectionState.Open) _conn.Close();
-                return ds;
-            }
-            catch
-            {
-                return null;
-            }
-        }
-        public DataTable LoadPara(string paraTypeName)
-        {
-            try
-            {
-                if (_conn.State == ConnectionState.Closed) _conn.Open();
-                DataTable table = new DataTable("myTable");
-                using (Models.ExecuteDataBase confunc = new Models.ExecuteDataBase())
-                {
-                    table = confunc.ExecuteDataTable("YYY_sp_LoadCombo_Para", CommandType.StoredProcedure,
-                      "@paraTypeName", SqlDbType.NVarChar, paraTypeName.Trim());
-                }
-                if (_conn.State == ConnectionState.Open) _conn.Close();
-                return table;
-            }
-            catch
-            {
-                return null;
-            }
-        }
-        public int ExecuteScalar(string s)
-        {
-            int ID;
-            if (_conn.State == ConnectionState.Closed) _conn.Open();
-            if (!s.EndsWith(";"))
-            {
-                s = s + ";";
-            }
-            SqlCommand command = _conn.CreateCommand();
-            SqlTransaction transaction = _conn.BeginTransaction();
-            command.Transaction = transaction;
-            command.CommandText = @s + "SELECT CAST(scope_identity() AS int);";
-            try
-            {
-                ID = (int)command.ExecuteScalar();
-                transaction.Commit();
-                EnterLog(s);
-                if (_conn.State == ConnectionState.Open) _conn.Close();
-                return ID;
-            }
-            catch (Exception)
-            {
-                transaction.Rollback();
-                throw;
-            }
-            finally
-            {
-                transaction.Dispose();
-            }
-        }
-        public void EnterLog(string sqlString, string filename = "", string functioname = "")
-        {
-            //try
-            //{
-            //    if (_conn.State == ConnectionState.Closed) _conn.Open();
-            //    string sql = "INSERT INTO KIM_Log(Content,FileName,FunctionName,Created,Created_By,State) VALUES(@param1,@param2,@param3,@param4,@param5,@param6)";
-            //    string currentPrefix = ConfigurationManager.AppSettings["prefixTableNameCurrent"];
-            //    string newPrefix = ConfigurationManager.AppSettings["prefixTableNameNew"];
-            //    if (currentPrefix != newPrefix)
-            //        sql = sql.Replace(currentPrefix, newPrefix);
-            //    SqlCommand cmd = new SqlCommand(sql, _conn);
-            //    cmd.Parameters.AddWithValue("@param1", sqlString);
-            //    cmd.Parameters.AddWithValue("@param2", filename);
-            //    cmd.Parameters.AddWithValue("@param3", functioname);
-            //    cmd.Parameters.AddWithValue("@param4", new Common().GetDateTimeNow().ToString("yyyy-MM-dd HH:mm:ss"));
-            //    cmd.Parameters.AddWithValue("@param5", Global.sys_userID);
-            //    cmd.Parameters.AddWithValue("@param6", 1);
-            //    cmd.ExecuteNonQuery();
-            //}
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show(ex.ToString());
-            //}
-        }
-
-        public DataTable ExecuteDataTable(string sql,
-            CommandType commandType,
-            params object[] pars)
+        public DataTable ExecuteDataTable(string sql, CommandType commandType,params object[] pars)
         {
             try
             {
@@ -273,9 +105,7 @@ namespace VTCinema.Models
         /// <param name="commandType">CommandType</param>
         /// <param name="pars">Sql parameter: "@Name", SqlDbType, Value ("@id",SqlDbType.int, 1 [, ...])</param>
         /// <returns>DataTable</returns>
-        public DataTable ExecuteDataTableLog(string sql,
-            CommandType commandType,
-            params object[] pars)
+        public DataTable ExecuteDataTableLog(string sql,CommandType commandType,params object[] pars)
         {
             if (_conn.State == ConnectionState.Closed) _conn.Open();
             SqlCommand com = new SqlCommand(sql, _conn);
@@ -289,7 +119,6 @@ namespace VTCinema.Models
             }
 
             SqlDataAdapter dad = new SqlDataAdapter(com);
-            EnterLog(sql);
             DataTable dt = new DataTable();
             dad.Fill(dt);
             if (_conn.State == ConnectionState.Open) _conn.Close();
@@ -326,73 +155,6 @@ namespace VTCinema.Models
             dad.Fill(ds);
             if (_conn.State == ConnectionState.Open) _conn.Close();
             return ds;
-        }
-        public DataSet ExecuteDataSetLog(string sql,
-            CommandType commandType,
-            params object[] pars)
-        {
-            if (_conn.State == ConnectionState.Closed) _conn.Open();
-            SqlCommand com = new SqlCommand(sql, _conn);
-            com.CommandType = commandType;
-            com.CommandTimeout = 10000;
-            for (int i = 0; i < pars.Length; i += 3)
-            {
-                SqlParameter par = new SqlParameter(pars[i].ToString(), pars[i + 1]);
-                par.Value = pars[i + 2];
-                com.Parameters.Add(par);
-            }
-
-            SqlDataAdapter dad = new SqlDataAdapter(com);
-            EnterLog(sql);
-            DataSet ds = new DataSet();
-            dad.Fill(ds);
-            if (_conn.State == ConnectionState.Open) _conn.Close();
-            return ds;
-        }
-
-        public DataTable LoadEmployee(int GroupID, int Branch_ID, int isAllBranch)
-        {
-            try
-            {
-                if (_conn.State == ConnectionState.Closed) _conn.Open();
-                DataTable table = new DataTable("myTable");
-                using (Models.ExecuteDataBase confunc = new Models.ExecuteDataBase())
-                {
-                    table = confunc.ExecuteDataTable("YYY_sp_LoadCombo_Employee", CommandType.StoredProcedure,
-                      "@GroupID", SqlDbType.Int, GroupID,
-                      "@Branch_ID", SqlDbType.Int, Branch_ID,
-                      "@isAllBranch", SqlDbType.Int, isAllBranch
-                      );
-                }
-                if (_conn.State == ConnectionState.Open) _conn.Close();
-                return table;
-            }
-            catch
-            {
-                return null;
-            }
-        }
-        public DataTable LoadEmployeeFull(int Branch_ID, int isAllBranch)
-        {
-            try
-            {
-                if (_conn.State == ConnectionState.Closed) _conn.Open();
-                DataTable table = new DataTable("myTable");
-                using (Models.ExecuteDataBase confunc = new Models.ExecuteDataBase())
-                {
-                    table = confunc.ExecuteDataTable("YYY_sp_LoadCombo_EmployeeFull", CommandType.StoredProcedure,
-                      "@Branch_ID", SqlDbType.Int, Branch_ID,
-                      "@isAllBranch", SqlDbType.Int, isAllBranch
-                      );
-                }
-                if (_conn.State == ConnectionState.Open) _conn.Close();
-                return table;
-            }
-            catch
-            {
-                return null;
-            }
-        }
-        
+        }  
     }
 }

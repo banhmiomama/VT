@@ -5,7 +5,14 @@
 
     <!-- Font -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600%7CUbuntu:300,400,500,700" rel="stylesheet">
-
+    <script src="~/Clients/js/jquery-3.3.1.min.js"></script>
+    <script src="~/plugins/sweetalert2/sweetalert2.min.js"></script>
+    <link href="~/plugins/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+    <script src="~/plugins/sweetalert2/custom-alert.js"></script>
+    <link href="~/plugins/lobibox/css/lobibox.css" rel="stylesheet" />
+    <link href="~/plugins/lobibox/dist/css/Lobibox.min.css" rel="stylesheet" />
+    <script src="~/plugins/lobibox/js/lobibox.js"></script>
+    <script src="~/js/comon/noti_function.js?ver=<%= DateTime.Now.Ticks %>"></script>
     <!-- CSS -->
     <link href="~/Clients/css/bootstrap.min.css" rel="stylesheet" />
     <link href="~/Clients/css/bootstrap-grid.min.css" rel="stylesheet" />
@@ -153,8 +160,6 @@
 </head>
 <body class="body">
     <div class="sign section--bg" data-bg="~/Clients/img/section/section.jpg">
-
-
         <div class="container">
             <div class="row">
                 <div class="col-3"></div>
@@ -181,7 +186,7 @@
                             <input type="text" class="sign__input" placeholder="Phone" id="Phone">
                         </div>
                         <button type="submit" class="btn btn-success" id="contact">Đổi mật khẩu</button>
-                        <button class="sign__btn" type="submit" onclick="return ExecuteCustomer()">Update</button>
+                        <button class="sign__btn" type="submit" onclick="return ExecuteCustomer()">Cập Nhật</button>
                     </form>
                 </div>
                 <div class="col-3">
@@ -189,7 +194,7 @@
                         <div class="ui massive image" style="width:200px;height:200px;">
                             <img id="avatarCustomerUpload" class="ui mini circular image" src="/img/404.png" alt="label-image" style="width: 100%; height: 80%;" />
                             <div>&nbsp</div>
-                            <div class="btn btn-success upload-btn-wrapper" style="width: 50%; margin-left:50px;height:50px;">
+                            <div class="btn btn-success upload-btn-wrapper" style="width: 100%;">
                                 <label class="custom-file-upload">
                                     <input type="file" id="fileuploadAvatarCustomer" onchange="readURL(this);" />
                                     <i class="fa fa-cloud-upload"></i>Chọn ảnh
@@ -201,16 +206,51 @@
             </div>
         </div>
     </div>
-    <div id="contactForm">
+    @*<div id="contactForm">
         <form action="#">
             <input id="Newpass" placeholder="Mật khẩu mới" type="password" required style="background-color:#2b2b31; color:white" />
             <input id="Repass" placeholder="Xác nhận mật khẩu" type="password" required style="background-color:#2b2b31;color:white" />
             <input id="Oldpass" placeholder="Mật khẩu cũ" type="password" required style="background-color:#2b2b31;color:white" />
             <label id="message" style="color:red;"></label>
-            <button class="btn btn-primary" type="submit" onclick="return ExecutePassword()">Update</button>
+            <button class="btn btn-primary" type="submit" onclick="return ExecutePassword()">Cập Nhật</button>
         </form>
-    </div>
+    </div>*@
+    <div class="ui long modal fade in scrolling" id="myModal" tabindex="-1" role="dialog" style="display:none;background-color: rgba(128,128,128,0.5);" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" style="margin-top: 50px;">
+            <div class="modal-content" style="width: 600px; margin: auto;">
 
+                <div class="modal-header">
+                    <h4 id="modal-title" class="modal-title text-center">Cập Nhật Mật Khẩu</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="#">
+                        @*<input id="Newpass" placeholder="Mật khẩu mới" type="password" required style="background-color:#2b2b31; color:white" />*@
+                        <div class="form-group">
+                            <label for="Oldpass">Mật khẩu cũ</label>
+                            <input type="password" class="form-control" id="Oldpass" class="Oldpass" required placeholder="Mật khẩu cũ">
+                        </div>
+                        <div class="form-group">
+                            <label for="Newpass">Nhập mật khẩu mới</label>
+                            <input type="password" class="form-control" id="Newpass" required placeholder="Mật khẩu mới">
+                        </div>
+                        <div class="form-group">
+                            <label for="Repass">Nhập lại mật khẩu mới</label>
+                            <input type="password" class="form-control" id="Repass" required placeholder="Xác nhận mật khẩu mới">
+                        </div>
+
+
+                        @*<input id="Repass" placeholder="Xác nhận mật khẩu" type="password" required style="background-color:#2b2b31;color:white" />
+        <input id="Oldpass" placeholder="Mật khẩu cũ" type="password" required style="background-color:#2b2b31;color:white" />*@
+                    <div><label id="message" style="color:red;"></label></div>
+                        <button class="btn btn-primary" type="submit" onclick="return ExecutePassword()">Cập Nhật</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- JS -->
     <script src="~/Clients/js/jquery-3.3.1.min.js"></script>
     <script src="~/Clients/js/bootstrap.bundle.min.js"></script>
@@ -275,23 +315,27 @@
                         alert(error);
                     },
                     success: function (result) {
-                        alert('Cập nhật tài khoản thành công');
                         UploadImage();
+                        notiSuccess();
+                        setTimeout(Redirect, 2000);
                     }
                 });
             return false;
         }
+        function Redirect() {
+            location.replace("/main");
+        }
         function ExecutePassword() {
             debugger
-            if (document.getElementById('Oldpass').value != pass) {
-                //$("#message").val("Nhập sai mật khẩu cũ");   SỬA XONG THÌ SÀI CÁI NÀY NHA
-                alert("Nhập sai mật khẩu cũ");
+            let oldpass = $('#Oldpass').val();
+            if (oldpass != pass) {
+                $("#message").text("Nhập sai mật khẩu cũ"); 
             }
             else {
                 if (document.getElementById('Newpass').value != document.getElementById('Repass').value)
                 {
-                    //$("#message").val("Nhập lại mật khẩu không trùng khớp");
-                    alert("Nhập lại mật khẩu không trùng khớp");
+                    $("#message").text("Nhập lại mật khẩu không trùng khớp");
+                    //alert("Nhập lại mật khẩu không trùng khớp");
                 }
                 else {
                     var data = new Object();
@@ -309,11 +353,10 @@
                         alert(error);
                     },
                     success: function (result) {
-                        debugger
-                        alert(result);
                         $("#Newpass").val('');
                         $("#Oldpass").val('');
                         $("#Repass").val('');
+                        $('#myModal').modal('hide');
                     }
                 });
                     return false;
@@ -372,17 +415,9 @@
         $(function Loadpas() {
             // contact form animations
             $('#contact').click(function Loadpas () {
-                $('#contactForm').fadeToggle();
+                $('#myModal').modal('show');
             })
-            $(document).mouseup(function Loadpas (e) {
-                var container = $("#contactForm");
-
-                if (!container.is(e.target) // if the target of the click isn't the container...
-                    && container.has(e.target).length === 0) // ... nor a descendant of the container
-                {
-                    container.fadeOut();
-                }
-            });
+          
         });
     </script>
 </body>
