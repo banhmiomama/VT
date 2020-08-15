@@ -65,10 +65,13 @@
                                             <tr role="row">
                                                 <th style="display: none">ID</th>
                                                 <th style="width: 50px;">#</th>
-                                                <th>Tên Người Dùng</th>
-                                                <th style="min-width: 70px;">Tên Hiển Thị</th>
-                                                <th class="no-sort" style="max-width: 100px;">Người Tạo</th>
-                                                <th class="no-sort" style="width: 30px;">Xóa</th>
+                                                <th >Họ và Tên</th>
+                                                <th style="min-width: 70px;">Số điện thoại</th>
+                                                <th class="no-sort" style="max-width: 100px;">Email</th>
+                                                <th class="no-sort" style="max-width: 60px;">Chi nhánh</th>
+                                                <th class="no-sort" style="max-width: 100px;">Tạo Bởi</th>
+                                                <th class="no-sort" style="width: 30px;">Tài khoản</th>
+                                                <th class="no-sort" style="width: 30px;">Xoá</th>
                                             </tr>
                                         </thead>
                                         <tbody id="dtContentUserBody">
@@ -105,9 +108,14 @@
                     let tr =
                         '<td style="display:none !important">' + item.ID + '</td>'
                         + '<td data-sortValue="' + Number(i) + '">' + (i + 1) + '</td>'
-                        + '<td ><a style="text-decoration: underline;" class="buttonEditClass" href="#">' + item.Name + '</a></td>'
-                        + '<td data-sortValue="' + item.Username + '">' + item.Username + '</td>'
+                        + '<td ><a style="text-decoration: underline;" class="buttonEditClass" href="#">' + item.FullName + '</a></td>'
+                        + '<td data-sortValue="' + item.Phone + '">' + item.Phone + '</td>'
+                        + '<td>' + item.Email + '</td>'
+                        + '<td>' + item.Branch_ID + '</td>'
                         + '<td>' + item.Created_By + '</td>'
+                        + '<td class="selectedtd"><button class="buttonGrid _tab_control_" data-tab="delete_service_type" value="'
+                        + item.ID
+                        + '"><img class="buttonEditAccount imgGrid" src="/img/ButtonImg/edit.png"></button></td>'
                         + '<td class="selectedtd"><button class="buttonGrid _tab_control_" data-tab="delete_service_type" value="'
                         + item.ID
                         + '"><img class="buttonDeleteClass imgGrid" src="/img/ButtonImg/delete_ver2.png"></button></td>'
@@ -140,7 +148,6 @@
         }
         EventRowUserGroup();
     }
-
     function LoadUser() {
         $.ajax({
             url: "User/LoadUser",
@@ -170,6 +177,11 @@
     $(document).ready(function () {
         //$('#dtContentUser').tablesort();
         LoadUser();
+        
+        $('#dtContentUser tbody').on('click', '.buttonEditAccount', function () {
+            let ID = Number($(this).closest('tr')[0].childNodes[0].innerHTML);
+            EditAccount(ID);
+        });
         $('#dtContentUser tbody').on('click', '.buttonEditClass', function () {
             let ID = Number($(this).closest('tr')[0].childNodes[0].innerHTML);
             EditUser(ID);
@@ -237,10 +249,17 @@
         $('#divDetailPopup').modal('show');
         return false;
     }
+    function EditAccount(CurrentID) {
+        document.getElementById("divDetailPopup").innerHTML = '';
+        $("#divDetailPopup").load("AccountDetail/" + CurrentID);
+        $('#divDetailPopup').modal('show');
+        return false;
+    }
 
     function AddNewUserGroup() {
+        debugger
         document.getElementById("divDetailPopup").innerHTML = '';
-        $("#divDetailPopup").load("UserGroupDetail/" + 0);
+        $("#divDetailPopup").load("UserGroupDetail");
         $('#divDetailPopup').modal('show');
         return false;
     }
@@ -314,7 +333,7 @@
                     let search = xoa_dau($('#filterUser').val().toLowerCase()).trim();
 
                     let data = DataUser.filter(function (item) {
-                        if (xoa_dau(item["Name"]).toLowerCase().includes(search))
+                        if (xoa_dau(item["FullName"]).toLowerCase().includes(search))
                             return true;
                         return false;
                     });

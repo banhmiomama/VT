@@ -1,77 +1,5 @@
 ﻿//validation settings in formvalidation page
 'use strict'
-$('.ui.form1').form({
-    fields: {
-        name: {
-            identifier: 'name',
-            rules: [{
-                type: 'empty',
-                prompt: 'Please enter your name'
-            }]
-        },
-        skills: {
-            identifier: 'skills',
-            rules: [{
-                type: 'minCount[2]',
-                prompt: 'Please select at least two skills'
-            }]
-        },
-        branchwarehouse: {
-            identifier: 'branchwarehouse',
-            rules: [{
-                type: 'minCount[1]',
-                prompt: 'Please select at least two skills'
-            }]
-        },
-        gender: {
-            identifier: 'gender',
-            rules: [{
-                type: 'empty',
-                prompt: 'Please select a gender'
-            }]
-        },
-        username: {
-            identifier: 'username',
-            rules: [{
-                type: 'empty',
-                prompt: 'Please enter a username'
-            }]
-        },
-        password: {
-            identifier: 'password',
-            rules: [{
-                type: 'empty',
-                prompt: 'Please enter a password'
-            }, {
-                type: 'minLength[6]',
-                prompt: 'Your password must be at least {ruleValue} characters'
-            }]
-        },
-        terms: {
-            identifier: 'terms',
-            rules: [{
-                type: 'checked',
-                prompt: 'You must agree to the terms and conditions'
-            }]
-        }
-    }
-});
-$('.ui.form2').form({
-    fields: {
-        field1: {
-            rules: [{
-                type: 'empty'
-            }]
-        },
-        field2: {
-            rules: [{
-                type: 'exactly[dog]',
-                prompt: '{name} is set to "{value}" that is totally wrong. It should be {ruleValue}'
-            }]
-        }
-    }
-});
-
 $('.ui.form3').form({
     inline: true,
     on: 'blur',
@@ -90,6 +18,13 @@ $('.ui.form3').form({
             rules: [{
                 type: 'empty',
                 prompt: 'Vui lòng nhập tên'
+            }]
+        },
+        LastName: {
+            identifier: 'LastName',
+            rules: [{
+                type: 'empty',
+                prompt: 'Vui lòng nhập họ'
             }]
         },
         email: {
@@ -117,6 +52,22 @@ $('.ui.form3').form({
             },{
                     type: "minLength[10]",
                     prompt: 'Vui lòng nhập đúng số điện thoại'
+            }]
+        },      
+        Phone: {
+            identifier: 'Phone',
+            rules: [{
+                type: 'empty',
+                prompt: 'Vui lòng nhập số điện thoại'
+            }, {
+                type: "regExp[/^[0-9]/]",
+                prompt: 'Vui lòng nhập đúng số điện thoại'
+            }, {
+                type: "maxLength[10]",
+                prompt: 'Vui lòng nhập đúng số điện thoại'
+            }, {
+                type: "minLength[10]",
+                prompt: 'Vui lòng nhập đúng số điện thoại'
             }]
         },      
         date: {
@@ -176,7 +127,19 @@ $('.ui.form3').form({
                 type: "regExp[/^[0-9]/]",
                 prompt: 'Vui lòng nhập chiều cao'
             }]
-        },      
+        }, 
+        
+        Weight: {
+            identifier: 'Weight',
+            rules: [{
+                type: 'empty',
+                prompt: 'Vui lòng nhập cân nặng'
+            }, {
+                type: "regExp[/^[0-9]/]",
+                prompt: 'Vui lòng nhập cân nặng'
+            }]
+        }, 
+
         country: {
             identifier: 'country',
             rules: [{
@@ -486,6 +449,28 @@ $('.ui.form3').form({
                 prompt: 'Vui lòng chọn thời gian bắt đầu chiếu'
             }]
         },
+        UserName: {
+            identifier: 'UserName',
+            rules: [{
+                type: 'empty',
+                prompt: 'Vui lòng Nhập Tên Đăng Nhập'
+            }]
+        },
+        Password: {
+            identifier: 'Password',
+            rules: [{
+                type: 'empty',
+                prompt: 'Vui lòng Nhập Mật Khẩu'
+            }]
+        },
+        NameGroup: {
+            identifier: 'NameGroup',
+            rules: [{
+                type: 'empty',
+                prompt: 'Vui lòng Nhập Tên Nhóm'
+            }]
+        },
+
     }
 });
 

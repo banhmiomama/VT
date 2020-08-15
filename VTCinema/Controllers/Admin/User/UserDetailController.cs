@@ -20,20 +20,10 @@ namespace VTCinema.Controllers.Admin.User
             ViewBag.UserID = UserID;
             return View("~/Views/Admin/User/UserDetail.cshtml");
         }
+
         [Route("GetUserDetail/{UserID}")]
         [HttpGet]
         public string GetUserDetail(int UserID)
-        {
-            DataTable Detail = LoadDetail(UserID);
-            DataTable ComboEmployee = LoadComboEmployee();
-            DataTable ComboBranch = LoadComboBranch();
-            DataTable ComboUserGroup = LoadComboUserGroup();
-            Detail.TableName = "LoadDetail";
-            DataSet ds = new DataSet();
-            ds.Tables.AddRange(new DataTable[] { Detail,ComboEmployee,ComboBranch,ComboUserGroup});
-            return JsonConvert.SerializeObject(ds);
-        }
-        DataTable LoadDetail(int UserID)
         {
             try
             {
@@ -45,88 +35,18 @@ namespace VTCinema.Controllers.Admin.User
                 }
                 if (dt != null)
                 {
-                    return dt;
+                    return JsonConvert.SerializeObject(dt);
                 }
                 else
                 {
-                    return null;
+                    return "";
                 }
             }
             catch (Exception ex)
             {
-                return null;
+                return "[]";
             }
         }
-        DataTable LoadComboEmployee()
-        {
-            try
-            {
-                DataTable dt = new DataTable();
-                using (Models.ExecuteDataBase confunc = new Models.ExecuteDataBase())
-                {
-                    dt = confunc.ExecuteDataTable("[YYY_sp_Employee_LoadCombo]", CommandType.StoredProcedure);
-                }
-                if (dt != null)
-                {
-                    return dt;
-                }
-                else
-                {
-                    return null;
-                }
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
-        }
-        DataTable LoadComboBranch()
-        {
-            try
-            {
-                DataTable dt = new DataTable();
-                using (Models.ExecuteDataBase confunc = new Models.ExecuteDataBase())
-                {
-                    dt = confunc.ExecuteDataTable("[YYY_sp_Branch_LoadCombo]", CommandType.StoredProcedure);
-                }
-                if (dt != null)
-                {
-                    return dt;
-                }
-                else
-                {
-                    return null;
-                }
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
-        }
-        DataTable LoadComboUserGroup()
-        {
-            try
-            {
-                DataTable dt = new DataTable();
-                using (Models.ExecuteDataBase confunc = new Models.ExecuteDataBase())
-                {
-                    dt = confunc.ExecuteDataTable("[YYY_sp_UserGroup_LoadCombo]", CommandType.StoredProcedure);
-                }
-                if (dt != null)
-                {
-                    return dt;
-                }
-                else
-                {
-                    return null;
-                }
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
-        }
-
 
         [Route("Execute")]
         [ValidateAntiForgeryToken]
@@ -136,21 +56,22 @@ namespace VTCinema.Controllers.Admin.User
             try
             {
                 DataTable dt = new DataTable();
-                DataUserChoose dataDetail = JsonConvert.DeserializeObject<DataUserChoose>(data);
+                DataEmployeeChoose dataDetail = JsonConvert.DeserializeObject<DataEmployeeChoose>(data);
 
                 if (UserID == 0)
                 {
                     using (Models.ExecuteDataBase connFunc = new Models.ExecuteDataBase())
                     {
                         dt = connFunc.ExecuteDataTable("YYY_sp_User_Insert", CommandType.StoredProcedure,
+                            "@Avatar", SqlDbType.NVarChar, dataDetail.Avatar,
                             "@Name", SqlDbType.NVarChar, dataDetail.Name,
-                            "@EmployeeID", SqlDbType.Int, dataDetail.EmployeeID,
-                            "@BranchID", SqlDbType.Int, dataDetail.BranchID,
-                            "@GroupID", SqlDbType.Int, dataDetail.GroupID,
-                            "@Username", SqlDbType.NVarChar, dataDetail.UserName,
-                            //"@Password", SqlDbType.NVarChar, dataDetail.Password,
-                            "@Note", SqlDbType.NVarChar, dataDetail.Note,
-                            "@AreaBranch", SqlDbType.NVarChar, dataDetail.AreaBranch,
+                            "@LastName", SqlDbType.NVarChar, dataDetail.LastName,
+                            "@Brithday", SqlDbType.DateTime, dataDetail.Brithday,
+                            "@Phone", SqlDbType.NVarChar, dataDetail.Phone,
+                            "@Email", SqlDbType.NVarChar, dataDetail.Email,
+                            "@Height", SqlDbType.Float, dataDetail.Height,
+                            "@Weight", SqlDbType.Float, dataDetail.Weight,
+                            "@Address", SqlDbType.Int, dataDetail.Address,
                             "@CurrentID", SqlDbType.Int, HttpContext.Session.GetInt32(Comon.Global.UserID)
                         );
                     }
@@ -160,14 +81,15 @@ namespace VTCinema.Controllers.Admin.User
                     using (Models.ExecuteDataBase connFunc = new Models.ExecuteDataBase())
                     {
                         dt = connFunc.ExecuteDataTable("YYY_sp_User_Update", CommandType.StoredProcedure,
+                            "@Avatar", SqlDbType.NVarChar, dataDetail.Avatar,
                             "@Name", SqlDbType.NVarChar, dataDetail.Name,
-                            "@EmployeeID", SqlDbType.Int, dataDetail.EmployeeID,
-                            "@BranchID", SqlDbType.Int, dataDetail.BranchID,
-                            "@GroupID", SqlDbType.Int, dataDetail.GroupID,
-                            "@Username", SqlDbType.NVarChar, dataDetail.UserName,
-                            //"@Password", SqlDbType.NVarChar, dataDetail.Password,
-                            "@Note", SqlDbType.NVarChar, dataDetail.Note,
-                            "@AreaBranch", SqlDbType.NVarChar, dataDetail.AreaBranch,
+                            "@LastName", SqlDbType.NVarChar, dataDetail.LastName,
+                            "@Brithday", SqlDbType.DateTime, dataDetail.Brithday,
+                            "@Phone", SqlDbType.NVarChar, dataDetail.Phone,
+                            "@Email", SqlDbType.NVarChar, dataDetail.Email,
+                            "@Height", SqlDbType.Float, dataDetail.Height,
+                            "@Weight", SqlDbType.Float, dataDetail.Weight,
+                            "@Address", SqlDbType.Int, dataDetail.Address,
                             "@CurrentID", SqlDbType.Int, UserID,
                             "@Modified_By", SqlDbType.Int, HttpContext.Session.GetInt32(Comon.Global.UserID)
                        );

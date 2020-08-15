@@ -1,0 +1,92 @@
+﻿@{
+    Layout = null;
+}
+<div id="headerPopup_CustomerCare" class="header">
+    Người Dùng
+</div>
+<div class="image content">
+    <div class="description">
+        <form class="ui form segment form3" id="form3">
+            <div class="ui accordion field">
+                <div class="content field active">
+                    <div class="field">
+                        <label>Tên Tài Khoản</label>
+                        <input id="UserName" name="UserName" type="text" />
+                    </div>
+                    <div class="field">
+                        <label>Mật Khẩu</label>
+                        <input type="password" name="Password" id="Password">
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="actions">
+    <div style="float: right">
+        <button class="ui teal button" form="form3" type="submit" onclick="return ExcuteData()">Save</button>
+    </div>
+    <div style="float: right">
+        <button class="ui grey button" onclick="event.preventDefault(); CloseModal();">Cancel</button>
+    </div>
+</div>
+<script src="/js/customjs/custom-validation.js"></script>
+<script src="/js/main.js"></script>
+<script>
+    var AccountDetailID;
+
+    $(document).ready(function () {
+        AccountDetailID = @ViewBag.AccountID;
+        LoadAccount();
+    })
+    function LoadAccount() {
+        $.ajax({
+            type: 'GET',
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            url: "/Admin/AccountDetail/LoadAccount/" + AccountDetailID,
+            async: true,
+            success: function (data) {
+                if (data.length != 0) {
+                    $('#UserName').val((data[0].Username));
+                    $('#Password').val((data[0].Password));
+                }
+            }
+        });
+    }
+
+   function ExcuteData() {
+    debugger
+            var data = new Object();
+            data.Username = $('#UserName').val() ? $('#UserName').val() : "";
+            data.Password = $('#Password').val() ? $('#Password').val() : "";
+            $('#form3').form('validate form');
+            if ($('#form3').form('is valid')) {
+                 $.ajax({
+                     url: "/Admin/AccountDetail/Execute",
+                     dataType: "json",
+                     type: "POST",
+                     data: {
+                         __RequestVerificationToken: token
+                         , AccountID: @ViewBag.AccountID
+                         , data: JSON.stringify(data)
+                     },
+                     async: true,
+                     error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            notiError("Lỗi Hệ Thống");
+                     },
+                     success: function (result) {
+                         if (result == "0") {
+                             notiSuccess();
+                             LoadAccount()
+                         } else {
+                             notiError("Lỗi Hệ Thống");
+                            }
+                     }
+                 })
+                 $('#divDetailPopup').modal('hide');
+            }
+             return false;
+        }
+
+</script>

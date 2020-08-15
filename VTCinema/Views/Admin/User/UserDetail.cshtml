@@ -6,76 +6,60 @@
 </div>
 
 <div class="image content">
+    <div class="ui massive image">
+        <img id="avatarUserUpload" class="ui mini circular image" src="/img/404.png" alt="label-image" style="width: 100%; height: auto;" />
+        <div>&nbsp</div>
+        <div class="btn btn-success upload-btn-wrapper" style="width: 100%; margin-top: 6px;">
+            <button class="btn" style="width: 100%">Chọn Ảnh</button>
+            <input id="fileuploadAvatarUser" type="file" onchange="readURL(this);" />
+        </div>
+    </div>
     <div class="description">
         <form class="ui form segment form3" id="form3">
             <div class="ui accordion field">
                 <div class="content field active">
+
                     <div class="two fields">
                         <div class="field">
-                            <label>Tên Người Dùng</label>
-                            <input id="txtName" name="Name" type="text" />
+                            <label>Họ</label>
+                            <input id="LastName" name="lastname" type="text" />
                         </div>
                         <div class="field">
-                            <label>Thông Tin </label>
-                            <div class="ui fluid search selection dropdown" id="Employee">
-                                <input type="hidden" name="Employeei">
-                                <i class="dropdown icon"></i>
-                                <div class="default text">Chọn </div>
-                                <div class="menu" id="cbbEmployee">
+                            <label>Tên</label>
+                            <input id="Name" name="name" type="text" />
+                        </div>
+                    </div>
 
-                                </div>
-                            </div>
+                    <div class="two fields">
+                        <div class="field">
+                            <label>Ngày Sinh</label>
+                            <input id="Brithday" name="brithday" type="datetime" />
+                        </div>
+                        <div class="field">
+                            <label>Số điện thoại</label>
+                            <input id="Phone" name="phonenumber" type="text" />
                         </div>
                     </div>
                     <div class="two fields">
                         <div class="field">
-                            <label>Chi Nhánh </label>
-                            <div class="ui fluid search selection dropdown" id="Branch">
-                                <input type="hidden" name="BranchID">
-                                <i class="dropdown icon"></i>
-                                <div class="default text">Chọn </div>
-                                <div class="menu" id="cbbBranch">
-                                </div>
-                            </div>
+                            <label>Chiều cao</label>
+                            <input id="Height" name="Height" type="text" />
                         </div>
                         <div class="field">
-                            <label>Nhóm Người Dùng</label>
-                            <div class="ui fluid search selection dropdown" id="Group">
-                                <input type="hidden" name="GroupID">
-                                <i class="dropdown icon"></i>
-                                <div class="default text">Chọn </div>
-                                <div class="menu" id="cbbGroup">
-                                </div>
-                            </div>
+                            <label>Cân nặng</label>
+                            <input id="Weight" name="Weight" type="text" />
                         </div>
                     </div>
-                      
-                        @*<div class="field">
-                            <label>Tất Cả Chi Nhánh</label>
-                            <div class="ui fluid search selection dropdown" id="isAllBranch">
-                                <input type="hidden" name="isAllBranch">
-                                <i class="dropdown icon"></i>
-                                <div class="default text">Chọn </div>
-                                <div class="menu" id="cbbisAllBranch">
-                                </div>
-                            </div>
-                        </div>*@
-                <div class="two fields">
-                    <div class="field">
-                        <label>Tên Hiển Thị</label>
-                        <input id="txtUsername" name="Username" type="text" />
+                    <div class="two fields">
+                        <div class="field">
+                            <label>Email</label>
+                            <input id="Email" name="Email" type="text" />
+                        </div>
+                        <div class="field">
+                            <label>Địa chỉ</label>
+                            <input id="Address" name="Address" type="text" />
+                        </div>
                     </div>
-                    <div class="field">
-                        <label>Khu Vực</label>
-                        <input id="txtAreaBranch" name="AreaBranch" type="text" />
-                    </div>
-                </div>
-
-                    <div class="field">
-                        <label>Ghi Chú</label>
-                        <textarea id="txtNote" rows="5" />
-                    </div>
-
                 </div>
             </div>
         </form>
@@ -95,6 +79,9 @@
 <script src="/js/main.js"></script>
 <script>
     var UserDetailID;
+    var AvatarString = '';
+    var DataAvatar;
+
     $(document).ready(function () {
         UserDetailID = @ViewBag.UserID;
         LoadDataUpdateUser();
@@ -108,41 +95,38 @@
             url: "/Admin/UserDetail/GetUserDetail/" + UserDetailID,
             async: true,
             success: function (data) {
-                let DataComboEmployee = data.Table1;
-                let DataComboBranch = data.Table2;
-                let DataComboGroup = data.Table3;
-                let DataDetail = data.LoadDetail;
-                LoadCombo(DataComboEmployee, "cbbEmployee");
-                LoadCombo(DataComboBranch, "cbbBranch");
-                LoadCombo(DataComboGroup, "cbbGroup");
-                if (DataDetail.length != 0) {
-                    $("#Employee").dropdown("refresh");
-                    $("#Employee").dropdown("set selected", DataDetail[0].EmployeeID);
-                    $("#Branch").dropdown("refresh");
-                    $("#Branch").dropdown("set selected", DataDetail[0].BranchID);
-                    $("#Group").dropdown("refresh");
-                    $("#Group").dropdown("set selected", DataDetail[0].GroupID);
-                    $('#txtName').val((DataDetail[0].Name));
-                    $('#txtUsername').val((DataDetail[0].Username)); 
-                    $('#txtAreaBranch').val((DataDetail[0].AreaBranch));
-                    $('#txtNote').val((DataDetail[0].Note));
+                if (data.length != 0) {
+                    $('#LastName').val((data[0].LastName));
+                    $('#Name').val((data[0].Name));
+                    $('#Brithday').val((data[0].Brithday));
+                    $('#Phone').val((data[0].Phone));
+                    $('#Height').val((data[0].Height));
+                    $('#Weight').val((data[0].Weight));
+                    $('#Email').val((data[0].Email));
+                    $('#Address').val((data[0].Address));
+                    if (data[0].Avatar == '' || data[0].Avatar == undefined) {
+                        $('#avatarUserUpload').attr('src', '');
+                    }
+                    else {
+                        $('#avatarUserUpload').attr('src', data[0].Avatar);
+                        avatarString = data[0].Avatar;
+                    }
                 }
             }
         });
     }
-
     function ExcuteData() {
         debugger
         var data = new Object();
-        data.Name = $('#txtName').val() ? $('#txtName').val() : "";
-        data.EmployeeID = $('#Employee').dropdown('get value') ? ($('#Employee').dropdown('get value')) : "";
-        data.BranchID = $('#Branch').dropdown('get value') ? ($('#Branch').dropdown('get value')) : "";
-        data.GroupID = $('#Group').dropdown('get value') ? ($('#Group').dropdown('get value')) : "";
-        data.Username = $('#txtUsername').val() ? $('#txtUsername').val() : "";
-        //data.Password = $('#txtPassword').val() ? $('#txtPassword').val() : "";
-        data.Note = $('#txtNote').val() ? $('#txtNote').val() : "";
-        data.AreaBranch = $('#txtAreaBranch').val() ? $('#txtAreaBranch').val() : "";
-        //data.Description = $('#txtDes').val() ? $('#txtDes').val() : "";
+        data.Avatar = GetFileName();
+        data.LastName = $('#LastName').val() ? $('#LastName').val() : "";
+        data.Name = $('#Name').val() ? $('#Name').val() : "";
+        data.Brithday = $('#Brithday').val() ? $('#Brithday').val() : "";
+        data.Phone = $('#Phone').val() ? $('#Phone').val() : "";
+        data.Height = $('#Height').val() ? $('#Height').val() : "";
+        data.Weight = $('#Weight').val() ? $('#Weight').val() : "";
+        data.Email = $('#Email').val() ? $('#Email').val() : "";
+        data.Address = $('#Address').val() ? $('#Address').val() : "";
          $('#form3').form('validate form');
          if ($('#form3').form('is valid')) {
              $.ajax({
@@ -161,6 +145,7 @@
                  success: function (result) {
                      if (result == "0") {
                          notiSuccess();
+                         UploadImage();
                          LoadUser();
                      } else {
                          notiError("Người Dùng Đã Tồn Tại Vui Lòng Kiểm Tra Lại");
@@ -171,6 +156,49 @@
             }
          return false;
     }
+
+
+    function UploadImage() {
+        var Video = $("#fileuploadAvatarUser")[0].files[0];
+        var formData = new FormData();
+        formData.append("files", Video);
+        $.ajax({
+            url: "/UploadFile/UploadImageUser",
+            dataType: "json",
+            type: "POST",
+            contentType: false,
+            processData: false,
+            data: formData,
+            async: true
+        });
+    }
+
+    function readURL(input) {
+        var ext = input.files[0]['name'].substring(input.files[0]['name'].lastIndexOf('.') + 1).toLowerCase();
+        if (input.files && input.files[0] && (ext == "gif" || ext == "png" || ext == "jpeg" || ext == "jpg")) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#avatarUserUpload').attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        } else {
+            $('#avatarUserUpload').attr('src', '/img/404.png');
+        }
+    }
+    function GetFileName() {
+        var fullPath = document.getElementById('fileuploadAvatarUser').value;
+        if (fullPath) {
+            var startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
+            var filename = fullPath.substring(startIndex);
+            if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
+                filename = '../img/User/' + filename.substring(1);
+            }
+            return filename;
+        }
+    }
+
+
 </script>
 <style>
     .upload-btn-wrapper {

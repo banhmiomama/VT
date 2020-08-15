@@ -48,7 +48,6 @@ namespace VTCinema.Controllers.Admin.User
             }
         }
         [Route("Execute")]
-        [ValidateAntiForgeryToken]
         [HttpPost]
         public string Execute(string data, int UserGroupID)
         {
@@ -75,6 +74,7 @@ namespace VTCinema.Controllers.Admin.User
                         dt = connFunc.ExecuteDataTable("[YYY_sp_UserGroup_Update]", CommandType.StoredProcedure,
                             "@GroupName", SqlDbType.NVarChar, dataDetail.GroupName,
                             "@Note", SqlDbType.NVarChar, dataDetail.Note,
+                            "@CurrentID", SqlDbType.Int, UserGroupID,
                             "@Modified_By", SqlDbType.Int, HttpContext.Session.GetInt32(Comon.Global.UserID)
                        );
                     }

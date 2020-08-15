@@ -12,11 +12,11 @@
                     <div class="two fields">
                         <div class="field">
                             <label>Tên Nhóm Người Dùng</label>
-                            <input id="txtNameGroup" name="NameGroup" type="text" />
+                            <input id="NameGroup" name="NameGroup" type="text" />
                         </div>
                         <div class="field">
                             <label>Ghi Chú</label>
-                            <input id="txtNote" name="Note" type="text" />
+                            <input id="Note" name="Note" type="text" />
                         </div>
                     </div>
                 </div>
@@ -37,7 +37,7 @@
 <script src="/js/customjs/custom-validation.js"></script>
 <script src="/js/main.js"></script>
 <script>
-    var UserGroupDetailID;
+    var UserGroupDetail;
     $(document).ready(function () {
         debugger
         UserGroupDetail = @ViewBag.UserGroupID;
@@ -50,23 +50,22 @@
             type: 'GET',
             dataType: "json",
             contentType: 'application/json; charset=utf-8',
-            url: "/Admin/UserGroupDetail/GetUserGroupDetail/" + UserGroupDetailID,
+            url: "/Admin/UserGroupDetail/GetUserGroupDetail/" + UserGroupDetail,
             async: true,
             success: function (data) {
                 if (data.length != 0) {
-                    $('#txtNameGroup').val((data[0].GroupName));
-                    $('#txtNote').val((data[0].Note));
+                    $('#NameGroup').val((data[0].GroupName));
+                    $('#Note').val((data[0].Note));
                 }
             }
         });
     }
     function ExcuteData() {
         var data = new Object();
-        data.GroupName = $('#txtNameGroup').val() ? $('#txtNameGroup').val() : "";
-        data.Note = $('#txtNote').val() ? $('#txtNote').val() : "";
+        data.GroupName = $('#NameGroup').val() ? $('#NameGroup').val() : "";
+        data.Note = $('#Note').val() ? $('#Note').val() : "";
         $('#form3').form('validate form');
         if ($('#form3').form('is valid')) {
-
              $.ajax({
                  url: "/Admin/UserGroupDetail/Execute",
                  dataType: "json",
