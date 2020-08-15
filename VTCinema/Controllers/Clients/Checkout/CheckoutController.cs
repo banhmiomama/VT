@@ -8,10 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Storage;
 using Newtonsoft.Json;
 using VTCinema.Comon;
-using MailKit.Net.Smtp;
-using MailKit;
-using MimeKit;
-using MailKit.Security;
+
 
 namespace VTCinema.Controllers.Clients.Checkout
 {
