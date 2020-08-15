@@ -28,39 +28,43 @@
 <section class="section section--bg" data-bg="../Clients/img/section/section.jpg">
     <div class="container">
         <div class="row">
-            <div class="col-12">
+            <div class="col-6">
                 <h2 class="section__title"><b>TIN NÓNG</b></h2>
+            </div>
+            <div class="col-6">
+                <h2 class="section__title" style="float:right;"><b>TIN TỨC LIÊN QUAN</b></h2>
             </div>
         </div>
 
         <div class="row">
-            <div class="col-9" id="InformationList">
+            <div class="col-9" id="InformationList">               
                 <div class="col-12 col-md-12 col-lg-12">
                     <div class="card card-information">
                         <div class="card__content centered">
                             <h2 class="card__title" id="InformationTitle" style="font-weight:bold; font-size:20px;"></h2>
                             <ul>
-                                <li class="card__description" style="color:white; font-size:15px">
-                                    <img src="" id="loadImg" />
+                                <li class="card__description" style="color:white; font-size:15px; ">
+                                    <img src="" id="loadImg" style="max-width: 100%"/>
                                 </li>
                                 <li class="card__description" id="Note" style="color:white; font-size:15px">
                                 </li>
                             </ul>
                         </div>
-                    </div>
+                    </div>  
                 </div>
             </div>
             <div class="col-3" id="InformationLists">
-                <div class="col-12 col-md-12 col-lg-12">
-                    <ul>
-                        <li class="card__description" style="color:white; font-size:15px">
-                            <img src="" id="ImgMovieComingSoon" />
-                        </li>
-                        <li class="card__description" style="color:white; font-size:15px" id="MovieName">
-                        </li>
-                    </ul>
-                    </div>
-                </div>
+                
+                @*<div class="col-12 col-md-12 col-lg-12">*@
+                <ul>
+                    <li class="card__description" style="color:white; font-size:15px">
+                        <img src="" id="ImgMovieComingSoon" />
+                    </li>
+                    <li class="card__description" style="color:white; font-size:15px" id="MovieName">
+                    </li>
+                </ul>
+                @*</div>*@
+            </div>
             </div>
     </div>
 </section>
@@ -127,7 +131,7 @@
 @section Script
 {
     <script>
-        let InformationDetailID;
+        var InformationDetailID;
 
         $(document).ready(function () {
         InformationDetailID = @ViewBag.InformationDetailID;

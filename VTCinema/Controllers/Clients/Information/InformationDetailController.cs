@@ -45,6 +45,25 @@ namespace VTCinema.Controllers.Clients.MovieDetail
             }
         }
 
+        [Route("LoadDataInformation")]
+        [HttpPost]
+        public string LoadDataInformation()
+        {
+            try
+            {
+                DataTable dt = new DataTable();
 
+                using (Models.ExecuteDataBase confunc = new Models.ExecuteDataBase())
+                {
+                    dt = confunc.ExecuteDataTable("[YYY_sp_Client_Infomation_LoadList]", CommandType.StoredProcedure);
+
+                }
+                return dt != null ? JsonConvert.SerializeObject(dt) : "[]";
+            }
+            catch (Exception ex)
+            {
+                return "[]";
+            }
+        }
     }
 }
