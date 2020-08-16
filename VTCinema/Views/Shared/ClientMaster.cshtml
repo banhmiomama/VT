@@ -107,7 +107,7 @@
                         <div class="col-12">
                             <div class="header__content">
                                 <!-- header logo -->
-                                <a href="index.html" class="header__logo">
+                                <a href="/Main" class="header__logo">
                                     <img src="~/Clients/img/logo.png" alt="">
                                 </a>
                                 <!-- end header logo -->
@@ -150,7 +150,7 @@
                                         <i class="icon ion-ios-search"></i>
                                     </button>
 
-                                    <a href="/signin" class="header__sign-in" >
+                                    <a href="/signin" class="header__sign-in">
                                         <i class="icon ion-ios-log-in"></i>
                                         <span>Đăng nhập</span>
                                     </a>
@@ -194,7 +194,7 @@
                 <div class="modal-content">
 
                     <div class="modal-header">
-                        <h4 class="modal-title">12</h4>
+                        <h4 id="modal-title" class="modal-title text-center">12</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -212,9 +212,6 @@
         <footer class="footer">
             <div class="container">
                 <div class="row">
-                    <!-- footer list -->
-                    <!-- end footer list -->
-                    <!-- footer list -->
                     <div class="col-12 col-sm-6">
                         <h6 class="footer__title">Liên hệ</h6>
                         <ul class="footer__list">
@@ -228,8 +225,6 @@
                             <li class="vk"><a href="#"><i class="icon ion-logo-vk"></i></a></li>
                         </ul>
                     </div>
-                    <!-- end footer list -->
-                    <!-- footer copyright -->
                     <div class="col-12 col-sm-6">
                         <div class="footer__copyright">
                             <small><a target="_blank" href="https://www.templateshub.net"></a></small>
@@ -240,7 +235,6 @@
                             </ul>
                         </div>
                     </div>
-                    <!-- end footer copyright -->
                 </div>
             </div>
         </footer>
@@ -259,10 +253,32 @@
             .donut.multi {
                 border-bottom-color: #1535f9;
             }
-        .avatar_header{
-            width:40px;
-            height:40px;
-            border-radius:50%;
+
+        .avatar_header {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+        .header__signin-content {
+            position: absolute;
+            top: 100%;
+            width: 120px;
+            background-color: white;
+            right: 20px;
+            padding: 10px;
+            height: 0;
+            opacity: 0;
+            transition: 0.5s all ease-in-out;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 14px;
+        }
+        .header__signin-content a{
+            color:black;
+        }
+        .header__sign-in:hover .header__signin-content {
+            height: auto;
+            opacity: 1;
         }
 
         @@keyframes spin {
@@ -274,8 +290,6 @@
     <div class="loader">
         <div class="donut multi"></div>
     </div>
-    <!-- JS -->
-
     <link href="~/flatpickr/flatpickr.min.css" rel="stylesheet" />
     <script src="~/flatpickr/flatpickr.js"></script>
     <script src="~/Clients/js/bootstrap.bundle.min.js"></script>
@@ -292,197 +306,194 @@
     <script src="/js/comon/NotiExe.js?ver=<%=DateTime.Now.Ticks%>"></script>
     <script>
         var DataCustomer = '';
-        $(document).ready(function () {
-            LoadDataCustomer();
-            /* Open Modal Video Trailer*/
-            $('#Carousel').on('click', '.card__play', function () {
-                let UrlVideo = $(this).attr('data-video');
-                ModalVideo(UrlVideo);
-            });
-
-            $('#MovieCurrentlyPlaying').on('click', '.card__play', function () {
-                let UrlVideo = $(this).attr('data-video');
-                ModalVideo(UrlVideo);
-            });
-
-            $('#UpcomingMovie').on('click', '.card__play', function () {
-                let UrlVideo = $(this).attr('data-video');
-                ModalVideo(UrlVideo);
-            });
-
-
-            /*==============================
-            Menu
-            ==============================*/
-            $('.header__btn').on('click', function () {
-                $(this).toggleClass('header__btn--active');
-                $('.header__nav').toggleClass('header__nav--active');
-                $('.body').toggleClass('body--active');
-
-                if ($('.header__search-btn').hasClass('active')) {
-                    $('.header__search-btn').toggleClass('active');
-                    $('.header__search').toggleClass('header__search--active');
-                }
-            });
-
-
-
-            function owlCarousel() {
-                $('.home__bg').owlCarousel({
-                    animateOut: 'fadeOut',
-                    animateIn: 'fadeIn',
-                    mouseDrag: false,
-                    touchDrag: false,
-                    items: 1,
-                    dots: false,
-                    loop: true,
-                    autoplay: false,
-                    smartSpeed: 600,
-                    margin: 0,
+            $(document).ready(function() {
+                LoadDataCustomer();
+                /* Open Modal Video Trailer*/
+                $('#Carousel,#MovieCurrentlyPlaying,#UpcomingMovie').on('click', '.card__play', function() {
+                    let UrlVideo = $(this).attr('data-video');
+                    let title = $(this).attr('data-title');
+                    ModalVideo(UrlVideo, title);
                 });
 
-                $('.home__bg .item').each(function () {
-                    if ($(this).attr("data-bg")) {
-                        $(this).css({
-                            'background': 'url(' + $(this).data('bg') + ')',
-                            'background-position': 'center center',
-                            'background-repeat': 'no-repeat',
-                            'background-size': 'cover'
-                        });
-                    }
-                });
-
-                $('.home__carousel').owlCarousel({
-                    mouseDrag: false,
-                    touchDrag: false,
-                    dots: false,
-                    loop: true,
-                    autoplay: false,
-                    smartSpeed: 600,
-                    margin: 30,
-                    responsive: {
-                        0: {
-                            items: 2,
-                        },
-                        576: {
-                            items: 2,
-                        },
-                        768: {
-                            items: 3,
-                        },
-                        992: {
-                            items: 4,
-                        },
-                        1200: {
-                            items: 4,
-                        },
-                    }
-                });
-
-                $('.home__nav--next').on('click', function () {
-                    $('.home__carousel, .home__bg').trigger('next.owl.carousel');
-                });
-                $('.home__nav--prev').on('click', function () {
-                    $('.home__carousel, .home__bg').trigger('prev.owl.carousel');
-                });
-
-                $(window).on('resize', function () {
-                    var itemHeight = $('.home__bg').height();
-                    $('.home__bg .item').css("height", itemHeight + "px");
-                });
-                $(window).trigger('resize');
-            }
-
-            function initializePlayer() {
-                if ($('#player').length) {
-                    const player = new Plyr('#player');
-                } else {
-                    return false;
-                }
-                return false;
-            }
-            $(window).on('load', initializePlayer());
-        })
-
-        function ModalVideo(url) {
-            $("#source-video").attr('src', url);
-            $("#player").attr('src', url);
-            $("#href-video").attr('href', url);
-            $('#myModal').modal('show');
-            return false;
-        }
-        function Divide(nStr){
-	        nStr += '';
-	        x = nStr.split('.');
-	        x1 = x[0];
-	        x2 = x.length > 1 ? '.' + x[1] : '';
-	        var rgx = /(\d+)(\d{3})/;
-	        while (rgx.test(x1)) {
-		        x1 = x1.replace(rgx, '$1' + ',' + '$2');
-	        }
-	        return x1 + x2;
-        }
-        function EventOnclickSearch(){
-        /*==============================
-            Search
-            ==============================*/
-            $('.header__search-btn').on('click', function () {
-                $(this).toggleClass('active');
-                $('.header__search').toggleClass('header__search--active');
-
-                if ($('.header__btn').hasClass('header__btn--active')) {
-                    $('.header__btn').toggleClass('header__btn--active');
+                /*==============================
+                Menu
+                ==============================*/
+                $('.header__btn').on('click', function() {
+                    $(this).toggleClass('header__btn--active');
                     $('.header__nav').toggleClass('header__nav--active');
                     $('.body').toggleClass('body--active');
-                }
-            });
-        }
-        function LoadDataCustomer() {
-            if(DataCustomer != "" || DataCustomer != undefined){
-                $.ajax({
-                    url: "/Main/LoadDataCustomer",
-                    dataType: "json",
-                    type: "POST",
-                    data: JSON.stringify({
-                    }),
-                    contentType: 'application/json; charset=utf-8',
-                    async: true,
-                    error: function (XMLHttpRequest, textStatus, errorThrown) {
 
-                    },
-                    success: function (result) {
-                        RenderHeaderAuth(result,"header_Auth");
+                    if ($('.header__search-btn').hasClass('active')) {
+                        $('.header__search-btn').toggleClass('active');
+                        $('.header__search').toggleClass('header__search--active');
                     }
                 });
-            }
-        }
-        function RenderHeaderAuth(data,id){
-            var myNode = document.getElementById(id);
-            if (myNode != null) {
-                myNode.innerHTML = '';
-                let stringContent = '';
-                if (data && data.length > 0) {
-                    let item = data[0];
-                    stringContent = '<button class="header__search-btn" type="button">'
-                                  +'<i class="icon ion-ios-search"></i>'
-                                  +'</button>'
-                                  +'<div href="/signin" class="header__sign-in" style="box-shadow:none;background-image:none;width:100px;margin-left: 25px;">'
-                                  +'<img class="avatar_header" src="'+item.Avatar+'" alt="">'
-                                  +'</div>'
+
+
+
+                function owlCarousel() {
+                    $('.home__bg').owlCarousel({
+                        animateOut: 'fadeOut',
+                        animateIn: 'fadeIn',
+                        mouseDrag: false,
+                        touchDrag: false,
+                        items: 1,
+                        dots: false,
+                        loop: true,
+                        autoplay: false,
+                        smartSpeed: 600,
+                        margin: 0,
+                    });
+
+                    $('.home__bg .item').each(function() {
+                        if ($(this).attr("data-bg")) {
+                            $(this).css({
+                                'background': 'url(' + $(this).data('bg') + ')',
+                                'background-position': 'center center',
+                                'background-repeat': 'no-repeat',
+                                'background-size': 'cover'
+                            });
+                        }
+                    });
+
+                    $('.home__carousel').owlCarousel({
+                        mouseDrag: false,
+                        touchDrag: false,
+                        dots: false,
+                        loop: true,
+                        autoplay: false,
+                        smartSpeed: 600,
+                        margin: 30,
+                        responsive: {
+                            0: {
+                                items: 2,
+                            },
+                            576: {
+                                items: 2,
+                            },
+                            768: {
+                                items: 3,
+                            },
+                            992: {
+                                items: 4,
+                            },
+                            1200: {
+                                items: 4,
+                            },
+                        }
+                    });
+
+                    $('.home__nav--next').on('click', function() {
+                        $('.home__carousel, .home__bg').trigger('next.owl.carousel');
+                    });
+                    $('.home__nav--prev').on('click', function() {
+                        $('.home__carousel, .home__bg').trigger('prev.owl.carousel');
+                    });
+
+                    $(window).on('resize', function() {
+                        var itemHeight = $('.home__bg').height();
+                        $('.home__bg .item').css("height", itemHeight + "px");
+                    });
+                    $(window).trigger('resize');
                 }
-                else{
-                    stringContent = '<button class="header__search-btn" type="button">'
-                                  +'<i class="icon ion-ios-search"></i>'
-                                  +'</button>'
-                                  +'<a href="/signin" class="header__sign-in" >'
-                                  +'<i class="icon ion-ios-log-in"></i>'
-                                  +'<span>Đăng nhập</span>'
-                                  +'</a>'
+
+                function initializePlayer() {
+                    if ($('#player').length) {
+                        const player = new Plyr('#player');
+                    } else {
+                        return false;
+                    }
+                    return false;
                 }
-                document.getElementById(id).innerHTML = stringContent;
-        EventOnclickSearch();
+                $(window).on('load', initializePlayer());
+            });
+
+            function ModalVideo(url, title) {
+                $("#source-video").attr('src', url);
+                $("#player").attr('src', url);
+                $("#href-video").attr('href', url);
+                $("#modal-title").text(title);
+                $('#myModal').modal('show');
+                return false;
+            };
+
+            function Divide(nStr) {
+                nStr += '';
+                x = nStr.split('.');
+                x1 = x[0];
+                x2 = x.length > 1 ? '.' + x[1] : '';
+                var rgx = /(\d+)(\d{3})/;
+                while (rgx.test(x1)) {
+                    x1 = x1.replace(rgx, '$1' + ',' + '$2');
+                }
+                return x1 + x2;
+            };
+
+            function EventOnclickSearch() {
+                /*==============================
+                    Search
+                    ==============================*/
+                $('.header__search-btn').on('click', function() {
+                    $(this).toggleClass('active');
+                    $('.header__search').toggleClass('header__search--active');
+
+                    if ($('.header__btn').hasClass('header__btn--active')) {
+                        $('.header__btn').toggleClass('header__btn--active');
+                        $('.header__nav').toggleClass('header__nav--active');
+                        $('.body').toggleClass('body--active');
+                    }
+                });
+            };
+
+            function LoadDataCustomer() {
+                if (DataCustomer != "" || DataCustomer != undefined) {
+                    $.ajax({
+                        url: "/Main/LoadDataCustomer",
+                        dataType: "json",
+                        type: "POST",
+                        data: JSON.stringify({}),
+                        contentType: 'application/json; charset=utf-8',
+                        async: true,
+                        error: function(XMLHttpRequest, textStatus, errorThrown) {
+
+                        },
+                        success: function(result) {
+                            RenderHeaderAuth(result, "header_Auth");
+                        }
+                    });
+                }
+            };
+
+            function RenderHeaderAuth(data, id) {
+                var myNode = document.getElementById(id);
+                if (myNode != null) {
+                    myNode.innerHTML = '';
+                    let stringContent = '';
+                    if (data && data.length > 0) {
+                        let item = data[0];
+                        stringContent = '<button class="header__search-btn" type="button">' +
+                            '<i class="icon ion-ios-search"></i>' +
+                            '</button>' +
+                            '<div href="/signin" class="header__sign-in" style="box-shadow:none;background-image:none;width:100px;margin-left: 25px;position:relative;">' +
+                            '<img class="avatar_header" src="' + item.Avatar + '" alt="">' +
+                            '<div class="header__signin-content">' +
+                            '<div><a href="/signupdetail/'+item.ID+'">Xem Thông Tin</a></div>'+
+                            '<div><a href="#">Đăng Xuất</a></div>'+
+                            '</div>'+
+                            '</div>'
+                    } else {
+                        stringContent = '<button class="header__search-btn" type="button">' +
+                            '<i class="icon ion-ios-search"></i>' +
+                            '</button>' +
+                            '<a href="/signin" class="header__sign-in" >' +
+                            '<i class="icon ion-ios-log-in"></i>' +
+                            '<span>Đăng nhập</span>' +
+                            '</a>'
+                    }
+                    document.getElementById(id).innerHTML = stringContent;
+                    EventOnclickSearch();
+                }
             }
-        }
     </script>
     @RenderSection("Script", required: false)
 

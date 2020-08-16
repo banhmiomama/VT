@@ -3,15 +3,16 @@
     Layout = "~/Views/Shared/Master.cshtml";
     ViewBag.Title = "Dashboard";
 }
-<div class="pusher">
+@*<div class="pusher">
     <div class="navslide navwrap">
         <div class="row" style="background-color: white">
             <div class="ui segments">
                 <div class="ui segment headerSegmentReport">
-                    <span class="headerReport header_form_report" data-languagestatic="chart_revenue_by_branch_header">
+                    <span class="headerReport header_form_report">
                         Biểu đồ doanh thu theo chi nhánh
                     </span>
                 </div>
+
                 <div class="field">
                     <input class="flatpickr" id="dateFilter" type="text" placeholder="Chọn Thời Gian Chiếu" onchange="LoadData_ReportBranchPie()" />
                 </div>
@@ -24,9 +25,6 @@
 </div>
 
 <script src="~/Momentjs/moment.js"></script>
-<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.min.css">
-<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.min.js"></script>
 <script>
     $(document).ready(function () {
         $("#dateFilter").flatpickr({
@@ -149,4 +147,4 @@
             });
         }
     }
-</script>
+</script>*@
