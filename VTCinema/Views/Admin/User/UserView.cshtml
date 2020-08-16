@@ -202,7 +202,6 @@
         });
     });
     function EventRowUserGroup() {
-        debugger
         $('#dtContentUserGroup tbody').on('click','.rowUserGroup', function () {
             let CurrentGroupID = Number($(this).attr('data-id'));
             RowUserID = CurrentGroupID;
@@ -259,7 +258,7 @@
     function AddNewUserGroup() {
         debugger
         document.getElementById("divDetailPopup").innerHTML = '';
-        $("#divDetailPopup").load("UserGroupDetail");
+        $("#divDetailPopup").load("UserGroupDetail/" + 0);
         $('#divDetailPopup').modal('show');
         return false;
     }

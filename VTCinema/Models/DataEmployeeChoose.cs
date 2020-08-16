@@ -11,7 +11,7 @@ namespace VTCinema.Models
         public string Name { get; set; }
         public string Avatar { get; set; }
         public string LastName { get; set; }
-        public DateTime Brithday { get; set; }
+        public DateTime Birthday { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
         public int? Height { get; set; }

@@ -16,6 +16,7 @@ namespace VTCinema.Models
         public string Password { get; set; }
         public int? isAllBranch { get; set; }
         public string AreaBranch { get; set; }
+        public DateTime Birthday { get; set; }
         public string Note { get; set; }
     }
 }

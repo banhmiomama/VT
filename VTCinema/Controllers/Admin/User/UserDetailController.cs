@@ -21,31 +21,70 @@ namespace VTCinema.Controllers.Admin.User
             return View("~/Views/Admin/User/UserDetail.cshtml");
         }
 
-        [Route("GetUserDetail/{UserID}")]
-        [HttpGet]
-        public string GetUserDetail(int UserID)
+
+        DataTable LoadDetail(int UserID)
+        {
+            try
+            {
+                if (UserID == 0)
+                    return null;
+                else
+                {
+                    DataTable dt = new DataTable();
+                    using (Models.ExecuteDataBase confunc = new Models.ExecuteDataBase())
+                    {
+                        dt = confunc.ExecuteDataTable("[YYY_sp_User_LoadDetail]", CommandType.StoredProcedure,
+                         "@CurrentID", SqlDbType.Int, UserID);
+                    }
+                    if (dt != null)
+                    {
+                        return dt;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+        DataTable LoadComboUserGroup()
         {
             try
             {
                 DataTable dt = new DataTable();
                 using (Models.ExecuteDataBase confunc = new Models.ExecuteDataBase())
                 {
-                    dt = confunc.ExecuteDataTable("[YYY_sp_User_LoadDetail]", CommandType.StoredProcedure,
-                      "@CurrentID", SqlDbType.Int, UserID);
+                    dt = confunc.ExecuteDataTable("[YYY_sp_UserGroup_LoadCombo]", CommandType.StoredProcedure);
                 }
                 if (dt != null)
                 {
-                    return JsonConvert.SerializeObject(dt);
+                    return dt;
                 }
                 else
                 {
-                    return "";
+                    return null;
                 }
             }
             catch (Exception ex)
             {
-                return "[]";
+                return null;
             }
+        }
+
+        [Route("GetUserDetail/{UserID}")]
+        [HttpGet]
+        public string GetUserDetail(int UserID)
+        {
+            DataTable Combo = LoadComboUserGroup();
+            DataTable Detail = LoadDetail(UserID);
+            DataSet ds = new DataSet();
+            ds.Tables.AddRange(new DataTable[] { Combo, Detail });
+            return JsonConvert.SerializeObject(ds);
         }
 
         [Route("Execute")]
@@ -66,11 +105,12 @@ namespace VTCinema.Controllers.Admin.User
                             "@Avatar", SqlDbType.NVarChar, dataDetail.Avatar,
                             "@Name", SqlDbType.NVarChar, dataDetail.Name,
                             "@LastName", SqlDbType.NVarChar, dataDetail.LastName,
-                            "@Brithday", SqlDbType.DateTime, dataDetail.Brithday,
+                            "@Birthday", SqlDbType.DateTime, dataDetail.Birthday,
                             "@Phone", SqlDbType.NVarChar, dataDetail.Phone,
                             "@Email", SqlDbType.NVarChar, dataDetail.Email,
                             "@Height", SqlDbType.Float, dataDetail.Height,
                             "@Weight", SqlDbType.Float, dataDetail.Weight,
+                            "@GroupID", SqlDbType.Int, dataDetail.GroupID,
                             "@Address", SqlDbType.Int, dataDetail.Address,
                             "@CurrentID", SqlDbType.Int, HttpContext.Session.GetInt32(Comon.Global.UserID)
                         );
@@ -84,12 +124,13 @@ namespace VTCinema.Controllers.Admin.User
                             "@Avatar", SqlDbType.NVarChar, dataDetail.Avatar,
                             "@Name", SqlDbType.NVarChar, dataDetail.Name,
                             "@LastName", SqlDbType.NVarChar, dataDetail.LastName,
-                            "@Brithday", SqlDbType.DateTime, dataDetail.Brithday,
+                            "@Brithday", SqlDbType.DateTime, dataDetail.Birthday,
                             "@Phone", SqlDbType.NVarChar, dataDetail.Phone,
                             "@Email", SqlDbType.NVarChar, dataDetail.Email,
                             "@Height", SqlDbType.Float, dataDetail.Height,
                             "@Weight", SqlDbType.Float, dataDetail.Weight,
                             "@Address", SqlDbType.Int, dataDetail.Address,
+                            "@GroupID", SqlDbType.Int, dataDetail.GroupID,
                             "@CurrentID", SqlDbType.Int, UserID,
                             "@Modified_By", SqlDbType.Int, HttpContext.Session.GetInt32(Comon.Global.UserID)
                        );

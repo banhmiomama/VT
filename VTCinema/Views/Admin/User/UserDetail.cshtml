@@ -29,11 +29,20 @@
                             <input id="Name" name="name" type="text" />
                         </div>
                     </div>
-
+                    <div class="field">
+                        <label>Nhóm</label>
+                        <div class="ui fluid search selection dropdown" id="Group">
+                            <input type="hidden" name="UserGroup">
+                            <i class="dropdown icon"></i>
+                            <div class="default text">Chọn Nhóm</div>
+                            <div class="menu" id="cbbGroup">
+                            </div>
+                        </div>
+                    </div>
                     <div class="two fields">
                         <div class="field">
                             <label>Ngày Sinh</label>
-                            <input id="Brithday" name="brithday" type="datetime" />
+                            <input class="flatpickr" id="Birthday" name="date" type="text" placeholder="Ngày Sinh.." />
                         </div>
                         <div class="field">
                             <label>Số điện thoại</label>
@@ -42,11 +51,11 @@
                     </div>
                     <div class="two fields">
                         <div class="field">
-                            <label>Chiều cao</label>
+                            <label>Chiều cao(cm)</label>
                             <input id="Height" name="Height" type="text" />
                         </div>
                         <div class="field">
-                            <label>Cân nặng</label>
+                            <label>Cân nặng(kg)</label>
                             <input id="Weight" name="Weight" type="text" />
                         </div>
                     </div>
@@ -83,6 +92,10 @@
     var DataAvatar;
 
     $(document).ready(function () {
+        $("#Birthday").flatpickr({
+            dateFormat: 'd-m-Y',
+            enableTime: false,
+        });
         UserDetailID = @ViewBag.UserID;
         LoadDataUpdateUser();
     });
@@ -95,38 +108,45 @@
             url: "/Admin/UserDetail/GetUserDetail/" + UserDetailID,
             async: true,
             success: function (data) {
-                if (data.length != 0) {
-                    $('#LastName').val((data[0].LastName));
-                    $('#Name').val((data[0].Name));
-                    $('#Brithday').val((data[0].Brithday));
-                    $('#Phone').val((data[0].Phone));
-                    $('#Height').val((data[0].Height));
-                    $('#Weight').val((data[0].Weight));
-                    $('#Email').val((data[0].Email));
-                    $('#Address').val((data[0].Address));
-                    if (data[0].Avatar == '' || data[0].Avatar == undefined) {
+                let DataCombo = data.Table1;
+                let DataDetail = data.Table2;
+                LoadCombo(DataCombo, "cbbGroup")
+                if (DataDetail != undefined && DataDetail.length != 0) {
+                    $("#Group").dropdown("refresh");
+                    $("#Group").dropdown("set selected", DataDetail[0].GroupName);
+                    $('#LastName').val((DataDetail[0].LastName));
+                    $('#Name').val((DataDetail[0].Name));
+                    $('#Birthday').val((DataDetail[0].Birthday));
+                    $('#Phone').val((DataDetail[0].Phone));
+                    $('#Height').val((DataDetail[0].Height));
+                    $('#Weight').val((DataDetail[0].Weight));
+                    $('#Email').val((DataDetail[0].Email));
+                    $('#Address').val((DataDetail[0].Address));
+                    if (DataDetail[0].Avatar == '' || DataDetail[0].Avatar == undefined) {
                         $('#avatarUserUpload').attr('src', '');
                     }
                     else {
-                        $('#avatarUserUpload').attr('src', data[0].Avatar);
-                        avatarString = data[0].Avatar;
+                        $('#avatarUserUpload').attr('src', DataDetail[0].Avatar);
+                        avatarString = DataDetail[0].Avatar;
                     }
                 }
             }
         });
     }
+
     function ExcuteData() {
         debugger
         var data = new Object();
         data.Avatar = GetFileName();
         data.LastName = $('#LastName').val() ? $('#LastName').val() : "";
         data.Name = $('#Name').val() ? $('#Name').val() : "";
-        data.Brithday = $('#Brithday').val() ? $('#Brithday').val() : "";
+        data.Birthday = $('#Birthday').val() ? $('#Birthday').val() : "";
         data.Phone = $('#Phone').val() ? $('#Phone').val() : "";
         data.Height = $('#Height').val() ? $('#Height').val() : "";
         data.Weight = $('#Weight').val() ? $('#Weight').val() : "";
         data.Email = $('#Email').val() ? $('#Email').val() : "";
         data.Address = $('#Address').val() ? $('#Address').val() : "";
+        data.GroupID = $('#Group').dropdown('get value') ? $('#Group').dropdown('get value') : "";
          $('#form3').form('validate form');
          if ($('#form3').form('is valid')) {
              $.ajax({
