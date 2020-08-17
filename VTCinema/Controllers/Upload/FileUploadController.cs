@@ -234,13 +234,6 @@ namespace VTCinema.Controllers.Upload
             return Content("Succes");
         }
 
-
-
-
-
-
-
-
         private string EnsureCorrectFilename(string filename)
         {
             if (filename.Contains("\\"))
