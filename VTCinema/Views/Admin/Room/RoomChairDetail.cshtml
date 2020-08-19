@@ -42,14 +42,30 @@
                 </div>
             </div>
         </div>
+        <div class="ui segment" id="TableListTicket" style="display:none">
+            <h3  class="header" style="text-align:center">
+                Danh Sách Khách Hàng đã đặt ghế ( <span id="TicketNameChair"></span> )
+            </h3>
+            <div class="row ui sortable celled table" id="ListTicket">
+                <table>
+                    <thead>
+                        <tr>
+                            <td style="min-width:150px">MSKH</td>
+                            <td style="min-width:150px">Tên</td>
+                            <td style="min-width:150px">Email</td>
+                            <td style="min-width:150px">Phim</td>
+                            <td>Ngày Chiếu</td>
+                            <td>Đã Thanh Toán</td>
+                        </tr>
+                    </thead>
+                    <tbody id="ListTicketBody"></tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 
 <div class="actions">
-    @*<div style="float: right">
-        <button class="ui teal button" form="form3" type="submit" onclick="return ExcuteData()">Save</button>
-
-    </div>*@
     <div style="float: right">
         <button class="ui grey button" onclick="event.preventDefault();CloseModal()">Cancel</button>
     </div>
@@ -124,30 +140,25 @@
                             + '<input type="checkbox" value="' + item.NameRow + '" id="' + item.NameRow + item.ColumnChair + '" ' + item.DisabledChair + '/>'
                             + '<label data-id="' + item.ID + '" data-type="' + item.TypeChair + '" for="' + item.NameRow + item.ColumnChair + '" style="background:' + item.ColorCode + '">' + item.NameRow + item.ColumnChair + '</label> </li>'
                     }
-                    //tr += '<li class="seat"><button type="button" class="AddNewRowChair"><i class="plus circle icon" style="font-size: 30px;color: green;transition:0.5s;"></i></button></li>';
-                    //stringContent = stringContent + '<li class="row"><ol class="seats" type="' + rc.NameRow + '">' + tr + '</ol></li>';
-                    //if (i == RowChair.length - 1) {
-                    //    stringContent += '<li class="row"><ol class="seats"><li class="seat"><button type="button" class="AddNewRowChair"><i class="plus circle icon" style="font-size: 30px;color: green;transition:0.5s;"></i></button></li></ol></li>'
-                    //}
                     stringContent = stringContent + '<li class="row"><ol class="seats" type="' + rc.NameRow + '">' + tr + '</ol></li>';
                 }
             }
             document.getElementById(id).innerHTML = stringContent;
             OnclickSeatDetail();
-        }
-        function OnclickSeatDetail() {
-            $('#RoomChairBody').on('click', '.seat label', function () {
-                var idSeat = $(this).attr('data-id');
-                var idChairType = $(this).attr('data-type');
-                var name = $(this).attr('for');
-                if (idSeat != 0) {
-                    IDChair = Number(idSeat);
-                    $('#txtNameChair').val(name);
-                    $("#ChairType").dropdown("refresh");
-                    $("#ChairType").dropdown("set selected", idChairType);
-                }
-            })
-        }
+        }   
+    }
+    function OnclickSeatDetail() {
+        $('#RoomChairBody').on('click', '.seat label', function () {
+            var idSeat = $(this).attr('data-id');
+            var idChairType = $(this).attr('data-type');
+            var name = $(this).attr('for');
+            if (idSeat != 0) {
+                IDChair = Number(idSeat);
+                $('#txtNameChair').val(name);
+                $("#ChairType").dropdown("refresh");
+                $("#ChairType").dropdown("set selected", idChairType);
+            }
+        })
     }
     function ExcuteDataChairType() {
         var data = new Object();
@@ -167,13 +178,43 @@
                     notiError("Lỗi Hệ Thống");
                 },
                 success: function (result) {
-                    notiSuccess();
+                    if (result.length != 0) {
+                        let data = result;
+                        $('#TableListTicket').css('display', 'block');
+                        $('#TicketNameChair').text($('#txtNameChair').text());
+                        Render_ListTicket(data, "ListTicketBody");
+                        notiWarning('Đã có khách hàng đặt ghế này rồi không thể thay đỗi loại ghế'); 
+                    }
+                    else {
+                        $('#TableListTicket').css('display', 'none');
+                        notiSuccess();
+                    }
                     LoadRoomChair(RoomDetailID);
                 }
             })
             return false;
         }
         else notiWarning("Vui Lòng Chọn Ghế Cần Thay Đỗi");
+    }
+    function Render_ListTicket(data, id) {
+        var myNode = document.getElementById(id);
+        if (myNode != null) {
+            myNode.innerHTML = '';
+            let stringContent = '';
+            if (data && data.length > 0) {
+                for (var i = 0; i < data.length; i++) {
+                    let item = data[i];
+                    let tr = '<td>' + item.CustomerCode + '</td>'
+                        + '<td>' + item.LastName + ' ' + item.Name + '</td>'
+                        + '<td>' + item.Email + '</td>'
+                        + '<td>' + item.Name_VN +'</td>'
+                        + '<td>' + item.ShowTime + '</td>'                        
+                        + '<td>' + item.Price + '</td>'                        
+                    stringContent = stringContent + '<tr class="seachRow" role="row">' + tr + '</tr>';
+                }
+            }
+            document.getElementById(id).innerHTML = stringContent;
+        }
     }
 </script>
 <style>
@@ -339,7 +380,9 @@
         .AddNewRowChair:focus i {
             color: darkgreen;
         }
-
+    #RoomChairBody .row .seats .seat:first-child label {
+        pointer-events: none;
+    }
     @@-webkit-keyframes rubberBand {
         0% {
             -webkit-transform: scale3d(1, 1, 1);

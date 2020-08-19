@@ -192,11 +192,10 @@ namespace VTCinema.Controllers.Room
                 {
                     dt = connFunc.ExecuteDataTable("[YYY_sp_Cinema_ChairType_Update]", CommandType.StoredProcedure,
                         "@Chair", SqlDbType.Int, dataDetail.IDChair,
-                        "@Type", SqlDbType.Int, dataDetail.Type,
-                        "@Modified_By", SqlDbType.Int, HttpContext.Session.GetInt32(Comon.Global.UserID)
+                        "@Type", SqlDbType.Int, dataDetail.Type 
                     );
                 }
-                return dt.Rows[0][0].ToString();
+                return JsonConvert.SerializeObject(dt);
             }
             catch (Exception ex)
             {
