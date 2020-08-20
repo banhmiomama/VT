@@ -485,88 +485,24 @@ $('.ui.form4').form({
                 prompt: 'Please enter your name'
             }]
         },
-        phonenumber: {
-            identifier: 'phonenumber',
-            rules: [
-                {
-                    type: 'minLength[8]',
-                    prompt: 'Please enter exactly 8 characters'
-                },
-                {
-                    type: 'maxLength[16]',
-                    prompt: 'Please enter exactly 12 characters'
-                },
-                {
-                    type: 'number',
-                    prompt: 'Please enter number'
-                }
-            ]
-        },
-        skills: {
-            identifier: 'skills',
-            rules: [{
-                type: 'minCount[2]',
-                prompt: 'Please select at least two skills'
-            }]
-        },
-        gender: {
-            identifier: 'gender',
-            rules: [{
-                type: 'empty',
-                prompt: 'Please select a gender'
-            }]
-        },
-        username: {
-            identifier: 'username',
-            rules: [{
-                type: 'empty',
-                prompt: 'Please enter a username'
-            }]
-        },
-        password: {
-            identifier: 'password',
-            rules: [{
-                type: 'empty',
-                prompt: 'Please enter a password'
-            }, {
-                type: 'minLength[6]',
-                prompt: 'Your password must be at least {ruleValue} characters'
-            }]
-        },
-        terms: {
-            identifier: 'terms',
-            rules: [{
-                type: 'checked',
-                prompt: 'You must agree to the terms and conditions'
-            }]
-        },
-        sourceType: {
-            identifier: 'sourceType',
-            rules: [{
-                type: 'empty',
-                prompt: 'Please enter a sourceType'
-            }]
-        },
-
-        fileUpload: {
-            identifier: 'fileUpload',
-            rules: [{
-                type: 'empty',
-                prompt: 'Please enter a fileUpload'
-            }]
-        },
-        reasonCancel: {
-            identifier: 'reasonCancel',
-            rules: [{
-                type: 'empty',
-                prompt: 'Please enter a reasonCancel'
-            }]
-        },
-
 
 
     }
 });
+$(".setdata.button").on("click", function () {
+    $('.ui.form4')
+        // set one value
+        .form('set value', 'name', 'Jack')
+        // set several values
+        .form('set values', {
+            name: 'Joshua',
+            gender: 'male',
+            colors: ['red', 'grey'],
+            username: 'q_joshua',
+            password: 'passw0rd',
+            terms: true
+        });
+})
 $(".setdata.button").on("click", function () {
     $('.ui.form3')
         // set one value
