@@ -40,7 +40,7 @@ namespace VTCinema.Models
 
                 //string connectionString = String.Format(@"Data Source=localhost;Initial Catalog=vtcinema_CINEMA; User ID=vtcinema_admin1;Password=Password@123;Trusted_Connection=false;");
                 //_conn = new SqlConnection(connectionString);
-                string connectionString = String.Format(@"Data Source=DESKTOP-BQS6UH7\SQLEXPRESS;Initial Catalog=VT_Cinema;Integrated Security=True");
+                string connectionString = String.Format(@"Data Source=DESKTOP-CTHKO68\SQLEXPRESS;Initial Catalog=VT_Cinema;Integrated Security=True");
                 _conn = new SqlConnection(connectionString);
                 if (_conn.State == ConnectionState.Closed) _conn.Open();
             }

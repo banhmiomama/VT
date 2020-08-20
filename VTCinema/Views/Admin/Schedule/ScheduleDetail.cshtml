@@ -87,8 +87,7 @@
 </div>
 <div class="actions">
     <div style="float: right">
-        <button class="ui teal button" form="form3" type="submit" onclick="return ExcuteData()">Save</button>
-
+        <button class="ui teal button" form="form3" type="submit" onclick="return ExcuteData()" id="Save">Save</button>
     </div>
     <div style="float: right">
         <button class="ui grey button" onclick="event.preventDefault();CloseModal()">Cancel</button>
@@ -145,8 +144,10 @@
                     $("#datefrom").val(data[0].ShowTime);
                     $("#dateto").val(data[0].CloseTime);
                     $("#txtNote").val(data[0].Note);
-
                     tinymce.activeEditor.setContent(data[0].Note);
+                    if (Number(data[0].IsDisable) == 1) {
+                        $('#Save').css('display', 'none');
+                    }
                 }
             }
         });
