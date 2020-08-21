@@ -11,7 +11,7 @@ using VTCinema.Models;
 namespace VTCinema.Controllers.Admin.User
 {
     [Route("Admin/UserGroupDetail")]
-    public class UserGroupDetailController : Controller
+    public class UserGroupDetailController : BaseController
     {
         [Route("{UserGroupID}")]
         [HttpGet]

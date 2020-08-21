@@ -16,7 +16,6 @@ namespace VTCinema.Comon
         public int sys_userid { get; set; }
       
         public string sys_username { get; set; }
-        public string sys_RoleID { get; set; }
         public static string sys_userAvatar { get; set; }      
         public int sys_customerid { get; set; }
         public static string sys_Email { get; set; }

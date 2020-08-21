@@ -113,26 +113,29 @@
                 text-indent: -9999px;
                 overflow: hidden;
             }
+
             .seat input[type="checkbox"].selected:disabled + label {
                 background: #e7eaec !important;
-                opacity:0.8;
+                opacity: 0.8;
             }
+
                 .seat input[type="checkbox"].selected:disabled + label:after {
                     cursor: not-allowed;
                 }
-                .seat input[type="checkbox"]:disabled + label:after {
-                    content: "";
-                    text-indent: 0;
-                    position: absolute;
-                    top: 4px;
-                    left: 50%;
-                    transform: translate(-50%, 0%);
-                }
 
-                .seat input[type="checkbox"]:disabled + label:hover {
-                    box-shadow: none;
-                    cursor: not-allowed;
-                }
+            .seat input[type="checkbox"]:disabled + label:after {
+                content: "";
+                text-indent: 0;
+                position: absolute;
+                top: 4px;
+                left: 50%;
+                transform: translate(-50%, 0%);
+            }
+
+            .seat input[type="checkbox"]:disabled + label:hover {
+                box-shadow: none;
+                cursor: not-allowed;
+            }
 
         .seat label {
             display: block;
@@ -179,6 +182,14 @@
 
             .AddNewRowChair:focus i {
                 color: darkgreen;
+            }
+
+        #checkAge {
+            display: none;
+        }
+
+            #checkAge.active {
+                display: block;
             }
 
         @@-webkit-keyframes rubberBand {
@@ -261,20 +272,22 @@
         }
 
         .p-title {
-            
             box-sizing: border-box;
             font-size: 14px;
             margin-left: 0;
             margin-right: 0;
             padding-bottom: 7.5px;
-            color:white;
+            color: white;
         }
+
         .border-dashed {
             border-bottom: 1px dashed #e9e9e9;
         }
+
         .p-title.col-sm-6 {
-            padding-top:17.5px;
+            padding-top: 17.5px;
         }
+
         .strong {
             color: #ffffff;
             background-color: red;
@@ -282,6 +295,7 @@
             padding: 0 5px;
             border-radius: 0.25em;
         }
+
         .product-list {
             position: absolute;
             z-index: 3;
@@ -293,42 +307,47 @@
             transition: 0.5s;
             overflow-y: auto;
             font-size: 13px;
-            border-radius:0.5em;
+            border-radius: 0.5em;
         }
+
             .product-list::-webkit-scrollbar {
                 width: 5px;
             }
 
-        /* Track */
+            /* Track */
             .product-list::-webkit-scrollbar-track {
                 background: #f1f1f1;
-                border-radius:0.5em;
+                border-radius: 0.5em;
             }
 
-        /* Handle */
+            /* Handle */
             .product-list::-webkit-scrollbar-thumb {
                 background: #888;
             }
 
-            /* Handle on hover */
+                /* Handle on hover */
                 .product-list::-webkit-scrollbar-thumb:hover {
                     background: #555;
                 }
-        .product-list.active {
-            width: 400px;
-        }
-            .product-list .product-list-content{
-                padding:15px;
-                width:100%;
+
+            .product-list.active {
+                width: 400px;
             }
+
+            .product-list .product-list-content {
+                padding: 15px;
+                width: 100%;
+            }
+
         .quantity {
             box-sizing: border-box;
             float: left;
             min-height: 1px;
             position: relative;
             width: 25%;
-            text-align:center;
+            text-align: center;
         }
+
         .minus {
             color: #9b9b9b !important;
             cursor: initial;
@@ -344,6 +363,7 @@
             text-transform: none;
             transform: scaleX(3);
         }
+
         .qty {
             border: 1px solid #e9e9e9;
             border-radius: 4px;
@@ -354,8 +374,9 @@
             padding-top: 4px;
             text-align: center;
             width: 32px;
-            margin:0 5px;
+            margin: 0 5px;
         }
+
         .plus {
             -webkit-appearance: button;
             background-position: 0 0;
@@ -369,6 +390,7 @@
             text-transform: none;
             transform: scale(1.5);
         }
+
         .title-product_list {
             margin-bottom: 15px;
             font-size: 18px;
@@ -377,27 +399,33 @@
             padding: 3%;
             width: 100%;
         }
-        .itemname{
-            font-weight:600;
-            font-size:16px;
+
+        .itemname {
+            font-weight: 600;
+            font-size: 16px;
         }
+
         .product-list-content img {
             border-width: 0;
             box-sizing: border-box;
             vertical-align: middle;
             width: 100%;
         }
+
         .item.row {
             margin-bottom: 10px;
         }
+
         input[type=number].qty::-webkit-outer-spin-button,
         input[type=number].qty::-webkit-inner-spin-button {
             -webkit-appearance: none;
             margin: 0;
         }
+
         .payment:disabled {
             background: #afafaf;
         }
+
         .seat-cinema {
             border-width: 0;
             box-sizing: border-box;
@@ -408,31 +436,39 @@
             vertical-align: baseline;
             display: flex;
             justify-content: center;
-            font-size:12px
+            font-size: 12px
         }
-            .seat-cinema .seat-cinema_item{
-                text-align:center;
-                margin-right:20px;
+
+            .seat-cinema .seat-cinema_item {
+                text-align: center;
+                margin-right: 20px;
             }
+
                 .seat-cinema .seat-cinema_item div {
                     width: 20px;
                     height: 20px;
                     background-color: white;
                     margin: 5px auto;
-                    border-radius:5px;
+                    border-radius: 5px;
                 }
-                .seat-cinema span {
-                    border-width: 0;
-                    box-sizing: border-box;
-                    font-size: 14px;
-                    padding: 0;
-                    vertical-align: baseline;
-                }
+
+            .seat-cinema span {
+                border-width: 0;
+                box-sizing: border-box;
+                font-size: 14px;
+                padding: 0;
+                vertical-align: baseline;
+            }
     </style>
 }
 <!-- content -->
 <section class="section details">
     <div class="container">
+        <div class="row" id="checkAge">
+            <div class="alert alert-danger" role="alert" style="margin: 0;width: 100%;padding-bottom: 8px;padding-top: 8px;font-size: 15px;">
+                Bạn chưa đủ tuổi xem phim này cân nhắc trước khi mua !
+            </div>
+        </div>
         <div class="row">
             <div class="col-12 col-lg-8 col-xl-8" style="z-index:2">
                 <img src="~/Clients/img/screen.png" style="max-width:100%;" />
@@ -487,12 +523,12 @@
                     </div>
 
                 </div>
-                    <div class="row product-list">
-                        <div class="product-list-content" id="ContentProductList">
-                            
-                        </div>
+                <div class="row product-list">
+                    <div class="product-list-content" id="ContentProductList">
+
                     </div>
                 </div>
+            </div>
         </div>
     </div>
 </section>
@@ -511,6 +547,7 @@
         var Total;
         var DataProduct;
         var DataProductType;
+        var TotalInsertTicket = 0;
         $(document).ready(function () {
             LoadDataScheduleMovie();
             $("#CustomerEmail").text(Email);
@@ -609,6 +646,11 @@
                     QuantityProduct();
                     let DataChairType = result.ChairType;
                     RenderChairType(DataChairType, "ChairType");
+                    let CheckAge = result.CheckAge;
+                    debugger
+                    if (Number(CheckAge[0].Ages) == 0) {
+                        $('#checkAge').css('display', 'block');
+                    }
                 }
             });
         }
@@ -770,7 +812,6 @@
                                 ExecuteBillProduct(result);
                                 notiSuccess("Hóa đơn bạn đặt thành công");
                                 setTimeout(Redirect, 2000);
-                                
                             }
                             else notiError("Hóa đơn bạn đặt thất bại");
                         }
@@ -790,18 +831,17 @@
             location.replace("/main");
         }
         function ExecuteBillTicket(idBill) {
-            let TotalInsert = 0;
+
             let ticketlength = DataBillTicket.length;
             if (ticketlength > 0) {
                 for (var i = 0; i < ticketlength; i++) {
                     let item = DataBillTicket[i];
                     item.Bill_ID = Number(idBill);
-                    if (ExecuteBillTicketInsert(item)==0) {
-                        TotalInsert+=1;
-                    }
+                    item.Schedule_ID = Number(ScheduleID);
+                    ExecuteBillTicketInsert(item);
                 }
             }
-            return  (TotalInsert == ticketlength) ? 1 : 0;
+            return (TotalInsertTicket == 0) ? 0 : 1;
         }
         function ExecuteBillTicketInsert(data) {
             $.ajax({
@@ -816,7 +856,8 @@
                     return 1;
                 },
                 success: function (result) {
-                    console.log(result);
+                    TotalInsertTicket += Number(result);
+                    console.log(TotalInsertTicket);
                     return Number(result);
                 }
             });
@@ -849,5 +890,5 @@
                 }
             });
         }
-    </script>  
+    </script>
 }

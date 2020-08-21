@@ -45,7 +45,7 @@
 <script src="/js/customjs/custom-validation.js"></script>
 <script src="/js/main.js"></script>
 <script>
-    let MovieTypeDetailID;
+    var MovieTypeDetailID;
     $(document).ready(function () {
         MovieTypeDetailID = @ViewBag.MovieTypeID;
         LoadDataUpdateMovieType();
@@ -89,7 +89,7 @@
                          notiSuccess();
                          LoadMovieType();
                      } else {
-                         notiError("Lứa Tuổi Đã Tồn Tại Vui Lòng Kiểm Tra Lại");
+                         notiError("Thể loại phim Đã Tồn Tại Vui Lòng Kiểm Tra Lại");
                         }
                  }
              })

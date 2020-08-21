@@ -61,10 +61,8 @@ namespace VTCinema.Controllers.Clients.SignUp
                     dt = confunc.ExecuteDataTable("[YYY_sp_Client_Customer_Update]", CommandType.StoredProcedure
                           , "@Name", SqlDbType.NVarChar, dataDetail.Name
                           , "@LastName", SqlDbType.NVarChar, dataDetail.LastName
-                          , "@Email", SqlDbType.NVarChar, dataDetail.Email
                           , "@Birthday", SqlDbType.NVarChar, dataDetail.Birthday
                           , "@Phone", SqlDbType.NVarChar, dataDetail.Phone
-                          , "@Password", SqlDbType.NVarChar, dataDetail.Password
                           , "@Avatar", SqlDbType.VarChar, dataDetail.Avatar
                           , "@CurrentID", SqlDbType.Int, CustomerID
                           );

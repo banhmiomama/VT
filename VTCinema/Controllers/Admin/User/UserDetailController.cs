@@ -11,7 +11,7 @@ using VTCinema.Models;
 namespace VTCinema.Controllers.Admin.User
 {
     [Route("Admin/UserDetail")]
-    public class UserDetailController : Controller
+    public class UserDetailController : BaseController
     {
         [Route("{UserID}")]
         [HttpGet]
@@ -33,7 +33,7 @@ namespace VTCinema.Controllers.Admin.User
                     DataTable dt = new DataTable();
                     using (Models.ExecuteDataBase confunc = new Models.ExecuteDataBase())
                     {
-                        dt = confunc.ExecuteDataTable("[YYY_sp_User_LoadDetail]", CommandType.StoredProcedure,
+                        dt = confunc.ExecuteDataTable("[YYY_sp_Employee_LoadDetail]", CommandType.StoredProcedure,
                          "@CurrentID", SqlDbType.Int, UserID);
                     }
                     if (dt != null)
@@ -101,7 +101,7 @@ namespace VTCinema.Controllers.Admin.User
                 {
                     using (Models.ExecuteDataBase connFunc = new Models.ExecuteDataBase())
                     {
-                        dt = connFunc.ExecuteDataTable("YYY_sp_User_Insert", CommandType.StoredProcedure,
+                        dt = connFunc.ExecuteDataTable("YYY_sp_Employee_Insert", CommandType.StoredProcedure,
                             "@Avatar", SqlDbType.NVarChar, dataDetail.Avatar,
                             "@Name", SqlDbType.NVarChar, dataDetail.Name,
                             "@LastName", SqlDbType.NVarChar, dataDetail.LastName,
@@ -120,7 +120,7 @@ namespace VTCinema.Controllers.Admin.User
                 {
                     using (Models.ExecuteDataBase connFunc = new Models.ExecuteDataBase())
                     {
-                        dt = connFunc.ExecuteDataTable("YYY_sp_User_Update", CommandType.StoredProcedure,
+                        dt = connFunc.ExecuteDataTable("YYY_sp_Employee_Update", CommandType.StoredProcedure,
                             "@Avatar", SqlDbType.NVarChar, dataDetail.Avatar,
                             "@Name", SqlDbType.NVarChar, dataDetail.Name,
                             "@LastName", SqlDbType.NVarChar, dataDetail.LastName,

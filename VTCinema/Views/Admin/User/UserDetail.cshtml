@@ -62,7 +62,7 @@
                     <div class="two fields">
                         <div class="field">
                             <label>Email</label>
-                            <input id="Email" name="Email" type="text" />
+                            <input id="Email" name="email" type="text" />
                         </div>
                         <div class="field">
                             <label>Địa chỉ</label>
@@ -207,15 +207,18 @@
         }
     }
     function GetFileName() {
-        var fullPath = document.getElementById('fileuploadAvatarUser').value;
-        if (fullPath) {
-            var startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
-            var filename = fullPath.substring(startIndex);
-            if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
-                filename = '../img/User/' + filename.substring(1);
+        if (document.getElementById('fileuploadAvatarUser').files.length != 0) {
+            var fullPath = document.getElementById('fileuploadAvatarUser').value;
+            if (fullPath) {
+                var startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
+                var filename = fullPath.substring(startIndex);
+                if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
+                    filename = '../img/User/' + filename.substring(1);
+                }
+                return filename;
             }
-            return filename;
-        }
+        } else return avatarString;
+
     }
 
 

@@ -41,8 +41,10 @@ namespace VTCinema.Controllers.Clients.Checkout
             DataTable Product = Combo.Tables["Table1"].Copy();
             Product.TableName = "Product";
             DataTable dtChairType = LoadDataChairType();
+            DataTable checkAges = CheckAge(ScheduleID);
+            checkAges.TableName = "CheckAge";
             DataSet Detail = LoadDetail(ScheduleID);
-            Detail.Tables.AddRange(new DataTable[] { ProductType, Product, dtChairType });
+            Detail.Tables.AddRange(new DataTable[] { ProductType, Product, dtChairType, checkAges });
             return JsonConvert.SerializeObject(Detail);
         }
         DataSet LoadDataProduct()
@@ -116,6 +118,31 @@ namespace VTCinema.Controllers.Clients.Checkout
                 return null;
             }
         }
+        DataTable CheckAge(int ScheduleID)
+        {
+            try
+            {
+                DataTable dt = new DataTable();
+                using (Models.ExecuteDataBase confunc = new Models.ExecuteDataBase())
+                {
+                    dt = confunc.ExecuteDataTable("[YYY_sp_CheckAges]", CommandType.StoredProcedure,
+                      "@ScheduleID", SqlDbType.Int, ScheduleID
+                      , "@CurentID",SqlDbType.Int,HttpContext.Session.GetInt32(Comon.GlobalClient.CustomerID));
+                }
+                if (dt != null)
+                {
+                    return dt;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
 
         [Route("ExecuteBill")]
         [HttpPost]
@@ -177,7 +204,8 @@ namespace VTCinema.Controllers.Clients.Checkout
                     dt = confunc.ExecuteDataTable("[YYY_sp_Bill_Ticket_Insert]", CommandType.StoredProcedure
                         , "@Bill_ID", SqlDbType.Int, dataDetail.Bill_ID
                         , "@Chair", SqlDbType.Int, dataDetail.Chair
-                        , "@Price", SqlDbType.Float, dataDetail.Price);
+                        , "@Price", SqlDbType.Float, dataDetail.Price
+                        , "@Schedule_ID",SqlDbType.Int,dataDetail.Schedule_ID);
                 }
                 return Convert.ToInt32(dt.Rows[0][0].ToString());
             }
@@ -221,6 +249,7 @@ namespace VTCinema.Controllers.Clients.Checkout
             public int Bill_ID;
             public int Chair;
             public float Price;
+            public int Schedule_ID;
         }
         class DataBillProduct
         {

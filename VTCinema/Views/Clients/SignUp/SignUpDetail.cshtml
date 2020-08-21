@@ -5,7 +5,14 @@
 
     <!-- Font -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600%7CUbuntu:300,400,500,700" rel="stylesheet">
-
+    <script src="~/Clients/js/jquery-3.3.1.min.js"></script>
+    <script src="~/plugins/sweetalert2/sweetalert2.min.js"></script>
+    <link href="~/plugins/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+    <script src="~/plugins/sweetalert2/custom-alert.js"></script>
+    <link href="~/plugins/lobibox/css/lobibox.css" rel="stylesheet" />
+    <link href="~/plugins/lobibox/dist/css/Lobibox.min.css" rel="stylesheet" />
+    <script src="~/plugins/lobibox/js/lobibox.js"></script>
+    <script src="~/js/comon/noti_function.js?ver=<%= DateTime.Now.Ticks %>"></script>
     <!-- CSS -->
     <link href="~/Clients/css/bootstrap.min.css" rel="stylesheet" />
     <link href="~/Clients/css/bootstrap-grid.min.css" rel="stylesheet" />
@@ -168,20 +175,20 @@
                         </a>
                         <div style="font-size:25px; color:white;">Thông Tin Cá Nhân </div>
                         <div class="sign__group">
-                            <input type="text" class="sign__input" placeholder="Name" id="Name">
+                            <input type="text" class="sign__input" placeholder="Nhập tên" id="Name">
                         </div>
                         <div class="sign__group">
-                            <input type="text" class="sign__input" placeholder="LastName" id="LastName">
+                            <input type="text" class="sign__input" placeholder="Nhập họ" id="LastName">
                         </div>
 
                         <div class="sign__group">
-                            <input type="text" class="sign__input" placeholder="Birthday" id="Birthday">
+                            <input type="text" class="sign__input" placeholder="Ngày sinh" id="Birthday">
                         </div>
                         <div class="sign__group">
-                            <input type="text" class="sign__input" placeholder="Phone" id="Phone">
+                            <input type="text" class="sign__input" placeholder="Số điện thoại" id="Phone">
                         </div>
                         <button type="submit" class="btn btn-success" id="contact">Đổi mật khẩu</button>
-                        <button class="sign__btn" type="submit" onclick="return ExecuteCustomer()">Update</button>
+                        <button class="sign__btn" type="submit" onclick="return ExecuteCustomer()">Cập nhật</button>
                     </form>
                 </div>
                 <div class="col-3">
@@ -189,10 +196,10 @@
                         <div class="ui massive image" style="width:200px;height:200px;">
                             <img id="avatarCustomerUpload" class="ui mini circular image" src="/img/404.png" alt="label-image" style="width: 100%; height: 80%;" />
                             <div>&nbsp</div>
-                            <div class="btn btn-success upload-btn-wrapper" style="width: 50%; margin-left:50px;height:50px;">
+                            <div class="btn btn-success upload-btn-wrapper" style="width: 100%">
                                 <label class="custom-file-upload">
                                     <input type="file" id="fileuploadAvatarCustomer" onchange="readURL(this);" />
-                                    <i class="fa fa-cloud-upload"></i>Chọn ảnh
+                                    <i class="fa fa-cloud-upload ="></i>Chọn ảnh
                                 </label>
                             </div>
                         </div>
@@ -207,7 +214,7 @@
             <input id="Repass" placeholder="Xác nhận mật khẩu" type="password" required style="background-color:#2b2b31;color:white" />
             <input id="Oldpass" placeholder="Mật khẩu cũ" type="password" required style="background-color:#2b2b31;color:white" />
             <label id="message" style="color:red;"></label>
-            <button class="btn btn-primary" type="submit" onclick="return ExecutePassword()">Update</button>
+            <button class="btn btn-primary" type="submit" onclick="return ExecutePassword()">Xác nhận</button>
         </form>
     </div>
 
@@ -272,11 +279,13 @@
                     },
                     async: true,
                     error: function (error) {
-                        alert(error);
+                        notiSuccess();
                     },
                     success: function (result) {
-                        alert('Cập nhật tài khoản thành công');
+                        debugger
+                        notiSuccess();
                         UploadImage();
+                        LoadDataCustomerDetail();
                     }
                 });
             return false;
@@ -306,14 +315,9 @@
                     },
                     async: true,
                     error: function (error) {
-                        alert(error);
+                        notiSuccess();
                     },
                     success: function (data) {
-                        debugger
-                        alert("Đổi mật khẩu thành công");
-                        $("#Newpass").val('');
-                        $("#Oldpass").val('');
-                        $("#Repass").val('');
                     }
                 });
                     return false;
@@ -349,16 +353,18 @@
             }
         }
         function GetFileName() {
-            var fullPath = document.getElementById('fileuploadAvatarCustomer').value;
-            if (fullPath) {
-                var startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
-                var filename = fullPath.substring(startIndex);
-                if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
-                    filename = '../img/Customer/' + filename.substring(1);
+            if (document.getElementById('fileuploadAvatarCustomer').files.length != 0) {
+                var fullPath = document.getElementById('fileuploadAvatarCustomer').value;
+                if (fullPath) {
+                    var startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
+                    var filename = fullPath.substring(startIndex);
+                    if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
+                        filename = '../img/Customer/' + filename.substring(1);
+                    }
+                    return filename;
                 }
-                return filename;
-            }
-            }
+            } else return avatarString;
+        }
             $('#dtContentMovieTicketType tbody').on('click', '.buttonEditClass', function () {
                 let ID = Number($(this).closest('tr')[0].childNodes[0].innerHTML);
                 EditMovieTicketType(ID);

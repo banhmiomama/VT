@@ -1,50 +1,62 @@
 ﻿
 @{ Layout = null; }
+<script src="~/js/tinymce.min.js"></script>
+
+<script>
+    tinymce.init({
+        selector: '#txtNote'
+    });
+</script>
 <div id="headerPopup_CustomerCare" class="header">
     Tin Tức
 </div>
 <script src="" type="text/javascript"></script>
-    <div class="image content">
-        <div class="ui massive image">
-            <img id="avatarInformationUpload" class="ui mini circular image" src="/img/404.png" alt="label-image" style="width: 100%; height: auto;" />
-            <div>&nbsp</div>
-            <div class="btn btn-success upload-btn-wrapper" style="width: 100%; margin-top: 6px;">
-                <button class="btn" style="width: 100%">Chọn Ảnh</button>
-                <input id="fileuploadAvatarInformation" type="file" onchange="readURL(this);" />
-            </div>
+<div class="image content">
+    <div class="ui massive image">
+        <img id="avatarInformationUpload" class="ui mini circular image" src="/img/404.png" alt="label-image" style="width: 100%; height: auto;" />
+        <div>&nbsp</div>
+        <div class="btn btn-success upload-btn-wrapper" style="width: 100%; margin-top: 6px;">
+            <button class="btn" style="width: 100%">Chọn Ảnh</button>
+            <input id="fileuploadAvatarInformation" type="file" onchange="readURL(this);" />
         </div>
-        <div class="description">
-            <form class="ui form segment form3" id="form3">
-                <div class="ui accordion field">
-                    <div class="content field active">
-                        <div class="field">
-                            <label>Tiêu Đề</label>
-                            <input id="txtTitle" name="Title" type="text" />
-                        </div>
-                        <div class="field">
-                            <label>Note</label>
-                            <textarea class="form-control ckeditor" name="content" id="txtNote">
-                                </textarea>
-                        </div>
+    </div>
+    <div class="description">
+        <form class="ui form segment form3" id="form3">
+            <div class="ui accordion field">
+                <div class="content field active">
+                    <div class="field">
+                        <label>Tiêu Đề</label>
+                        <input id="txtTitle" name="Title" type="text" />
                     </div>
+                    <div class="field">
+                        <label>Ghi Chú</label>
+                        <textarea id="txtNote" name="mytextarea" rows="5" placeholder="Nhập ghi chú...">  
+                         </textarea>
+                    </div>
+                    @*<div class="field">
+                        <label>Note</label>
+                        <textarea class="form-control ckeditor" name="content" id="txtNote">
+                                </textarea>
+                    </div>*@
                 </div>
-            </form>
-        </div>
+            </div>
+        </form>
     </div>
-    <div class="actions">
-        <div style="float: right">
-            <button class="ui teal button" form="form3" type="submit" onclick="return ExcuteData()">Save</button>
-        </div>
-        <div style="float: right">
-            <button class="ui grey button" onclick="event.preventDefault();CloseModal()">Cancel</button>
-        </div>
+</div>
+<div class="actions">
+    <div style="float: right">
+        <button class="ui teal button" form="form3" type="submit" onclick="return ExcuteData()">Save</button>
     </div>
-    <script src="/js/customjs/custom-validation.js"></script>
-    <script src="/js/main.js"></script>
-    <script>
-        let InformationDetailID;
-        let ImageString = '';
-        let DataImage;
+    <div style="float: right">
+        <button class="ui grey button" onclick="event.preventDefault();CloseModal()">Cancel</button>
+    </div>
+</div>
+<script src="/js/customjs/custom-validation.js"></script>
+<script src="/js/main.js"></script>
+<script>
+        var InformationDetailID;
+        var ImageString = '';
+        var DataImage;
 
         //$('#summernote').summnernote();
         $(document).ready(function () {
@@ -62,7 +74,7 @@
                 success: function (data) {
                     if (data.length != 0) {
                         $('#txtTitle').val((data[0].Title));
-                        $('#txtNote').html((data[0].Note));
+                        $('#txtNote').val((data[0].Note));
                         if (data[0].Image == '' || data[0].Image == undefined) {
                             $('#avatarInformationUpload').attr('src', '');
                         }
@@ -77,7 +89,7 @@
         function ExcuteData() {
             var data = new Object();
             data.Title = $('#txtTitle').val() ? $('#txtTitle').val() : "";
-            data.Note = $('#txtNote').html() ? $('#txtNote').html() : "";
+            data.Note = tinymce.activeEditor.getContent();
             data.Image = GetFileName();
             $('#form3').form('validate form');
             if ($('#form3').form('is valid')) {
@@ -150,111 +162,111 @@
                 }
             } else return ImageString;
         }
-    </script>
-    <style>
-        .upload-btn-wrapper {
-            position: relative;
-            overflow: hidden;
-            display: inline-block;
-        }
+</script>
+<style>
+    .upload-btn-wrapper {
+        position: relative;
+        overflow: hidden;
+        display: inline-block;
+    }
 
-        .btn {
-            color: #0288d1;
-            background-color: white;
-            border-radius: 21px;
-            font-size: 12px;
-            /* font-weight: bold; */
-            border-style: solid;
-            border-width: 1px;
-        }
+    .btn {
+        color: #0288d1;
+        background-color: white;
+        border-radius: 21px;
+        font-size: 12px;
+        /* font-weight: bold; */
+        border-style: solid;
+        border-width: 1px;
+    }
 
-        .iti {
-            width: 100%;
-        }
+    .iti {
+        width: 100%;
+    }
 
-        .upload-btn-wrapper input[type=file] {
-            font-size: 100px;
-            position: absolute;
-            left: 0;
-            top: 0;
-            opacity: 0;
-        }
+    .upload-btn-wrapper input[type=file] {
+        font-size: 100px;
+        position: absolute;
+        left: 0;
+        top: 0;
+        opacity: 0;
+    }
 
-        .percentIcon {
-            color: #e03997;
-            padding-left: 10px;
-        }
+    .percentIcon {
+        color: #e03997;
+        padding-left: 10px;
+    }
 
-        .vtth_unit {
-            padding: 0px 5px 0px 5px;
-            color: red;
-        }
+    .vtth_unit {
+        padding: 0px 5px 0px 5px;
+        color: red;
+    }
 
-        .vtth_row {
-            padding: 3px 10px 3px 10px;
-            background: #f3f3f5;
-            color: #0288d1;
-            border-radius: 20px;
-            margin-right: 5px;
-        }
+    .vtth_row {
+        padding: 3px 10px 3px 10px;
+        background: #f3f3f5;
+        color: #0288d1;
+        border-radius: 20px;
+        margin-right: 5px;
+    }
 
-        .vtth_num {
-            font-size: 16px;
-        }
+    .vtth_num {
+        font-size: 16px;
+    }
 
-        .state1 {
-            background: #037e20;
-            padding: 3px;
-            color: white;
-            border-radius: 20px;
-            font-size: 12px;
-            display: block;
-            text-align: center;
-        }
+    .state1 {
+        background: #037e20;
+        padding: 3px;
+        color: white;
+        border-radius: 20px;
+        font-size: 12px;
+        display: block;
+        text-align: center;
+    }
 
-        .state0 {
-            background: #e0e0e0;
-            padding: 3px;
-            color: #0288d1;
-            border-radius: 20px;
-            font-size: 12px;
-            display: block;
-            text-align: center;
-        }
+    .state0 {
+        background: #e0e0e0;
+        padding: 3px;
+        color: #0288d1;
+        border-radius: 20px;
+        font-size: 12px;
+        display: block;
+        text-align: center;
+    }
 
-        .numservice {
-            font-size: 12px !important;
-            background: #0190ddf7 !important;
-            color: #fcfcfc !important;
-            min-width: 32px;
-            margin: 0px 6px !important;
-            padding: 4px 10px !important;
-        }
+    .numservice {
+        font-size: 12px !important;
+        background: #0190ddf7 !important;
+        color: #fcfcfc !important;
+        min-width: 32px;
+        margin: 0px 6px !important;
+        padding: 4px 10px !important;
+    }
 
-        .numservicetotal {
-            background: #6435c9 !important;
-            font-size: 14px !important;
-        }
+    .numservicetotal {
+        background: #6435c9 !important;
+        font-size: 14px !important;
+    }
 
-        .percentIcon {
-            color: #e03997;
-            padding-left: 10px;
-        }
+    .percentIcon {
+        color: #e03997;
+        padding-left: 10px;
+    }
 
-        .vtth_unit {
-            padding: 0px 5px 0px 5px;
-            color: #21ba45;
-        }
+    .vtth_unit {
+        padding: 0px 5px 0px 5px;
+        color: #21ba45;
+    }
 
-        .vtth_row {
-            padding: 3px 10px 3px 10px;
-            background: #f3f3f5;
-            color: #056fa8;
-            border-radius: 20px;
-            margin-right: 5px;
-        }
+    .vtth_row {
+        padding: 3px 10px 3px 10px;
+        background: #f3f3f5;
+        color: #056fa8;
+        border-radius: 20px;
+        margin-right: 5px;
+    }
 
-        .vtth_num {
-            color: rgba(0,0,0,.95);
-        }
-    </style>
+    .vtth_num {
+        color: rgba(0,0,0,.95);
+    }
+</style>

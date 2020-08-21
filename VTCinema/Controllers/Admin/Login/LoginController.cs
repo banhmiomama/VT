@@ -36,7 +36,7 @@ namespace VTCinema.Controllers.Login
                 }
                 else
                 {
-                    string Status = "Wrong username password";
+                    string Status = "Tên đăng nhập hoặc mật khẩu không đúng";
                     ViewBag.Status = Status;
                     return View("~/Views/Admin/Login/Login.cshtml");
                 }

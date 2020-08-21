@@ -3,6 +3,8 @@
     ViewData["Title"] = "Tin Tức";
     Layout = "~/Views/Shared/ClientMaster.cshtml";
 }
+<script src="~/js/tinymce.min.js"></script>
+
 @section Style{
     <style>
         #DescriptionInformation p {
@@ -13,6 +15,7 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
+
         label {
             color: white;
         }
@@ -37,35 +40,26 @@
         </div>
 
         <div class="row">
-            <div class="col-9" id="InformationList">               
+            <div class="col-9" id="InformationList">
                 <div class="col-12 col-md-12 col-lg-12">
                     <div class="card card-information">
                         <div class="card__content centered">
                             <h2 class="card__title" id="InformationTitle" style="font-weight:bold; font-size:20px;"></h2>
                             <ul>
                                 <li class="card__description" style="color:white; font-size:15px; ">
-                                    <img src="" id="loadImg" style="max-width: 100%"/>
+                                    <img src="" id="loadImg" style="max-width: 100%" />
                                 </li>
                                 <li class="card__description" id="Note" style="color:white; font-size:15px">
                                 </li>
                             </ul>
                         </div>
-                    </div>  
+                    </div>
                 </div>
             </div>
             <div class="col-3" id="InformationLists">
                 
-                @*<div class="col-12 col-md-12 col-lg-12">*@
-                <ul>
-                    <li class="card__description" style="color:white; font-size:15px">
-                        <img src="" id="ImgMovieComingSoon" />
-                    </li>
-                    <li class="card__description" style="color:white; font-size:15px" id="MovieName">
-                    </li>
-                </ul>
-                @*</div>*@
             </div>
-            </div>
+        </div>
     </div>
 </section>
 <!-- end expected premiere -->
@@ -147,7 +141,7 @@
                 async: true,
                 success: function (data) {
                     $('#InformationTitle').text(data[0].Title);
-                    $('#Note').text(data[0].Note);
+                    $('#Note').html(data[0].Note);
                     if (data[0].Image == '' || data[0].Image == undefined) { // note
                         $('#loadImg').attr('src', '');
                     }
@@ -190,9 +184,6 @@
                             + ' <img src="' + item.Image + '" alt=""></div>'
                             + '<a class="card__title"  href="' + item.ID + '" style="display:block;text-overflow: Ellipsis;width: 200px;overflow: hidden; white-space: nowrap;">' + item.Title + '</a>'
                             + ' <div class="card__content centered">'
-                            + ' <span class="card__description" id="DescriptionInformation"><p>' + item.Note + '</p></span>'
-                           
-                            //+ ' <h3 class="card__title">' + item.Title + '</h3>'
                             + ' </div></div>';
 
                         stringContent = stringContent + '<div class="col-12 col-md-12 col-lg-12">' + td + '</div>';

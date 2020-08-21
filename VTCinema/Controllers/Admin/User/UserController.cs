@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 namespace VTCinema.Controllers.Admin.User
 {
     [Route("Admin/User")]
-    public class UserController : Controller
+    public class UserController : BaseController
     {
         public IActionResult Index()
         {
@@ -26,7 +26,7 @@ namespace VTCinema.Controllers.Admin.User
 
                 using (Models.ExecuteDataBase confunc = new Models.ExecuteDataBase())
                 {
-                    dt = confunc.ExecuteDataSet("[YYY_sp_User_LoadList]", CommandType.StoredProcedure);
+                    dt = confunc.ExecuteDataSet("[YYY_sp_Employee_LoadList]", CommandType.StoredProcedure);
 
                 }
                 if (dt != null)
@@ -53,7 +53,7 @@ namespace VTCinema.Controllers.Admin.User
                 DataTable dt = new DataTable();
                 using (Models.ExecuteDataBase confunc = new Models.ExecuteDataBase())
                 {
-                    dt = confunc.ExecuteDataTable("[YYY_sp_User_Delete]", CommandType.StoredProcedure,
+                    dt = confunc.ExecuteDataTable("[YYY_sp_Employee_Delete]", CommandType.StoredProcedure,
                       "@CurrentID", SqlDbType.Int, ID,
                       "@Modified_By", SqlDbType.Int, HttpContext.Session.GetInt32(Comon.Global.UserID));
                 }

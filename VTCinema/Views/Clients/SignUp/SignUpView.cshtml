@@ -5,7 +5,14 @@
 
     <!-- Font -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600%7CUbuntu:300,400,500,700" rel="stylesheet">
-
+    <script src="~/Clients/js/jquery-3.3.1.min.js"></script>
+    <script src="~/plugins/sweetalert2/sweetalert2.min.js"></script>
+    <link href="~/plugins/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+    <script src="~/plugins/sweetalert2/custom-alert.js"></script>
+    <link href="~/plugins/lobibox/css/lobibox.css" rel="stylesheet" />
+    <link href="~/plugins/lobibox/dist/css/Lobibox.min.css" rel="stylesheet" />
+    <script src="~/plugins/lobibox/js/lobibox.js"></script>
+    <script src="~/js/comon/noti_function.js?ver=<%= DateTime.Now.Ticks %>"></script>
     <!-- CSS -->
     <link href="~/Clients/css/bootstrap.min.css" rel="stylesheet" />
     <link href="~/Clients/css/bootstrap-grid.min.css" rel="stylesheet" />
@@ -79,34 +86,29 @@
                             </a>
 
                             <div class="sign__group">
-                                <input type="text" class="sign__input" placeholder="UserName" id="UserName">
+                                <input type="text" class="sign__input" placeholder="UserName" id="tên đăng nhập" >
                             </div>
                             <div class="sign__group">
-                                <input type="text" class="sign__input" placeholder="Name" id="Name">
+                                <input type="text" class="sign__input" placeholder="tên" id="Name">
                             </div>
                             <div class="sign__group">
-                                <input type="text" class="sign__input" placeholder="LastName" id="LastName">
+                                <input type="text" class="sign__input" placeholder="họ" id="LastName">
                             </div>
 
                             <div class="sign__group">
-                                <input type="text" class="sign__input" placeholder="Email" id="Email">
+                                <input type="text" class="sign__input" placeholder="email" id="Email">
                             </div>
 
                             <div class="sign__group">
-                                <input type="password" class="sign__input" placeholder="Password" id="Password">
+                                <input type="password" class="sign__input" placeholder="mật khẩu" id="Password">
                             </div>
                             <div class="sign__group">
-                                <input type="password" class="sign__input" placeholder="Password" id="RePassword">
+                                <input type="password" class="sign__input" placeholder="Nhập lại mật khẩu" id="RePassword">
                             </div>
 
-                            <div class="sign__group sign__group--checkbox">
-                                <input id="remember" name="remember" type="checkbox" checked="checked">
-                                <label for="remember">I agree to the <a href="#">Privacy Policy</a></label>
-                            </div>
+                            <button class="sign__btn" type="button" onclick="return ExecuteCustomer()">Đăng kí</button>
 
-                            <button class="sign__btn" type="button" onclick="return ExecuteCustomer()">Sign up</button>
-
-                            <span class="sign__text">Already have an account? <a href="signin.html">Sign in!</a></span>
+                            <span class="sign__text">Bạn đã có tài khoản? <a href="/Signin">Đăng nhập</a></span>
                         </form>
                         <!-- registration form -->
                     </div>
@@ -155,10 +157,8 @@
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
                         alert("Lỗi Hệ Thống");
                     },
-                    success: function (result) {                       
-                        console.log(result);    
-                        alt = (result);
-                        alert(result);
+                    success: function (result) {
+                        notiSuccess(result);
                         $("#Password").val('');
                         $("#UserName").val('');
                         $("#Email").val('');

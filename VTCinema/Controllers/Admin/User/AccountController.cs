@@ -12,7 +12,7 @@ using VTCinema.Models;
 namespace VTCinema.Controllers.Admin.User
 {
     [Route("Admin/AccountDetail")]
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         [Route("{AccountID}")]
         [HttpGet]
@@ -58,15 +58,15 @@ namespace VTCinema.Controllers.Admin.User
                 DataTable dt = new DataTable();
                 DataUserChoose dataDetail = JsonConvert.DeserializeObject<DataUserChoose>(data);
 
-                    using (Models.ExecuteDataBase connFunc = new Models.ExecuteDataBase())
-                    {
-                        dt = connFunc.ExecuteDataTable("[YYY_sp_Account_Update]", CommandType.StoredProcedure,
-                            "@UserName", SqlDbType.NVarChar, dataDetail.UserName,
-                            "@Password", SqlDbType.Int, dataDetail.Password,
-                            "@CurrentID", SqlDbType.Int, AccountID,
-                            "@Modified_By", SqlDbType.Int, HttpContext.Session.GetInt32(Comon.Global.UserID)
-                       );
-                    }
+                using (Models.ExecuteDataBase connFunc = new Models.ExecuteDataBase())
+                {
+                    dt = connFunc.ExecuteDataTable("[YYY_sp_Account_Update]", CommandType.StoredProcedure,
+                        "@UserName", SqlDbType.NVarChar, dataDetail.UserName,
+                        "@Password", SqlDbType.Int, dataDetail.Password,
+                        "@CurrentID", SqlDbType.Int, AccountID,
+                        "@Modified_By", SqlDbType.Int, HttpContext.Session.GetInt32(Comon.Global.UserID)
+                    );
+                }
                 return dt.Rows[0][0].ToString();
             }
             catch (Exception ex)
